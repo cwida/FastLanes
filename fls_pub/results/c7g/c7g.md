@@ -1,0 +1,1 @@
+- [c7g](https://aws.amazon.com/ec2/instance-types/c7g/)

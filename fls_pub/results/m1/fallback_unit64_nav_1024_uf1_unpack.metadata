@@ -1,0 +1,26 @@
+2022-09-26T11:02:29+02:00
+Run on (8 X 0.011299 MHz CPU s)
+CPU Caches:
+  L1 Data 64 KiB (x8)
+  L1 Instruction 128 KiB (x8)
+  L2 Unified 4096 KiB (x2)
+Load Average: 3.85, 3.37, 2.85
+cmake info: 
+    source_dir: /Users/azim/CLionProjects/__fast_lanes
+    cmake_osx_architectures
+    cmake_host_system_processor: arm64
+    cmake_system_processor: arm64
+    cmake_host_system_name: Darwin
+    cmake_system_name: Linux
+    cmake_c_compiler: /opt/homebrew/Cellar/llvm/14.0.6_1/bin/clang
+    cmake_cxx_compiler: /opt/homebrew/Cellar/llvm/14.0.6_1/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 14.0.6
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g -std=c++11
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: RELEASE
+    cmake_toolchain_file: m1
+target info: 
+    target_name: fallback_unit64_nav_1024_uf1_unpack
+    target_compile_options: -fno-builtin;-fno-slp-vectorize;-fno-vectorize

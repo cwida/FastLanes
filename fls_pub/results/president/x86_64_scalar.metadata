@@ -1,0 +1,35 @@
+2022-12-21T15:46:28+01:00
+Run on (10 X 1200.78 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x10)
+  L1 Instruction 32 KiB (x10)
+  L2 Unified 1024 KiB (x10)
+  L3 Unified 14080 KiB (x1)
+Load Average: 0.61, 0.54, 0.30
+cmake info: 
+    source_dir: /ufs/azim/fastlanes
+    cmake_osx_architectures
+    cmake_host_system_processor: x86_64
+    cmake_system_processor: x86_64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /ufs/azim/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang
+    cmake_cxx_compiler: /usr/lib64/ccache/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 6.0.1
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: president
+target info: 
+    target_name: lemire_scalar_bitunpack
+    target_compile_options: -fno-builtin;-fno-slp-vectorize;-fno-vectorize
+
+notes:
+    - used the old /usr/lib64/ccache/clang compiler. It should be done by using the clang version 13.0.0. However the result of clang version 13.0.0 was wrong. This could be because it probably used new optimizations.
+    - manually set the results of 0-bit to 1-bit. this is because the code use memset and memset can be autovectorized.
+
+todo:
+    - use clang version 13.
+

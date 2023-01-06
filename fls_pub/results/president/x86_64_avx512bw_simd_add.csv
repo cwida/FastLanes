@@ -1,0 +1,5 @@
+benchmark_number,name,iterations,cycles_per_tuple
+0,scalar_add_08,3000000,0.0172843
+1,scalar_add_16,3000000,0.0356521
+2,scalar_add_32,3000000,0.0900711
+3,scalar_add_64,3000000,0.175028

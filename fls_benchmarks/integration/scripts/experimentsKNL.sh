@@ -1,0 +1,2 @@
+# Scaling experiments without SIMD
+for rep in `seq 1 2`; do for sf in 100 30 10 3 1; do for rep2 in `seq 1 5`; do echo sf: $sf; for i in 1 8 16 32 64 128 256; do echo "Threads: " $i; for simd in 0 ; do echo "SIMDhash: " $simd; echo "SIMDjoin: " $simd; echo "SIMDsel: " $simd; echo "SIMDproj: " $simd; SIMDproj=$simd SIMDsel=$simd SIMDjoin=$simd SIMDhash=$simd   ./run_tpch 1 ../../data/tpch/sf$sf/ $i; done; done; done; done; done | tee -a scalingCRC32_64bit

@@ -1,0 +1,64 @@
+#!/bin/bash
+# tests for jevents
+# may need executing event_download.py first to get event list for this cpu
+set -e 
+set -x
+
+failed() {
+        echo FAILED
+}
+trap failed ERR 0
+
+PATH=.:./examples:$PATH
+
+
+$V listevents > l
+[ $(wc -l < l) -gt 50 ] 
+grep -q offcore_response l
+
+if grep -q br_misp_retired.taken l ; then
+	E=br_misp_retired.taken
+elif grep -q br_misp_retired.near_taken l ; then
+	E=br_misp_retired.near_taken
+else
+	E=instructions
+fi
+
+$V jestat true
+$V jestat -e cpu-cycles,cpu_clk_unhalted.ref_tsc,$E true
+$V jestat -e "{cpu-cycles,cpu_clk_unhalted.ref_tsc},{$E,cache-references}" -a sleep 1
+$V jestat -a sleep 1
+$V jestat -a -e "uops_executed.thread:k" sleep 1
+OCR=$(egrep '^(offcore_response|ocr)\.' l | head -1  | cut -d ' ' -f 1)
+$V jestat -a -e "$OCR:config1=0x1" sleep 1
+$V jestat -A -a -I 500 cycles sleep 2
+
+# test all events
+LEN=$(wc -l l | awk ' { print $1 }')
+INC=20
+
+# skip i915/vcs-* which often returns ENODEV for no good reason
+SKIP="i915-vcs"
+if [ ! -d /sys/devices/uncore_upi_0 ] ; then
+	SKIP="$SKIP|upi_"
+fi
+
+for ((i = 1; i <= LEN; i += INC)) ; do
+	$V jestat $(nl l |
+		    egrep -v "$SKIP" |
+		    awk -v v=$i -v inc=$INC '$1 >= v && $1 <= v+inc { print "-e " $2 } ') -a true
+done
+
+$V showevent $E
+
+$V event-rmap $E
+
+$V examples/addr
+examples/rtest
+examples/rtest2
+
+trap "" ERR 0
+
+echo SUCCEEDED
+
+

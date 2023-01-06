@@ -1,0 +1,27 @@
+2022-12-21T14:17:01+01:00
+Run on (10 X 1969.64 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x10)
+  L1 Instruction 32 KiB (x10)
+  L2 Unified 1024 KiB (x10)
+  L3 Unified 14080 KiB (x1)
+Load Average: 0.87, 0.62, 0.39
+cmake info: 
+    source_dir: /ufs/azim/fastlanes
+    cmake_osx_architectures
+    cmake_host_system_processor: x86_64
+    cmake_system_processor: x86_64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /ufs/azim/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang
+    cmake_cxx_compiler: /ufs/azim/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 13.0.0
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: president
+target info: 
+    target_name: rle
+    target_compile_options: -mavx512bw;-fno-builtin
