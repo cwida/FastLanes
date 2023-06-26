@@ -1,0 +1,27 @@
+2023-03-27T15:44:23+00:00
+Run on (16 X 2899.96 MHz CPU s)
+CPU Caches:
+  L1 Data 48 KiB (x8)
+  L1 Instruction 32 KiB (x8)
+  L2 Unified 1280 KiB (x8)
+  L3 Unified 55296 KiB (x1)
+Load Average: 0.08, 0.02, 0.01
+cmake info: 
+    source_dir: /home/ubuntu/fastlanes_revision
+    cmake_osx_architectures
+    cmake_host_system_processor: x86_64
+    cmake_system_processor: x86_64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /usr/bin/clang
+    cmake_cxx_compiler: /usr/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 14.0.0
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: i4i_4xlarge
+target info: 
+    target_name: rle
+    target_compile_options: -mavx512bw;-fno-builtin

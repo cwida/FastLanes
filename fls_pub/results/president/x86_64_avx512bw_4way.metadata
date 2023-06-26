@@ -1,0 +1,27 @@
+2022-10-24T00:17:10+02:00
+Run on (10 X 3299.99 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x10)
+  L1 Instruction 32 KiB (x10)
+  L2 Unified 1024 KiB (x10)
+  L3 Unified 14080 KiB (x1)
+Load Average: 4.14, 4.06, 4.06
+cmake info: 
+    source_dir: /ufs/azim/fastlanes
+    cmake_osx_architectures
+    cmake_host_system_processor: x86_64
+    cmake_system_processor: x86_64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /usr/lib64/ccache/clang
+    cmake_cxx_compiler: /usr/lib64/ccache/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 6.0.1
+    cmake_crosscompiling: FALSE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: president
+target info: 
+    target_name: lemire_bitunpack
+    target_compile_options: -mavx512bw;-fno-builtin

@@ -1,0 +1,26 @@
+2023-03-28T17:20:51+02:00
+Run on (8 X 0.007494 MHz CPU s)
+CPU Caches:
+  L1 Data 64 KiB (x8)
+  L1 Instruction 128 KiB (x8)
+  L2 Unified 4096 KiB (x2)
+Load Average: 11.70, 6.88, 5.32
+cmake info: 
+    source_dir: /Users/azim/CLionProjects/fastlanes_revision
+    cmake_osx_architectures
+    cmake_host_system_processor: arm64
+    cmake_system_processor: arm64
+    cmake_host_system_name: Darwin
+    cmake_system_name: Linux
+    cmake_c_compiler: /opt/homebrew/Cellar/llvm/15.0.7_1/bin/clang
+    cmake_cxx_compiler: /opt/homebrew/Cellar/llvm/15.0.7_1/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 15.0.7
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: m1
+target info: 
+    target_name: 
+    target_compile_options: 

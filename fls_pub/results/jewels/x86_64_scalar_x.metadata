@@ -1,0 +1,27 @@
+2022-12-18T00:14:11+01:00
+Run on (24 X 1001.06 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x24)
+  L1 Instruction 32 KiB (x24)
+  L2 Unified 1024 KiB (x24)
+  L3 Unified 19712 KiB (x2)
+Load Average: 0.64, 0.47, 0.25
+cmake info: 
+    source_dir: /export/scratch3/azim/fastlanes
+    cmake_osx_architectures
+    cmake_host_system_processor: x86_64
+    cmake_system_processor: x86_64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /export/scratch3/azim/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang
+    cmake_cxx_compiler: /export/scratch3/azim/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 13.0.0
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: jewels
+target info: 
+    target_name: lemire_scalar_bitunpack
+    target_compile_options: -fno-builtin;-fno-slp-vectorize;-fno-vectorize

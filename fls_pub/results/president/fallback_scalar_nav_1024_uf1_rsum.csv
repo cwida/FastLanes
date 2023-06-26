@@ -1,0 +1,5 @@
+benchmark_number,name,iterations,cycles_per_tuple
+0,rsum_8,3000000,1.08028
+1,rsum_16,3000000,1.03719
+2,rsum_32,3000000,1.05616
+3,rsum_64,3000000,1.08378

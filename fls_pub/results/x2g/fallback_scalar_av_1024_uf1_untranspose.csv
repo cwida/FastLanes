@@ -1,0 +1,9 @@
+benchmark_number,name,iterations,cycles_per_tuple
+0,untranspose_i_8,3000000,2.17292
+1,untranspose_o_8,3000000,2.17039
+2,untranspose_i_16,3000000,2.17257
+3,untranspose_o_16,3000000,2.16922
+4,untranspose_i_32,3000000,1.42301
+5,untranspose_o_32,3000000,1.42301
+6,untranspose_i_64,3000000,1.42582
+7,untranspose_o_64,3000000,1.42581

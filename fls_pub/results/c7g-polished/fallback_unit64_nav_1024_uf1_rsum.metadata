@@ -1,0 +1,27 @@
+2022-12-01T22:03:59+00:00
+Run on (1 X 2100 MHz CPU )
+CPU Caches:
+  L1 Data 64 KiB (x1)
+  L1 Instruction 64 KiB (x1)
+  L2 Unified 1024 KiB (x1)
+  L3 Unified 32768 KiB (x1)
+Load Average: 0.14, 0.26, 0.13
+cmake info: 
+    source_dir: /home/ubuntu/tmp/tmp.9XxAqvWgVz
+    cmake_osx_architectures
+    cmake_host_system_processor: aarch64
+    cmake_system_processor: arm64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /usr/bin/clang
+    cmake_cxx_compiler: /usr/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 14.0.0
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g -std=c++11
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: Release
+    cmake_toolchain_file: c7g
+target info: 
+    target_name: fallback_unit64_nav_1024_uf1_rsum
+    target_compile_options: -fno-slp-vectorize;-fno-vectorize

@@ -1,0 +1,2 @@
+name            ,time  ,CPUs  ,IPC  ,GHz  ,Bandwidth,cycles,LLC-misses,LLC-misses2,l1-misses,instr.,br. misses,all_rd,br. misses,stores,loads,mem_stall,task-clock,
+fls vectorwise,28.041,11.641,1.048,3.195,37170.994,3.896 ,0.062     ,0.000      ,0.063    ,4.083 ,0.001     ,0.064 ,0.001     ,0.011 ,1.029,2.410    ,1.216     ,

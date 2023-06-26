@@ -1,0 +1,27 @@
+2022-09-24T20:10:19+00:00
+Run on (1 X 243.75 MHz CPU )
+CPU Caches:
+  L1 Data 64 KiB (x1)
+  L1 Instruction 64 KiB (x1)
+  L2 Unified 1024 KiB (x1)
+  L3 Unified 32768 KiB (x1)
+Load Average: 1.42, 0.78, 0.70
+cmake info: 
+    source_dir: /home/ubuntu/fastlanes
+    cmake_osx_architectures
+    cmake_host_system_processor: aarch64
+    cmake_system_processor: arm64
+    cmake_host_system_name: Linux
+    cmake_system_name: Linux
+    cmake_c_compiler: /usr/bin/clang
+    cmake_cxx_compiler: /usr/bin/clang++
+    cmake_cxx_compiler_id: Clang
+    cmake_cxx_compiler_version: 14.0.0
+    cmake_crosscompiling: TRUE
+    cmake_cxx_flags_debug: -g -std=c++11
+    cmake_cxx_flags_release: -O3 -DNDEBUG
+    cmake_build_type: RELEASE
+    cmake_toolchain_file: graviton2
+target info: 
+    target_name: fallback_unit64_nav_1024_uf1_unpack
+    target_compile_options: -fno-builtin;-fno-slp-vectorize;-fno-vectorize

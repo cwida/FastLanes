@@ -1,0 +1,3 @@
+[submodule "tpch-dbgen"]
+	path = fls_benchmarks/integration/tpch-dbgen
+	url = https://github.com/electrum/tpch-dbgen
