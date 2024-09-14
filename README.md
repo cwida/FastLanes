@@ -1,146 +1,61 @@
-# <div align="center"> The FastLanes Compression Layout: </div>
-## <div align="center"> Decoding >100 Billion Integers per Second with Scalar Code  </div>
-
-## FastLanes:
-FastLanes is a project initiated at CWI, intended as a foundation for next-generation big data formats.
-In this first paper on FastLanes, we focus on significantly improving data decoding performance
-over the state-of-the art.
-in a follow-up we will discuss improvements in compression ratio, as well.
-It introduces a new layout for compressed columnar data, that increases the opportunities for data-parallel decoding,
-improving performance by factors.
-It does so in a way that works across the heterogeneous and evolving Instruction Set Architectures (ISAs) landscape,
-is future-proof, and minimizes technical debt by relying on scalar-only code.
-
-## How to Build:
-### Requirements: 
-1) __Clang++__
-2) __CMake__ 3.20 or higher
-
-
-### Run:
-
-```shell
-    mkdir build ; cd build
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../fls_toolchain/example.cmake ..
-    make
-```
-
-
-## How to Run:
-
-The Fastlanes primitives are implemented for the following architectures and ISA extensions:
-
-| Architecture | ISA     |
-|--------------|---------|
-| arm64v8      | NEON    |
-| arm64v8      | SVE     |
-| wasm         | SIMD128 |
-| x86_64       | SSE     |
-| x86_64       | AVX2    |
-| x86_64       | AVX512F |
-
-## 3.1 Micro-benchmarks
-
+# FastLanes
 ---
-### Bit-Unpacking
+We think it is time for a new data format; going beyond Parquet (and ORC). The existing data formats have been very
+successful and form the basis
+of data lakes and lakehouse architectures. Yet, they are 15 years old and very hard to evolve, for various reasons.
+There are two main reasons to
+evolve them and these form the motivation behind FastLanes:
 
-Find the source file for each implementation at:
+1. it is possible to provide significantly better compression and better access speeds on current workloads.
+2. new workloads have emerged, particularly, data engineering pipelines for machine learning (ML).
 
-| Implementation | Source File                                                                                              |
-|----------------|----------------------------------------------------------------------------------------------------------|
-| Scalar         | `fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_unpack_src.cpp`                      |
-| Scalar_T64     | `fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_unpack_src.cpp`               |
-| SIMD           | `fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_unpack_src.cpp` |
-| Auto-Vectorized| `fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_unpack_src.cpp`                      |
+In Data Lakes, there is a much reduced role for database design, as there are no database administrators and
+applications often emerge after data gets
+collected. This yields many situations where data ends up being stored in sub-optimal formats. Simple examples are using
+string datatypes for
+data that is numeric or timestamp (and the majority of data is string), a complex example is redundancy in data, e.g.,
+due to denormalization.
+We think that compression ratio is one area where file formats can be improved. Further, improved access speed can be
+obtained by letting data
+consumers operate on (partly) compressed data. This means that the API of the data format needs to be more flexible.
 
+ML workloads often have very wide tables with many features. These can sometimes be dense high-dimensional
+floating-point vectors, and other times
+be very sparse, such that storing features in maps becomes attractive. Wide and sparse columns using maps and lists get
+to be more common.
+We also think the established (Data Lake) and new (ML) workloads can leverage modern hardware better. On the CPU side,
+it is critical to use SIMD instructions
+effectively. ML pipelines very often run on GPUs, which have less memory and much less cache memory than CPUs, and GPU
+cores are not efficient on
+complex and branchy codecs like general-purpose decompressors (LZ4, zstd). Note that GPUs and SIMD have a lot in common:
+both excel when there is
+(i) a lot of data-parallelism and (ii) absence of branch control-flow.
 
-Test each implementation by running: 
+Some key ideas in FastLanes:
 
-| Implementation | Command                                                                                                 |
-|----------------|---------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_unpack_test`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_unpack_test`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_unpack_test` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_unpack_test`                      |
+1. a layout design that is highly data-parallel. FastLanes on Intel CPUs can bit-unpack at 60 values per CPU cycle (per
+   core).
+2. separation between the logical table format the application expects, and a physical data format in which row-groups
+   get stored.
+3. cascading compression "expressions" that achieve very high compression ratios without having to use general-purpose
+   codecs.
+4. specific compression schemes for nested data (lists, structs, maps).
+5. efficient data-parallel predicate pushdown.
+6. read support for compressed vectors (batches), such as FOR-vectors, RLE-vectors, FSST-vectors and DICT-vectors.
 
+FastLanes is still in its early days, but we think we have an excellent foundation. It is open-source and would like to
+create a vibrant community around it.
 
-Benchmark each implementation by running:
+## Join Us on Discord
 
+[Join our Discord server!](https://discord.gg/u8wtVRh9)
 
-| Implementation | Command                                                                                                  |
-|----------------|----------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_unpack_bench`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_unpack_bench`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_unpack_bench` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_unpack_bench`                      |
+[![Discord](https://img.shields.io/discord/YOUR_SERVER_ID.svg?label=Join%20Us%20on%20Discord&logo=discord)](https://discord.gg/u8wtVRh9)
 
+## Publications :
 
----
-### Delta Coding
+1. [The FastLanes Compression Layout:Decoding >100 Billion Integers per Second with Scalar Code](https://www.vldb.org/pvldb/vol16/p2132-afroozeh.pdf)
+    - [source code]()
 
-Find the source file for each implementation at:
-
-| Implementation | Source File                                                                                            |
-|----------------|--------------------------------------------------------------------------------------------------------|
-| Scalar         | `fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_rsum_src.cpp`                      |
-| Scalar_T64     | `fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_rsum_src.cpp`               |
-| SIMD           | `fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_rsum_src.cpp` |
-| Auto-Vectorized| `fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_rsum_src.cpp`                      |
-
-
-Test each implementation by running:
-
-| Implementation | Command                                                                                               |
-|----------------|-------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_rsum_test`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_rsum_test`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_rsum_test` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_rsum_test`                      |
-
-
-Benchmark each implementation by running:
-
-
-| Implementation | Command                                                                                                |
-|----------------|--------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_rsum_bench`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_rsum_bench`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_rsum_bench` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_rsum_bench`                      |
-
-
-
----
-### FUSED FOR+Bitpack
-
-Find the source file for each implementation at:
-
-| Implementation | Source File                                                                                            |
-|----------------|--------------------------------------------------------------------------------------------------------|
-| Scalar         | `fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_ffor_src.cpp`                      |
-| Scalar_T64     | `fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_ffor_src.cpp`               |
-| SIMD           | `fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_ffor_src.cpp` |
-| Auto-Vectorized| `fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_ffor_src.cpp`                      |
-
-
-Test each implementation by running:
-
-| Implementation | Command                                                                                               |
-|----------------|-------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_ffor_test`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_ffor_test`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_ffor_test` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_ffor_test`                      |
-
-
-Benchmark each implementation by running:
-
-
-| Implementation | Command                                                                                                |
-|----------------|--------------------------------------------------------------------------------------------------------|
-| Scalar         | `./fls_generated/fallback/scalar_nav_uf1/fallback_scalar_nav_1024_uf1_ffor_bench`                      |
-| Scalar_T64     | `./fls_generated/fallback/unit64_nav_uf1/fallback_unit64_scalar_nav_1024_uf1_ffor_bench`               |
-| SIMD           | `./fls_generated/{Arch}/{Arch}_{extension}_intrinsic_uf1/{Arch}_{extension}_intrinsic_1024_uf1_ffor_bench` |
-| Auto-Vectorized| `./fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_ffor_bench`                      |
-
+    
 

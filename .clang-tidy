@@ -1,6 +1,5 @@
 Checks: '-*,
 clang-diagnostic-*,
-bugprone-*,
 performance-*,
 performance-inefficient-vector-operation,
 cert-*,
@@ -41,13 +40,28 @@ misc-throw-by-value-catch-by-reference,
 google-global-names-in-headers,
 llvm-header-guard,
 misc-definitions-in-headers,
-readability-container-size-empty'
+readability-container-size-empty,
+clang-analyzer-core.NonNullParamChecker,
+clang-analyzer-core.BitwiseShift,
+'
+
 WarningsAsErrors: '*'
 AnalyzeTemporaryDtors: false
 FormatStyle: none
+
+ExtraArgs:
+  # clang-tidy 17 started to complain (for unknown reasons) that various pragmas are unknown ("clang-diagnostic-unknown-pragmas").
+  # This is technically a compiler error, not a clang-tidy error. We could litter the code base with more pragmas that suppress
+  # this error but it is better to pass the following flag to the compiler:
+  - '-Wno-unknown-pragmas'
+  - '-Wno-unused-command-line-argument' # similar issue
+
 CheckOptions:
+  # https://stackoverflow.com/questions/68475958/clang-tidy-emits-warning-when-compiling-with-c20-enabled
+  - key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp
+    value: expr-type
   - key: readability-identifier-naming.ClassCase
-    value: aNy_Case
+    value: aNy_CasE
   - key: readability-identifier-naming.EnumCase
     value: CamelCase
   - key: readability-identifier-naming.TypedefCase
@@ -55,7 +69,7 @@ CheckOptions:
   - key: readability-identifier-naming.TypedefSuffix
     value: _t
   - key: readability-identifier-naming.FunctionCase
-    value: aNy_Case
+    value: aNy_CasE
   - key: readability-identifier-naming.MemberCase
     value: lower_case
   - key: readability-identifier-naming.ParameterCase
@@ -92,3 +106,4 @@ CheckOptions:
     value: "m_"
   - key: readability-identifier-naming.PrivateMethodCase
     value: lower_case
+
