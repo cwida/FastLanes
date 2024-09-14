@@ -1,0 +1,8 @@
+{
+  "columns": [
+    {
+      "name": "CONSTANT_INT",
+      "type": "integer"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+DATASET,TABLE,COL_IDX,EXP_ID,EXP_T/ENCODER_T,VAR_T/COMPRESSOR,SIZE,BPT
+public_bi,Romance,0,0,INVALID,INVALID,0,0.00
+public_bi,Romance,1,0,INVALID,INVALID,0,0.00
+public_bi,Romance,2,0,INVALID,INVALID,0,0.00
+public_bi,Romance,3,0,INVALID,INVALID,0,0.00
+public_bi,Romance,4,0,INVALID,INVALID,0,0.00
+public_bi,Romance,5,0,INVALID,INVALID,0,0.00
+public_bi,Romance,6,0,INVALID,INVALID,0,0.00
+public_bi,Romance,7,0,INVALID,INVALID,0,0.00
+public_bi,Romance,8,0,INVALID,INVALID,0,0.00
+public_bi,Romance,9,0,INVALID,INVALID,0,0.00
+public_bi,Romance,10,0,INVALID,INVALID,0,0.00

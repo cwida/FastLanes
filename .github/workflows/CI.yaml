@@ -1,0 +1,260 @@
+name: CI
+run-name: "${{ github.actor }} - ${{ github.event.head_commit.message }}"
+
+on: push
+
+jobs:
+  check-format:
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ ubuntu-latest ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: run-clang-format
+        run: python3 scripts/run-clang-format.py -r example include src benchmark test data/include --exclude include/fls/json/nlohmann
+
+  build:
+    needs:
+      - check-format
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-latest, macos-latest, president, windows-latest ]
+        build_type: [ Debug, Release ]
+        cxx: [ clang++ ]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make directory build
+        run: mkdir ${{github.workspace}}/build_${{ matrix.build_type }}
+
+      - name: Install LLVM on macos
+        if: matrix.platform == 'macos-latest'
+        run: |
+          brew install llvm
+
+      - name: Add LLVM to path on macos
+        if: matrix.platform == 'macos-latest'
+        run: |
+          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+          clang-tidy --version  
+
+      - name: Install Chocolatey
+        if: matrix.platform == 'windows-latest'
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force;
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+          iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+      - name: Install Ninja on Windows
+        if: matrix.platform == 'windows-latest'
+        run: choco install ninja -y
+
+      # Verify Ninja installation on all platforms
+      - name: Verify Ninja installation
+        if: matrix.platform == 'windows-latest'
+        run: ninja --version
+
+      - name: Install Clang (with clang++)
+        if: matrix.platform == 'windows-latest'
+        run: choco install llvm -y
+
+      - name: Verify Clang++ installation
+        if: matrix.platform == 'windows-latest'
+        run: clang++ --version && lld-link --version
+
+      - name: Configure CMake
+        if: matrix.platform != 'windows-latest'
+        run: |
+          cmake -S ${{github.workspace}} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -B ${{github.workspace}}/build_${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Configure CMake
+        if: matrix.platform == 'windows-latest'
+        run: |
+          cmake -S ${{github.workspace}} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -B ${{github.workspace}}/build_${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G "Ninja" -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu"
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build_${{ matrix.build_type }} -j 10
+
+  build-iwyu:
+    needs:
+      - build
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ president ]
+        build_type: [ Release, Debug ]
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make directory build
+        run: mkdir ${{github.workspace}}/build_iwyu_${{ matrix.build_type }}
+
+      - name: Configure CMake
+        run: cmake -S ${{github.workspace}} -DFLS_ENABLE_IWYU=ON  -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -B ${{github.workspace}}/build_iwyu_${{ matrix.build_type }}
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build_iwyu_${{ matrix.build_type }} -j 10
+
+  generate_dataset:
+    needs: [ build ]
+    if: success()
+
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ ubuntu-latest, macos-latest, president, windows-latest ]
+        python-version: [ 3.12.4 ]  # Python 3 versions
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}  # Set Python 3.x version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # Upgrade pip
+          pip install faker  # Install faker
+
+      - name: generate data
+        run: cd ${{github.workspace}}/scripts/; python3 generate_synthetic_data.py
+
+  example:
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ] # fixme, try windows-latest
+        build_type: [ Debug ]
+        cc: [ clang ]
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Make directory build
+        run: mkdir ${{github.workspace}}/build_${{ matrix.build_type }}
+
+      - name: Install LLVM on macos
+        if: matrix.platform == 'macos-latest'
+        run: |
+          brew install llvm
+
+      - name: Add LLVM to path on macos
+        if: matrix.platform == 'macos-latest'
+        run: |
+          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+          clang-tidy --version
+
+      - name: Install Chocolatey
+        if: matrix.platform == 'windows-latest'
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force;
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+          iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+      - name: Install Ninja on Windows
+        if: matrix.platform == 'windows-latest'
+        run: choco install ninja -y
+
+      # Verify Ninja installation on all platforms
+      - name: Verify Ninja installation
+        if: matrix.platform == 'windows-latest'
+        run: ninja --version
+
+      - name: Install Clang (with clang++)
+        if: matrix.platform == 'windows-latest'
+        run: choco install llvm -y
+
+      - name: Verify Clang++ installation
+        if: matrix.platform == 'windows-latest'
+        run: clang++ --version
+
+      - name: Configure CMake
+        if: matrix.platform != 'windows-latest'
+        run: |
+          cmake -S ${{github.workspace}} -DFLS_BUILD_EXAMPLE=ON -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -B ${{github.workspace}}/build_${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Configure CMake
+        if: matrix.platform == 'windows-latest'
+        run: |
+          cmake -S ${{github.workspace}} -DFLS_BUILD_EXAMPLE=ON -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -B ${{github.workspace}}/build_${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G "Ninja" -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu"
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build_${{ matrix.build_type }} -j 10
+
+      - name: run cpp_example
+        run: ${{github.workspace}}/build_${{ matrix.build_type }}/example/cpp_example
+
+  test:
+    needs:
+      - example
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ president ]
+        build_type: [ Release ] # TODO : ADD DEBUG
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Make directory build
+        run: mkdir ${{github.workspace}}/test_build_${{ matrix.build_type }}
+
+      - name: Configure CMake
+        run: cmake  -DFLS_BUILD_TESTING=ON -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{github.workspace}} -B ${{github.workspace}}/test_build_${{ matrix.build_type }}
+        env:
+          CXX: ${{ matrix.cxx }}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/test_build_${{ matrix.build_type }} -j 10
+
+      - name: Test
+        working-directory: ${{github.workspace}}/test_build_${{ matrix.build_type }}
+        run: ctest -j 10 --stop-on-failure --output-on-failure --timeout 5000
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+{
+  "columns": [
+    {
+      "name": "CONSTANT_INT",
+      "type": "integer"
+    },
+    {
+      "name": "CONSTANT_STR",
+      "type": "string"
+    },
+    {
+      "name": "EQUAL_GROUP_0_COL_0",
+      "type": "integer"
+    },
+    {
+      "name": "RANGE_0_1000",
+      "type": "integer"
+    },
+    {
+      "name": "NUMBER_AS_STRING",
+      "type": "string"
+    },
+    {
+      "name": "EQUAL_GROUP_0_COL_1",
+      "type": "integer"
+    },
+    {
+      "name": "EQUAL_GROUP_0_COL_2",
+      "type": "integer"
+    },
+    {
+      "name": "MAP1T1_GROUP_0_COL_0",
+      "type": "string"
+    },
+    {
+      "name": "MAP1T1_GROUP_0_COL_1",
+      "type": "integer"
+    }
+  ]
+}

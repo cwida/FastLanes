@@ -1,3 +1,4 @@
+.idea
 thirdparty/*.tar*
 CMakeFiles/
 CMakeCache.txt
@@ -31,7 +32,6 @@ tmp
 
 ######################################### from the fls_benchamrks integration
 .vagrant/
-compile_commands.json
 *.pdf
 plot/*.log
 plot/*.tex
@@ -69,3 +69,24 @@ plot/*.tex
 *.exe
 *.out
 *.app
+
+# System files
+/.run
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
+# Project related
+/paper/dataset_lib/__pycache__
+/_deps
+/.cmake
+*.ninja
+/test/local_result
+DartConfiguration.tcl
+paper/dataset_lib/compress_bi_py.db
+paper/dataset_lib/compress_bi_py.orc
+paper/dataset_lib/compress_bi_py.pq
+paper/dataset_lib/compress_bi_py.db
+paper/dataset_lib/compress_bi_py.orc
+DartConfiguration.tcl
