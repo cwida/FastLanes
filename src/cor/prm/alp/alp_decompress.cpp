@@ -1,9 +1,9 @@
+#include "alp.hpp"
 #include "fls/common/common.hpp"
 #include "fls/cor/eng/decompressor.hpp"
 #include "fls/cor/lyt/page/page.hpp"
 #include "fls/cor/lyt/vec.hpp"
 #include "fls/cor/prm/alp_prm.hpp"
-#include "fls/primitive/alp/alp.hpp"
 #include "fls/primitive/unffor/unffor.hpp"
 
 namespace fastlanes {
@@ -29,8 +29,8 @@ static void alp_decompress(PageParam src, VecParam des, DecompressState& stt) {
 	auto    alp_mtd = alp_mtd_arr[0];
 
 	generated::unffor::fallback::scalar::unffor(ffor_arr, unffor_arr, alp_mtd.bw, base_arr);
-	alp::decode(reinterpret_cast<uint64_t*>(unffor_arr), alp_mtd.fac, alp_mtd.exp, dec_dbl_arr);
-	alp::patch(dec_dbl_arr, exc_arr, pos_arr, exc_c_arr);
+	alp::decoder<double>::decode(unffor_arr, alp_mtd.fac, alp_mtd.exp, dec_dbl_arr);
+	alp::decoder<double>::patch_exceptions(dec_dbl_arr, exc_arr, pos_arr, exc_c_arr);
 
 	stt.cur_src_arr -= 6;
 }

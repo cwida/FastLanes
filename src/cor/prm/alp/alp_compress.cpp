@@ -1,17 +1,17 @@
+#include "alp.hpp"
 #include "fls/cor/eng/analyzer.hpp"
 #include "fls/cor/eng/compressor.hpp"
 #include "fls/cor/eng/engine.hpp"
 #include "fls/cor/lyt/vec.hpp"
 #include "fls/cor/prm/alp_prm.hpp"
 #include "fls/cor/prm/ffor_prm.hpp"
-#include "fls/primitive/alp/alp.hpp"
 #include "fls/primitive/ffor/ffor.hpp"
 
 namespace fastlanes {
 static void alp_compress(Vec& src_vec, Vec& des_vec, CompressState& stt) {
 
 	auto* dbl_arr = reinterpret_cast<dbl_pt*>(src_vec.buf_arr[stt.cur_src_buff].mutable_data());
-	auto& alp_stt = *stt.eng_state.analyze_state_up->alp_state_up;
+	auto& alp_stt = *stt.eng_state.analyze_state_up->alp_dbl_state_up;
 
 	auto* exc_arr   = reinterpret_cast<dbl_pt*>(des_vec.buf_arr[stt.cur_des_buff + 0].mutable_data());
 	auto* pos_arr   = reinterpret_cast<uint16_t*>(des_vec.buf_arr[stt.cur_des_buff + 1].mutable_data());
@@ -21,8 +21,8 @@ static void alp_compress(Vec& src_vec, Vec& des_vec, CompressState& stt) {
 
 	uint8_t bw = 0;
 	int64_t tmp_dig_arr[vec_sz()]; // TODO BUFFER_POOl
-	alp::encode_simdized_combined(dbl_arr, exc_arr, pos_arr, exc_c_arr, tmp_dig_arr, alp_stt);
-	alp::analyze_ffor(tmp_dig_arr, &bw, base_arr);
+	alp::encoder<double>::encode(dbl_arr, exc_arr, pos_arr, exc_c_arr, tmp_dig_arr, alp_stt);
+	alp::encoder<double>::analyze_ffor(tmp_dig_arr, bw, base_arr);
 	generated::ffor::fallback::scalar::ffor(tmp_dig_arr, ffor_arr, bw, base_arr);
 
 	auto      exc_c = exc_c_arr[0];

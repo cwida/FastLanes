@@ -1,4 +1,5 @@
 #include "fls/cor/eng/analyzer.hpp"
+#include "alp.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/str.hpp"
 #include "fls/cor/eng/sampler.hpp"
@@ -8,7 +9,6 @@
 #include "fls/cor/prm/fsst/libfsst.hpp"
 #include "fls/cor/prm/fsst12/libfsst12.hpp"
 #include "fls/encoder/col_encoder.hpp"
-#include "fls/primitive/alp/alp.hpp"
 
 namespace fastlanes {
 template <typename PT>
@@ -129,9 +129,8 @@ void Analyzer<PT>::Analyze(const PT* data_p, n_t n, AnalyzeState& stt) {
 			return;
 		}
 		case ExpT::ALP: {
-			// TODO: Fix it.
-			auto* smp_arr = new double[SMP_C];
-			alp::sampler::rowgroup::rowgroup_init(data_p, 0, n, smp_arr, *stt.alp_state_up);
+			auto* smp_arr = new double[1024];
+			alp::encoder<double>::init(data_p, 0, n, smp_arr, *stt.alp_dbl_state_up);
 			delete[] smp_arr;
 			return;
 		}
@@ -173,8 +172,8 @@ AnalyzeState::AnalyzeState(EngineState& eng_state)
     : eng_state(eng_state)
     , fsst_encoder {nullptr}
     , fsst12_encoder {nullptr} {
-	sample_state_up = std::make_unique<SampleState>();
-	alp_state_up    = std::make_unique<alp::state>();
+	sample_state_up  = std::make_unique<SampleState>();
+	alp_dbl_state_up = std::make_unique<alp::state<double>>();
 }
 
 void AnalyzeState::Set(uint8_t exp_t, uint8_t var_t) {
