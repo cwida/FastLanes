@@ -21,4 +21,6 @@ void Materializer<PT>::Materialize(const Vec& vec) {
 }
 
 template class Materializer<i64_pt>;
+template class Materializer<dbl_pt>;
+
 } // namespace fastlanes

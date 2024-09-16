@@ -60,6 +60,7 @@ void Decompressor<T>::InitDict(const uint8_t* p, DecompressState& stt) {
 	case ExpT::BYTE_ARR:
 	case ExpT::FFOR:
 	case ExpT::DELTA:
+	case ExpT::ALP:
 	case ExpT::RLE: {
 		this->vec.dict_up = nullptr;
 		return;

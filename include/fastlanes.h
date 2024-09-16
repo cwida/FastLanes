@@ -33,11 +33,17 @@ enum data_t : uint8_t {
 	FALLBACK   = 18,
 };
 
-// encoding expression type
-enum expression_encoding_t : uint8_t {
-	UNCOMPRESSED   = 0,
-	FFOR_NO_PATCH  = 1,
-	DELTA_NO_PATCH = 11,
+// i64_t encoding expression type
+enum i64_expr_encoding_t : uint8_t {
+	I64_UNCOMPRESSED   = 0,
+	I64_FFOR_NO_PATCH  = 1,
+	I64_DELTA_NO_PATCH = 11,
+};
+
+// double encoding expression type
+enum dbl_expr_encoding_t : uint8_t {
+	DBL_UNCOMPRESSED = 0,
+	DBL_ALP          = 1,
 };
 
 // Opaque pointer type for Connection
@@ -69,8 +75,8 @@ bool encode_from_memory(void*     in_data,             // pointer to data.
                         uint8_t*  out_encoded_data,    // pointer to where the encoded data should be written.
                         uint64_t* out_encoded_size,    // encoded size.
                         uint64_t* out_metadadata_size, // metadata size, metadata starts from out_encoded_data pointer.
-                        enum data_t                in_datatype,
-                        enum expression_encoding_t in_expression_type);
+                        enum data_t in_datatype,
+                        uint8_t     in_expression_type);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * decode

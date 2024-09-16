@@ -19,6 +19,14 @@ void SingleColEncoder::encode() const {
 		res = i64_encoder.encode_span(span, expression);
 
 	} break;
+	case DataType::DOUBLE: {
+		ExpColEncoder<double> double_encoder(false);
+		const auto            expression = ExpPool<double>::get_expression(m_exp_id);
+		const auto            span       = IO::read<double>(m_input_io);
+
+		res = double_encoder.encode_span(span, expression);
+
+	} break;
 	case DataType::INVALID:
 	default:
 		throw std::runtime_error("Invalid data type");

@@ -57,6 +57,7 @@ span<PT> IO::read(const io& io) {
 }
 
 template span<i64_pt>    IO::read(const io& io);
+template span<dbl_pt>    IO::read(const io& io);
 template span<std::byte> IO::read(const io& io);
 
 } // namespace fastlanes

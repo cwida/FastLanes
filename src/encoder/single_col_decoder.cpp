@@ -22,6 +22,13 @@ void SingleColDecoder::full_decode() const {
 		exp_i64_decoder.full_decode(encoded_span, output_span);
 
 	} break;
+	case DataType::DOUBLE: {
+		ExpColDecoder<double> expr_double_decoder;
+		const auto            encoded_span = IO::read<std::byte>(m_encoded_io);
+		const auto            output_span  = IO::read<double>(m_output_io);
+		expr_double_decoder.full_decode(encoded_span, output_span);
+
+	} break;
 	case DataType::INVALID:
 	default:
 		throw std::runtime_error("Invalid data type");
