@@ -18,10 +18,6 @@ endif ()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Winconsistent-missing-override -Wshadow -Wconversion -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual -Wshorten-64-to-32")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wshadow -Wconversion")
 
-if ("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86")
-    #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")  # FSST
-endif ()
-
 #-----------------------------------------------------------------------------------------------------------------------
 include(FetchContent)
 include(CheckCXXCompilerFlag)
