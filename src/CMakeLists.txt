@@ -34,7 +34,7 @@ if (FLS_ENABLE_TABLE_LOG)
 endif ()
 
 
-target_link_libraries(fastlanes PUBLIC primitives)
+target_link_libraries(fastlanes PUBLIC primitives ALP)
 
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
     target_compile_options(fastlanes PRIVATE -march=native)

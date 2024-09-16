@@ -6,6 +6,7 @@
 #include "fls/cor/lyt/buf.hpp"
 
 namespace alp {
+template <typename PT>
 struct state;
 }
 
@@ -38,7 +39,7 @@ public:
 	Buf     compressed_data_buf; //
 	Buf     compressed_offs_buf; //
 	/* ALP */
-	up<alp::state> alp_state_up; //
+	up<alp::state<double>> alp_dbl_state_up; //
 	/* FSST */
 	void* fsst_encoder; //
 	/* FSST12 */

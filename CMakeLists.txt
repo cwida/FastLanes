@@ -28,7 +28,7 @@ include(CTest)
 
 # Options : ------------------------------------------------------------------------------------------------------------
 option(FLS_BUILD_FLS "Build FLS" ON)
-option(FLS_BUILD_ALP "Build ALP" OFF)
+option(FLS_BUILD_ALP "Build ALP" ON)
 option(FLS_BUILD_TESTING "Build Test" OFF)
 option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLE "Build Example" OFF)
@@ -38,6 +38,24 @@ option(FLS_ENABLE_CLANG_TIDY "Enable clang_tidy on all targets" ON)
 option(FLS_ENABLE_IWYU "Enable include-what-you-use tool" OFF)
 option(FLS_ENABLE_DOC "Enable Doc build" OFF)
 option(FLS_ENABLE_TABLE_LOG "Enable Table Log" OFF)
+
+
+# ALP: ---------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_ALP)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Build ALP.")
+
+    FetchContent_Declare(
+            alp_repo
+            GIT_REPOSITORY https://github.com/cwida/ALP.git
+            GIT_TAG main #
+    )
+
+    FetchContent_MakeAvailable(alp_repo)
+    include_directories(${alp_repo_SOURCE_DIR}/include)
+
+endif ()
+
 
 # GTEST : ------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_TESTING OR FLS_BUILD_GPU)
@@ -60,13 +78,6 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_GPU)
     set_target_properties(gtest_main PROPERTIES CXX_CLANG_TIDY "")
     set_target_properties(gmock PROPERTIES CXX_CLANG_TIDY "")
     set_target_properties(gmock_main PROPERTIES CXX_CLANG_TIDY "")
-endif ()
-
-
-# ALP: ---------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_ALP)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("-- FLS: Build ALP.")
 endif ()
 
 # DATA : ---------------------------------------------------------------------------------------------------------------
