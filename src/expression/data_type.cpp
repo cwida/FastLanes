@@ -7,7 +7,9 @@ uint64_t SizeOf(const DataType datatype) {
 	switch (datatype) {
 	case DataType::INT64:
 		return sizeof(i64_pt);
-	default:;
+	case DataType::DOUBLE:
+		return sizeof(double);
+	default:
 		FLS_IMPLEMENT_THIS()
 	}
 }

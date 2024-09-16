@@ -26,4 +26,6 @@ void ExpColDecoder<PT>::full_decode(span<std::byte> input_data, span<PT> output_
 }
 
 template class ExpColDecoder<i64_pt>;
+template class ExpColDecoder<dbl_pt>;
+
 } // namespace fastlanes

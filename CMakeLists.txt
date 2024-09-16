@@ -32,6 +32,7 @@ include(CTest)
 
 # Options : ------------------------------------------------------------------------------------------------------------
 option(FLS_BUILD_FLS "Build FLS" ON)
+option(FLS_BUILD_ALP "Build ALP" OFF)
 option(FLS_BUILD_TESTING "Build Test" OFF)
 option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLE "Build Example" OFF)
@@ -65,6 +66,12 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_GPU)
     set_target_properties(gmock_main PROPERTIES CXX_CLANG_TIDY "")
 endif ()
 
+
+# ALP: ---------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_ALP)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Build ALP.")
+endif ()
 
 # DATA : ---------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLE)
