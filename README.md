@@ -48,9 +48,9 @@ create a vibrant community around it.
 
 ## Join Us on Discord
 
-[Join our Discord server!](https://discord.gg/u8wtVRh9)
+Come chat with us, discuss FastLanes, and contribute to the future of data formats!
 
-[![Discord](https://img.shields.io/discord/YOUR_SERVER_ID.svg?label=Join%20Us%20on%20Discord&logo=discord)](https://discord.gg/u8wtVRh9)
+[![Join Our Discord](https://img.shields.io/discord/1282716959099588651?label=Join%20Us%20on%20Discord&logo=discord&color=7289da)](https://discord.gg/SpTHkCQ7uh)
 
 ## Publications :
 
