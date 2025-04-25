@@ -4,11 +4,13 @@
 namespace fastlanes {
 Exp::Exp(enum ExpT exp_t, uint8_t var_t)
     : variant {var_t}
-    , exp_t {exp_t} {}
+    , exp_t {exp_t} {
+}
 
 template <typename T>
 TExp<T>::TExp(enum ExpT exp_t, uint8_t variant)
-    : Exp(exp_t, variant) {}
+    : Exp(exp_t, variant) {
+}
 
 template <typename T>
 PageHdr TExp<T>::page_hdr() {

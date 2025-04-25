@@ -11,7 +11,8 @@
 
 namespace fastlanes {
 template <typename T>
-static void b_ffor_decompress(PageParam src, VecParam des, DecompressState& stt) {}
+static void b_ffor_decompress(PageParam src, VecParam des, DecompressState& stt) {
+}
 
 template <typename T>
 de_cmpr_fun_t b_ffor_prm::ResolveDecompressFunc() {

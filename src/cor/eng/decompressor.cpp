@@ -12,10 +12,12 @@
 namespace fastlanes {
 template <typename T>
 Decompressor<T>::Decompressor()
-    : m_exe_up {std::make_unique<Exe<T>>()} {}
+    : m_exe_up {std::make_unique<Exe<T>>()} {
+}
 
 template <typename T>
-void Decompressor<T>::Decompress(Vec& des) {}
+void Decompressor<T>::Decompress(Vec& des) {
+}
 
 template <typename T>
 void Decompressor<T>::Init(const uint8_t* p) {

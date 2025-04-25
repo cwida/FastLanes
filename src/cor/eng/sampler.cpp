@@ -47,7 +47,8 @@ void SampleString(const PT* data_p, n_t n, SampleState& sample_state) {
 }
 
 template <typename PT>
-void SampleArithmetic(const PT* data_p, n_t c, SampleState& sample_state) {}
+void SampleArithmetic(const PT* data_p, n_t c, SampleState& sample_state) {
+}
 
 template <typename T>
 Sampler<T>::Sampler() = default;
@@ -62,7 +63,8 @@ void Sampler<PT>::Sample(const PT* data_p, n_t c, SampleState& sample_state) {
 }
 
 template <typename PT>
-void Sampler<PT>::AdaptiveSample(const PT* data_p, n_t m, SampleState& sample_state) {}
+void Sampler<PT>::AdaptiveSample(const PT* data_p, n_t m, SampleState& sample_state) {
+}
 
 /*---------------------------------------------------------------------------------------------------------------------\
  * Specialization

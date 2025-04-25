@@ -18,7 +18,8 @@ static constexpr uint64_t VEC_SZ = 1024ULL * 1024;
 Vec::Vec()
     : buf_arr {Buf(VEC_SZ), Buf(VEC_SZ), Buf(VEC_SZ), Buf(VEC_SZ), Buf(VEC_SZ), Buf(VEC_SZ)}
     , arr_c {0}
-    , tup_c {0} {}
+    , tup_c {0} {
+}
 
 void Vec::Reset() {
 	for (auto& buff : buf_arr) {
@@ -312,7 +313,9 @@ void Vec::Log() {
 	// FLS_PRINT_4MSG("tup_c: ", std::to_string(tup_c), "arr_c", std::to_string(arr_c))
 }
 
-VecParam Vec::vec_param() { return {buf_arr[0].mutable_data(), buf_arr[1].mutable_data(), buf_arr[2].mutable_data()}; }
+VecParam Vec::vec_param() {
+	return {buf_arr[0].mutable_data(), buf_arr[1].mutable_data(), buf_arr[2].mutable_data()};
+}
 
 template <typename T>
 void Vec::flatten_to(T* out_arr) {

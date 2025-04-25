@@ -26,5 +26,7 @@ n_t OffArr::ttl_sz() {
 	FLS_ASSERT_CORRECT_SZ(m_arr_c)
 	return m_arr_c * CFG::PG::OFFSET_SZ;
 }
-n_t OffArr::arr_c() { return m_arr_c; }
+n_t OffArr::arr_c() {
+	return m_arr_c;
+}
 } // namespace fastlanes

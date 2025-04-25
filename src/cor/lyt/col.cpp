@@ -24,7 +24,8 @@ T* Col<T>::operator[](n_t i) {
 }
 
 template <typename T>
-void Col<T>::Share(T* data, n_t c) {}
+void Col<T>::Share(T* data, n_t c) {
+}
 
 template <typename T>
 void Col<T>::Insert(T* data, n_t c) {

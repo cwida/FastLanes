@@ -12,7 +12,8 @@
 
 namespace fastlanes {
 Page::Page()
-    : m_ttl_sz {0} {}
+    : m_ttl_sz {0} {
+}
 
 void Page::Reset() {
 	for (auto& buf : buf_arr) {
@@ -86,7 +87,9 @@ void Page::InitDecompress(const uint8_t* p, const sp<Exp>& exp_up) {
 	FLS_PLOG_KEY_VALUE("pg", ToStr::to_str(*this));
 }
 
-PageHdr Page::hdr() { return pg_hdr; }
+PageHdr Page::hdr() {
+	return pg_hdr;
+}
 
 void Page::Absorb(Vec& vec) {
 	if (vec_c() >= 1) {
@@ -115,9 +118,13 @@ void Page::Absorb(Vec& vec) {
 	vec.Reset();
 }
 
-void Page::vec_c_inc() { pg_hdr.vec_c++; }
+void Page::vec_c_inc() {
+	pg_hdr.vec_c++;
+}
 
-uint16_t Page::vec_c() { return pg_hdr.vec_c; }
+uint16_t Page::vec_c() {
+	return pg_hdr.vec_c;
+}
 
 void Page::OffsetToSink(Buf& sink) {
 	/* First one

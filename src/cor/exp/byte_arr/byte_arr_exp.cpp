@@ -3,7 +3,8 @@
 namespace fastlanes {
 template <typename T>
 byte_arr::Exp<T>::Exp(ExpT exp_t, uint8_t variant)
-    : fastlanes::TExp<T>(exp_t, variant) {}
+    : fastlanes::TExp<T>(exp_t, variant) {
+}
 
 template <typename T>
 const RPN* byte_arr::Exp<T>::cmpr_rpn() {

@@ -23,13 +23,15 @@ Dic::Dic(AnalyzeState& stt)
     : data_buf {stt.data_buf}
     , offs_buf {stt.offs_buf}
     , compressed_data_buf {stt.compressed_data_buf}
-    , compressed_offs_buf {stt.compressed_offs_buf} {}
+    , compressed_offs_buf {stt.compressed_offs_buf} {
+}
 
 Dic::Dic(DecompressState& stt)
     : data_buf {stt.data_buf}
     , offs_buf {stt.offs_buf}
     , compressed_data_buf {stt.decompressed_data_buf}
-    , compressed_offs_buf {stt.decompressed_offs_buf} {}
+    , compressed_offs_buf {stt.decompressed_offs_buf} {
+}
 
 Dic::~Dic() = default;
 

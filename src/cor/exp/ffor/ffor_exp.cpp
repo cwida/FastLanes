@@ -4,7 +4,8 @@
 namespace fastlanes {
 template <typename T>
 ffor_exp::Exp<T>::Exp(ExpT exp_t, uint8_t variant)
-    : fastlanes::TExp<T>(exp_t, variant) {}
+    : fastlanes::TExp<T>(exp_t, variant) {
+}
 
 template <typename T>
 const RPN* ffor_exp::Exp<T>::cmpr_rpn() {

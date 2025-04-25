@@ -29,7 +29,8 @@ public:
 template <typename T>
 Seg<T>::Seg(count_t segment_sz)
     : fast_lanes::Seg<T> {segment_sz}
-    , exc_c {0} {}
+    , exc_c {0} {
+}
 
 template <typename T>
 void Seg<T>::Compress(std::byte* des, Scanner<T>& scanner) const {
@@ -186,6 +187,7 @@ void Seg<T>::ToRow(TxtTab& txt_tab) const {
 	txt_tab.EndOfRow();
 }
 template <typename T>
-void Seg<T>::Reset() {}
+void Seg<T>::Reset() {
+}
 }} // namespace fast_lanes::pfor
 #endif // FLS_EXP_PFOR_SEG_HPP

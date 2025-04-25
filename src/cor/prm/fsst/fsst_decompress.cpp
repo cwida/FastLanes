@@ -4,7 +4,8 @@
 #include "fls/cor/prm/fsst/fsst_prm.hpp"
 
 namespace fastlanes {
-static void fls_fsst_decompress(PageParam src, VecParam des, DecompressState& stt) {}
+static void fls_fsst_decompress(PageParam src, VecParam des, DecompressState& stt) {
+}
 
 template <typename T>
 de_cmpr_fun_t fsst_wrapper::ResolveDecompressFunc() {

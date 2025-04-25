@@ -16,11 +16,13 @@ std::ostream& operator<<(std::ostream& stream, const Expression& expression_hdr)
 }
 Expression::Expression()
     : var(0)
-    , exp(ExpT::INVALID) {}
+    , exp(ExpT::INVALID) {
+}
 
 Expression::Expression(const uint8_t var, const ExpT exp)
     : var(var)
-    , exp(exp) {}
+    , exp(exp) {
+}
 
 template <typename PT>
 scheme_pool_t ExpPool<PT>::get_pool() {

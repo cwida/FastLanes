@@ -3,7 +3,8 @@
 namespace fastlanes {
 template <typename T>
 uncompressed_exp::Exp<T>::Exp(ExpT exp_t, uint8_t variant)
-    : TExp<T>(exp_t, variant) {}
+    : TExp<T>(exp_t, variant) {
+}
 
 template <typename T>
 const RPN* uncompressed_exp::Exp<T>::cmpr_rpn() {

@@ -11,7 +11,8 @@ namespace fastlanes {
 SingleColDecoder::SingleColDecoder(const io& encoded_io, io& output_io, const DataType& data_type)
     : m_encoded_io(encoded_io)
     , m_output_io(output_io)
-    , m_data_type(data_type) {}
+    , m_data_type(data_type) {
+}
 
 void SingleColDecoder::full_decode() const {
 	switch (m_data_type) {

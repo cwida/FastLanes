@@ -10,10 +10,15 @@ void PageHdr::Load(const uint8_t* p) {
 	*this = *reinterpret_cast<const PageHdr*>(p);
 }
 
-uint32_t PageHdr::Serialize() { return 0; }
+uint32_t PageHdr::Serialize() {
+	return 0;
+}
 
-void PageHdr::AddCompressedArrBitMap() {}
-void PageHdr::Reset() { vec_c = 0; }
+void PageHdr::AddCompressedArrBitMap() {
+}
+void PageHdr::Reset() {
+	vec_c = 0;
+}
 
 /*---------------------------------------------------------------------------------------------------------------------\
  * Static Assert:

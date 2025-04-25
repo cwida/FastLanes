@@ -7,7 +7,8 @@
 
 namespace fastlanes {
 template <typename T>
-static void ffor_compress(Vec& src_vec, Vec& des_vec, CompressState& stt) {}
+static void ffor_compress(Vec& src_vec, Vec& des_vec, CompressState& stt) {
+}
 
 template <typename T>
 cmpr_fun_t b_ffor_prm::ResolveCompressFunc() {

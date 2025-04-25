@@ -26,7 +26,9 @@ public: /* Constructors */
 
 public:
 	///
-	[[nodiscard]] const ColumnDescriptors& GetColumnDescriptors() const { return m_column_descriptors; }
+	[[nodiscard]] const ColumnDescriptors& GetColumnDescriptors() const {
+		return m_column_descriptors;
+	}
 	///
 	void AddCol(const ColumnDescriptor& col);
 	///

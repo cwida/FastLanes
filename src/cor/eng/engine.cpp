@@ -73,5 +73,7 @@ EngineState::EngineState() {
 	compress_state_up = std::make_unique<CompressState>(*this);
 }
 
-void EngineState::Set(uint8_t exp_t, uint8_t var_t) { analyze_state_up->Set(exp_t, var_t); }
+void EngineState::Set(uint8_t exp_t, uint8_t var_t) {
+	analyze_state_up->Set(exp_t, var_t);
+}
 } // namespace fastlanes

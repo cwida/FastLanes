@@ -115,7 +115,8 @@ FLS_ALL_CTS(TCompressor)
 \---------------------------------------------------------------------------------------------------------------------*/
 CompressState::CompressState(EngineState& eng_state)
     : eng_state {eng_state}
-    , fsst_encoder {nullptr} {}
+    , fsst_encoder {nullptr} {
+}
 
 CompressState::~CompressState() {
 	if (fsst_encoder) {

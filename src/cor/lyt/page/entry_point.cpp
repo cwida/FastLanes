@@ -53,7 +53,9 @@ void EpArr::InitCompress(Page& page) {
 	}
 }
 
-n_t  EpArr::sz() { return m_arr_c * CFG::PG::ENTRY_POINT_SZ; }
+n_t EpArr::sz() {
+	return m_arr_c * CFG::PG::ENTRY_POINT_SZ;
+}
 void EpArr::Reset() {
 	m_vec_num = 0;
 	m_vec_c   = 0;

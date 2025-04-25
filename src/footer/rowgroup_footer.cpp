@@ -110,7 +110,9 @@ vector<DataType> Footer::GetDataTypes() const {
 	return column_data_types;
 }
 
-n_t Footer::GetNVectors() const { return m_n_vec; }
+n_t Footer::GetNVectors() const {
+	return m_n_vec;
+}
 
 void set_index(ColumnDescriptors& column_descriptors) {
 	for (n_t col_idx = 0; col_idx < column_descriptors.size(); ++col_idx) {
@@ -141,8 +143,12 @@ up<Footer> make_footer(const path& dir_path) {
 	return make_unique<Footer>(rowgroup_footer);
 }
 
-ColumnDescriptor& Footer::operator[](const n_t idx) { return m_column_descriptors[idx]; }
+ColumnDescriptor& Footer::operator[](const n_t idx) {
+	return m_column_descriptors[idx];
+}
 
-n_t Footer::size() const { return m_column_descriptors.size(); }
+n_t Footer::size() const {
+	return m_column_descriptors.size();
+}
 
 } // namespace fastlanes

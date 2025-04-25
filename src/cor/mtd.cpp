@@ -8,7 +8,8 @@ Mtd<T>::Mtd(n_t cap)
     , size {0}
     , compressed_sz {0}
     , min_max {}
-    , histogram {} {}
+    , histogram {} {
+}
 
 template <typename T>
 n_t Mtd<T>::Count() const {

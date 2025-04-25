@@ -6,7 +6,8 @@ SingleColEncoder::SingleColEncoder(const io& input_io, io& encoded_io, const Dat
     : m_input_io(input_io)
     , m_encoded_io(encoded_io)
     , m_data_type(data_type)
-    , m_exp_id(exp_id) {}
+    , m_exp_id(exp_id) {
+}
 
 void SingleColEncoder::encode() const {
 	ExpEncodedCol res;

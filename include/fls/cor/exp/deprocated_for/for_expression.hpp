@@ -58,11 +58,14 @@ public:
 	explicit SegMD(const size_t segment_sz)
 	    : BaseSegMD<T> {segment_sz}
 	    , header {VERSION, 0, 0, 0, 0} {};
-	virtual ~SegMD() {}
+	virtual ~SegMD() {
+	}
 
 public:
 	void  ToSvg(std::ostream& out) const override;
-	void* GetHeader() override { return &header; }
+	void* GetHeader() override {
+		return &header;
+	}
 
 public:
 	Header header;

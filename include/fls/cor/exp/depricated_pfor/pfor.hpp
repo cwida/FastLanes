@@ -15,7 +15,9 @@ struct Setting {
 	uint64_t bit_c; /**/
 	T        base;  /**/
 	uint64_t exc_c; /**/
-	byte_c   Size(count_t c) { return byte_c {(c * bit_c / CHAR_BIT) + exc_c * sizeof(T)}; }
+	byte_c   Size(count_t c) {
+        return byte_c {(c * bit_c / CHAR_BIT) + exc_c * sizeof(T)};
+	}
 };
 
 template <typename T>
