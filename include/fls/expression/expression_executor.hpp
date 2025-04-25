@@ -10,11 +10,11 @@ class PhysicalExpr;
 class ExprExecutor {
 public:
 	//
-	static n_t CountOperator(PhysicalExpr& expr);
+	static void CountOperator(PhysicalExpr& expr);
 	//
 	static void execute(PhysicalExpr& expr, n_t vec_idx);
 	//
-	static void execute(PhysicalExpr& expr, n_t n_operators, n_t vec_idx);
+	static void smart_execute(PhysicalExpr& expr, n_t vec_idx);
 	//
 	ExprExecutor() = default;
 };

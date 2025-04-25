@@ -4,6 +4,7 @@
 namespace fastlanes {
 
 Vector::Vector(const fls_vec& vector)
-    : internal_vector(vector) {}
+    : internal_vector(vector) {
+}
 
 } // namespace fastlanes

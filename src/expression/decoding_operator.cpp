@@ -53,7 +53,8 @@ template struct dec_unffor_opr<u08_pt>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 dec_uncompressed_opr<PT>::dec_uncompressed_opr(const ColumnView& column_view, const n_t segment_idx)
-    : data_segment(column_view.GetSegment(segment_idx)) {}
+    : data_segment(column_view.GetSegment(segment_idx)) {
+}
 
 template <typename PT>
 void dec_uncompressed_opr<PT>::PointTo(const n_t vec_n) {
@@ -118,9 +119,13 @@ void dec_fls_str_uncompressed_opr::PointTo(n_t vec_idx) {
 	length_segment.PointTo(vec_idx);
 }
 
-std::byte* dec_fls_str_uncompressed_opr::Data() const { return byte_arr_segment.data; }
+std::byte* dec_fls_str_uncompressed_opr::Data() const {
+	return byte_arr_segment.data;
+}
 
-len_t* dec_fls_str_uncompressed_opr::Length() const { return reinterpret_cast<len_t*>(length_segment.data); }
+len_t* dec_fls_str_uncompressed_opr::Length() const {
+	return reinterpret_cast<len_t*>(length_segment.data);
+}
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_struct_opr

@@ -26,14 +26,17 @@ struct point_to_visitor {
 	    : vec_idx(vec_n) {};
 
 	//
-	void operator()(const sp<PhysicalExpr>& opr) {}
+	void operator()(const sp<PhysicalExpr>& opr) {
+	}
 
 	// encoding
 	template <typename PT>
 	void operator()(const sp<enc_uncompressed_opr<PT>>& opr) {
 		opr->PointTo(vec_idx);
 	}
-	void operator()(const sp<enc_fls_str_uncompressed_op>& opr) { opr->PointTo(vec_idx); }
+	void operator()(const sp<enc_fls_str_uncompressed_op>& opr) {
+		opr->PointTo(vec_idx);
+	}
 	void operator()(const sp<enc_struct_opr>& opr) {
 		for (const auto& child_opr : opr->internal_exprs) {
 			child_opr->PointTo(vec_idx);
@@ -46,7 +49,8 @@ struct point_to_visitor {
 	}
 
 	template <typename PT>
-	void operator()(const sp<enc_ffor_opr<PT>>& opr) {}
+	void operator()(const sp<enc_ffor_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
 	void operator()(const sp<enc_scan_opr<PT>>& opr) {
@@ -69,15 +73,19 @@ struct point_to_visitor {
 	}
 
 	template <typename PT>
-	void operator()(const sp<dec_constant_opr<PT>>& opr) {}
-	void operator()(const sp<dec_constant_str_opr>& opr) {}
+	void operator()(const sp<dec_constant_opr<PT>>& opr) {
+	}
+	void operator()(const sp<dec_constant_str_opr>& opr) {
+	}
 
 	void operator()(const sp<dec_struct_opr>& opr) {
 		for (const auto& child_opr : opr->internal_exprs) {
 			child_opr->PointTo(vec_idx);
 		}
 	}
-	void operator()(const sp<dec_fls_str_uncompressed_opr>& opr) { opr->PointTo(vec_idx); }
+	void operator()(const sp<dec_fls_str_uncompressed_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
 
 	template <typename PT>
 	void operator()(const sp<enc_alp_rd_opr<PT>>& opr) {
@@ -96,23 +104,39 @@ struct point_to_visitor {
 
 	// DICT
 	template <typename KEY_PT, typename INDEX_PT>
-	void operator()(const sp<dec_dict_opr<KEY_PT, INDEX_PT>>& opr) {}
+	void operator()(const sp<dec_dict_opr<KEY_PT, INDEX_PT>>& opr) {
+	}
 	template <typename KEY_PT>
-	void operator()(const sp<enc_dict_opr<KEY_PT>>& opr) {}
+	void operator()(const sp<enc_dict_opr<KEY_PT>>& opr) {
+	}
 
 	// FSST
-	void operator()(const sp<dec_fsst_opr>& opr) { opr->PointTo(vec_idx); }
-	void operator()(const sp<enc_fsst_opr>& opr) { opr->PointTo(vec_idx); }
-	void operator()(const sp<dec_fsst12_opr>& opr) { opr->PointTo(vec_idx); }
-	void operator()(const sp<enc_fsst12_opr>& opr) { opr->PointTo(vec_idx); }
+	void operator()(const sp<dec_fsst_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<enc_fsst_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<dec_fsst12_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<enc_fsst12_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
 	// DICT FSST
-	void operator()(const sp<enc_fsst_dict_opr>& opr) { opr->PointTo(vec_idx); }
-	void operator()(const sp<enc_fsst12_dict_opr>& opr) { opr->PointTo(vec_idx); }
+	void operator()(const sp<enc_fsst_dict_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<enc_fsst12_dict_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
 
 	template <typename INDEX_PT>
-	void operator()(const sp<dec_fsst_dict_opr<INDEX_PT>>& opr) {}
+	void operator()(const sp<dec_fsst_dict_opr<INDEX_PT>>& opr) {
+	}
 	template <typename INDEX_PT>
-	void operator()(const sp<dec_fsst12_dict_opr<INDEX_PT>>& opr) {}
+	void operator()(const sp<dec_fsst12_dict_opr<INDEX_PT>>& opr) {
+	}
 	// RLE
 	template <typename KEY_PT, typename INDEX_PT>
 	void operator()(const sp<enc_rle_map_opr<KEY_PT, INDEX_PT>>& opr) {
@@ -124,11 +148,13 @@ struct point_to_visitor {
 	}
 	// TRANSPOSE
 	template <typename PT>
-	void operator()(const sp<enc_transpose_opr<PT>>& opr) {}
+	void operator()(const sp<enc_transpose_opr<PT>>& opr) {
+	}
 
 	// RSUM
 	template <typename PT>
-	void operator()(const sp<enc_rsum_opr<PT>>& opr) {}
+	void operator()(const sp<enc_rsum_opr<PT>>& opr) {
+	}
 	template <typename PT>
 	void operator()(const sp<dec_rsum_opr<PT>>& opr) {
 		opr->PointTo(vec_idx);
@@ -145,10 +171,12 @@ struct point_to_visitor {
 	}
 	//
 	template <typename PT>
-	void operator()(const sp<dec_transpose_opr<PT>>& opr) {}
+	void operator()(const sp<dec_transpose_opr<PT>>& opr) {
+	}
 	// SLPATCH
 	template <typename PT>
-	void operator()(const sp<enc_slpatch_opr<PT>>& opr) {}
+	void operator()(const sp<enc_slpatch_opr<PT>>& opr) {
+	}
 	// SLPATCH
 	template <typename PT>
 	void operator()(const sp<dec_slpatch_opr<PT>>& opr) {
@@ -170,19 +198,31 @@ struct point_to_visitor {
 	void operator()(const sp<enc_frequency_opr<PT>>& opr) {
 		opr->PointTo(vec_idx);
 	}
-	void operator()(const sp<dec_frequency_str_opr>& opr) { opr->PointTo(vec_idx); }
-	void operator()(const sp<enc_frequency_str_opr>& opr) { opr->PointTo(vec_idx); }
+	void operator()(const sp<dec_frequency_str_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<enc_frequency_str_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
 	//
 	template <typename PT>
-	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {}
+	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
+	}
 	template <typename PT>
-	void operator()(const sp<dec_cross_rle_opr<PT>>& opr) {}
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) }
+	void operator()(const sp<dec_cross_rle_opr<PT>>& opr) {
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg)
+	}
 
 	const n_t vec_idx;
 };
 
 PhysicalExpr::~PhysicalExpr() = default;
+
+PhysicalExpr::PhysicalExpr()
+    : n_active_operators(0) {
+}
 
 void PhysicalExpr::PointTo(n_t vec_idx) const {
 	for (const auto& opr : operators) {
@@ -209,7 +249,8 @@ struct flush_segments_visitor {
 	}
 
 	template <typename PT>
-	void operator()(const sp<enc_scan_opr<PT>>& opr) {}
+	void operator()(const sp<enc_scan_opr<PT>>& opr) {
+	}
 
 	void operator()(const sp<enc_fls_str_uncompressed_op>& opr) {
 		segments.push_back(std::move(opr->data_segment));
@@ -224,7 +265,8 @@ struct flush_segments_visitor {
 	}
 
 	template <typename KEY_PT, typename INDEX_PT>
-	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {}
+	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {
+	}
 
 	// DICT
 	template <typename KEY_PT>
@@ -255,11 +297,19 @@ struct flush_segments_visitor {
 		}
 	}
 
-	void operator()(const sp<enc_fsst_opr>& opr) { opr->MoveSegments(segments); }
-	void operator()(const sp<enc_fsst12_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_fsst_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
+	void operator()(const sp<enc_fsst12_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 	// FSST DICT
-	void operator()(const sp<enc_fsst_dict_opr>& opr) { opr->MoveSegments(segments); }
-	void operator()(const sp<enc_fsst12_dict_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_fsst_dict_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
+	void operator()(const sp<enc_fsst12_dict_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 
 	template <typename KEY_PT, typename INDEX_PT>
 	void operator()(const sp<enc_rle_map_opr<KEY_PT, INDEX_PT>>& opr) {
@@ -267,7 +317,8 @@ struct flush_segments_visitor {
 	}
 
 	template <typename PT>
-	void operator()(const sp<enc_transpose_opr<PT>>& opr) {}
+	void operator()(const sp<enc_transpose_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
 	void operator()(const sp<enc_rsum_opr<PT>>& opr) {
@@ -290,17 +341,22 @@ struct flush_segments_visitor {
 		opr->MoveSegments(segments);
 	}
 
-	void operator()(const sp<enc_frequency_str_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_frequency_str_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
 		opr->MoveSegments(segments);
 	}
 
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) }
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg)
+	}
 
 	template <typename PT, bool USE_PATCHING>
-	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {}
+	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {
+	}
 
 	vector<up<Segment>>& segments;
 	Buf&                 buf;
@@ -339,7 +395,8 @@ struct extract_segments_visitor {
 	    : segments(a_segments) {};
 
 	template <typename PT>
-	void operator()(const sp<enc_scan_opr<PT>>& opr) {}
+	void operator()(const sp<enc_scan_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
 	void operator()(const sp<enc_uncompressed_opr<PT>>& opr) {
@@ -352,7 +409,8 @@ struct extract_segments_visitor {
 	}
 
 	template <typename KEY_PT, typename INDEX_PT>
-	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {}
+	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {
+	}
 
 	template <typename KEY_PT>
 	void operator()(const sp<enc_dict_opr<KEY_PT>>& opr) {
@@ -381,8 +439,12 @@ struct extract_segments_visitor {
 		FLS_UNREACHABLE()
 	}
 
-	void operator()(const sp<enc_fsst_opr>& opr) { opr->MoveSegments(segments); }
-	void operator()(const sp<enc_fsst12_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_fsst_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
+	void operator()(const sp<enc_fsst12_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 
 	void operator()(const sp<enc_struct_opr>& opr) {
 		for (const auto& op : opr->internal_exprs) {
@@ -393,8 +455,12 @@ struct extract_segments_visitor {
 	}
 
 	// DICT
-	void operator()(const sp<enc_fsst_dict_opr>& opr) { opr->MoveSegments(segments); }
-	void operator()(const sp<enc_fsst12_dict_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_fsst_dict_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
+	void operator()(const sp<enc_fsst12_dict_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 
 	// RLE
 	template <typename KEY_PT, typename INDEX_PT>
@@ -403,7 +469,8 @@ struct extract_segments_visitor {
 	}
 	// TRANSPOSE
 	template <typename PT>
-	void operator()(const sp<enc_transpose_opr<PT>>& opr) {}
+	void operator()(const sp<enc_transpose_opr<PT>>& opr) {
+	}
 	// RSUM
 	template <typename PT>
 	void operator()(const sp<enc_rsum_opr<PT>>& opr) {
@@ -411,7 +478,8 @@ struct extract_segments_visitor {
 	}
 	// TRANSPOSE
 	template <typename PT, bool USE_PATCHING>
-	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {}
+	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {
+	}
 	// SLPATCH
 	template <typename PT>
 	void operator()(const sp<enc_slpatch_opr<PT>>& opr) {
@@ -422,20 +490,26 @@ struct extract_segments_visitor {
 	void operator()(const sp<enc_frequency_opr<PT>>& opr) {
 		opr->MoveSegments(segments);
 	}
-	void operator()(const sp<enc_frequency_str_opr>& opr) { opr->MoveSegments(segments); }
+	void operator()(const sp<enc_frequency_str_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
 	// CROSS_RLE
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
 		opr->MoveSegments(segments);
 	}
 	//
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) }
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg)
+	}
 
 public:
 	vector<up<Segment>>& segments;
 };
 
-n_t ScaleDownTheSize(n_t segment_size, n_t sample_size, n_t n_vecs) { return (segment_size / n_vecs) * sample_size; }
+n_t ScaleDownTheSize(n_t segment_size, n_t sample_size, n_t n_vecs) {
+	return (segment_size / n_vecs) * sample_size;
+}
 
 n_t PhysicalExpr::Size(n_t sample_size, n_t n_vecs) const {
 	vector<up<Segment>> segments;
@@ -476,66 +550,92 @@ struct finalize_operators_visitor {
 	void operator()(const sp<enc_alp_rd_opr<PT>>& opr) {
 		opr->Finalize();
 	}
-	void operator()(const sp<enc_fsst_opr>& opr) { opr->Finalize(); }
-	void operator()(const sp<enc_fsst12_opr>& opr) { opr->Finalize(); }
+	void operator()(const sp<enc_fsst_opr>& opr) {
+		opr->Finalize();
+	}
+	void operator()(const sp<enc_fsst12_opr>& opr) {
+		opr->Finalize();
+	}
 
 	template <typename PT>
-	void operator()(const sp<enc_scan_opr<PT>>& opr) {}
+	void operator()(const sp<enc_scan_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
-	void operator()(const sp<enc_uncompressed_opr<PT>>& opr) {}
+	void operator()(const sp<enc_uncompressed_opr<PT>>& opr) {
+	}
 
-	void operator()(const sp<enc_fls_str_uncompressed_op>& opr) {}
+	void operator()(const sp<enc_fls_str_uncompressed_op>& opr) {
+	}
 
 	template <typename KEY_PT, typename INDEX_PT>
-	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {}
+	void operator()(const sp<enc_dict_map_opr<KEY_PT, INDEX_PT>>& opr) {
+	}
 
 	template <typename PT>
-	void operator()(const sp<enc_ffor_opr<PT>>& opr) {}
+	void operator()(const sp<enc_ffor_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
-	void operator()(const sp<enc_alp_opr<PT>>& opr) {}
+	void operator()(const sp<enc_alp_opr<PT>>& opr) {
+	}
 
 	template <typename PT>
-	void operator()(const sp<dec_uncompressed_opr<PT>>& opr) {}
+	void operator()(const sp<dec_uncompressed_opr<PT>>& opr) {
+	}
 
-	void operator()(const sp<enc_struct_opr>& opr) {}
+	void operator()(const sp<enc_struct_opr>& opr) {
+	}
 
 	// DICT FSST
-	void operator()(const sp<enc_fsst_dict_opr>& opr) { opr->Finalize(); }
-	void operator()(const sp<enc_fsst12_dict_opr>& opr) { opr->Finalize(); }
+	void operator()(const sp<enc_fsst_dict_opr>& opr) {
+		opr->Finalize();
+	}
+	void operator()(const sp<enc_fsst12_dict_opr>& opr) {
+		opr->Finalize();
+	}
 
 	template <typename KEY_PT, typename INDEX_PT>
-	void operator()(const sp<enc_rle_map_opr<KEY_PT, INDEX_PT>>& opr) {}
+	void operator()(const sp<enc_rle_map_opr<KEY_PT, INDEX_PT>>& opr) {
+	}
 	// TRANSPOSE
 	template <typename PT>
-	void operator()(const sp<enc_transpose_opr<PT>>& opr) {}
+	void operator()(const sp<enc_transpose_opr<PT>>& opr) {
+	}
 	// RSUM
 	template <typename PT>
-	void operator()(const sp<enc_rsum_opr<PT>>& opr) {}
+	void operator()(const sp<enc_rsum_opr<PT>>& opr) {
+	}
 	// ANALYZE
 	template <typename PT, bool USE_PATCHING>
-	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {}
+	void operator()(const sp<enc_analyze_opr<PT, USE_PATCHING>>& opr) {
+	}
 	// SLPATCH
 	template <typename PT>
-	void operator()(const sp<enc_slpatch_opr<PT>>& opr) {}
+	void operator()(const sp<enc_slpatch_opr<PT>>& opr) {
+	}
 	//
 	// SLPATCH
 	template <typename PT>
-	void operator()(const sp<enc_null_opr<PT>>& opr) {}
+	void operator()(const sp<enc_null_opr<PT>>& opr) {
+	}
 	//
 	template <typename PT>
 	void operator()(const sp<enc_frequency_opr<PT>>& opr) {
 		opr->Finalize();
 	}
-	void operator()(const sp<enc_frequency_str_opr>& opr) { opr->Finalize(); }
+	void operator()(const sp<enc_frequency_str_opr>& opr) {
+		opr->Finalize();
+	}
 	//
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
 		opr->Finalize();
 	}
 	//
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) }
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg)
+	}
 };
 
 void PhysicalExpr::Finalize() const {

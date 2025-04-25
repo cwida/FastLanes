@@ -1,7 +1,5 @@
 add_library(fls_fsst_prm
             OBJECT
-            fsst_decompress.cpp
-            fsst_compress.cpp
             fsst_prm.cpp
             libfsst.cpp
             fsst_avx512.cpp)

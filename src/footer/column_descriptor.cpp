@@ -18,6 +18,7 @@ ColumnDescriptor::ColumnDescriptor(const idx_t idx, string name, const DataType 
     , column_offset(0)
     , total_size(0)
     , n_null(0)
-    , fix_me_decimal_type() {}
+    , fix_me_decimal_type() {
+}
 
 } // namespace fastlanes

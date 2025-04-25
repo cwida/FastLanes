@@ -16,7 +16,9 @@ class LogicalExpr {
 public:
 	virtual ~LogicalExpr();
 	virtual void                 to_physical(PhysicalExpr& expr, Scanner& rowgroup) const;
-	[[nodiscard]] virtual string to_string() const { return "nothing"; };
+	[[nodiscard]] virtual string to_string() const {
+		return "nothing";
+	};
 };
 /*--------------------------------------------------------------------------------------------------------------------*\
  * InvalidExp
@@ -69,11 +71,14 @@ public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	BinaryExpr(EXPRESSION1 e1, EXPRESSION2 e2)
 	    : m_e1(make_unique<EXPRESSION1>(std::move(e1)))
-	    , m_e2(make_unique<EXPRESSION2>(std::move(e2))) {}
+	    , m_e2(make_unique<EXPRESSION2>(std::move(e2))) {
+	}
 	~BinaryExpr() override = default;
 
 public:
-	void to_physical(PhysicalExpr& expr, Scanner& scanner) const override { FLS_UNREACHABLE(); }
+	void to_physical(PhysicalExpr& expr, Scanner& scanner) const override {
+		FLS_UNREACHABLE();
+	}
 };
 /*--------------------------------------------------------------------------------------------------------------------*\
  * EQ
@@ -82,7 +87,8 @@ class EQ final : public BinaryExpr {
 public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	EQ(EXPRESSION1 e1, EXPRESSION2 e2)
-	    : BinaryExpr(e1, e2) {}
+	    : BinaryExpr(e1, e2) {
+	}
 	~EQ() override = default;
 
 public:
@@ -95,7 +101,8 @@ class GT final : public BinaryExpr {
 public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	GT(EXPRESSION1 e1, EXPRESSION2 e2)
-	    : BinaryExpr(e1, e2) {}
+	    : BinaryExpr(e1, e2) {
+	}
 	~GT() override = default;
 
 public:
@@ -108,7 +115,8 @@ class LT final : public BinaryExpr {
 public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	LT(EXPRESSION1 e1, EXPRESSION2 e2)
-	    : BinaryExpr(e1, e2) {}
+	    : BinaryExpr(e1, e2) {
+	}
 	~LT() override = default;
 
 public:
@@ -121,7 +129,8 @@ class AND final : public BinaryExpr {
 public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	AND(EXPRESSION1 e1, EXPRESSION2 e2)
-	    : BinaryExpr(e1, e2) {}
+	    : BinaryExpr(e1, e2) {
+	}
 	~AND() override = default;
 
 public:
@@ -134,7 +143,8 @@ class ConstantExp final : public BinaryExpr {
 public:
 	template <typename EXPRESSION1, typename EXPRESSION2>
 	ConstantExp(EXPRESSION1 e1, EXPRESSION2 e2)
-	    : BinaryExpr(e1, e2) {}
+	    : BinaryExpr(e1, e2) {
+	}
 	~ConstantExp() override = default;
 
 public:
@@ -149,7 +159,8 @@ public:
 	~HardcodedExpr() override = default;
 
 public:
-	void                 to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {}
+	void to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {
+	}
 	[[nodiscard]] string to_string() const override;
 };
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -161,7 +172,8 @@ public:
 	~EqualityExpr() override = default;
 
 public:
-	void                 to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {}
+	void to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {
+	}
 	[[nodiscard]] string to_string() const override;
 
 public:
@@ -177,7 +189,8 @@ public:
 	~Dict() override = default;
 
 public:
-	void                 to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {}
+	void to_physical(PhysicalExpr& expr, Scanner& rowgroup) const override {
+	}
 	[[nodiscard]] string to_string() const override;
 
 public:

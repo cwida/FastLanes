@@ -1,11 +1,9 @@
 #include "fls/table/rowgroup.hpp"
 #include "fls/common/magic_enum.hpp"
 #include "fls/common/string.hpp"
-#include "fls/cor/eng/decompressor.hpp"
 #include "fls/csv/csv-parser/parser.hpp"
-#include "fls/encoder/col_encoder.hpp"
 #include "fls/expression/data_type.hpp"
-#include "fls/footer/rowgroup_footer.hpp"
+#include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/json/nlohmann/json.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/table/attribute.hpp"
@@ -78,25 +76,25 @@ void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) 
 	}
 }
 
-Rowgroup::Rowgroup(const Footer& footer)
-    : m_footer(footer)
+Rowgroup::Rowgroup(const RowgroupDescriptor& footer)
+    : m_descriptor(footer)
     , n_tup(0) {
 	init_logial_columns(footer.GetColumnDescriptors(), internal_rowgroup);
 }
 
 DataType Rowgroup::GetDataType(const idx_t col_idx) const {
 	/**/
-	return m_footer[col_idx].data_type;
+	return m_descriptor[col_idx].data_type;
 }
 
-Footer& Rowgroup::GetFooter() {
+RowgroupDescriptor& Rowgroup::GetRowgroupDescriptor() {
 	/**/
-	return m_footer;
+	return m_descriptor;
 }
 
 up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs) {
 	/**/
-	auto  result = make_unique<Rowgroup>(*m_footer.Project(idxs));
+	auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs));
 	idx_t c      = {0};
 	for (const auto idx : idxs) {
 		result->internal_rowgroup[c++] = std::move(internal_rowgroup[idx]);
@@ -108,7 +106,7 @@ up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs) {
 up<Rowgroup> Rowgroup::Project(const vector<string>& col_names) {
 	vector<idx_t> idxs;
 	for (const auto& col_name : col_names) {
-		idxs.push_back(m_footer.LookUp(col_name));
+		idxs.push_back(m_descriptor.LookUp(col_name));
 	}
 
 	return Project(idxs);
@@ -122,7 +120,8 @@ struct get_statistics_visitor {
 	explicit get_statistics_visitor() = default;
 
 	template <typename PT>
-	void operator()(up<TypedCol<PT>>& typed_col) {}
+	void operator()(up<TypedCol<PT>>& typed_col) {
+	}
 
 	void operator()(up<FLSStrColumn>& str_col) {
 		auto& is_constant = str_col->m_stats.is_constant;
@@ -149,9 +148,12 @@ struct get_statistics_visitor {
 		//
 	}
 
-	void operator()(up<Struct>& str_col) const {}
+	void operator()(up<Struct>& str_col) const {
+	}
 
-	void operator()(auto& col) const { FLS_UNREACHABLE(); }
+	void operator()(auto& col) const {
+		FLS_UNREACHABLE();
+	}
 };
 
 void Rowgroup::GetStatistics() {
@@ -210,7 +212,9 @@ struct finalize_visitor {
 		}
 	}
 
-	void operator()(auto& col) const { FLS_UNREACHABLE(); }
+	void operator()(auto& col) const {
+		FLS_UNREACHABLE();
+	}
 };
 
 void Rowgroup::Finalize() {
@@ -224,7 +228,8 @@ void Rowgroup::Finalize() {
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct col_cast_visitor {
 	explicit col_cast_visitor(const ColumnDescriptor& column_descriptor)
-	    : column_descriptor(column_descriptor) {}
+	    : column_descriptor(column_descriptor) {
+	}
 
 	col_pt operator()(up<FLSStrColumn>& str_col) {
 		auto       casted_col = make_unique<TypedCol<i32_pt>>();
@@ -296,8 +301,12 @@ struct col_cast_visitor {
 		}
 	}
 
-	col_pt operator()(std::monostate&) { FLS_UNREACHABLE(); }
-	col_pt operator()(auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	col_pt operator()(std::monostate&) {
+		FLS_UNREACHABLE();
+	}
+	col_pt operator()(auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 
 	const ColumnDescriptor& column_descriptor;
 };
@@ -368,7 +377,7 @@ void cast(rowgroup_pt& rowgroup, ColumnDescriptor& column_descriptor) {
 	}
 }
 
-void cast_check(rowgroup_pt& rowgroup, Footer& footer) {
+void cast_check(rowgroup_pt& rowgroup, RowgroupDescriptor& footer) {
 	const auto n_col = rowgroup.size();
 
 	// brute_force
@@ -378,11 +387,13 @@ void cast_check(rowgroup_pt& rowgroup, Footer& footer) {
 	}
 }
 
-void Rowgroup::Cast() { cast_check(internal_rowgroup, m_footer); }
+void Rowgroup::Cast() {
+	cast_check(internal_rowgroup, m_descriptor);
+}
 
 void Rowgroup::Init() {
-	for (n_t col_idx {0}; col_idx < m_footer.size(); col_idx++) {
-		auto& column_descriptor = m_footer[col_idx];
+	for (n_t col_idx {0}; col_idx < m_descriptor.size(); col_idx++) {
+		auto& column_descriptor = m_descriptor[col_idx];
 		column_descriptor.idx   = col_idx;
 	}
 }
@@ -457,7 +468,9 @@ struct rowgroup_equality_visitor {
 		return true;
 	}
 
-	bool operator()(const auto& arg1, const auto& arg2) const { FLS_UNREACHABLE_WITH_TYPES(arg1, arg2) }
+	bool operator()(const auto& arg1, const auto& arg2) const {
+		FLS_UNREACHABLE_WITH_TYPES(arg1, arg2)
+	}
 };
 
 std::variant<bool, n_t> Rowgroup::operator==(const Rowgroup& other_rowgroup) const {
@@ -482,7 +495,7 @@ std::variant<bool, n_t> Rowgroup::operator==(const Rowgroup& other_rowgroup) con
 
 void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 
-	/*Infer Footer /TODO[FUTURE-WORK] */
+	/*Infer RowgroupDescriptor /TODO[FUTURE-WORK] */
 
 	// Parse
 	std::ifstream        csv_stream = FileSystem::open_r(csv_path.c_str());
@@ -493,7 +506,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 			[[maybe_unused]] const auto n_cols = ColCount();
 			FLS_ASSERT_EQUALITY(tuple.size(), n_cols)
 			col_pt& physical_column = internal_rowgroup[col_idx];
-			Attribute::Ingest(physical_column, val, m_footer.m_column_descriptors[col_idx]);
+			Attribute::Ingest(physical_column, val, m_descriptor.m_column_descriptors[col_idx]);
 			col_idx = col_idx + 1;
 		}
 		n_tup = n_tup + 1;
@@ -573,7 +586,7 @@ void Rowgroup::ReadJson(const path& json_path) {
 	string        line;
 	while (getline(json_stream, line)) {
 		const auto tuple = nlohmann::json::parse(line);
-		parse_json_tuple(tuple, internal_rowgroup, m_footer.GetColumnDescriptors());
+		parse_json_tuple(tuple, internal_rowgroup, m_descriptor.GetColumnDescriptors());
 		n_tup = n_tup + 1;
 	}
 }
@@ -625,7 +638,7 @@ nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& foot
 }
 
 void Rowgroup::WriteJson(std::ostream& os) const {
-	const auto json = to_json(internal_rowgroup, m_footer.GetColumnDescriptors());
+	const auto json = to_json(internal_rowgroup, m_descriptor.GetColumnDescriptors());
 	os << json;
 }
 
@@ -641,12 +654,12 @@ n_t Rowgroup::VecCount() const {
 
 n_t Rowgroup::ColCount() const {
 	/**/
-	return m_footer.size();
+	return m_descriptor.size();
 }
 
 idx_t Rowgroup::LookUp(const string& name) const {
 	/**/
-	return m_footer.LookUp(name);
+	return m_descriptor.LookUp(name);
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -752,21 +765,38 @@ FlsStrColumnView::FlsStrColumnView(const col_pt& column)
 		                                  FLS_UNREACHABLE();
 	                                  }},
 	                      column);
-    }()) {}
+    }()) {
+}
 
-uint8_t* FlsStrColumnView::Data() const { return string_p[vec_idx * CFG::VEC_SZ]; }
+uint8_t* FlsStrColumnView::Data() const {
+	return string_p[vec_idx * CFG::VEC_SZ];
+}
 
-uint8_t** FlsStrColumnView::String_p() const { return &string_p[vec_idx * CFG::VEC_SZ]; }
+uint8_t** FlsStrColumnView::String_p() const {
+	return &string_p[vec_idx * CFG::VEC_SZ];
+}
 
-len_t* FlsStrColumnView::Length() const { return length_ptr + (vec_idx * CFG::VEC_SZ); }
+len_t* FlsStrColumnView::Length() const {
+	return length_ptr + (vec_idx * CFG::VEC_SZ);
+}
 
-uint8_t** FlsStrColumnView::FsstString() const { return &fsst_string_p[vec_idx * CFG::VEC_SZ]; }
-len_t*    FlsStrColumnView::FSSTLength() const { return fsst_length_ptr + (vec_idx * CFG::VEC_SZ); }
+uint8_t** FlsStrColumnView::FsstString() const {
+	return &fsst_string_p[vec_idx * CFG::VEC_SZ];
+}
+len_t* FlsStrColumnView::FSSTLength() const {
+	return fsst_length_ptr + (vec_idx * CFG::VEC_SZ);
+}
 
-fls_string_t* FlsStrColumnView::String() const { return fls_string_p + (vec_idx * CFG::VEC_SZ); }
+fls_string_t* FlsStrColumnView::String() const {
+	return fls_string_p + (vec_idx * CFG::VEC_SZ);
+}
 
-const n_t FlsStrColumnView::GetNTuples() const { return n_tuples; }
+const n_t FlsStrColumnView::GetNTuples() const {
+	return n_tuples;
+}
 
-void FlsStrColumnView::PointTo(const n_t a_vec_n) { this->vec_idx = a_vec_n; }
+void FlsStrColumnView::PointTo(const n_t a_vec_n) {
+	this->vec_idx = a_vec_n;
+}
 
 } // namespace fastlanes

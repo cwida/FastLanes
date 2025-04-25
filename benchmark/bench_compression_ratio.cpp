@@ -76,7 +76,7 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 			    }
 
 			    auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
-			    const auto& footer_up = benchmarker.GetFooter(thread_specific_fls_dir_path);
+			    const auto& footer_up = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 			    // Store the main result (thread-safe)
 			    {
@@ -140,7 +140,8 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	if (!detailed_csv_file.is_open()) {
 		throw std::runtime_error("Failed to open the detailed CSV file for writing.");
 	}
-	detailed_csv_file << "compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value\n";
+	detailed_csv_file
+	    << "compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value\n";
 	for (const auto& [table_name, id, name, data_type, size, encoding_rpn, bpt, Bpt] : detailed_results) {
 		detailed_csv_file << FastLanes::get_name() << "," << FastLanes::get_version() << "," << table_name << "," << id
 		                  << "," << name << "," << data_type << "," << size << "," << '"' << encoding_rpn << '"' << ","

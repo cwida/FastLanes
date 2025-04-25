@@ -45,7 +45,9 @@ public:
 public:
 	void point_to(n_t vec_idx);
 	/// size in bytes
-	[[nodiscard]] static constexpr sz_t Size() { return sizeof(PT) * CFG::VEC_SZ; }
+	[[nodiscard]] static constexpr sz_t Size() {
+		return sizeof(PT) * CFG::VEC_SZ;
+	}
 
 public:
 	const PT* m_data;

@@ -13,8 +13,12 @@ namespace fastlanes {
 
 class FastLanes {
 public:
-	static constexpr string_view get_version() { return version_0_0_2; }
-	static constexpr string_view get_name() { return lib_name; }
+	static constexpr string_view get_version() {
+		return version_0_0_2;
+	}
+	static constexpr string_view get_name() {
+		return lib_name;
+	}
 
 private:
 	static constexpr auto lib_name      = string_view("FastLanes");

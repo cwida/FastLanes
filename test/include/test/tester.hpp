@@ -19,13 +19,19 @@ public:
 };
 
 #define FLS_COLOUMN_TEST(DATASET_NAME, TABLE_NAME, ID)                                                                 \
-	TEST_F(Tester, DATASET_NAME##_##TABLE_NAME_##ID) { Test(DATASET_NAME::TABLE_NAME, ID); };
+	TEST_F(Tester, DATASET_NAME##_##TABLE_NAME_##ID) {                                                                 \
+		Test(DATASET_NAME::TABLE_NAME, ID);                                                                            \
+	};
 
 #define FLS_TABLE_TEST(DATASET_NAME, TABLE_NAME)                                                                       \
-	TEST_F(Tester, DATASET_NAME##_##TABLE_NAME) { Test(DATASET_NAME::TABLE_NAME); };
+	TEST_F(Tester, DATASET_NAME##_##TABLE_NAME) {                                                                      \
+		Test(DATASET_NAME::TABLE_NAME);                                                                                \
+	};
 
 #define FLS_REALNEST_READ_TEST(ID, TABLE_NAME)                                                                         \
-	TEST_F(Tester, REALNEST_##ID) { RealNestTest(TABLE_NAME); };
+	TEST_F(Tester, REALNEST_##ID) {                                                                                    \
+		RealNestTest(TABLE_NAME);                                                                                      \
+	};
 
 } // namespace fastlanes
 #endif // TEST_TESTER_HPP

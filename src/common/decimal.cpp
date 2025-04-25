@@ -49,7 +49,8 @@ DecimalType::DecimalType() = default;
 
 DecimalType::DecimalType(const n_t precision, const n_t scale)
     : precision(precision)
-    , scale(scale) {}
+    , scale(scale) {
+}
 
 // ✅ Function to parse "decimal(precision, scale)" format
 DecimalType make_decimal_t(const std::string& value) {

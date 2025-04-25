@@ -59,7 +59,7 @@ void bench_sampling() {
 
 				    auto size =
 				        benchmarker.bench_with_sample_size(file_path, thread_specific_fls_dir_path, sample_size);
-				    const auto& footer_up = benchmarker.GetFooter(thread_specific_fls_dir_path);
+				    const auto& footer_up = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 				    // Store the main result (thread-safe)
 				    {

@@ -132,7 +132,9 @@ void enc_frequency_str_opr::Encode() {
 	exception_positions_seg->Flush(exception_positions, sizeof(vec_idx_t) * n_exceptions);
 }
 
-void enc_frequency_str_opr::PointTo(n_t vec_idx) { col_viewer.PointTo(vec_idx); }
+void enc_frequency_str_opr::PointTo(n_t vec_idx) {
+	col_viewer.PointTo(vec_idx);
+}
 
 void enc_frequency_str_opr::Finalize() {
 	frequent_value_bytes_seg->Flush(frequent_val.p, frequent_val.length);
@@ -240,7 +242,8 @@ void dec_frequency_str_opr::PointTo(n_t vec_idx) {
 	exception_values_offset_seg.PointTo(vec_idx);
 }
 
-void dec_frequency_str_opr::Decode() {}
+void dec_frequency_str_opr::Decode() {
+}
 
 void dec_frequency_str_opr::Materialize(n_t vec_idx, FLSStrColumn& typed_col) {
 	auto& length_vec   = typed_col.length_arr;

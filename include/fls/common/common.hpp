@@ -18,15 +18,21 @@ namespace fastlanes {
 /*---------------------------------------------------------------------------------------------------------------------\
  * VECTOR_SZ:
 \---------------------------------------------------------------------------------------------------------------------*/
-constexpr n_t vec_n_tup() { return 1024; }
+constexpr n_t vec_n_tup() {
+	return 1024;
+}
 
 template <typename T>
 constexpr n_t vec_bsz() {
 	return sizeof(T) * 1024;
 }
 
-constexpr n_t vec_sz() { return 1024; }
-constexpr n_t vec_sz_1bit() { return 1024 / 8; }
+constexpr n_t vec_sz() {
+	return 1024;
+}
+constexpr n_t vec_sz_1bit() {
+	return 1024 / 8;
+}
 
 static_assert(vec_sz_1bit() == 128);
 static_assert(vec_bsz<int64_t>() == 8UL * 1024);

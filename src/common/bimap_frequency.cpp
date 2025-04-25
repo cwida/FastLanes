@@ -7,7 +7,8 @@ namespace fastlanes {
 template <typename PT>
 BiMapFrequency<PT>::BiMapFrequency()
     : max_freq(0)
-    , most_frequent_key(0) {}
+    , most_frequent_key(0) {
+}
 
 // Insert or update an entry
 template <typename PT>

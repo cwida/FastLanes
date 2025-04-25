@@ -5,7 +5,8 @@ namespace fastlanes {
 template <typename T>
 MinMax<T>::MinMax()
     : min {std::numeric_limits<T>::max()}
-    , max {std::numeric_limits<T>::min()} {}
+    , max {std::numeric_limits<T>::min()} {
+}
 
 template <typename T>
 void MinMax<T>::Reset() {
@@ -19,7 +20,8 @@ void MinMax<T>::Reset() {
 }
 
 template <>
-void MinMax<bool>::Reset() {}
+void MinMax<bool>::Reset() {
+}
 
 template <typename T>
 void MinMax<T>::Cal(uint8_t* data_p, n_t start, n_t c) {

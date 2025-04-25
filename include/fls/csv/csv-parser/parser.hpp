@@ -31,17 +31,21 @@ inline bool operator==(const char c, const Term t) {
 	}
 }
 
-inline bool operator!=(const char c, const Term t) { return !(c == t); }
+inline bool operator!=(const char c, const Term t) {
+	return !(c == t);
+}
 
 // Wraps returned fields so we can also indicate
 // that we hit row endings or the end of the csv itself
 struct Field {
 	explicit Field(FieldType t)
 	    : type(t)
-	    , data(nullptr) {}
+	    , data(nullptr) {
+	}
 	explicit Field(const std::string& str)
 	    : type(FieldType::DATA)
-	    , data(&str) {}
+	    , data(&str) {
+	}
 
 	FieldType          type;
 	const std::string* data;
@@ -115,11 +119,15 @@ public:
 
 	// The parser is in the empty state when there are
 	// no more tokens left to read from the input buffer
-	bool empty() { return m_state == State::EMPTY; }
+	bool empty() {
+		return m_state == State::EMPTY;
+	}
 
 	// Not the actual position in the stream (its buffered) just the
 	// position up to last availiable token
-	std::streamoff position() const { return m_scanposition + static_cast<std::streamoff>(m_cursor); }
+	std::streamoff position() const {
+		return m_scanposition + static_cast<std::streamoff>(m_cursor);
+	}
 
 	// Reads a single field from the CSV
 	Field next_field() {
@@ -308,11 +316,17 @@ public:
 			return m_current_row == other.m_current_row && m_row.size() == other.m_row.size();
 		}
 
-		bool operator!=(const iterator& other) const { return !(*this == other); }
+		bool operator!=(const iterator& other) const {
+			return !(*this == other);
+		}
 
-		reference operator*() const { return m_row; }
+		reference operator*() const {
+			return m_row;
+		}
 
-		pointer operator->() const { return &m_row; }
+		pointer operator->() const {
+			return &m_row;
+		}
 
 	private:
 		value_type m_row {};
@@ -348,8 +362,12 @@ public:
 		}
 	};
 
-	iterator begin() { return iterator(this); };
-	iterator end() { return iterator(this, true); };
+	iterator begin() {
+		return iterator(this);
+	};
+	iterator end() {
+		return iterator(this, true);
+	};
 };
 }} // namespace aria::csv
 #endif

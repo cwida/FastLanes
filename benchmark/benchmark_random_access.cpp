@@ -1,12 +1,12 @@
 #include "benchmarker.hpp"
-#include "fls/encoder/random_accessor.hpp"
 
 using namespace fastlanes; // NOLINT
 
 class DecompressionTimeBenchmarker : public CompressionRatioBenchmarker {
 public:
 	explicit DecompressionTimeBenchmarker(const n_t n_repetitions)
-	    : n_repetitions(n_repetitions) {}
+	    : n_repetitions(n_repetitions) {
+	}
 
 	double bench_random_access(const path& dir_path) const {
 		Connection conn;
@@ -52,7 +52,7 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
 		auto        random_access_ms = benchmarker.bench_random_access(thread_specific_fls_dir_path);
-		const auto& footer_up        = benchmarker.GetFooter(thread_specific_fls_dir_path);
+		const auto& footer_up        = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 		az_printer::green_cout << "-- Table " << table_name << " is benchmarked with time(ms): " << random_access_ms
 		                       << std::endl;

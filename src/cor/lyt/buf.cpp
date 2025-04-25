@@ -106,7 +106,8 @@ n_t Buf::length() const {
 	return m_off;
 }
 
-void Buf::Reserve() { /**/ }
+void Buf::Reserve() { /**/
+}
 
 void Buf::Swap(const Buf& a_buf) {
 	m_active_p = a_buf.m_active_p;

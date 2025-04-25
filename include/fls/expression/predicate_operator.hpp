@@ -30,7 +30,9 @@ struct predicate_eq_vector_constant_i64 {
 		}
 	}
 
-	void execute() { eq_vector_constant_func<i64_pt>(data, value, selection_ds); }
+	void execute() {
+		eq_vector_constant_func<i64_pt>(data, value, selection_ds);
+	}
 
 	const i64_pt* data;
 	i64_pt        value;
@@ -75,7 +77,9 @@ public:
 	predicate_GT_i64(const predicate_GT_i64&)            = delete; // non construction-copyable
 	predicate_GT_i64& operator=(const predicate_GT_i64&) = delete; // non copyable
 public:
-	void execute() { primitive(vec_1, vec_2, selection_ds); }
+	void execute() {
+		primitive(vec_1, vec_2, selection_ds);
+	}
 
 	predicate_func_p<i64_pt> primitive;
 	const i64_pt*            vec_1;
@@ -113,7 +117,9 @@ public:
 	predicate_LE_i64(const predicate_LE_i64&)            = delete; // non construction-copyable
 	predicate_LE_i64& operator=(const predicate_LE_i64&) = delete; // non copyable
 public:
-	void execute() { lessthan_func<i64_pt>(data, value, selection_ds); }
+	void execute() {
+		lessthan_func<i64_pt>(data, value, selection_ds);
+	}
 
 	const i64_pt* data;
 	i64_pt        value;
@@ -127,12 +133,15 @@ public:
 	                                    SelectionDS& selection_ds_2)
 	    : selection_ds_0(selection_ds_0)
 	    , selection_ds_1(selection_ds_1)
-	    , selection_ds_2(selection_ds_2) {}
+	    , selection_ds_2(selection_ds_2) {
+	}
 
 	predicate_and_selection_ds(const predicate_and_selection_ds&)            = delete; // non construction-copyable
 	predicate_and_selection_ds& operator=(const predicate_and_selection_ds&) = delete; // non copyable
 public:
-	void execute() { and_selection_ds_func(selection_ds_0, selection_ds_1, selection_ds_2); }
+	void execute() {
+		and_selection_ds_func(selection_ds_0, selection_ds_1, selection_ds_2);
+	}
 
 	const SelectionDS& selection_ds_0;
 	const SelectionDS& selection_ds_1;

@@ -4,7 +4,7 @@
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"
-#include "fls/footer/rowgroup_footer.hpp"
+#include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
 #include "fls/std/variant.hpp"
@@ -16,7 +16,7 @@ namespace fastlanes {
 class Vector;
 class LogicalExpr;
 class column;
-class Footer;
+class RowgroupDescriptor;
 /*--------------------------------------------------------------------------------------------------------------------*/
 using null_map_arr = vector<uint8_t>;
 using byte_arr_t   = vector<uint8_t>;
@@ -84,10 +84,12 @@ public:
 	const PT*            Data();
 	const PT*            Data(n_t vec_idx);
 	static constexpr n_t GetSizeOfOneVector();
-	void                 PointTo(const n_t a_vec_n) { this->m_vec_idx = a_vec_n; }
-	[[nodiscard]] n_t    TotalSize() const;
-	const uint8_t*       NullMap() const;
-	const n_t            GetNTuples() const;
+	void                 PointTo(const n_t a_vec_n) {
+        this->m_vec_idx = a_vec_n;
+	}
+	[[nodiscard]] n_t TotalSize() const;
+	const uint8_t*    NullMap() const;
+	const n_t         GetNTuples() const;
 
 private:
 	const PT*       m_data;
@@ -98,7 +100,9 @@ private:
 	n_t             n_tuples;
 
 public:
-	[[nodiscard]] TypedStats<PT>* GetStats() const { return m_stats_p; }
+	[[nodiscard]] TypedStats<PT>* GetStats() const {
+		return m_stats_p;
+	}
 };
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -109,7 +113,9 @@ public:
 	explicit NullMapView(const col_pt& column);
 
 public:
-	void           PointTo(const n_t a_vec_n) { this->m_vec_idx = a_vec_n; }
+	void PointTo(const n_t a_vec_n) {
+		this->m_vec_idx = a_vec_n;
+	}
 	const uint8_t* NullMap() const;
 
 private:
@@ -129,11 +135,13 @@ public:
 	explicit FlsStrColumnView(const col_pt& column);
 
 public:
-	[[nodiscard]] uint8_t*      Data() const;
-	[[nodiscard]] uint8_t**     String_p() const;
-	[[nodiscard]] len_t*        Length() const;
-	void                        PointTo(const n_t a_vec_n);
-	static constexpr n_t        GetSizeOfOneVector() { return sizeof(ofs_t) * CFG::VEC_SZ; }
+	[[nodiscard]] uint8_t*  Data() const;
+	[[nodiscard]] uint8_t** String_p() const;
+	[[nodiscard]] len_t*    Length() const;
+	void                    PointTo(const n_t a_vec_n);
+	static constexpr n_t    GetSizeOfOneVector() {
+        return sizeof(ofs_t) * CFG::VEC_SZ;
+	}
 	[[nodiscard]] uint8_t**     FsstString() const;
 	[[nodiscard]] len_t*        FSSTLength() const;
 	[[nodiscard]] fls_string_t* String() const;
@@ -181,7 +189,7 @@ public:
 	friend class column;
 
 public:
-	explicit Rowgroup(const Footer& rowgroup_footer);
+	explicit Rowgroup(const RowgroupDescriptor& rowgroup_footer);
 
 	Rowgroup(const Rowgroup&)             = delete;
 	Rowgroup& operator=(const Rowgroup&)  = delete;
@@ -209,7 +217,7 @@ public:
 	///
 	[[nodiscard]] DataType GetDataType(idx_t col_idx) const;
 	///
-	[[nodiscard]] Footer& GetFooter();
+	[[nodiscard]] RowgroupDescriptor& GetRowgroupDescriptor();
 	///
 	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs);
 	///
@@ -224,9 +232,9 @@ public:
 	void Init();
 
 public: /* Members */
-	Footer      m_footer;
-	n_t         n_tup;
-	rowgroup_pt internal_rowgroup;
+	RowgroupDescriptor m_descriptor;
+	n_t                n_tup;
+	rowgroup_pt        internal_rowgroup;
 };
 
 std::ostream& operator<<(std::ostream& output, const Rowgroup& mini_arrow);

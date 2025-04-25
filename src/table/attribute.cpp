@@ -431,7 +431,9 @@ struct rowgroup_visitor {
 		value = string(reinterpret_cast<const char*>(str_col->str_p_arr[row_idx]), str_col->length_arr[row_idx]);
 	}
 
-	void operator()(const auto&) { FLS_UNREACHABLE() }
+	void operator()(const auto&) {
+		FLS_UNREACHABLE()
+	}
 };
 
 string Attribute::ToStr(const col_pt& physical_column, n_t row_idx) {

@@ -58,7 +58,9 @@ public:
 };
 
 #define FLS_PLAN_EQUALITY_TEST(DATASET_NAME, TABLE_NAME)                                                               \
-	TEST_F(PlanTester, DATASET_NAME##_##TABLE_NAME##_PLANTEST) { Test(DATASET_NAME::TABLE_NAME); };
+	TEST_F(PlanTester, DATASET_NAME##_##TABLE_NAME##_PLANTEST) {                                                       \
+		Test(DATASET_NAME::TABLE_NAME);                                                                                \
+	};
 
 FLS_PLAN_EQUALITY_TEST(public_bi, Arade)
 FLS_PLAN_EQUALITY_TEST(public_bi, Bimbo)

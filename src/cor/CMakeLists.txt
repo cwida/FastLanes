@@ -1,5 +1,3 @@
-add_subdirectory(eng)
-add_subdirectory(exp)
 add_subdirectory(lyt)
 add_subdirectory(prm)
 
@@ -7,9 +5,7 @@ add_subdirectory(prm)
 add_library(fls_cor
         OBJECT
         #        compression_plan_history.cpp
-        cpu.cpp
-        exp_pool.cpp
-        mtd.cpp
+        cor.cpp
 )
 
 set(FASTLANES_OBJECT_FILES

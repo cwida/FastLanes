@@ -29,7 +29,8 @@ void TypedVector<PT>::point_to(n_t vec_idx) {
 
 template <typename PT>
 ConstantVector<PT>::ConstantVector(const PT& value)
-    : value(value) {}
+    : value(value) {
+}
 
 FLS_ALL_CTS(TypedVector)
 FLS_ALL_CTS(ConstantVector)

@@ -72,14 +72,19 @@ template struct enc_transpose_opr<i64_pt>;
 template <typename PT>
 struct TransposeExprVisitor {
 	explicit TransposeExprVisitor(dec_transpose_opr<PT>& opr)
-	    : trapose_opr(opr) {}
+	    : trapose_opr(opr) {
+	}
 
 	void operator()(const sp<dec_rsum_opr<PT>>& opr) {
 		trapose_opr.transposed_data = opr->idxs;
 		FLS_ASSERT_NOT_NULL_POINTER(trapose_opr.transposed_data)
 	}
-	void operator()(std::monostate& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(std::monostate& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 
 	dec_transpose_opr<PT>& trapose_opr;
 };

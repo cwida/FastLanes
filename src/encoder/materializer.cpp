@@ -1,6 +1,5 @@
 #include "fls/encoder/materializer.hpp"
 #include "fls/cfg/cfg.hpp"
-#include "fls/cor/lyt/vec.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/cross_rle_operator.hpp"
 #include "fls/expression/data_type.hpp"
@@ -23,26 +22,10 @@
 #include "fls/table/rowgroup.hpp"
 
 namespace fastlanes {
-template <typename PT>
-SingleColumnMaterializer<PT>::SingleColumnMaterializer(span<PT> output_span)
-    : output_span(output_span) {}
-
-template <typename PT>
-void SingleColumnMaterializer<PT>::Materialize(const Vec& vec) {
-
-	auto in  = reinterpret_cast<PT*>(vec.buf_arr[0].data());
-	auto out = output_span.data();
-
-	untranspose_i(in, out);
-
-	output_span = output_span.subspan(CFG::VEC_SZ);
-}
-
-template class SingleColumnMaterializer<i64_pt>;
-template class SingleColumnMaterializer<dbl_pt>;
 
 Materializer::Materializer(Rowgroup& rowgroup)
-    : rowgroup(rowgroup) {}
+    : rowgroup(rowgroup) {
+}
 
 struct material_visitor {
 	explicit material_visitor(n_t vec_idx)
@@ -187,7 +170,9 @@ struct material_visitor {
 	void operator()(const sp<dec_cross_rle_opr<fls_string_t>>& opr, up<FLSStrColumn>& typed_col) const {
 		opr->Materialize(vec_idx, *typed_col);
 	}
-	void operator()(const auto& opr, auto& col) const { FLS_UNREACHABLE_WITH_TYPES(opr, col); }
+	void operator()(const auto& opr, auto& col) const {
+		FLS_UNREACHABLE_WITH_TYPES(opr, col);
+	}
 	//
 	n_t vec_idx;
 };

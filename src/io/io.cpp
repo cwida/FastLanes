@@ -1,16 +1,7 @@
 #include "fls/io/io.hpp"
 #include "fls/cor/lyt/buf.hpp"
-#include "fls/encoder/exp_col_encoder.hpp"
 
 namespace fastlanes {
-void IO::flush(io& io, const ExpEncodedCol& expr_encoded_col) {
-	// write the buffer
-	visit(overloaded {
-	          [&](up<ExternalMemory>& memory) { memory->Ingest(*expr_encoded_col.data_buf); },
-	          [](auto&) { FLS_UNREACHABLE() },
-	      },
-	      io);
-}
 
 void IO::flush(io& io, const Buf& buf) {
 	// write the buffer

@@ -25,18 +25,6 @@ bool encode_from_memory(void*     in_data,
                         data_t    in_datatype,
                         uint8_t   in_expression_type) {
 
-	fastlanes::Connection::encode_from_memory(in_data,
-	                                          in_n_input,
-	                                          in_capacity,
-	                                          out_encoded_data,
-	                                          out_encoded_size,
-	                                          static_cast<fastlanes::DataType>(in_datatype),
-	                                          in_expression_type);
-
 	return true;
-}
-
-void decode_to_memory(uint8_t* in_encoded_data, void* out_data, data_t in_datatype) {
-	fastlanes::Connection::decode_to_memory(in_encoded_data, out_data, static_cast<fastlanes::DataType>(in_datatype));
 }
 }

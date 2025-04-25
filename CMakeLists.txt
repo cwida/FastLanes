@@ -77,9 +77,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Winconsistent-missing-ove
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wshadow -Wconversion")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message("-- FLS: Debug mode enabled. Adding -g flag.")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Debug mode enabled. Adding -g and -O0.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
 endif ()
 
 # Options : ------------------------------------------------------------------------------------------------------------
@@ -232,6 +234,7 @@ if (FLS_ENABLE_VERBOSE_OUTPUT)
             CMAKE_CXX_FLAGS
             CMAKE_C_FLAGS
             CMAKE_CROSSCOMPILING
+            CMAKE_CXX_FLAGS_DEBUG
     )
 endif ()
 

@@ -10,7 +10,8 @@ namespace fastlanes {
 
 FlsString::FlsString()
     : p(nullptr)
-    , length(INVALID_LENGTH) {}
+    , length(INVALID_LENGTH) {
+}
 
 std::string FlsString::to_string() const {
 	FLS_ASSERT_NOT_NULL_POINTER(p)
@@ -58,7 +59,8 @@ FlsString& FlsString::operator=(const FlsString& other) {
 
 FlsString::FlsString(const uint8_t* data, len_t len)
     : p(data)
-    , length(len) {}
+    , length(len) {
+}
 
 decoupled_str_vec Str::decouple(n_t n, std::string* str_arr) {
 	decoupled_str_vec result;

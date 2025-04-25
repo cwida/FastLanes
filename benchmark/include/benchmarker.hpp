@@ -79,8 +79,8 @@ public:
 	}
 
 	// Method to get the footer for the thread-specific directory
-	[[nodiscard]] up<Footer> GetFooter(const path& thread_specific_fls_dir_path) const {
-		return make_footer(thread_specific_fls_dir_path / FOOTER_FILE_NAME);
+	[[nodiscard]] up<RowgroupDescriptor> GetRowgroupDescriptor(const path& thread_specific_fls_dir_path) const {
+		return make_rowgroup_descriptor(thread_specific_fls_dir_path / FOOTER_FILE_NAME);
 	}
 
 	// Benchmarks the compression ratio by writing and returning the file size
@@ -109,7 +109,7 @@ public:
 	                                               const path&       thread_specific_fls_dir_path) const {
 		Write(table_path, thread_specific_fls_dir_path);
 		vector<OperatorToken> result;
-		auto                  footer_up = GetFooter(thread_specific_fls_dir_path);
+		auto                  footer_up = GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 		// Store the detailed results (thread-safe)
 		{

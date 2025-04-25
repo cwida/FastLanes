@@ -15,7 +15,9 @@ class Histogram;
 template <typename T>
 class Params {
 public:
-	n_t size() { return (1024 * bw / CHAR_BIT) + exc_c * sizeof(T); } //
+	n_t size() {
+		return (1024 * bw / CHAR_BIT) + exc_c * sizeof(T);
+	} //
 public:
 	bw_t      bw;    //
 	T         base;  //

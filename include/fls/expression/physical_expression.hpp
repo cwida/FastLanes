@@ -348,6 +348,7 @@ public:
 
 public:
 	~PhysicalExpr();
+	PhysicalExpr();
 
 public:
 	//
@@ -358,6 +359,9 @@ public:
 	[[nodiscard]] n_t Size(n_t sample_size, n_t n_vecs) const;
 	//
 	void Finalize() const;
+
+public:
+	n_t n_active_operators;
 };
 
 } // namespace fastlanes

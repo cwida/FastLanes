@@ -10,7 +10,8 @@ namespace fastlanes {
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 EntryPointView<PT>::EntryPointView(span<PT> this_span)
-    : entrypoint_span(this_span) {}
+    : entrypoint_span(this_span) {
+}
 
 template <typename PT>
 n_t EntryPointView<PT>::size() const {
@@ -59,7 +60,8 @@ SegmentView::SegmentView(entry_point_view_t entry_point_view, span<std::byte> da
     : entry_point_view(entry_point_view)
     , data_span(data_span)
     , data(nullptr)
-    , vec_idx(INVALID_N) {}
+    , vec_idx(INVALID_N) {
+}
 
 void SegmentView::PointTo(const n_t a_vec_idx) {
 	data    = data_span.data() + get_offset(entry_point_view, a_vec_idx);
@@ -175,9 +177,13 @@ up<SegmentDescriptor> Segment::Dump(Buf& external_buf, n_t& current_offset, uint
 	return make_unique<SegmentDescriptor>(segment_descriptor);
 }
 
-void Segment::MakeBlockBased() { is_block_based = true; }
+void Segment::MakeBlockBased() {
+	is_block_based = true;
+}
 
-bool Segment::IsBlockBased() { return is_block_based; }
+bool Segment::IsBlockBased() {
+	return is_block_based;
+}
 
 void Segment::flush_entrypoint(n_t size) {
 	FLS_ASSERT_LE(size, std::numeric_limits<entry_point_t>::max())

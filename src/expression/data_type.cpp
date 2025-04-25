@@ -84,7 +84,9 @@ DataType get_physical_type() {
 	FLS_UNREACHABLE()
 };
 
-std::ostream& operator<<(std::ostream& os, DataType type) { return os << ToStr(type); }
+std::ostream& operator<<(std::ostream& os, DataType type) {
+	return os << ToStr(type);
+}
 
 template DataType get_physical_type<i64_pt>();
 template DataType get_physical_type<i32_pt>();

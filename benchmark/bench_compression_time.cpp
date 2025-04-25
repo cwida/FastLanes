@@ -5,7 +5,8 @@ using namespace fastlanes; // NOLINT
 class CompressionTimeBenchmarker : public CompressionRatioBenchmarker {
 public:
 	explicit CompressionTimeBenchmarker(const n_t n_repetitions)
-	    : n_repetitions(n_repetitions) {}
+	    : n_repetitions(n_repetitions) {
+	}
 
 	double bench(const path& dir_path) const {
 		Connection conn;
@@ -69,7 +70,7 @@ void bench_compression(dataset_view_t dataset_view) {
 		CompressionTimeBenchmarker benchmarker {n_repetition};
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
-		auto        compression_time_ms = benchmarker.bench_compression_time(file_path, thread_specific_fls_dir_path);
+		auto compression_time_ms = benchmarker.bench_compression_time(file_path, thread_specific_fls_dir_path);
 
 		az_printer::green_cout << "-- Table " << table_name << " is benchmarked with time(ms): " << compression_time_ms
 		                       << std::endl;

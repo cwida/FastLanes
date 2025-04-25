@@ -3,7 +3,8 @@ add_library(fls_footer
         binary_value.cpp
         #[[]]
         column_descriptor.cpp
-        rowgroup_footer.cpp
+        file_descriptor.cpp
+        rowgroup_descriptor.cpp
         segment_desriptor.cpp
 )
 

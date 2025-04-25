@@ -21,7 +21,8 @@ enc_scan_opr<PT>::enc_scan_opr(const PhysicalExpr& expr,
                                const col_pt&       column,
                                ColumnDescriptor&   column_descriptor,
                                InterpreterState&   state)
-    : typed_column_view(column) {}
+    : typed_column_view(column) {
+}
 
 template <typename PT>
 void enc_scan_opr<PT>::PointTo(n_t vec_idx) {
@@ -49,7 +50,8 @@ enc_dict_map_opr<VALUE_PT, INDEX_PT>::enc_dict_map_opr(const PhysicalExpr& expr,
                                                        const col_pt&       column,
                                                        ColumnDescriptor&   column_descriptor,
                                                        InterpreterState&   state)
-    : typed_column_view(column) {}
+    : typed_column_view(column) {
+}
 
 template <typename VALUE_PT, typename INDEX_PT>
 void enc_dict_map_opr<VALUE_PT, INDEX_PT>::PointTo(n_t vec_idx) {
@@ -90,7 +92,8 @@ enc_dict_map_opr<fls_string_t, INDEX_PT>::enc_dict_map_opr(const PhysicalExpr& e
                                                            const col_pt&       column,
                                                            ColumnDescriptor&   column_descriptor,
                                                            InterpreterState&   state)
-    : column_view(column) {}
+    : column_view(column) {
+}
 
 template <typename INDEX_PT>
 void enc_dict_map_opr<fls_string_t, INDEX_PT>::PointTo(n_t vec_idx) {
@@ -160,7 +163,9 @@ enc_fls_str_uncompressed_op::enc_fls_str_uncompressed_op(const col_pt& column)
 	length_segment = make_unique<Segment>();
 }
 
-void enc_fls_str_uncompressed_op::PointTo(const n_t vec_idx) { fls_string_column_view.PointTo(vec_idx); }
+void enc_fls_str_uncompressed_op::PointTo(const n_t vec_idx) {
+	fls_string_column_view.PointTo(vec_idx);
+}
 void enc_fls_str_uncompressed_op::Copy() const {
 	len_t ttl_size {0};
 	for (auto idx = 0; idx < CFG::VEC_SZ; ++idx) {
@@ -240,10 +245,14 @@ struct VisitorFunctor {
 	}
 
 	// Overload for std::monostate
-	void operator()(std::monostate) { FLS_UNREACHABLE(); }
+	void operator()(std::monostate) {
+		FLS_UNREACHABLE();
+	}
 
 	// Catch-all for unexpected types
-	void operator()(auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 };
 
 template <typename PT>
@@ -270,7 +279,8 @@ enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
 }
 
 template <typename PT>
-void enc_ffor_opr<PT>::PointTo(n_t vec_idx) {}
+void enc_ffor_opr<PT>::PointTo(n_t vec_idx) {
+}
 
 template <typename PT>
 void enc_ffor_opr<PT>::ffor() {

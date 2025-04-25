@@ -10,7 +10,8 @@ namespace fastlanes {
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 dec_scan_opr<PT>::dec_scan_opr(const ColumnView& column_view, InterpreterState& state)
-    : data_segment(column_view.GetSegment(2)) {}
+    : data_segment(column_view.GetSegment(2)) {
+}
 
 template <typename PT>
 void dec_scan_opr<PT>::PointTo(const n_t vec_n) {

@@ -2,16 +2,15 @@
 #include "fls/common/alias.hpp"  // for n_t, up, idx_t, make_unique
 #include "fls/common/common.hpp" // for FLS_UNREACHABLE
 #include "fls/common/string.hpp"
-#include "fls/connection.hpp"              // for Connector
-#include "fls/encoder/exp_col_encoder.hpp" // for AllExpEncodedCol, ExpEnc...
-#include "fls/expression/data_type.hpp"    // for DataType, get_physical_type
+#include "fls/connection.hpp"           // for Connector
+#include "fls/expression/data_type.hpp" // for DataType, get_physical_type
 #include "fls/expression/expression_executor.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/expression/new_rpn.hpp"     // for Operator, Operand, NewRPN
-#include "fls/footer/rowgroup_footer.hpp" // for ColumnMetadata, Footer
-#include "fls/std/variant.hpp"            // for visit
-#include "fls/std/vector.hpp"             // for vector
-#include "fls/table/rowgroup.hpp"         // for Rowgroup, TypedCol (ptr ...
+#include "fls/expression/new_rpn.hpp"         // for Operator, Operand, NewRPN
+#include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata, RowgroupDescriptor
+#include "fls/std/variant.hpp"                // for visit
+#include "fls/std/vector.hpp"                 // for vector
+#include "fls/table/rowgroup.hpp"             // for Rowgroup, TypedCol (ptr ...
 #include <cstring>
 #include <memory>    // for unique_ptr, make_unique
 #include <stdexcept> // for runtime_error
@@ -26,7 +25,8 @@ bool IsDetermined(const ColumnDescriptor& column_descriptor) {
 
 struct gather_statistics_visitor {
 	explicit gather_statistics_visitor(ColumnDescriptor& a_column_descriptor)
-	    : column_descriptor(a_column_descriptor) {}
+	    : column_descriptor(a_column_descriptor) {
+	}
 
 	template <typename PT>
 	void operator()(const up<TypedCol<PT>>& col) const {
@@ -48,7 +48,9 @@ struct gather_statistics_visitor {
 		}
 	}
 
-	void operator()(const auto&) const { FLS_UNREACHABLE(); }
+	void operator()(const auto&) const {
+		FLS_UNREACHABLE();
+	}
 
 	ColumnDescriptor& column_descriptor;
 };
@@ -64,7 +66,9 @@ void gather_statistics(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& co
 struct constant_visitor {
 	ColumnDescriptor& column_descriptor;
 
-	void operator()(std::monostate&) { FLS_UNREACHABLE(); }
+	void operator()(std::monostate&) {
+		FLS_UNREACHABLE();
+	}
 	template <typename PT>
 	void operator()(const up<TypedCol<PT>>& typed_col) {
 		if (typed_col->m_stats.IsConstant()) {
@@ -103,13 +107,16 @@ struct constant_visitor {
 			}
 		}
 	}
-	void operator()(const up<Struct>& struct_col) {}
+	void operator()(const up<Struct>& struct_col) {
+	}
 	void operator()(const up<FLSStrColumn>& fls_str_column) {
 		if (fls_str_column->m_stats.is_constant) {
 			column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_STR);
 		}
 	}
-	void operator()(auto&) { FLS_UNREACHABLE(); }
+	void operator()(auto&) {
+		FLS_UNREACHABLE();
+	}
 };
 
 void constant_visit(const col_pt& col, ColumnDescriptor& column_descriptor) {
@@ -127,7 +134,9 @@ void constant_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& colum
 struct null_visitor {
 	ColumnDescriptor& column_descriptor;
 
-	void operator()(std::monostate&) { FLS_UNREACHABLE(); }
+	void operator()(std::monostate&) {
+		FLS_UNREACHABLE();
+	}
 	template <typename PT>
 	void operator()(const up<TypedCol<PT>>& typed_col) {
 		const auto nulls_percentage =
@@ -158,9 +167,13 @@ struct null_visitor {
 			}
 		}
 	}
-	void operator()(const up<Struct>& struct_col) {}
-	void operator()(const up<FLSStrColumn>& fls_str_column) {}
-	void operator()(auto&) { FLS_UNREACHABLE(); }
+	void operator()(const up<Struct>& struct_col) {
+	}
+	void operator()(const up<FLSStrColumn>& fls_str_column) {
+	}
+	void operator()(auto&) {
+		FLS_UNREACHABLE();
+	}
 };
 
 void null_visit(const col_pt& col, ColumnDescriptor& column_descriptor) {
@@ -209,9 +222,13 @@ struct col_equality_visitor {
 		return true;
 	}
 
-	bool operator()(std::monostate&, std::monostate&) { FLS_UNREACHABLE(); }
+	bool operator()(std::monostate&, std::monostate&) {
+		FLS_UNREACHABLE();
+	}
 
-	bool operator()(auto&, auto&) { return false; }
+	bool operator()(auto&, auto&) {
+		return false;
+	}
 };
 
 bool col_equality_visit(const col_pt& first_col, const col_pt& second_col) {
@@ -709,7 +726,7 @@ constexpr std::array<uint64_t, 64> final_layout_64 = final_layout<64>();
 n_t TryExpr(const rowgroup_pt&      col,
             const ColumnDescriptor& column_descriptor,
             const OperatorToken&    token,
-            Footer&                 footer,
+            RowgroupDescriptor&     footer,
             const Connection&       con) {
 	n_t size {0};
 
@@ -792,10 +809,10 @@ bool IsDictionaryChoosingRequired(const ColumnDescriptor& column_descriptor) {
 }
 
 template <typename PT>
-void TypedDecide(const rowgroup_pt& rowgroup,
-                 ColumnDescriptor&  column_descriptor,
-                 Footer&            footer,
-                 const Connection&  fls) {
+void TypedDecide(const rowgroup_pt&  rowgroup,
+                 ColumnDescriptor&   column_descriptor,
+                 RowgroupDescriptor& footer,
+                 const Connection&   fls) {
 
 	auto evaluate_expressions = [&](const auto& expr_list) {
 		for (const auto& expr : expr_list) {
@@ -826,10 +843,10 @@ void TypedDecide(const rowgroup_pt& rowgroup,
 	column_descriptor.encoding_rpn.operator_tokens.emplace_back(best_expr);
 }
 
-void expression_check_column(const rowgroup_pt& rowgroup,
-                             ColumnDescriptor&  column_descriptor,
-                             Footer&            footer,
-                             const Connection&  fls) {
+void expression_check_column(const rowgroup_pt&  rowgroup,
+                             ColumnDescriptor&   column_descriptor,
+                             RowgroupDescriptor& footer,
+                             const Connection&   fls) {
 	if (IsDetermined(column_descriptor) && !IsDictionaryEncodingRequired(column_descriptor) &&
 	    !IsDictionaryChoosingRequired(column_descriptor)) {
 		return;
@@ -890,7 +907,7 @@ void expression_check_column(const rowgroup_pt& rowgroup,
 	}
 }
 
-void expression_check(const rowgroup_pt& rowgroup, Footer& footer, const Connection& fls) {
+void expression_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 
@@ -1106,14 +1123,22 @@ struct col_map_1t1_visitor {
 		return checkMappingImpl(col_1, col_2);
 	}
 
-	bool operator()(std::monostate&, std::monostate&) { FLS_UNREACHABLE(); }
+	bool operator()(std::monostate&, std::monostate&) {
+		FLS_UNREACHABLE();
+	}
 
-	bool operator()(auto&, auto&) { return false; }
+	bool operator()(auto&, auto&) {
+		return false;
+	}
 };
 
-bool map_1t1_visit(const col_pt& col_1, const col_pt& col_2) { return visit(col_map_1t1_visitor {}, col_1, col_2); }
+bool map_1t1_visit(const col_pt& col_1, const col_pt& col_2) {
+	return visit(col_map_1t1_visitor {}, col_1, col_2);
+}
 
-bool IsMap1t1(const col_pt& first_col, const col_pt& second_col) { return map_1t1_visit(first_col, second_col); }
+bool IsMap1t1(const col_pt& first_col, const col_pt& second_col) {
+	return map_1t1_visit(first_col, second_col);
+}
 
 void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, DataType common_data_type_for_index) {
 	switch (second_column_descriptor.data_type) {
@@ -1309,7 +1334,7 @@ void set_schema(ColumnDescriptors& column_descriptors, const Connection& fls) {
 	}
 }
 
-void rowgroup_check(const rowgroup_pt& rowgroup, Footer& footer, const Connection& fls) {
+void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 
@@ -1331,11 +1356,11 @@ void rowgroup_check(const rowgroup_pt& rowgroup, Footer& footer, const Connectio
 	expression_check(rowgroup, footer, fls); // all left over columns are expression encoded.
 }
 
-up<Footer> Wizard::Spell(const Connection& fls) {
+up<RowgroupDescriptor> Wizard::Spell(const Connection& fls) {
 	// init
 	const auto& rowgroup = fls.rowgroup();
 
-	auto footer = make_footer(rowgroup);
+	auto footer = make_rowgroup_descriptor(rowgroup);
 
 	rowgroup_check(rowgroup.internal_rowgroup, *footer, fls);
 

@@ -1,21 +1,21 @@
 #include "fls/reader/column_view.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/footer/column_descriptor.hpp"
-#include "fls/footer/rowgroup_footer.hpp"
+#include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/logger/logger.hpp"
 #include "fls/reader/segment.hpp"
 
 namespace fastlanes {
 
-ColumnView::ColumnView(const span<std::byte>   column_span,
-                       const ColumnDescriptor& column_descriptor,
-                       const Footer&           footer)
+ColumnView::ColumnView(const span<std::byte>     column_span,
+                       const ColumnDescriptor&   column_descriptor,
+                       const RowgroupDescriptor& rowgroup_descriptor)
     : column_span(column_span)
     , column_descriptor(column_descriptor) {
 	for (n_t child_col_idx {0}; child_col_idx < column_descriptor.children.size(); ++child_col_idx) {
 
 		auto& child_column_descriptor = column_descriptor.children[child_col_idx];
-		children.emplace_back(column_span, child_column_descriptor, footer);
+		children.emplace_back(column_span, child_column_descriptor, rowgroup_descriptor);
 	}
 }
 

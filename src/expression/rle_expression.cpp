@@ -105,14 +105,23 @@ template struct enc_rle_map_opr<fls_string_t, u16_pt>;
 template <typename PT>
 struct RLEExprVisitor {
 	explicit RLEExprVisitor(const PT*& idxs)
-	    : idxs(idxs) {}
+	    : idxs(idxs) {
+	}
 
 	const PT*& idxs;
 
-	void operator()(const sp<dec_rsum_opr<PT>>& opr) { idxs = opr->idxs; }
-	void operator()(const sp<PhysicalExpr>& expr) { visit(RLEExprVisitor {idxs}, expr->operators[0]); }
-	void operator()(std::monostate& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(const sp<dec_rsum_opr<PT>>& opr) {
+		idxs = opr->idxs;
+	}
+	void operator()(const sp<PhysicalExpr>& expr) {
+		visit(RLEExprVisitor {idxs}, expr->operators[0]);
+	}
+	void operator()(std::monostate& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 };
 
 template <typename KEY_PT, typename INDEX_PT>

@@ -60,7 +60,9 @@ public:
 };
 } // namespace std
 
-inline bool isEscapeCode(u16 pos) { return pos < FSST_CODE_BASE; }
+inline bool isEscapeCode(u16 pos) {
+	return pos < FSST_CODE_BASE;
+}
 
 inline std::ostream& operator<<(std::ostream& out, const Symbol& s) {
 	for (u32 i = 0; i < s.length(); i++) {

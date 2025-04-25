@@ -19,7 +19,9 @@ static constexpr uint64_t LOCAL_EXC_LIMIT_C = 20; // between 5 and 10 percent
 template <typename T>
 class Option {
 public:
-	n_t size() { return (1024 * bw / CHAR_BIT) + n_exceptions * sizeof(T) + n_exceptions * sizeof(vec_idx_t); } //
+	n_t size() {
+		return (1024 * bw / CHAR_BIT) + n_exceptions * sizeof(T) + n_exceptions * sizeof(vec_idx_t);
+	} //
 public:
 	bw_t      bw;           //
 	T         base;         //

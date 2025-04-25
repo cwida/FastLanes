@@ -86,7 +86,8 @@ void typed_patch<T>::b_patch_decompress(T* out_p, uint64_t* bitmap, T* exc_p) {
 }
 
 template <typename T>
-void typed_patch<T>::l_patch_decompress(T* in, rle_idx_t first, rle_idx_t c) {}
+void typed_patch<T>::l_patch_decompress(T* in, rle_idx_t first, rle_idx_t c) {
+}
 
 template <typename T>
 void typed_patch<T>::l_patch_compress(T* in, T* exc, rle_idx_t arr[], rle_idx_t c, n_t max_range) {

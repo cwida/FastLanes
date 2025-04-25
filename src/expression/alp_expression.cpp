@@ -101,7 +101,8 @@ dec_alp_opr<PT>::dec_alp_opr(const ColumnView& column_view, InterpreterState& st
     , fac_segment_view(column_view.GetSegment(4))
     , exp_segment_view(column_view.GetSegment(5))
     , pos_segment_view(column_view.GetSegment(6))
-    , n_exp_segment_view(column_view.GetSegment(7)) {}
+    , n_exp_segment_view(column_view.GetSegment(7)) {
+}
 
 template <typename PT>
 void dec_alp_opr<PT>::PointTo(const n_t vec_n) {

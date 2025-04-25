@@ -1,17 +1,14 @@
 #include "fls/connection.hpp"
-#include "fls/cor/lyt/buf.hpp"              // for Buf
-#include "fls/encoder/rowgroup_encoder.hpp" // for RowgroupEncodingResult
-#include "fls/encoder/single_col_encoder.hpp"
+#include "fls/cor/lyt/buf.hpp"     // for Buf
+#include "fls/encoder/encoder.hpp" // for Encoder
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/predicate_operator.hpp"
-#include "fls/footer/rowgroup_footer.hpp"  // for Footer
-#include "fls/footer/rowgroup_footer.hpp"  // for Schema
-#include "fls/io/file.hpp"                 // for File
-#include "fls/io/io.hpp"                   // for IO, io
-#include "fls/json/fls_json.hpp"           // for JSON
-#include "fls/new_encoder/new_encoder.hpp" // for NewEncoder
-#include "fls/reader/reader.hpp"           // for Reader
+#include "fls/footer/rowgroup_descriptor.hpp" // for RowgroupDescriptor
+#include "fls/io/file.hpp"                    // for File
+#include "fls/io/io.hpp"                      // for IO, io
+#include "fls/json/fls_json.hpp"              // for JSON
+#include "fls/reader/reader.hpp"              // for Reader
 #include "fls/reader/segment.hpp"
 #include "fls/std/string.hpp"     // for string
 #include "fls/table/dir.hpp"      // for Dir, FileT
@@ -24,9 +21,13 @@
 
 namespace fastlanes {
 
-Connection::Connection() { m_config = make_unique<Config>(); }
+Connection::Connection() {
+	m_config = make_unique<Config>();
+}
 
-Connection::Connection(const Config& config) { m_config = make_unique<Config>(config); };
+Connection::Connection(const Config& config) {
+	m_config = make_unique<Config>(config);
+};
 
 Connection& Connection::read(const path& dir_path) {
 	FileSystem::check_if_dir_exists(dir_path);
@@ -76,17 +77,11 @@ Reader& Connection::read_fls(const path& dir_path) {
 	return *m_reader;
 }
 
-void Connection::verify_encoding() {
-	/**/
-	const RowgroupEncoder table_encoder(WITH_VERIFICATION);
-	table_encoder.Encode(*this);
-}
-
 Connection& Connection::read(const Dir& dir) {
-	auto                 json_string = File::read(dir.schema_path);
-	const nlohmann::json j           = nlohmann::json::parse(json_string);
-	auto                 footer      = j.get<Footer>();
-	m_rowgroup                       = make_unique<Rowgroup>(footer);
+	auto                 json_string         = File::read(dir.schema_path);
+	const nlohmann::json j                   = nlohmann::json::parse(json_string);
+	auto                 rowgroup_descriptor = j.get<RowgroupDescriptor>();
+	m_rowgroup                               = make_unique<Rowgroup>(rowgroup_descriptor);
 
 	switch (dir.file_t) {
 	case FileT::JSON: {
@@ -123,7 +118,7 @@ Connection& Connection::spell() {
 		throw std::runtime_error("Data is not loaded.");
 	}
 
-	m_rowgroup_footer = Wizard::Spell(*this);
+	m_rowgroup_descriptor = Wizard::Spell(*this);
 
 	return *this;
 }
@@ -143,7 +138,7 @@ Connection& Connection::to_fls(const path& dir_path) {
 
 	{
 		//  make a rowgroup-footer if there is no rowgroup-footer .
-		if (m_rowgroup_footer == nullptr) {
+		if (m_rowgroup_descriptor == nullptr) {
 			spell();
 		}
 	}
@@ -152,23 +147,22 @@ Connection& Connection::to_fls(const path& dir_path) {
 		// encode
 		io  file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
 		Buf buf;                                                         // TODO[memory pool]
-		NewEncoder::encode(*this, buf);
+		Encoder::encode(*this, buf);
 		IO::flush(file_io, buf);
 	}
 
 	{
 		// write footer
-		JSON::write<Footer>(dir_path, *m_rowgroup_footer);
+		JSON::write<RowgroupDescriptor>(dir_path, *m_rowgroup_descriptor);
 	}
 
 	return *this;
 }
 
 Connection& Connection::reset() {
-	m_rowgroup_footer.reset();
+	m_rowgroup_descriptor.reset();
 	m_rowgroup.reset();
 	m_reader.reset();
-	m_encoding_result.reset();
 
 	return *this;
 }
@@ -182,9 +176,13 @@ Connection& Connection::project(const vector<idx_t>& idxs) {
 
 	return *this;
 }
-bool Connection::is_forced_schema_pool() const { return m_config->is_forced_schema_pool; }
+bool Connection::is_forced_schema_pool() const {
+	return m_config->is_forced_schema_pool;
+}
 
-bool Connection::is_forced_schema() const { return m_config->is_forced_schema; }
+bool Connection::is_forced_schema() const {
+	return m_config->is_forced_schema;
+}
 
 const vector<OperatorToken>& Connection::get_forced_schema_pool() const {
 	//
@@ -212,41 +210,18 @@ const vector<OperatorToken>& Connection::get_forced_schema() const {
 	return m_config->forced_schema;
 }
 
+Connection& Connection::set_n_vectors_per_rowgroup(n_t n_vector_per_rowgroup) {
+	m_config->n_vector_per_rowgroup = n_vector_per_rowgroup;
+	return *this;
+}
+
 Connection& Connection::set_sample_size(n_t n_vecs) {
 	m_config->sample_size = n_vecs;
 	return *this;
 }
 
-n_t Connection::get_sample_size() const { return m_config->sample_size; }
-
-void Connection::encode_from_memory(void*           input_p,
-                                    const n_t       n_tup,
-                                    n_t             capacity,
-                                    void*           encoded_p,
-                                    bsz_t*          encoded_byte_size,
-                                    const DataType& data_type,
-                                    const n_t       expr_id) {
-	// init
-	bsz_t      input_bsz  = n_tup * SizeOf(data_type);
-	const io   input_io   = make_unique<ExternalMemory>(input_p, input_bsz);
-	io         encoded_io = make_unique<ExternalMemory>(encoded_p, capacity);
-	const auto encoder    = make_unique<SingleColEncoder>(input_io, encoded_io, data_type, expr_id);
-
-	// encode
-	encoder->encode();
-
-	// encode size
-	*encoded_byte_size = IO::get_size(encoded_io);
-}
-
-void Connection::decode_to_memory(void* encoded_p, void* decoded_p, const DataType& data_type) {
-	// init
-	const io   encoded_io = make_unique<ExternalMemory>(encoded_p, 0);
-	io         decoded_io = make_unique<ExternalMemory>(decoded_p, 0);
-	const auto decoder    = make_unique<SingleColDecoder>(encoded_io, decoded_io, data_type);
-
-	// decode
-	decoder->full_decode();
+n_t Connection::get_sample_size() const {
+	return m_config->sample_size;
 }
 
 Rowgroup& Connection::rowgroup() const {
@@ -261,5 +236,7 @@ Rowgroup& Connection::rowgroup() const {
 Config::Config()
     : is_forced_schema_pool(false)
     , is_forced_schema(false)
-    , sample_size(CFG::SAMPLER::SAMPLE_SIZE) {}
+    , sample_size(CFG::SAMPLER::SAMPLE_SIZE)
+    , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP) {
+}
 } // namespace fastlanes

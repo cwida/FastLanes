@@ -7,7 +7,8 @@
 namespace fastlanes {
 
 File::File(const path& path) // NOLINT
-    : m_path(path) {}
+    : m_path(path) {
+}
 
 File::~File() {
 

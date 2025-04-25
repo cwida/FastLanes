@@ -28,7 +28,7 @@ Language: Cpp
 AccessModifierOffset: -4
 BreakConstructorInitializers: BeforeComma
 AllowShortBlocksOnASingleLine: Always
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 CompactNamespaces: true
 BinPackArguments: false

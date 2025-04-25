@@ -50,7 +50,8 @@ class ColorStream {
 public:
 	explicit ColorStream(std::ostream& os, const char* color)
 	    : m_os(os)
-	    , m_color(color) {}
+	    , m_color(color) {
+	}
 
 	template <typename T>
 	ColorStream& operator<<(const T& value) {

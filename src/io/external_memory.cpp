@@ -13,7 +13,9 @@ template ExternalMemory::ExternalMemory(void* pointer, sz_t n_bytes);
 template ExternalMemory::ExternalMemory(i64_pt* pointer, sz_t n_bytes);
 template ExternalMemory::ExternalMemory(u64_pt* pointer, sz_t n_bytes);
 
-std::span<std::byte> ExternalMemory::GetSpan() const { return m_data_span; }
+std::span<std::byte> ExternalMemory::GetSpan() const {
+	return m_data_span;
+}
 
 void ExternalMemory::Ingest(const Buf& buf) {
 	if (buf.Size() > m_data_span.size()) {

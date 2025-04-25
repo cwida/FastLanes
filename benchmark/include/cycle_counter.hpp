@@ -449,7 +449,9 @@ public:
 		running = false;
 	}
 
-	~LinuxEvents() { close(fd); }
+	~LinuxEvents() {
+		close(fd);
+	}
 
 	void start() {
 		if (ioctl(fd, PERF_EVENT_IOC_RESET, 0) == -1) {
@@ -781,7 +783,9 @@ inline BENCHMARK_ALWAYS_INLINE int64_t Now() {
 } // end namespace cycleclock
 
 namespace timer {
-inline int64_t Now() { return std::chrono::high_resolution_clock::now().time_since_epoch().count(); }
+inline int64_t Now() {
+	return std::chrono::high_resolution_clock::now().time_since_epoch().count();
+}
 } // namespace timer
 
 const int kNumMillisPerSecond = 1000;
@@ -792,8 +796,12 @@ const int kNumNanosPerSecond  = kNumNanosPerMicro * kNumMicrosPerSecond;
 
 #ifdef BENCHMARK_OS_WINDOWS
 // Window's Sleep takes milliseconds argument.
-void SleepForMilliseconds(int milliseconds) { Sleep(milliseconds); }
-void SleepForSeconds(double seconds) { SleepForMilliseconds(static_cast<int>(kNumMillisPerSecond * seconds)); }
+void SleepForMilliseconds(int milliseconds) {
+	Sleep(milliseconds);
+}
+void SleepForSeconds(double seconds) {
+	SleepForMilliseconds(static_cast<int>(kNumMillisPerSecond * seconds));
+}
 #else // BENCHMARK_OS_WINDOWS
 static void SleepForMicroseconds(int microseconds) {
 #ifdef BENCHMARK_OS_ZOS
@@ -816,7 +824,9 @@ static void SleepForMicroseconds(int microseconds) {
 #endif
 }
 
-static void SleepForMilliseconds(int milliseconds) { SleepForMicroseconds(milliseconds * kNumMicrosPerMilli); }
+static void SleepForMilliseconds(int milliseconds) {
+	SleepForMicroseconds(milliseconds * kNumMicrosPerMilli);
+}
 
 FLS_BENCH_MAYBE_UNUSED static void SleepForSeconds(double seconds) {
 	SleepForMicroseconds(static_cast<int>(seconds * kNumMicrosPerSecond));
@@ -1002,7 +1012,9 @@ StrFormat(const char* format, ...) {
 	return tmp;
 }
 
-inline std::ostream& StrCatImp(std::ostream& out) { return out; }
+inline std::ostream& StrCatImp(std::ostream& out) {
+	return out;
+}
 
 template <class First, class... Rest>
 inline std::ostream& StrCatImp(std::ostream& out, First&& f, Rest&&... rest) {
@@ -1064,11 +1076,21 @@ public:
 		static const CPUInfo info;
 		return info;
 	}
-	int                           getNumCpus() const { return num_cpus; };
-	double                        getCyclesPerSecond() const { return cycles_per_second; };
-	const std::vector<CacheInfo>& getCaches() const { return caches; };
-	const std::vector<double>&    getLoadAvg() const { return load_avg; };
-	std::string                   getScaling() const { return ToString(scaling); };
+	int getNumCpus() const {
+		return num_cpus;
+	};
+	double getCyclesPerSecond() const {
+		return cycles_per_second;
+	};
+	const std::vector<CacheInfo>& getCaches() const {
+		return caches;
+	};
+	const std::vector<double>& getLoadAvg() const {
+		return load_avg;
+	};
+	std::string getScaling() const {
+		return ToString(scaling);
+	};
 
 	int                    num_cpus;
 	Scaling                scaling;
@@ -1083,7 +1105,9 @@ private:
 	BENCHMARK_DISALLOW_COPY_AND_ASSIGN(CPUInfo);
 };
 
-static void PrintImp(std::ostream& out) { out << std::endl; }
+static void PrintImp(std::ostream& out) {
+	out << std::endl;
+}
 
 template <class First, class... Rest>
 void PrintImp(std::ostream& out, First&& f, Rest&&... rest) {
@@ -1117,23 +1141,31 @@ struct ValueUnion {
 public:
 	ValueUnion()
 	    : Size(0)
-	    , Buff(nullptr, &std::free) {}
+	    , Buff(nullptr, &std::free) {
+	}
 
 	explicit ValueUnion(size_t buff_size)
 	    : Size(sizeof(DataT) + buff_size)
-	    , Buff(::new(std::malloc(Size)) DataT(), &std::free) {}
+	    , Buff(::new(std::malloc(Size)) DataT(), &std::free) {
+	}
 
 	ValueUnion(ValueUnion&& other) = default;
-	explicit    operator bool() const { return bool(Buff); }
-	char*       data() const { return Buff->bytes; }
-	std::string GetAsString() const { return {data()}; }
-	int64_t     GetAsInteger() const {
-        if (Size == sizeof(Buff->uint32_value)) {
-            return static_cast<int32_t>(Buff->uint32_value);
-        } else if (Size == sizeof(Buff->uint64_value)) {
-            return static_cast<int64_t>(Buff->uint64_value);
-        }
-        BENCHMARK_UNREACHABLE();
+	explicit operator bool() const {
+		return bool(Buff);
+	}
+	char* data() const {
+		return Buff->bytes;
+	}
+	std::string GetAsString() const {
+		return {data()};
+	}
+	int64_t GetAsInteger() const {
+		if (Size == sizeof(Buff->uint32_value)) {
+			return static_cast<int32_t>(Buff->uint32_value);
+		} else if (Size == sizeof(Buff->uint64_value)) {
+			return static_cast<int64_t>(Buff->uint64_value);
+		}
+		BENCHMARK_UNREACHABLE();
 	}
 	uint64_t GetAsUnsigned() const {
 		if (Size == sizeof(Buff->uint32_value)) {
@@ -1742,7 +1774,8 @@ inline CPUInfo::CPUInfo()
     : num_cpus(GetNumCPUs())
     , scaling(CpuScaling(num_cpus))
     , cycles_per_second(GetCPUCyclesPerSecond(scaling))
-    , caches(GetCacheSizes()) {}
+    , caches(GetCacheSizes()) {
+}
 
 struct SystemInfo {
 
@@ -1796,10 +1829,13 @@ struct SystemInfo {
 
 private:
 	SystemInfo()
-	    : m_name(GetSystemName()) {}
+	    : m_name(GetSystemName()) {
+	}
 
 public:
-	const std::string& getName() const { return m_name; }
+	const std::string& getName() const {
+		return m_name;
+	}
 
 private:
 	std::string m_name;
@@ -1820,7 +1856,8 @@ public:
 		Context()
 		    : cpu_info(CPUInfo::getInstance())
 		    , sys_info(SystemInfo::getInstance())
-		    , name_field_width(0) {}
+		    , name_field_width(0) {
+		}
 	};
 
 	class Run {
@@ -1846,7 +1883,8 @@ public:
 		//                      has_memory_result(false),
 		//                      allocs_per_iter(0.0),
 		//                      max_bytes_used(0)
-		{}
+		{
+		}
 
 		std::string benchmark_name() const;
 		int         benchmark_number;
@@ -1870,7 +1908,8 @@ public:
 	// and the error stream set to 'std::cerr'
 	BenchmarkReporter()
 	    : output_stream_(&std::cout)
-	    , error_stream_(&std::cerr) {}
+	    , error_stream_(&std::cerr) {
+	}
 
 	// Called once for every suite of benchmarks run.
 	// The parameter "context" contains information that the
@@ -1891,7 +1930,8 @@ public:
 
 	// Called once and only once after ever group of benchmarks is run and
 	// reported.
-	virtual void Finalize() {}
+	virtual void Finalize() {
+	}
 
 	// REQUIRES: The object referenced by 'out' is valid for the lifetime
 	// of the reporter.
@@ -1907,9 +1947,13 @@ public:
 		error_stream_ = err;
 	}
 
-	static std::ostream& GetOutputStream() { return std::cout; }
+	static std::ostream& GetOutputStream() {
+		return std::cout;
+	}
 
-	static std::ostream& GetErrorStream() { return std::cerr; }
+	static std::ostream& GetErrorStream() {
+		return std::cerr;
+	}
 
 	virtual ~BenchmarkReporter();
 
@@ -1999,12 +2043,15 @@ class CSVReporter : public BenchmarkReporter {
 public:
 	explicit CSVReporter(std::string path)
 	    : path(std::move(path))
-	    , printed_header(false) {}
+	    , printed_header(false) {
+	}
 	bool ReportContext(const Context& context) override {
 		PrintBasicContext(GetErrorStream(), context);
 		return true;
 	}
-	static void PrintContext() { PrintBasicContext(GetErrorStream(), benchmark::BenchmarkReporter::Context()); }
+	static void PrintContext() {
+		PrintBasicContext(GetErrorStream(), benchmark::BenchmarkReporter::Context());
+	}
 	static void WriteRuns(std::vector<Run>& reports, const std::string& path) {
 #ifdef BENCHMARK_OS_EMSCRIPTEN
 		// alternatives :
@@ -2067,7 +2114,8 @@ private:
 	    , m_system_info(SystemInfo::getInstance())
 	    , m_enable_print(false)
 	    , m_result_file {' '}
-	    , m_metadata_file {' '} {} //
+	    , m_metadata_file {' '} {
+	} //
 public:
 	friend class BenchmarkBuilder;
 	void Run(benchmark::BenchmarkReporter::Run run) {
@@ -2103,9 +2151,12 @@ constexpr auto CSV_PREFIX {".csv"};
 class BenchmarkBuilder {
 public:
 	explicit BenchmarkBuilder(std::string name)
-	    : m_benchmark(std::move(name)) {} //
+	    : m_benchmark(std::move(name)) {
+	} //
 public:
-	operator Benchmark() const { return m_benchmark; }
+	operator Benchmark() const {
+		return m_benchmark;
+	}
 	benchmark::BenchmarkBuilder& save() {
 		m_benchmark.m_metadata_file = "./" + m_benchmark.m_metadata_file + METADATA_PREFIX;
 		m_benchmark.m_result_file   = "./" + m_benchmark.m_metadata_file + CSV_PREFIX;
@@ -2162,25 +2213,61 @@ public:
 	const std::string target_compile_options      = "TARGET_COMPILE_OPTIONS";
 
 public:
-	const std::string& getSourceDir() const { return source_dir; }
-	const std::string& getCmakeOsxArchitectures() const { return cmake_osx_architectures; }
-	const std::string& getCmakeHostSystemProcessor() const { return cmake_host_system_processor; }
-	const std::string& getCmakeSystemProcessor() const { return cmake_system_processor; }
-	const std::string& getCmakeHostSystemName() const { return cmake_host_system_name; }
-	const std::string& getCmakeSystemName() const { return cmake_system_name; }
-	const std::string& getCmakeCCompiler() const { return cmake_c_compiler; }
-	const std::string& getCmakeCxxCompiler() const { return cmake_cxx_compiler; }
-	const std::string& getCmakeCxxCompilerId() const { return cmake_cxx_compiler_id; }
-	const std::string& getCmakeCxxCompilerVersion() const { return cmake_cxx_compiler_version; }
-	const std::string& getCmakeCrosscompiling() const { return cmake_crosscompiling; }
-	const std::string& getCmakeCxxFlagsDebug() const { return cmake_cxx_flags_debug; }
-	const std::string& getCmakeCxxFlagsRelease() const { return cmake_cxx_flags_release; }
-	const std::string& getCmakeBuildType() const { return cmake_build_type; }
-	const std::string& get_cmakeToolchainFile() const { return cmake_toolchain_file; }
-	const std::string& getTargetName() const { return target_name; }
-	const std::string& getTargetCompileOptions() const { return target_compile_options; }
+	const std::string& getSourceDir() const {
+		return source_dir;
+	}
+	const std::string& getCmakeOsxArchitectures() const {
+		return cmake_osx_architectures;
+	}
+	const std::string& getCmakeHostSystemProcessor() const {
+		return cmake_host_system_processor;
+	}
+	const std::string& getCmakeSystemProcessor() const {
+		return cmake_system_processor;
+	}
+	const std::string& getCmakeHostSystemName() const {
+		return cmake_host_system_name;
+	}
+	const std::string& getCmakeSystemName() const {
+		return cmake_system_name;
+	}
+	const std::string& getCmakeCCompiler() const {
+		return cmake_c_compiler;
+	}
+	const std::string& getCmakeCxxCompiler() const {
+		return cmake_cxx_compiler;
+	}
+	const std::string& getCmakeCxxCompilerId() const {
+		return cmake_cxx_compiler_id;
+	}
+	const std::string& getCmakeCxxCompilerVersion() const {
+		return cmake_cxx_compiler_version;
+	}
+	const std::string& getCmakeCrosscompiling() const {
+		return cmake_crosscompiling;
+	}
+	const std::string& getCmakeCxxFlagsDebug() const {
+		return cmake_cxx_flags_debug;
+	}
+	const std::string& getCmakeCxxFlagsRelease() const {
+		return cmake_cxx_flags_release;
+	}
+	const std::string& getCmakeBuildType() const {
+		return cmake_build_type;
+	}
+	const std::string& get_cmakeToolchainFile() const {
+		return cmake_toolchain_file;
+	}
+	const std::string& getTargetName() const {
+		return target_name;
+	}
+	const std::string& getTargetCompileOptions() const {
+		return target_compile_options;
+	}
 
-	static void PrintCmake() { printCmakeInfo(std::cout); }
+	static void PrintCmake() {
+		printCmakeInfo(std::cout);
+	}
 	static void AppendCmake(const std::string& path) {
 		std::fstream file;
 		file.open(path, std::fstream::app);

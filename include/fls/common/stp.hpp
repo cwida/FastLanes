@@ -12,10 +12,17 @@ public:
 public:
 	uint64_t c;
 	RefC()
-	    : c(1) {}
-	void     Inc() { ++c; }
-	void     Dec() { --c; }
-	uint32_t GetPn() const { return c; }
+	    : c(1) {
+	}
+	void Inc() {
+		++c;
+	}
+	void Dec() {
+		--c;
+	}
+	uint32_t GetPn() const {
+		return c;
+	}
 };
 
 template <typename T>
@@ -55,13 +62,23 @@ public:
 	}
 
 public:
-	void     Release();
-	int64_t  UseCount() const noexcept;                       // Return use count (use count == 0 if stp is empty).
-	T&       operator*() const noexcept { return *ptr; }      // Dereference pointer to managed object.
-	T*       operator->() const noexcept { return ptr; }      //
-	T*       Get() const noexcept { return ptr; }             // Return the contained pointer.
-	explicit operator bool() const noexcept { return (ptr); } // Check if there is an associated managed object.
-	void     Reset() noexcept { Release(); }                  // Resets stp to empty.
+	void    Release();
+	int64_t UseCount() const noexcept; // Return use count (use count == 0 if stp is empty).
+	T&      operator*() const noexcept {
+        return *ptr;
+	} // Dereference pointer to managed object.
+	T* operator->() const noexcept {
+		return ptr;
+	} //
+	T* Get() const noexcept {
+		return ptr;
+	} // Return the contained pointer.
+	explicit operator bool() const noexcept {
+		return (ptr);
+	} // Check if there is an associated managed object.
+	void Reset() noexcept {
+		Release();
+	} // Resets stp to empty.
 public:
 	T*    ptr;   //
 	RefC* ref_c; // reference counter.
@@ -75,7 +92,8 @@ public:
 public:
 	template <class... ARGS>
 	explicit ObjectAndBlock(ARGS&&... args)
-	    : object(std::forward<ARGS>(args)...) {}
+	    : object(std::forward<ARGS>(args)...) {
+	}
 };
 
 template <class T, class... ARGS>
@@ -90,12 +108,14 @@ stp<T> make_stp(ARGS&&... args) { /* NOLINT. */
 template <typename T>
 stp<T>::stp()
     : ptr(nullptr)
-    , ref_c(nullptr) {}
+    , ref_c(nullptr) {
+}
 
 template <typename T>
 stp<T>::stp(std::nullptr_t)
     : ptr(nullptr)
-    , ref_c(nullptr) {}
+    , ref_c(nullptr) {
+}
 
 template <typename T>
 stp<T>::stp(RefC* r, T* p) {

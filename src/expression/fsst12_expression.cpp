@@ -35,9 +35,13 @@ enc_fsst12_opr::enc_fsst12_opr(const PhysicalExpr& expr,
 	operand_tokens.emplace_back(state.cur_operand++);
 }
 
-enc_fsst12_opr::~enc_fsst12_opr() { fsst12_destroy(fsst12_encoder_p); }
+enc_fsst12_opr::~enc_fsst12_opr() {
+	fsst12_destroy(fsst12_encoder_p);
+}
 
-void enc_fsst12_opr::PointTo(const n_t vec_idx) { str_col_view.PointTo(vec_idx); }
+void enc_fsst12_opr::PointTo(const n_t vec_idx) {
+	str_col_view.PointTo(vec_idx);
+}
 
 void enc_fsst12_opr::Finalize() {
 	const auto size = fsst12_export(fsst12_encoder_p, fsst12_header);
@@ -72,12 +76,21 @@ void enc_fsst12_opr::MoveSegments(vector<up<Segment>>& segments) {
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct FSST12ExprVisitor {
 	explicit FSST12ExprVisitor(dec_fsst12_opr& this_opr)
-	    : this_opr(this_opr) {}
+	    : this_opr(this_opr) {
+	}
 
-	void operator()(const sp<dec_scan_opr<ofs_t>>& opr) { this_opr.offset_arr = opr->data; }
-	void operator()(const sp<dec_rsum_opr<ofs_t>>& opr) { this_opr.offset_arr = opr->idxs; }
-	void operator()(std::monostate& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(const sp<dec_scan_opr<ofs_t>>& opr) {
+		this_opr.offset_arr = opr->data;
+	}
+	void operator()(const sp<dec_rsum_opr<ofs_t>>& opr) {
+		this_opr.offset_arr = opr->idxs;
+	}
+	void operator()(std::monostate& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 
 	dec_fsst12_opr& this_opr;
 };
@@ -99,7 +112,9 @@ dec_fsst12_opr::dec_fsst12_opr(PhysicalExpr& physical_expr, const ColumnView& co
 	tmp_string.resize(CFG::String::max_bytes_per_string);
 }
 
-void dec_fsst12_opr::PointTo(const n_t vec_n) { fsst12_bytes_segment_view.PointTo(vec_n); }
+void dec_fsst12_opr::PointTo(const n_t vec_n) {
+	fsst12_bytes_segment_view.PointTo(vec_n);
+}
 
 void dec_fsst12_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length_vec) {
 	auto* in_byte_arr = reinterpret_cast<uint8_t*>(fsst12_bytes_segment_view.data);

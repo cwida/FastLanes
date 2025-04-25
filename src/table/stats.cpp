@@ -10,7 +10,8 @@ TypedStats<PT>::TypedStats()
     , max {std::numeric_limits<PT>::lowest()} //
     , last_seen_val(0)
     , n_nulls(0)
-    , is_double_castable(false) {}
+    , is_double_castable(false) {
+}
 
 template <typename PT>
 TypedStats<PT>::~TypedStats() = default;
@@ -28,6 +29,7 @@ FlsStringStats::FlsStringStats()
     : is_constant {true}
     , maximum_n_bytes_p_value(std::numeric_limits<n_t>::lowest())
     , is_numeric(false)
-    , last_seen_val("NULL") {}
+    , last_seen_val("NULL") {
+}
 
 } // namespace fastlanes

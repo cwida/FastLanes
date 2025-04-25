@@ -5,7 +5,8 @@ using namespace fastlanes; // NOLINT
 class DecompressionTimeBenchmarker : public CompressionRatioBenchmarker {
 public:
 	explicit DecompressionTimeBenchmarker(const n_t n_repetitions)
-	    : n_repetitions(n_repetitions) {}
+	    : n_repetitions(n_repetitions) {
+	}
 
 	double bench(const path& dir_path) const {
 		Connection conn;
@@ -52,7 +53,7 @@ void bench_decompression(dataset_view_t dataset_view) {
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
 		auto        decompression_time_ms = benchmarker.bench(thread_specific_fls_dir_path);
-		const auto& footer_up             = benchmarker.GetFooter(thread_specific_fls_dir_path);
+		const auto& footer_up             = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 		az_printer::green_cout << "-- Table " << table_name
 		                       << " is benchmarked with time(ms): " << decompression_time_ms << std::endl;

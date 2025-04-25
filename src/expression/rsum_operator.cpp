@@ -61,7 +61,8 @@ template struct enc_rsum_opr<i64_pt>;
 template <typename PT>
 struct RsumExprVisitor {
 	explicit RsumExprVisitor(const PT*& idxs)
-	    : idxs(idxs) {}
+	    : idxs(idxs) {
+	}
 
 	const PT*& idxs;
 
@@ -71,9 +72,15 @@ struct RsumExprVisitor {
 	void operator()(const sp<dec_slpatch_opr<make_unsigned_t<PT>>>& opr) {
 		idxs = reinterpret_cast<const PT*>(opr->data);
 	}
-	void operator()(const sp<PhysicalExpr>& expr) { visit(RsumExprVisitor {idxs}, expr->operators[0]); }
-	void operator()(std::monostate& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(const sp<PhysicalExpr>& expr) {
+		visit(RsumExprVisitor {idxs}, expr->operators[0]);
+	}
+	void operator()(std::monostate& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 };
 
 template <typename PT>

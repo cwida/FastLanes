@@ -1,13 +1,10 @@
 #ifndef FLS_CONNECTION_HPP
 #define FLS_CONNECTION_HPP
 
-#include "fls/common/alias.hpp"             // for up, idx_t
-#include "fls/encoder/rowgroup_encoder.hpp" // for RowgroupEncodingResult
-#include "fls/encoder/single_col_decoder.hpp"
-#include "fls/encoder/single_col_encoder.hpp"
-#include "fls/footer/rowgroup_footer.hpp" // for Footer
-#include "fls/reader/column_view.hpp"     //
-#include "fls/reader/reader.hpp"          // for Reader
+#include "fls/common/alias.hpp"               // for up, idx_t
+#include "fls/footer/rowgroup_descriptor.hpp" // for Footer
+#include "fls/reader/column_view.hpp"         //
+#include "fls/reader/reader.hpp"              // for Reader
 #include "fls/reader/segment.hpp"
 #include "fls/std/filesystem.hpp" // for path
 #include "fls/std/vector.hpp"     // for vector
@@ -30,6 +27,7 @@ public:
 	bool                  is_forced_schema;
 	vector<OperatorToken> forced_schema;
 	n_t                   sample_size;
+	n_t                   n_vector_per_rowgroup;
 };
 /*--------------------------------------------------------------------------------------------------------------------*\
  * FLS
@@ -40,7 +38,7 @@ public:
 	friend class equal;
 	friend class RowgroupEncoder;
 	friend class Wizard;
-	friend class NewEncoder;
+	friend class Encoder;
 
 public:
 	Connection();
@@ -59,8 +57,6 @@ public:
 	Connection& spell();
 	///!
 	Connection& to_fls(const path& dir_path);
-	///! verify if encodings works.
-	void verify_encoding();
 	///!
 	Connection& reset();
 	///!
@@ -87,17 +83,8 @@ public:
 	Connection& force_schema(const vector<OperatorToken>& operator_token);
 	//
 	const vector<OperatorToken>& get_forced_schema() const;
-
-public:
-	static void encode_from_memory(void*           input_p,
-	                               n_t             n_tup,
-	                               n_t             capacity,
-	                               void*           encoded_p,
-	                               bsz_t*          encoded_byte_size,
-	                               const DataType& data_type,
-	                               n_t             expr_id);
-	///
-	static void decode_to_memory(void* encoded_p, void* decoded_p, const DataType& data_type);
+	//
+	Connection& set_n_vectors_per_rowgroup(n_t n_vector_per_rowgroup);
 	///!
 	[[nodiscard]] Rowgroup& rowgroup() const;
 
@@ -107,11 +94,10 @@ private:
 	void        prepare_rowgroup();
 
 private:
-	up<Rowgroup>               m_rowgroup;
-	up<Footer>                 m_rowgroup_footer;
-	up<Reader>                 m_reader;
-	up<RowgroupEncodingResult> m_encoding_result;
-	up<Config>                 m_config;
+	up<Rowgroup>           m_rowgroup;
+	up<RowgroupDescriptor> m_rowgroup_descriptor;
+	up<Reader>             m_reader;
+	up<Config>             m_config;
 };
 
 constexpr static auto const* FOOTER_FILE_NAME {"fls_footer.json"};

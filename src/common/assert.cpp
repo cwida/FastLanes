@@ -28,7 +28,11 @@ void DetailedFlsAssert(const char* expr_str, const char* str, bool expr, const c
 	abort();
 }
 
-void Assert::NotNullPointer(const void* p) { assert(p != nullptr && "Pointer must not be null"); }
+void Assert::NotNullPointer(const void* p) {
+	assert(p != nullptr && "Pointer must not be null");
+}
 
-void Assert::CorrectBW(uint64_t bw) { assert(bw <= 64 && "BW must be greater than zero"); }
+void Assert::CorrectBW(uint64_t bw) {
+	assert(bw <= 64 && "BW must be greater than zero");
+}
 } // namespace fastlanes

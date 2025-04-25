@@ -18,7 +18,8 @@ public:
 
 public:
 	BiMapFrequencyStr()
-	    : max_freq_(0) {}
+	    : max_freq_(0) {
+	}
 
 	void insert(const fls_string_t& key, n_t value) {
 		auto it = forward_map_.find(key);
@@ -69,16 +70,22 @@ public:
 		return it->second;
 	}
 
-	bool contains_key(const fls_string_t& key) const { return (forward_map_.find(key) != forward_map_.end()); }
+	bool contains_key(const fls_string_t& key) const {
+		return (forward_map_.find(key) != forward_map_.end());
+	}
 
-	bool contains_value(n_t value) const { return (reverse_map_.find(value) != reverse_map_.end()); }
+	bool contains_value(n_t value) const {
+		return (reverse_map_.find(value) != reverse_map_.end());
+	}
 
 	std::size_t size() const {
 		FLS_ASSERT_EQUALITY(forward_map_.size(), reverse_map_.size());
 		return forward_map_.size();
 	}
 
-	bool empty() const { return forward_map_.empty(); }
+	bool empty() const {
+		return forward_map_.empty();
+	}
 
 	fls_string_t get_most_frequent_key() const {
 		if (empty()) {

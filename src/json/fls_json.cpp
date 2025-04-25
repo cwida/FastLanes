@@ -2,16 +2,15 @@
 #include "fls/common/decimal.hpp"
 #include "fls/common/magic_enum.hpp"
 #include "fls/connection.hpp"
-#include "fls/encoder/rowgroup_encoder.hpp"
 #include "fls/expression/logical_expression.hpp"
 #include "fls/expression/new_rpn.hpp"
-#include "fls/footer/rowgroup_footer.hpp"
+#include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include <sstream>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
- * RowgroupFooter
+ * RowgroupRowgroupDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* N_VEC              = "1, [REQUIRED], N VEC";
 constexpr const auto* ROWGROUP_SIZE      = "2, [REQUIRED], Rowgroup size";
@@ -243,21 +242,21 @@ DataType TypeLookUp(const std::string& str) {
 	return it->second;
 }
 
-void to_json(nlohmann::json& j, const Footer& p) {
+void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
 	j = nlohmann::json {
 	    //
-	    {N_VEC, p.m_n_vec},                           //
-	    {ROWGROUP_SIZE, p.m_rowgroup_size},           //
-	    {COLUMN_DESCRIPTORS, p.m_column_descriptors}, //
+	    {N_VEC, rowgroup_descriptor.m_n_vec},                           //
+	    {ROWGROUP_SIZE, rowgroup_descriptor.m_rowgroup_size},           //
+	    {COLUMN_DESCRIPTORS, rowgroup_descriptor.m_column_descriptors}, //
 	};
 }
-void from_json(const nlohmann::json& j, Footer& p) {
+void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor) {
 	if (j.contains(COLUMN_DESCRIPTORS)) {
-		j.at(COLUMN_DESCRIPTORS).get_to(p.m_column_descriptors);
-		j.at(N_VEC).get_to(p.m_n_vec);
-		j.at(ROWGROUP_SIZE).get_to(p.m_rowgroup_size);
+		j.at(COLUMN_DESCRIPTORS).get_to(rowgroup_descriptor.m_column_descriptors);
+		j.at(N_VEC).get_to(rowgroup_descriptor.m_n_vec);
+		j.at(ROWGROUP_SIZE).get_to(rowgroup_descriptor.m_rowgroup_size);
 	} else {
-		j.at("columns").get_to(p.m_column_descriptors);
+		j.at("columns").get_to(rowgroup_descriptor.m_column_descriptors);
 	}
 }
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -402,16 +401,13 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
 template <typename DATA>
 void JSON::write(const path& dir_path, const DATA& data) {
 	path file_path;
-	if constexpr (std::is_same_v<DATA, RowgroupEncodingResult>) {
-		file_path = dir_path / PROFILING_FILE_NAME;
-	} else if constexpr (std::is_same_v<DATA, Footer>) {
+	if constexpr (std::is_same_v<DATA, RowgroupDescriptor>) {
 		file_path = dir_path / FOOTER_FILE_NAME;
 	}
 	const nlohmann::json j = data;
 	File::write(file_path, j.dump());
 }
 
-template void JSON::write(const path& path, const Footer& data_up);
-template void JSON::write(const path& path, const RowgroupEncodingResult& data_up);
+template void JSON::write(const path& path, const RowgroupDescriptor& data_up);
 
 } // namespace fastlanes

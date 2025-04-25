@@ -28,7 +28,7 @@ public:
 	///
 	void to_csv(const path& dir_path);
 	///
-	[[nodiscard]] Footer& footer() const;
+	[[nodiscard]] RowgroupDescriptor& footer() const;
 	///!
 	[[nodiscard]] vector<string> get_column_names() const;
 	///
@@ -36,12 +36,11 @@ public:
 
 public:
 	vector<sp<PhysicalExpr>> m_expressions;
-	vector<n_t>              n_operators;
 
 private:
-	up<Footer>       m_footer;
-	up<Buf>          m_buf;
-	up<RowgroupView> m_rowgroup_view;
+	up<RowgroupDescriptor> m_footer;
+	up<Buf>                m_buf;
+	up<RowgroupView>       m_rowgroup_view;
 };
 
 } // namespace fastlanes

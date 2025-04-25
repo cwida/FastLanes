@@ -6,7 +6,7 @@
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Footer;
+class RowgroupDescriptor;
 class ColumnDescriptor;
 class RowgroupEncodingResult;
 class Connector;
@@ -18,10 +18,10 @@ class BinaryValue;
 class ExprSpace;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
- * RowgroupFooter
+ * RowgroupDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const Footer& p);
-void from_json(const nlohmann::json& j, Footer& p);
+void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor);
+void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ColumnDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/

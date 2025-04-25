@@ -9,5 +9,7 @@ void bit::set(uint64_t& unit, uint16_t pos) {
 	}
 }
 
-bsz_t bit::to_bytes(const bsz_t bits) { return (bits + 7) / 8; }
+bsz_t bit::to_bytes(const bsz_t bits) {
+	return (bits + 7) / 8;
+}
 } // namespace fastlanes

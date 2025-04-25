@@ -1,12 +1,7 @@
-add_subdirectory(dic)
-add_subdirectory(page)
-
 add_library(fls_lyt
         OBJECT
         buf.cpp
-        #
-        col.cpp
-        vec.cpp
+        #[[]]
 )
 
 set(FASTLANES_OBJECT_FILES

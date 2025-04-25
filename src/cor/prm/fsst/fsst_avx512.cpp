@@ -41,7 +41,9 @@
 //  bool fsst_hasAVX512() { return false; }
 // #endif
 
-bool fsst_hasAVX512() { return false; }
+bool fsst_hasAVX512() {
+	return false;
+}
 
 // BULK COMPRESSION OF STRINGS
 //

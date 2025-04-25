@@ -14,14 +14,23 @@ namespace fastlanes {
 template <typename INDEX_PT>
 struct DictExprVisitor {
 	explicit DictExprVisitor(const INDEX_PT*& index_arr)
-	    : index_arr(index_arr) {}
+	    : index_arr(index_arr) {
+	}
 
 	const INDEX_PT*& index_arr;
 
-	void operator()(const sp<dec_unffor_opr<INDEX_PT>>& opr) { index_arr = opr->Data(); }
-	void operator()(const sp<PhysicalExpr>& expr) { visit(DictExprVisitor {index_arr}, expr->operators[0]); }
-	void operator()(std::monostate&) { FLS_UNREACHABLE(); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(const sp<dec_unffor_opr<INDEX_PT>>& opr) {
+		index_arr = opr->Data();
+	}
+	void operator()(const sp<PhysicalExpr>& expr) {
+		visit(DictExprVisitor {index_arr}, expr->operators[0]);
+	}
+	void operator()(std::monostate&) {
+		FLS_UNREACHABLE();
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 };
 
 template <typename VALUE_PT>
@@ -78,8 +87,10 @@ enc_dict_opr<fls_string_t>::enc_dict_opr(const PhysicalExpr& expr,
 	state.cur_operator++;
 }
 
-void enc_dict_opr<fls_string_t>::PointTo(n_t vec_idx) {}
-void enc_dict_opr<fls_string_t>::Encode() {}
+void enc_dict_opr<fls_string_t>::PointTo(n_t vec_idx) {
+}
+void enc_dict_opr<fls_string_t>::Encode() {
+}
 
 void enc_dict_opr<fls_string_t>::MoveSegments(vector<up<Segment>>& segments) {
 	segments.push_back(std::move(offset_segment));

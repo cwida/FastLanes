@@ -35,9 +35,13 @@ enc_fsst_opr::enc_fsst_opr(const PhysicalExpr& expr,
 	operand_tokens.emplace_back(state.cur_operand++);
 }
 
-enc_fsst_opr::~enc_fsst_opr() { fsst_destroy(fsst_encoder_p); }
+enc_fsst_opr::~enc_fsst_opr() {
+	fsst_destroy(fsst_encoder_p);
+}
 
-void enc_fsst_opr::PointTo(const n_t vec_idx) { str_col_view.PointTo(vec_idx); }
+void enc_fsst_opr::PointTo(const n_t vec_idx) {
+	str_col_view.PointTo(vec_idx);
+}
 
 void enc_fsst_opr::Finalize() {
 	const auto size = fsst_export(fsst_encoder_p, fsst_header);
@@ -72,12 +76,21 @@ void enc_fsst_opr::MoveSegments(vector<up<Segment>>& segments) {
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct FSSTExprVisitor {
 	explicit FSSTExprVisitor(dec_fsst_opr& this_opr)
-	    : this_opr(this_opr) {}
+	    : this_opr(this_opr) {
+	}
 
-	void operator()(const sp<dec_scan_opr<ofs_t>>& opr) { this_opr.offset_arr = opr->data; }
-	void operator()(const sp<dec_rsum_opr<ofs_t>>& opr) { this_opr.offset_arr = opr->idxs; }
-	void operator()(std::monostate& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
-	void operator()(const auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); }
+	void operator()(const sp<dec_scan_opr<ofs_t>>& opr) {
+		this_opr.offset_arr = opr->data;
+	}
+	void operator()(const sp<dec_rsum_opr<ofs_t>>& opr) {
+		this_opr.offset_arr = opr->idxs;
+	}
+	void operator()(std::monostate& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(const auto& arg) {
+		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
 
 	dec_fsst_opr& this_opr;
 };
@@ -99,7 +112,9 @@ dec_fsst_opr::dec_fsst_opr(PhysicalExpr& physical_expr, const ColumnView& column
 	tmp_string.resize(CFG::String::max_bytes_per_string);
 }
 
-void dec_fsst_opr::PointTo(const n_t vec_n) { fsst_bytes_segment_view.PointTo(vec_n); }
+void dec_fsst_opr::PointTo(const n_t vec_n) {
+	fsst_bytes_segment_view.PointTo(vec_n);
+}
 
 void dec_fsst_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length_vec) {
 	auto* in_byte_arr = reinterpret_cast<uint8_t*>(fsst_bytes_segment_view.data);

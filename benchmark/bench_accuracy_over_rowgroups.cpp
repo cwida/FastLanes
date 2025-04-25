@@ -84,7 +84,7 @@ void bench_accuracy_over_rowgroups() {
 
 				               // Run the benchmark
 				               auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
-				               const auto& footer_up = benchmarker.GetFooter(thread_specific_fls_dir_path);
+				               const auto& footer_up = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
 
 				               {
 					               // Lock and store the main result
