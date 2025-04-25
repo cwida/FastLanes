@@ -458,6 +458,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			make_enc_uncompressed_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_UNCOMPRESSED_FLT: {
+			make_enc_uncompressed_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_UNCOMPRESSED_I08: {
 			make_enc_uncompressed_expr<i08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
@@ -473,6 +477,7 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 		case EXP_CONSTANT_I08:
 		case EXP_CONSTANT_STR:
 		case EXP_CONSTANT_U08:
+		case EXP_CONSTANT_FLT:
 		case EXP_EQUAL: {
 			break;
 		}
@@ -524,8 +529,16 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			make_enc_dict_ffor_expr<dbl_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_DICT_FLT_FFOR_U16: {
+			make_enc_dict_ffor_expr<flt_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_DICT_DBL_FFOR_U08: {
 			make_enc_dict_ffor_expr<dbl_pt, u08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_DICT_FLT_FFOR_U08: {
+			make_enc_dict_ffor_expr<flt_pt, u08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_DICT_I64_U08:
@@ -565,8 +578,16 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			make_enc_alp_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_ALP_FLT: {
+			make_enc_alp_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_ALP_RD_DBL: {
 			make_enc_alp_rd_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_ALP_RD_FLT: {
+			make_enc_alp_rd_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_FSST: {
@@ -607,6 +628,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 
 		case EXP_RLE_DBL_U16: {
 			make_enc_rle_expr<dbl_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_RLE_FLT_U16: {
+			make_enc_rle_expr<flt_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_RLE_I64_U16: {
@@ -739,6 +764,16 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			    *physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_DICT_FLT_FFOR_SLPATCH_U08: {
+			make_enc_dict_ffor_slpatch_expr<flt_pt, u08_pt>(
+			    *physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_DICT_FLT_FFOR_SLPATCH_U16: {
+			make_enc_dict_ffor_slpatch_expr<flt_pt, u16_pt>(
+			    *physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_DICT_DBL_FFOR_SLPATCH_U32: {
 			make_enc_dict_ffor_slpatch_expr<dbl_pt, u32_pt>(
 			    *physical_expr, physical_rowgroup, column_descriptor, state);
@@ -778,6 +813,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			make_enc_null_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_NULL_FLT: {
+			make_enc_null_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_NULL_I16: {
 			make_enc_null_expr<i16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
@@ -809,6 +848,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 		}
 		case EXP_RLE_DBL_SLPATCH_U16: {
 			make_enc_rle_slpatch_expr<dbl_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_RLE_FLT_SLPATCH_U16: {
+			make_enc_rle_slpatch_expr<flt_pt, u16_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_FSST_DICT_STR_U32:
@@ -854,6 +897,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 			make_enc_frequency_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_FREQUENCY_FLT: {
+			make_enc_frequency_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_FREQUENCY_I08: {
 			make_enc_frequency_expr<i08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
@@ -892,6 +939,10 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptor&  column_desc
 		}
 		case EXP_CROSS_RLE_DBL: {
 			make_enc_cross_rle_opr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_CROSS_RLE_FLT: {
+			make_enc_cross_rle_opr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_CROSS_RLE_STR: {
@@ -1269,6 +1320,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_uncompressed_expr<dbl_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_UNCOMPRESSED_FLT: {
+			make_dec_uncompressed_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_UNCOMPRESSED_STR: {
 			make_dec_fls_str_uncompressed_expr(physical_expr, column_view, state);
 			break;
@@ -1315,6 +1370,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 		}
 		case EXP_CONSTANT_DBL: {
 			make_dec_constant_expr<dbl_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_CONSTANT_FLT: {
+			make_dec_constant_expr<flt_pt>(physical_expr, column_view, state);
 			break;
 		}
 		case EXP_CONSTANT_STR: {
@@ -1389,8 +1448,16 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_dict_ffor_expr<dbl_pt, u16_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_DICT_FLT_FFOR_U16: {
+			make_dec_dict_ffor_expr<flt_pt, u16_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_DICT_DBL_FFOR_U08: {
 			make_dec_dict_ffor_expr<dbl_pt, u08_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_DICT_FLT_FFOR_U08: {
+			make_dec_dict_ffor_expr<flt_pt, u08_pt>(physical_expr, column_view, state);
 			break;
 		}
 		case EXP_DICT_I64_U32: {
@@ -1457,8 +1524,16 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_alp_expr<dbl_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_ALP_FLT: {
+			make_dec_alp_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_ALP_RD_DBL: {
 			make_dec_alp_rd_expr<dbl_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_ALP_RD_FLT: {
+			make_dec_alp_rd_expr<flt_pt>(physical_expr, column_view, state);
 			break;
 		}
 		case EXP_DICT_STR_FFOR_U32: {
@@ -1487,6 +1562,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 		}
 		case EXP_RLE_DBL_U16: {
 			make_dec_rle_expr<dbl_pt, u16_pt>(reader, physical_expr, column_view, state);
+			break;
+		}
+		case EXP_RLE_FLT_U16: {
+			make_dec_rle_expr<flt_pt, u16_pt>(reader, physical_expr, column_view, state);
 			break;
 		}
 		case EXP_RLE_I64_U16: {
@@ -1577,6 +1656,14 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_dict_ffor_slpatch_expr<dbl_pt, u08_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_DICT_FLT_FFOR_SLPATCH_U08: {
+			make_dec_dict_ffor_slpatch_expr<flt_pt, u08_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_DICT_FLT_FFOR_SLPATCH_U16: {
+			make_dec_dict_ffor_slpatch_expr<flt_pt, u16_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_DICT_DBL_FFOR_SLPATCH_U32: {
 			make_dec_dict_ffor_slpatch_expr<dbl_pt, u32_pt>(physical_expr, column_view, state);
 			break;
@@ -1624,6 +1711,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_null_expr<dbl_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_NULL_FLT: {
+			make_dec_null_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_NULL_I32: {
 			make_dec_null_expr<i32_pt>(physical_expr, column_view, state);
 			break;
@@ -1654,6 +1745,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 		}
 		case EXP_RLE_DBL_SLPATCH_U16: {
 			make_dec_rle_slpatch_expr<dbl_pt, u16_pt>(reader, physical_expr, column_view, state);
+			break;
+		}
+		case EXP_RLE_FLT_SLPATCH_U16: {
+			make_dec_rle_slpatch_expr<flt_pt, u16_pt>(reader, physical_expr, column_view, state);
 			break;
 		}
 		case EXP_FSST_DICT_STR_U32: {
@@ -1704,6 +1799,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 			make_dec_frequency_expr<dbl_pt>(physical_expr, column_view, state);
 			break;
 		}
+		case EXP_FREQUENCY_FLT: {
+			make_dec_frequency_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
 		case EXP_FREQUENCY_I08: {
 			make_dec_frequency_expr<i08_pt>(physical_expr, column_view, state);
 			break;
@@ -1742,6 +1841,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 		}
 		case EXP_CROSS_RLE_DBL: {
 			make_dec_cross_rle_expr<dbl_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_CROSS_RLE_FLT: {
+			make_dec_cross_rle_expr<flt_pt>(physical_expr, column_view, state);
 			break;
 		}
 		case EXP_CROSS_RLE_STR: {

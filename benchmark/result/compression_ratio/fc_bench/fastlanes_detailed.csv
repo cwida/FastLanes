@@ -1,0 +1,34 @@
+compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value
+FastLanes,0.0.2,fc_bench,0,HPC_TS_OBS_acs_wht_f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,fc_bench,1,HPC_TS_OBS_astro_mhd_f64,DOUBLE,38017,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.58,4.64
+FastLanes,0.0.2,fc_bench,2,HPC_TS_OBS_astro_pt_f64,DOUBLE,136594,"{[EXP_ALP_DBL][]}",2.08,16.67
+FastLanes,0.0.2,fc_bench,3,HPC_TS_OBS_citytemp_f32,FLOAT,76382,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",1.17,9.32
+FastLanes,0.0.2,fc_bench,4,HPC_TS_OBS_g24_78_usb2_f32,FLOAT,185544,"{[EXP_ALP_FLT][]}",2.83,22.65
+FastLanes,0.0.2,fc_bench,5,HPC_TS_OBS_h3d_temp_f32,FLOAT,78921,"{[EXP_FREQUENCY_FLT][0, 1, 2, 3]}",1.20,9.63
+FastLanes,0.0.2,fc_bench,6,HPC_TS_OBS_hdr_night_f32,FLOAT,86918,"{[EXP_DICT_FLT_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.33,10.61
+FastLanes,0.0.2,fc_bench,7,HPC_TS_OBS_hdr_palermo_f32,FLOAT,86962,"{[EXP_DICT_FLT_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.33,10.62
+FastLanes,0.0.2,fc_bench,8,HPC_TS_OBS_hst_wfc3_ir_f32,FLOAT,43420,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",0.66,5.30
+FastLanes,0.0.2,fc_bench,9,HPC_TS_OBS_hst_wfc3_uvis_f32,FLOAT,3687,"{[EXP_FREQUENCY_FLT][0, 1, 2, 3]}",0.06,0.45
+FastLanes,0.0.2,fc_bench,10,HPC_TS_OBS_jane_street_f64,DOUBLE,211298,"{[EXP_ALP_DBL][]}",3.22,25.79
+FastLanes,0.0.2,fc_bench,11,HPC_TS_OBS_jw_mirimage_f32,FLOAT,217045,"{[EXP_ALP_RD_FLT][]}",3.31,26.49
+FastLanes,0.0.2,fc_bench,12,HPC_TS_OBS_miranda3d_f32,FLOAT,183686,"{[EXP_ALP_FLT][]}",2.80,22.42
+FastLanes,0.0.2,fc_bench,13,HPC_TS_OBS_msg_bt_f64,DOUBLE,216276,"{[EXP_ALP_DBL][]}",3.30,26.40
+FastLanes,0.0.2,fc_bench,14,HPC_TS_OBS_num_brain_f64,DOUBLE,168076,"{[EXP_ALP_DBL][]}",2.56,20.52
+FastLanes,0.0.2,fc_bench,15,HPC_TS_OBS_num_control_f64,DOUBLE,89684,"{[EXP_ALP_DBL][]}",1.37,10.95
+FastLanes,0.0.2,fc_bench,16,HPC_TS_OBS_nyc_taxi2015_f64,DOUBLE,232818,"{[EXP_ALP_DBL][]}",3.55,28.42
+FastLanes,0.0.2,fc_bench,17,HPC_TS_OBS_phone_gyro_f64,DOUBLE,84810,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.29,10.35
+FastLanes,0.0.2,fc_bench,18,HPC_TS_OBS_rsim_f32,FLOAT,90,"{[EXP_CROSS_RLE_FLT][0, 1]}",0.00,0.01
+FastLanes,0.0.2,fc_bench,19,HPC_TS_OBS_solar_wind_f32,FLOAT,180584,"{[EXP_DICT_FLT_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",2.76,22.04
+FastLanes,0.0.2,fc_bench,20,HPC_TS_OBS_spain_gas_price_f64,DOUBLE,95070,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.45,11.61
+FastLanes,0.0.2,fc_bench,21,HPC_TS_OBS_spitzer_irac_f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,fc_bench,22,HPC_TS_OBS_ts_gas_f32,FLOAT,235113,"{[EXP_ALP_RD_FLT][]}",3.59,28.70
+FastLanes,0.0.2,fc_bench,23,HPC_TS_OBS_turbulence_f32,FLOAT,206740,"{[EXP_ALP_FLT][]}",3.15,25.24
+FastLanes,0.0.2,fc_bench,24,HPC_TS_OBS_wave_f32,FLOAT,165274,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",2.52,20.18
+FastLanes,0.0.2,fc_bench,25,HPC_TS_OBS_wesad_chest_f64,DOUBLE,208436,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",3.18,25.44
+FastLanes,0.0.2,fc_bench,26,DB_tpcds_catalog_f32,FLOAT,235361,"{[EXP_ALP_RD_FLT][]}",3.59,28.73
+FastLanes,0.0.2,fc_bench,27,DB_tpcds_store_f32,FLOAT,242961,"{[EXP_ALP_RD_FLT][]}",3.71,29.66
+FastLanes,0.0.2,fc_bench,28,DB_tpcds_web_f32,FLOAT,233457,"{[EXP_ALP_RD_FLT][]}",3.56,28.50
+FastLanes,0.0.2,fc_bench,29,DB_tpch_lineitem_f32,FLOAT,172874,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",2.64,21.10
+FastLanes,0.0.2,fc_bench,30,DB_tpch_order_f64,DOUBLE,300338,"{[EXP_ALP_DBL][]}",4.58,36.66
+FastLanes,0.0.2,fc_bench,31,DB_tpcxbb_store_f64,DOUBLE,177728,"{[EXP_ALP_DBL][]}",2.71,21.70
+FastLanes,0.0.2,fc_bench,32,DB_tpcxbb_web_f64,DOUBLE,181824,"{[EXP_ALP_DBL][]}",2.77,22.20

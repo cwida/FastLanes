@@ -1,0 +1,21 @@
+compression,version,name,id,name,data_type,size(bytes),expression,bpt,Bpt
+FastLanes,0.0.2,hurricane_isabel,0,CLOUDf48.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,1,CLOUDf48.log10.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,2,PRECIPf48.bin.f32,FLOAT,107160,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.64,0.20
+FastLanes,0.0.2,hurricane_isabel,3,PRECIPf48.log10.bin.f32,FLOAT,107156,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.64,0.20
+FastLanes,0.0.2,hurricane_isabel,4,Pf48.bin.f32,FLOAT,108080,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21
+FastLanes,0.0.2,hurricane_isabel,5,QCLOUDf48.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,6,QCLOUDf48.log10.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,7,QGRAUPf48.bin.f32,FLOAT,107060,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,8,QGRAUPf48.log10.bin.f32,FLOAT,107060,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,9,QICEf48.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,10,QICEf48.log10.bin.f32,FLOAT,0,"{[EXP_CONSTANT_FLT][]}",0.00,0.00
+FastLanes,0.0.2,hurricane_isabel,11,QRAINf48.bin.f32,FLOAT,106568,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,12,QRAINf48.log10.bin.f32,FLOAT,106560,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,13,QSNOWf48.bin.f32,FLOAT,107068,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,14,QSNOWf48.log10.bin.f32,FLOAT,107064,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.63,0.20
+FastLanes,0.0.2,hurricane_isabel,15,QVAPORf48.bin.f32,FLOAT,108092,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21
+FastLanes,0.0.2,hurricane_isabel,16,TCf48.bin.f32,FLOAT,108092,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21
+FastLanes,0.0.2,hurricane_isabel,17,Uf48.bin.f32,FLOAT,108092,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21
+FastLanes,0.0.2,hurricane_isabel,18,Vf48.bin.f32,FLOAT,108092,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21
+FastLanes,0.0.2,hurricane_isabel,19,Wf48.bin.f32,FLOAT,108092,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",1.65,0.21

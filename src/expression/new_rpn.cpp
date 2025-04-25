@@ -276,6 +276,36 @@ std::string token_to_string(OperatorToken token) {
 		return "EXP_CROSS_RLE_STR"; // 127
 	case OperatorToken::EXP_NULL_I32:
 		return "EXP_NULL_I32"; // 127
+	case OperatorToken::EXP_CONSTANT_FLT:
+		return "EXP_CONSTANT_FLT"; // 129
+	case OperatorToken::EXP_UNCOMPRESSED_FLT:
+		return "EXP_UNCOMPRESSED_FLT"; // 130
+	case OperatorToken::EXP_NULL_FLT:
+		return "EXP_NULL_FLT"; // 131
+	case OperatorToken::EXP_ALP_FLT:
+		return "EXP_ALP_FLT"; // 132
+	case OperatorToken::EXP_RLE_FLT_U16:
+		return "EXP_RLE_FLT_U16"; // 132
+	case OperatorToken::EXP_DICT_FLT_FFOR_U16:
+		return "EXP_DICT_FLT_FFOR_U16"; // 133
+	case OperatorToken::EXP_RLE_FLT_SLPATCH_U16:
+		return "EXP_RLE_FLT_SLPATCH_U16"; // 135
+	case OperatorToken::EXP_ALP_RD_FLT:
+		return "EXP_ALP_RD_FLT"; // 136
+	case OperatorToken::EXP_FREQUENCY_FLT:
+		return "EXP_FREQUENCY_FLT"; // 137
+	case OperatorToken::EXP_CROSS_RLE_FLT:
+		return "EXP_CROSS_RLE_FLT"; // 138
+	case OperatorToken::EXP_DICT_FLT_FFOR_U08:
+		return "EXP_DICT_FLT_FFOR_U08"; // 139
+	case OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U08:
+		return "EXP_DICT_FLT_FFOR_SLPATCH_U08"; // 140
+	case OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U16:
+		return "EXP_DICT_FLT_FFOR_SLPATCH_U16"; // 141
+	case OperatorToken::EXP_DICT_FLT_FFOR_U32:
+		return "EXP_DICT_FLT_FFOR_U32"; // 142
+	case OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32:
+		return "EXP_DICT_FLT_FFOR_SLPATCH_U32"; // 143
 	default:
 		FLS_UNREACHABLE()
 	}

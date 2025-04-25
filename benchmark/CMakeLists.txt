@@ -3,8 +3,8 @@ target_include_directories(fastlanes_benchmarker PUBLIC ${CMAKE_CURRENT_SOURCE_D
 
 add_library(FastLanes::benchmarker ALIAS fastlanes_benchmarker)
 
-add_executable(bench_compression_ratio_public_bi benchmark_compression_ratio.cpp)
-target_link_libraries(bench_compression_ratio_public_bi PUBLIC FastLanes FastLanes::benchmarker)
+add_executable(bench_compression_ratio bench_compression_ratio.cpp)
+target_link_libraries(bench_compression_ratio PUBLIC FastLanes FastLanes::benchmarker)
 
 add_executable(benchmark_decompression_time benchmark_decompression_time.cpp)
 target_link_libraries(benchmark_decompression_time PUBLIC FastLanes FastLanes::benchmarker)

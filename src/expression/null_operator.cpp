@@ -59,6 +59,7 @@ void enc_null_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 	segments.push_back(std::move(n_vals_segment));
 }
 
+template struct enc_null_opr<flt_pt>;
 template struct enc_null_opr<dbl_pt>;
 template struct enc_null_opr<i16_pt>;
 template struct enc_null_opr<i32_pt>;
@@ -102,6 +103,7 @@ void dec_null_opr<PT>::Materialize(n_t vec_idx, TypedCol<PT>& typed_col) {
 	}
 }
 
+template struct dec_null_opr<flt_pt>;
 template struct dec_null_opr<dbl_pt>;
 template struct dec_null_opr<i16_pt>;
 template struct dec_null_opr<i32_pt>;

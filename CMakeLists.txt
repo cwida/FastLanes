@@ -176,7 +176,7 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLES OR FLS_ENA
     FetchContent_Declare(
             data
             GIT_REPOSITORY https://github.com/cwida/FastLanes_Data.git
-            GIT_TAG c3cb2e29b79f7a2f43ab9f65f41bfa20e1effac2 # main
+            GIT_TAG FCBench # add_fannie_mae
     )
 
     FetchContent_MakeAvailable(data)

@@ -178,6 +178,11 @@ def generate_fls_dbl_func(_faker, row_id):
     return [constant(row_id + 0.1)]
 
 
+def generate_float_func(_faker, row_id):
+    """Generates a list containing a single floating-point number."""
+    return [constant(row_id + 0.32)]
+
+
 def generate_fls_decimal_func(_faker, row_id):
     """Generates a list containing a single floating-point number."""
     return [constant(row_id + 0.1)]
@@ -289,6 +294,12 @@ def generate_cross_rle_str_func(faker, row_id):
         return ["THIRD"]
 
 
+def generate_alp_flt_func(faker, row_id):
+    return [row_id + 0.1]
+
+def generate_alp_dbl_func(faker, row_id):
+    return [row_id + 0.1]
+
 # ---------------------------
 # CSV Generators
 # ---------------------------
@@ -380,6 +391,14 @@ def generate_fls_dbl():
     write_csv(file, generate_fls_dbl_func, VEC_SIZE)
 
 
+def generate_float():
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'float'
+    write_csv(file, generate_float_func, ROW_GROUP_SIZE)
+
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'float'
+    write_csv(file, generate_float_func, VEC_SIZE)
+
+
 def generate_fls_decimal():
     file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'decimal'
     write_csv(file, generate_fls_dbl_func, ROW_GROUP_SIZE)
@@ -444,6 +463,16 @@ def generate_cross_rle_str():
     write_csv(file, generate_cross_rle_str_func, ROW_GROUP_SIZE)
 
 
+def generate_alp_flt():
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'alp_flt'
+    write_csv(file, generate_alp_flt_func, ROW_GROUP_SIZE)
+
+
+def generate_alp_dbl():
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'alp_dbl'
+    write_csv(file, generate_alp_dbl_func, ROW_GROUP_SIZE)
+
+
 # ---------------------------
 # Main Generation Functions
 # ---------------------------
@@ -460,6 +489,7 @@ def generate_single_column():
     fls_str()
     generate_fls_dbl()
     generate_fls_decimal()
+    generate_float()
 
 
 def generate_expression_data():
@@ -467,6 +497,8 @@ def generate_expression_data():
     generate_frequency_string()
     generate_cross_rle_i16()
     generate_cross_rle_str()
+    generate_alp_flt()
+    generate_alp_dbl()
 
 
 def equality():

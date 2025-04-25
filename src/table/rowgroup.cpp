@@ -349,11 +349,14 @@ void cast(rowgroup_pt& rowgroup, ColumnDescriptor& column_descriptor) {
 	          [&](up<TypedCol<dbl_pt>>& double_col) {
 		          auto is_double_castable = double_col->m_stats.is_double_castable;
 		          if (is_double_castable) {
-		           const auto casted_data_type =
-		               getSmallestSignedType<dbl_pt>(double_col->m_stats.min, double_col->m_stats.max);
-		           should_be_cast              = true;
-		           column_descriptor.data_type = casted_data_type;
+			          const auto casted_data_type =
+			              getSmallestSignedType<dbl_pt>(double_col->m_stats.min, double_col->m_stats.max);
+			          should_be_cast              = true;
+			          column_descriptor.data_type = casted_data_type;
 		          }
+	          },
+	          [&](up<TypedCol<flt_pt>>& float_column) {
+		          // TODO
 	          },
 	          [&](up<Struct>& struct_col) {},
 	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },

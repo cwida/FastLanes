@@ -72,6 +72,7 @@ void enc_frequency_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 }
 
 template struct enc_frequency_opr<dbl_pt>;
+template struct enc_frequency_opr<flt_pt>;
 template struct enc_frequency_opr<i08_pt>;
 template struct enc_frequency_opr<i16_pt>;
 template struct enc_frequency_opr<i32_pt>;
@@ -203,6 +204,7 @@ void dec_frequency_opr<PT>::Materialize(n_t vec_idx, TypedCol<PT>& typed_col) {
 }
 
 template struct dec_frequency_opr<dbl_pt>;
+template struct dec_frequency_opr<flt_pt>;
 template struct dec_frequency_opr<i08_pt>;
 template struct dec_frequency_opr<i16_pt>;
 template struct dec_frequency_opr<i32_pt>;

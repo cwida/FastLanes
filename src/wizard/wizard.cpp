@@ -73,6 +73,10 @@ struct constant_visitor {
 				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_DBL);
 				break;
 			}
+			case DataType::FLOAT: {
+				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_FLT);
+				break;
+			}
 			case DataType::INT64: {
 				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I64);
 				break;
@@ -132,6 +136,10 @@ struct null_visitor {
 			switch (column_descriptor.data_type) {
 			case DataType::DOUBLE: {
 				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_DBL);
+				break;
+			}
+			case DataType::FLOAT: {
+				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_FLT);
 				break;
 			}
 			case DataType::INT16: {
@@ -241,6 +249,7 @@ void equality_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& colum
 				case DataType::INT64:
 				case DataType::INT32:
 				case DataType::INT16:
+				case DataType::FLOAT:
 				case DataType::INT8: {
 					column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_EQUAL);
 					column_descriptor.encoding_rpn.operand_tokens.emplace_back(first_col_idx);
@@ -334,6 +343,11 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 		    OperatorToken::EXP_DICT_DBL_FFOR_SLPATCH_U32 //
 		};
 
+		static vector<OperatorToken> FLT_DICT_POOL = {
+		    OperatorToken::EXP_DICT_FLT_FFOR_U32,
+		    OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32 //
+		};
+
 		static vector<OperatorToken> FLS_STR_POOL = {
 		    OperatorToken::EXP_DICT_STR_FFOR_U32,                //
 		    OperatorToken::EXP_DICT_STR_FFOR_SLPATCH_U32,        //
@@ -353,6 +367,8 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 		} else if constexpr (std::is_same_v<PT, i08_pt>) {
 			FLS_UNREACHABLE()
 		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
+			return DBL_DICT_POOL;
+		} else if constexpr (std::is_same_v<PT, flt_pt>) {
 			return DBL_DICT_POOL;
 		} else {
 			FLS_UNREACHABLE()
@@ -384,6 +400,11 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 		    OperatorToken::EXP_DICT_DBL_FFOR_SLPATCH_U16, //
 		};
 
+		static vector<OperatorToken> FLT_DICT_POOL = {
+		    OperatorToken::EXP_DICT_FLT_FFOR_U16,
+		    OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U16, //
+		};
+
 		static vector<OperatorToken> FLS_STR_POOL = {
 		    OperatorToken::EXP_DICT_STR_FFOR_U16,                //
 		    OperatorToken::EXP_DICT_STR_FFOR_SLPATCH_U16,        //
@@ -403,6 +424,8 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 			return I08_DICT_POOL;
 		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
 			return DBL_DICT_POOL;
+		} else if constexpr (std::is_same_v<PT, flt_pt>) {
+			return FLT_DICT_POOL;
 		} else {
 			FLS_UNREACHABLE()
 		}
@@ -434,6 +457,11 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 		    OperatorToken::EXP_DICT_DBL_FFOR_SLPATCH_U08 //
 		};
 
+		static vector<OperatorToken> FLT_DICT_POOL = {
+		    OperatorToken::EXP_DICT_FLT_FFOR_U08,
+		    OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U08 //
+		};
+
 		static vector<OperatorToken> FLS_STR_POOL = {
 		    OperatorToken::EXP_DICT_STR_FFOR_U08,
 		    OperatorToken::EXP_DICT_STR_FFOR_SLPATCH_U08,
@@ -459,6 +487,8 @@ vector<OperatorToken>& get_dict_encoding_pool(n_t index_data_type) {
 			return I08_DICT_POOL;
 		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
 			return DBL_DICT_POOL;
+		} else if constexpr (std::is_same_v<PT, flt_pt>) {
+			return FLT_DICT_POOL;
 		} else if constexpr (std::is_same_v<PT, u08_pt>) {
 			return U08_DICT_POOL;
 		} else {
@@ -537,6 +567,16 @@ vector<OperatorToken>& get_pool() {
 	    OperatorToken::EXP_CROSS_RLE_DBL, //
 	};
 
+	static vector<OperatorToken> FLT_POOL = {
+	    OperatorToken::EXP_UNCOMPRESSED_FLT,
+	    OperatorToken::EXP_RLE_FLT_SLPATCH_U16,
+	    OperatorToken::EXP_RLE_FLT_U16,
+	    OperatorToken::EXP_ALP_FLT,
+	    OperatorToken::EXP_ALP_RD_FLT,
+	    OperatorToken::EXP_FREQUENCY_FLT,
+	    OperatorToken::EXP_CROSS_RLE_FLT, //
+	};
+
 	static vector<OperatorToken> STR_POOL = {
 	    OperatorToken::EXP_RLE_STR_SLPATCH_U16,
 	    OperatorToken::EXP_FSST_DELTA,
@@ -561,6 +601,8 @@ vector<OperatorToken>& get_pool() {
 		return I08_POOL;
 	} else if constexpr (std::is_same_v<PT, dbl_pt>) {
 		return DBL_POOL;
+	} else if constexpr (std::is_same_v<PT, flt_pt>) {
+		return FLT_POOL;
 	} else if constexpr (std::is_same_v<PT, u08_pt>) {
 		return U08_POOL;
 	} else {
@@ -678,9 +720,6 @@ n_t TryExpr(const rowgroup_pt&      col,
 
 	const auto physical_expr_up = Interpreter::Encoding::Interpret(new_column_descriptor, col, state);
 
-	// execute the expression for each vector
-	// footer.m_n_vec
-	FLS_ASSERT_LE(con.get_sample_size(), footer.m_n_vec)
 	auto sample_size = con.get_sample_size();
 
 	if (sample_size == 0 || sample_size > footer.m_n_vec) {
@@ -840,9 +879,12 @@ void expression_check_column(const rowgroup_pt& rowgroup,
 		TypedDecide<int8_t>(rowgroup, column_descriptor, footer, fls);
 		break;
 	}
+	case DataType::FLOAT: {
+		TypedDecide<flt_pt>(rowgroup, column_descriptor, footer, fls);
+		break;
+	}
 	case DataType::STR:
 	case DataType::INVALID:
-
 	default:
 		FLS_UNREACHABLE()
 	}

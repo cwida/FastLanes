@@ -21,6 +21,9 @@ inline void untranspose_i(const int64_t* __restrict in, int64_t* __restrict out)
 inline void untranspose_i(const int32_t* __restrict in, int32_t* __restrict out) {
 	untranspose_i(reinterpret_cast<const uint32_t*>(in), reinterpret_cast<uint32_t*>(out));
 }
+inline void untranspose_i(const float* __restrict in, float* __restrict out) {
+	untranspose_i(reinterpret_cast<const uint32_t*>(in), reinterpret_cast<uint32_t*>(out));
+}
 inline void untranspose_i(const int16_t* __restrict in, int16_t* __restrict out) {
 	untranspose_i(reinterpret_cast<const uint16_t*>(in), reinterpret_cast<uint16_t*>(out));
 }

@@ -63,6 +63,7 @@ void enc_cross_rle_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 }
 
 template struct enc_cross_rle_opr<dbl_pt>;
+template struct enc_cross_rle_opr<flt_pt>;
 template struct enc_cross_rle_opr<i08_pt>;
 template struct enc_cross_rle_opr<i16_pt>;
 template struct enc_cross_rle_opr<i32_pt>;
@@ -201,6 +202,7 @@ void dec_cross_rle_opr<PT>::Materialize(n_t vec_idx, TypedCol<PT>& typed_col) {
 }
 
 template struct dec_cross_rle_opr<dbl_pt>;
+template struct dec_cross_rle_opr<flt_pt>;
 template struct dec_cross_rle_opr<i08_pt>;
 template struct dec_cross_rle_opr<i16_pt>;
 template struct dec_cross_rle_opr<i32_pt>;

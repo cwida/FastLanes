@@ -29,8 +29,10 @@ bool IsNull(const string& val_str) {
 	const bool rule_6 = val_str == "none";
 	// rule 7
 	const bool rule_7 = val_str == "null\r";
+	// rule 8
+	const bool rule_8 = val_str == "Null";
 
-	return (rule_1 || rule_2 || rule_3 || rule_4 || rule_5 || rule_6 || rule_7);
+	return (rule_1 || rule_2 || rule_3 || rule_4 || rule_5 || rule_6 || rule_7 || rule_8);
 }
 
 template <typename PT>
@@ -69,10 +71,7 @@ PT TypedCast(const std::string& val_str) {
 				throw std::invalid_argument("Invalid boolean value");
 			return val_str == "true";
 		} else if constexpr (std::is_same_v<PT, flt_pt>) {
-			auto value = stof(val_str);
-			if (value < std::numeric_limits<flt_pt>::lowest() || value > std::numeric_limits<flt_pt>::max())
-				throw std::out_of_range("Value exceeds flt_pt range");
-			return value;
+			return std::stof(val_str);
 		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
 			auto value = stod(val_str);
 			if (value < std::numeric_limits<dbl_pt>::lowest() || value > std::numeric_limits<dbl_pt>::max())

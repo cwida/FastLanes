@@ -74,6 +74,7 @@ template struct dec_uncompressed_opr<u32_pt>;
 template struct dec_uncompressed_opr<u16_pt>;
 template struct dec_uncompressed_opr<u08_pt>;
 template struct dec_uncompressed_opr<dbl_pt>;
+template struct dec_uncompressed_opr<flt_pt>;
 template struct dec_uncompressed_opr<str_pt>;
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -101,6 +102,7 @@ template struct dec_constant_opr<u32_pt>;
 template struct dec_constant_opr<u16_pt>;
 template struct dec_constant_opr<u08_pt>;
 template struct dec_constant_opr<dbl_pt>;
+template struct dec_constant_opr<flt_pt>;
 template struct dec_constant_opr<str_pt>;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_fls_str_uncompressed_opr

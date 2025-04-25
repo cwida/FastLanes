@@ -72,9 +72,11 @@ def extract_and_save_schema(column_indices, schema_output_path, table_name):
     # Filter only selected columns
     column_details = {
         col["index"]: {
-            "name": col["name"],
+            "name": table_name + "_" + col["name"],
             "type": col["type"],
-            "nullability": col["nullability"]
+            "nullability": col["nullability"],
+            "index": col["index"],
+
         }
         for col in schema["columns"]
     }

@@ -29,19 +29,21 @@ DataType TypeLookUp(const std::string& str) {
 	    {"FLS_STR", DataType::FLS_STR}, //
 	    {"BIGINT", DataType::INT64},    //
 	    {"string", DataType::FLS_STR},  //
-	    {"varchar", DataType::STR},     //
-	    {"VARCHAR", DataType::STR},     //
+	    {"varchar", DataType::FLS_STR}, //
+	    {"VARCHAR", DataType::FLS_STR}, //
 	    {"double", DataType::DOUBLE},   //
 	    {"DOUBLE", DataType::DOUBLE},   //
 	    {"list", DataType::LIST},       //
 	    {"struct", DataType::STRUCT},   //
 	    {"map", DataType::MAP},         //
+	    {"float", DataType::FLOAT},     //
+	    {"FLOAT", DataType::FLOAT},     //
 
 	    // CLickHouse
 	    {"SMALLINT", DataType::INT64},
 	    {"INTEGER", DataType::INT64},
-	    {"VARCHAR(255)", DataType::STR},
-	    {"CHAR", DataType::STR},
+	    {"VARCHAR(255)", DataType::FLS_STR},
+	    {"CHAR", DataType::FLS_STR},
 
 	    // Public Bi
 	    {"varchar(1)", DataType::FLS_STR}, // {"varchar(1)", DataType::FLS_STR},

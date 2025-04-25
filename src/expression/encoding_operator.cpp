@@ -81,6 +81,9 @@ template struct enc_dict_map_opr<i08_pt, u08_pt>;
 template struct enc_dict_map_opr<dbl_pt, u32_pt>;
 template struct enc_dict_map_opr<dbl_pt, u16_pt>;
 template struct enc_dict_map_opr<dbl_pt, u08_pt>;
+template struct enc_dict_map_opr<flt_pt, u32_pt>;
+template struct enc_dict_map_opr<flt_pt, u16_pt>;
+template struct enc_dict_map_opr<flt_pt, u08_pt>;
 
 template <typename INDEX_PT>
 enc_dict_map_opr<fls_string_t, INDEX_PT>::enc_dict_map_opr(const PhysicalExpr& expr,
@@ -146,6 +149,7 @@ template struct enc_uncompressed_opr<u32_pt>;
 template struct enc_uncompressed_opr<u16_pt>;
 template struct enc_uncompressed_opr<u08_pt>;
 template struct enc_uncompressed_opr<dbl_pt>;
+template struct enc_uncompressed_opr<flt_pt>;
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * enc_fls_str_uncompressed_op

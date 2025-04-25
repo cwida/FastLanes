@@ -10,13 +10,13 @@ int main() {
 		try {
 			Connection con1;
 			Connection con2;
-			const path example_dir_path = string(GENERATED::FREQUENCY_DBL_EXPR);
+			path       example_dir_path = string(fc_bench::fc_bench_sample);
+
 			const path fastlanes_repo_data_path {FLS_CMAKE_SOURCE_DIR};
 			const path fls_dir_path = fastlanes_repo_data_path / "data" / "fls";
 			// Example 2: [WIP] Process a CSV file
 			// Step 1: Reset the connection and read the CSV file from the specified directory path
-			con1.reset().force_schema({OperatorToken::EXP_DICT_DBL_FFOR_U32}).read(example_dir_path).project({0});
-			con1.reset().read(example_dir_path).project({0});
+			con1.reset().read(example_dir_path).project({7, 8});
 
 			// Step 2: Write the data to the FastLanes file format in the specified directory
 			con1.to_fls(fls_dir_path);

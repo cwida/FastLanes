@@ -19,6 +19,7 @@ public:
 	static constexpr string_view SINGLE_COLUMN_STRPT {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/fls_str"};
 	static constexpr string_view SINGLE_COLUMN_U08PT {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/fls_u08"};
 	static constexpr string_view SINGLE_COLUMN_DECIMAL {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/decimal"};
+	static constexpr string_view SINGLE_COLUMN_FLOAT {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/float"};
 
 	//
 	static constexpr string_view EQUALITY_I64PT {FLS_CMAKE_SOURCE_DIR "/data/generated/equality/fls_i64"};
@@ -47,6 +48,8 @@ public:
 	static constexpr string_view FREQUENCY_STR_EXPR {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/frequency_str"};
 	static constexpr string_view EXP_CROSS_RLE_i16 {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/cross_rle_i16"};
 	static constexpr string_view EXP_CROSS_RLE_STR {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/cross_rle_str"};
+	static constexpr string_view EXP_ALP_FLT {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/alp_flt"};
+	static constexpr string_view EXP_ALP_DBL {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/alp_dbl"};
 
 	static constexpr string_view NUMBER_STRINGS {FLS_CMAKE_SOURCE_DIR "/data/generated/whitebox/number_strings"};
 	static constexpr string_view DECIMAL_DOUBLES {FLS_CMAKE_SOURCE_DIR "/data/generated/whitebox/decimal_doubles"};

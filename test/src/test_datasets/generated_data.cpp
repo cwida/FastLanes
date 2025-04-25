@@ -16,6 +16,7 @@ TEST_F(FastLanesReaderTester, SINGLE_COLUMN_DBLPT) { TestCorrectness(GENERATED::
 TEST_F(FastLanesReaderTester, SINGLE_COLUMN_U08PT) { TestCorrectness(GENERATED::SINGLE_COLUMN_U08PT); }
 TEST_F(FastLanesReaderTester, SINGLE_COLUMN_STRUCT) { TestCorrectness(GENERATED::STRUCT); }
 TEST_F(FastLanesReaderTester, SINGLE_COLUMN_DECIMAL) { TestCorrectness(GENERATED::SINGLE_COLUMN_DECIMAL); }
+TEST_F(FastLanesReaderTester, SINGLE_COLUMN_FLOAT) { TestCorrectness(GENERATED::SINGLE_COLUMN_FLOAT); }
 
 // All Constants
 TEST_F(FastLanesReaderTester, ALL_CONSTANT) {

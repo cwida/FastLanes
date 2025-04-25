@@ -42,6 +42,7 @@ void enc_rle_map_opr<KEY_PT, INDEX_PT>::MoveSegments(vector<up<Segment>>& segmen
 	segments.push_back(std::move(rle_val_segment));
 }
 
+template struct enc_rle_map_opr<flt_pt, u16_pt>;
 template struct enc_rle_map_opr<dbl_pt, u16_pt>;
 template struct enc_rle_map_opr<i64_pt, u16_pt>;
 template struct enc_rle_map_opr<i32_pt, u16_pt>;
@@ -187,6 +188,7 @@ void dec_rle_map_opr<FlsString, INDEX_PT>::Decode(n_t              vec_idx,
 	}
 }
 
+template struct dec_rle_map_opr<flt_pt, u16_pt>;
 template struct dec_rle_map_opr<dbl_pt, u16_pt>;
 template struct dec_rle_map_opr<i64_pt, u16_pt>;
 template struct dec_rle_map_opr<i32_pt, u16_pt>;

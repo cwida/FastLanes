@@ -1,0 +1,111 @@
+compression,version,name,id,name,data_type,size(bytes),expression,bpt,Bpt
+FastLanes,0.0.2,table_2024Q3,0,column000,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,1,column001,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,0.03
+FastLanes,0.0.2,table_2024Q3,2,column002,INT32,16781,"{[EXP_DICT_I32_FFOR_U08][0, 1, 2, 3]}",0.26,0.03
+FastLanes,0.0.2,table_2024Q3,3,column003,FLS_STR,16807,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,0.03
+FastLanes,0.0.2,table_2024Q3,4,column004,FLS_STR,42007,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,0.08
+FastLanes,0.0.2,table_2024Q3,5,column005,FLS_STR,41881,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,0.08
+FastLanes,0.0.2,table_2024Q3,6,column006,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,7,column007,FLOAT,69854,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",1.07,0.13
+FastLanes,0.0.2,table_2024Q3,8,column008,FLOAT,0,"{[EXP_EQUAL][7]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,9,column009,FLOAT,85626,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",1.31,0.16
+FastLanes,0.0.2,table_2024Q3,10,column010,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,11,column011,FLOAT,89886,"{[EXP_DICT_FLT_FFOR_U16][0, 1, 2, 3]}",1.37,0.17
+FastLanes,0.0.2,table_2024Q3,12,column012,INT16,15562,"{[EXP_CROSS_RLE_I16][0, 1]}",0.24,0.03
+FastLanes,0.0.2,table_2024Q3,13,column013,INT32,19048,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.29,0.04
+FastLanes,0.0.2,table_2024Q3,14,column014,INT32,18436,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.28,0.04
+FastLanes,0.0.2,table_2024Q3,15,column015,INT8,25394,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.39,0.05
+FastLanes,0.0.2,table_2024Q3,16,column016,INT16,36037,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.55,0.07
+FastLanes,0.0.2,table_2024Q3,17,column017,INT16,63282,"{[EXP_DICT_I16_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",0.97,0.12
+FastLanes,0.0.2,table_2024Q3,18,column018,FLS_STR,35108,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.54,0.07
+FastLanes,0.0.2,table_2024Q3,19,column019,INT8,37344,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.57,0.07
+FastLanes,0.0.2,table_2024Q3,20,column020,INT8,37378,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.57,0.07
+FastLanes,0.0.2,table_2024Q3,21,column021,INT8,13360,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.20,0.03
+FastLanes,0.0.2,table_2024Q3,22,column022,INT8,38246,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.58,0.07
+FastLanes,0.0.2,table_2024Q3,23,column023,INT16,60408,"{[EXP_RLE_I16_U16][0, 1, 2, 3, 4]}",0.92,0.12
+FastLanes,0.0.2,table_2024Q3,24,column024,INT16,36888,"{[EXP_RLE_I16_U16][0, 1, 2, 3, 4]}",0.56,0.07
+FastLanes,0.0.2,table_2024Q3,25,column025,FLS_STR,8609,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,0.02
+FastLanes,0.0.2,table_2024Q3,26,column026,FLS_STR,16807,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,0.03
+FastLanes,0.0.2,table_2024Q3,27,column027,FLS_STR,17868,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.27,0.03
+FastLanes,0.0.2,table_2024Q3,28,column028,INT8,4489,"{[EXP_CROSS_RLE_I08][0, 1]}",0.07,0.01
+FastLanes,0.0.2,table_2024Q3,29,column029,FLS_STR,13556,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.21,0.03
+FastLanes,0.0.2,table_2024Q3,30,column030,FLS_STR,49909,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.76,0.10
+FastLanes,0.0.2,table_2024Q3,31,column031,INT32,75218,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.15,0.14
+FastLanes,0.0.2,table_2024Q3,32,column032,INT32,82688,"{[EXP_FFOR_I32][0, 1, 2]}",1.26,0.16
+FastLanes,0.0.2,table_2024Q3,33,column033,FLOAT,39076,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",0.60,0.07
+FastLanes,0.0.2,table_2024Q3,34,column034,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,35,column035,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,36,column036,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,37,column037,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,38,column038,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,39,column039,INT32,1618,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.02,0.00
+FastLanes,0.0.2,table_2024Q3,40,column040,FLS_STR,18297,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.28,0.03
+FastLanes,0.0.2,table_2024Q3,41,column041,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,42,column042,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,43,column043,FLS_STR,360,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.01,0.00
+FastLanes,0.0.2,table_2024Q3,44,column044,FLS_STR,1180,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.00
+FastLanes,0.0.2,table_2024Q3,45,column045,FLOAT,1468,"{[EXP_NULL_FLT][0, 1, 2]}",0.02,0.00
+FastLanes,0.0.2,table_2024Q3,46,column046,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,47,column047,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,48,column048,FLOAT,189744,"{[EXP_RLE_FLT_U16][0, 1, 2, 3, 4]}",2.90,0.36
+FastLanes,0.0.2,table_2024Q3,49,column049,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,50,column050,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,51,column051,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,52,column052,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,53,column053,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,54,column054,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,55,column055,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,56,column056,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,57,column057,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,58,column058,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,59,column059,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,60,column060,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,61,column061,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,62,column062,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,63,column063,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,64,column064,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,65,column065,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,66,column066,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,67,column067,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,68,column068,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,69,column069,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,70,column070,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,71,column071,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,72,column072,INT8,553,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.00
+FastLanes,0.0.2,table_2024Q3,73,column073,FLS_STR,1361,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.02,0.00
+FastLanes,0.0.2,table_2024Q3,74,column074,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,75,column075,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,76,column076,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,77,column077,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,78,column078,FLS_STR,14340,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.22,0.03
+FastLanes,0.0.2,table_2024Q3,79,column079,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,80,column080,FLS_STR,1832,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.00
+FastLanes,0.0.2,table_2024Q3,81,column081,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,82,column082,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,83,column083,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,84,column084,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,85,column085,FLS_STR,13920,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.21,0.03
+FastLanes,0.0.2,table_2024Q3,86,column086,FLS_STR,3253,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.01
+FastLanes,0.0.2,table_2024Q3,87,column087,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,88,column088,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,89,column089,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,90,column090,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,91,column091,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,92,column092,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,93,column093,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,94,column094,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,95,column095,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,96,column096,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,97,column097,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,98,column098,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,99,column099,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,100,column100,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,101,column101,FLS_STR,1797,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.00
+FastLanes,0.0.2,table_2024Q3,102,column102,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,103,column103,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,104,column104,FLS_STR,37,"{[EXP_FSST_DICT_STR_U08][43, 0, 1, 2]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,105,column105,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,106,column106,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,107,column107,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,108,column108,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.0.2,table_2024Q3,109,column109,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00

@@ -1,0 +1,4 @@
+data_type,average_bits_per_value,compression_ratio
+DOUBLE,23.89,2.68
+FLOAT,18.10,1.77
+TOTAL,20.38,2.19

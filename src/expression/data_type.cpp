@@ -61,6 +61,8 @@ uint64_t SizeOf(const DataType datatype) {
 		return sizeof(i16_pt);
 	case DataType::DOUBLE:
 		return sizeof(dbl_pt);
+	case DataType::FLOAT:
+		return sizeof(flt_pt);
 	default:
 		FLS_UNREACHABLE();
 	}

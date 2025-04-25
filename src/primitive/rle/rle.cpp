@@ -35,6 +35,7 @@ template class RLE<i32_pt, u16_pt>;
 template class RLE<i16_pt, u16_pt>;
 template class RLE<i08_pt, u16_pt>;
 template class RLE<dbl_pt, u16_pt>;
+template class RLE<flt_pt, u16_pt>;
 template class RLE<fls_string_t, u16_pt>;
 
 } // namespace fastlanes

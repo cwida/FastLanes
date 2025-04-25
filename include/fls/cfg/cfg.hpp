@@ -36,7 +36,7 @@ public:
 		static constexpr uint64_t SAMPLE_C           = 16UL * 1024; //
 		static constexpr uint64_t ADAPTIVE_TRY_C     = 3;           //
 		static constexpr double   ADAPTIVE_THRESHOLD = 00.80;       //
-		static constexpr uint64_t SAMPLE_SIZE        = 3;           //
+		static constexpr uint64_t SAMPLE_SIZE        = 7;           //
 	};
 
 	/* Dictionary Config. */

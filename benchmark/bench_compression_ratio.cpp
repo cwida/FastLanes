@@ -2,12 +2,36 @@
 
 using namespace fastlanes; // NOLINT
 
-void table_size_benchmark_parallel() {
-	const std::string result_file_path =
-	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/public_bi/fastlanes.csv";
+struct BenchmarkCase {
+	dataset_view_t dataset;
+	std::string    result_file_path;
+	std::string    detailed_result_file_path;
+};
 
-	const std::string detailed_result_file_path =
-	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/public_bi/fastlanes_detailed.csv";
+BenchmarkCase public_bi_case {
+    public_bi::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/public_bi/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/public_bi/fastlanes_detailed.csv"};
+
+BenchmarkCase fannie_mae_case {
+    fannie_mae::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fannie_mae/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fannie_mae/fastlanes_detailed.csv"};
+
+BenchmarkCase sdrbnech_case {
+    sdrbnech::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/sdrbnech/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/sdrbnech/fastlanes_detailed.csv"};
+
+BenchmarkCase fc_bench_case {
+    fc_bench::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fc_bench/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fc_bench/fastlanes_detailed.csv"};
+
+void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
+	const std::string&    result_file_path          = benchmark_case.result_file_path;
+	const std::string     detailed_result_file_path = benchmark_case.detailed_result_file_path;
+	const dataset_view_t& dataset                   = benchmark_case.dataset;
 
 	// Ensure the output directory exists
 	create_directories(std::filesystem::path(result_file_path).parent_path());
@@ -21,14 +45,14 @@ void table_size_benchmark_parallel() {
 
 	// Vector to store futures for asynchronous processing
 	std::vector<std::future<void>> futures;
-	futures.reserve(public_bi::dataset.size());
+	futures.reserve(dataset.size());
 
 	// Vector to store thread-specific directories for cleanup
 	std::vector<path> thread_specific_dirs;
 	std::mutex        dirs_mutex;
 
 	// Iterate over all tables in the dataset and process them in parallel
-	for (const auto& [table_name, file_path] : public_bi::dataset) {
+	for (const auto& [table_name, file_path] : dataset) {
 		futures.emplace_back(std::async(
 		    std::launch::async,
 		    [&results_mutex,
@@ -64,9 +88,9 @@ void table_size_benchmark_parallel() {
 			    {
 				    std::lock_guard<std::mutex> lock(results_mutex);
 				    for (const auto& column_descriptor : footer_up->GetColumnDescriptors()) {
-					    double bpt = static_cast<double>(column_descriptor.total_size) /
-					                 (static_cast<double>(footer_up->m_n_vec * CFG::VEC_SZ));
-					    double Bpt = bpt / 8;
+					    double byts_per_tuple = static_cast<double>(column_descriptor.total_size) /
+					                            (static_cast<double>(footer_up->m_n_vec * CFG::VEC_SZ));
+					    double bits_per_tuple = byts_per_tuple * 8;
 
 					    detailed_results.emplace_back(table_name,
 					                                  column_descriptor.idx,
@@ -74,8 +98,8 @@ void table_size_benchmark_parallel() {
 					                                  column_descriptor.data_type,
 					                                  column_descriptor.total_size,
 					                                  column_descriptor.encoding_rpn,
-					                                  bpt,
-					                                  Bpt);
+					                                  byts_per_tuple,
+					                                  bits_per_tuple);
 				    }
 			    }
 
@@ -116,7 +140,7 @@ void table_size_benchmark_parallel() {
 	if (!detailed_csv_file.is_open()) {
 		throw std::runtime_error("Failed to open the detailed CSV file for writing.");
 	}
-	detailed_csv_file << "compression,version,name,id,name,data_type,size(bytes),expression,bpt,Bpt\n";
+	detailed_csv_file << "compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value\n";
 	for (const auto& [table_name, id, name, data_type, size, encoding_rpn, bpt, Bpt] : detailed_results) {
 		detailed_csv_file << FastLanes::get_name() << "," << FastLanes::get_version() << "," << table_name << "," << id
 		                  << "," << name << "," << data_type << "," << size << "," << '"' << encoding_rpn << '"' << ","
@@ -137,6 +161,6 @@ void table_size_benchmark_parallel() {
 }
 
 int main() {
-	table_size_benchmark_parallel();
+	run_compression_ratio_benchmark(fc_bench_case);
 	return EXIT_SUCCESS;
 }

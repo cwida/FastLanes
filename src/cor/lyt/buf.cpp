@@ -216,6 +216,7 @@ template i32_pt* Buf::GetFixedSizeArray<i32_pt>(n_t length);
 template i16_pt* Buf::GetFixedSizeArray<i16_pt>(n_t length);
 template i08_pt* Buf::GetFixedSizeArray<i08_pt>(n_t length);
 template dbl_pt* Buf::GetFixedSizeArray<dbl_pt>(n_t length);
+template flt_pt* Buf::GetFixedSizeArray<flt_pt>(n_t length);
 
 template void Buf::TypedAppend(const ofs_t* data_p);
 
