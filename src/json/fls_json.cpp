@@ -5,17 +5,11 @@
 #include "fls/expression/logical_expression.hpp"
 #include "fls/expression/new_rpn.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
+#include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include <sstream>
 
 namespace fastlanes {
-/*--------------------------------------------------------------------------------------------------------------------*\
- * RowgroupRowgroupDescriptor
-\*--------------------------------------------------------------------------------------------------------------------*/
-constexpr const auto* N_VEC              = "1, [REQUIRED], N VEC";
-constexpr const auto* ROWGROUP_SIZE      = "2, [REQUIRED], Rowgroup size";
-constexpr const auto* COLUMN_DESCRIPTORS = "3  [REQUIRED], Column Descriptors";
-
 DataType TypeLookUp(const std::string& str) {
 	static std::unordered_map<std::string, DataType> const TABLE {
 	    // FLS types
@@ -242,19 +236,30 @@ DataType TypeLookUp(const std::string& str) {
 	return it->second;
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * RowgroupDescriptor
+\*--------------------------------------------------------------------------------------------------------------------*/
+constexpr const auto* N_VEC              = "1, [REQUIRED], N VEC";
+constexpr const auto* ROWGROUP_SIZE      = "2, [REQUIRED], Rowgroup size";
+constexpr const auto* COLUMN_DESCRIPTORS = "3  [REQUIRED], Column Descriptors";
+constexpr const auto* ROWGROUP_OFFSET    = "4, [REQUIRED], Rowgroup OFFSET";
+
 void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
 	j = nlohmann::json {
 	    //
 	    {N_VEC, rowgroup_descriptor.m_n_vec},                           //
-	    {ROWGROUP_SIZE, rowgroup_descriptor.m_rowgroup_size},           //
+	    {ROWGROUP_SIZE, rowgroup_descriptor.m_size},                    //
 	    {COLUMN_DESCRIPTORS, rowgroup_descriptor.m_column_descriptors}, //
+	    {ROWGROUP_OFFSET, rowgroup_descriptor.m_offset},                //
 	};
 }
 void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor) {
 	if (j.contains(COLUMN_DESCRIPTORS)) {
 		j.at(COLUMN_DESCRIPTORS).get_to(rowgroup_descriptor.m_column_descriptors);
 		j.at(N_VEC).get_to(rowgroup_descriptor.m_n_vec);
-		j.at(ROWGROUP_SIZE).get_to(rowgroup_descriptor.m_rowgroup_size);
+		j.at(ROWGROUP_SIZE).get_to(rowgroup_descriptor.m_size);
+		j.at(ROWGROUP_OFFSET).get_to(rowgroup_descriptor.m_offset);
+
 	} else {
 		j.at("columns").get_to(rowgroup_descriptor.m_column_descriptors);
 	}
@@ -401,13 +406,31 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
 template <typename DATA>
 void JSON::write(const path& dir_path, const DATA& data) {
 	path file_path;
-	if constexpr (std::is_same_v<DATA, RowgroupDescriptor>) {
-		file_path = dir_path / FOOTER_FILE_NAME;
+	if constexpr (std::is_same_v<DATA, TableDescriptor>) {
+		file_path = dir_path / TABLE_DESCRIPTOR_FILE_NAME;
 	}
 	const nlohmann::json j = data;
 	File::write(file_path, j.dump());
 }
 
-template void JSON::write(const path& path, const RowgroupDescriptor& data_up);
+template void JSON::write(const path& path, const TableDescriptor& table_descriptor);
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * TableDescriptor
+\*--------------------------------------------------------------------------------------------------------------------*/
+constexpr const auto* ROWGROUP_DESCRIPTORS = "1  [REQUIRED], RowGroup Descriptors";
+constexpr const auto* TABLE_SIZE           = "2  [REQUIRED], Table Size";
+
+void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor) {
+	j = nlohmann::json {
+	    //
+	    {ROWGROUP_DESCRIPTORS, table_descriptor.m_rowgroup_descriptors}, //
+	    {TABLE_SIZE, table_descriptor.m_table_size},                     //
+	};
+}
+void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
+	j.at(ROWGROUP_DESCRIPTORS).get_to(table_descriptor.m_rowgroup_descriptors);
+	j.at(TABLE_SIZE).get_to(table_descriptor.m_table_size);
+}
 
 } // namespace fastlanes

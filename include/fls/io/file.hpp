@@ -16,10 +16,14 @@ public:
 	~File();
 
 public:
-	/// write to file_path
+	// write to file_path
 	void Write(const Buf& buf);
-	/// write to file_path
+	// write to file_path
 	void Read(Buf& buf);
+	// write to file_path
+	void Append(const Buf& buf);
+	//
+	void ReadRange(Buf& buf, n_t offset, n_t size);
 
 public:
 	/// read from file_path and return string.

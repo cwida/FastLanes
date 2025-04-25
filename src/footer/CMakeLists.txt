@@ -3,9 +3,9 @@ add_library(fls_footer
         binary_value.cpp
         #[[]]
         column_descriptor.cpp
-        file_descriptor.cpp
         rowgroup_descriptor.cpp
-        segment_desriptor.cpp
+        segment_descriptor.cpp
+        table_descriptor.cpp
 )
 
 if (FLS_ENABLE_IWYU)

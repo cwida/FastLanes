@@ -66,8 +66,10 @@ public:
 	ColumnDescriptors m_column_descriptors;
 	///!
 	map m_name_idx_map;
-	/// binary size of rowgroup
-	sz_t m_rowgroup_size;
+	// binary size of rowgroup
+	sz_t m_size;
+	//
+	n_t m_offset;
 };
 
 up<RowgroupDescriptor> make_rowgroup_descriptor(const Rowgroup& rowgroup);

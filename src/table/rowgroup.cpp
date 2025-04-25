@@ -1,6 +1,7 @@
 #include "fls/table/rowgroup.hpp"
 #include "fls/common/magic_enum.hpp"
 #include "fls/common/string.hpp"
+#include "fls/connection.hpp"
 #include "fls/csv/csv-parser/parser.hpp"
 #include "fls/expression/data_type.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
@@ -76,9 +77,11 @@ void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) 
 	}
 }
 
-Rowgroup::Rowgroup(const RowgroupDescriptor& footer)
+Rowgroup::Rowgroup(const RowgroupDescriptor& footer, const Connection& connection)
     : m_descriptor(footer)
-    , n_tup(0) {
+    , n_tup(0)
+    , m_connection(connection)
+    , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {
 	init_logial_columns(footer.GetColumnDescriptors(), internal_rowgroup);
 }
 
@@ -92,9 +95,9 @@ RowgroupDescriptor& Rowgroup::GetRowgroupDescriptor() {
 	return m_descriptor;
 }
 
-up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs) {
+up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs, const Connection& connection) {
 	/**/
-	auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs));
+	auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs), connection);
 	idx_t c      = {0};
 	for (const auto idx : idxs) {
 		result->internal_rowgroup[c++] = std::move(internal_rowgroup[idx]);
@@ -103,13 +106,13 @@ up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs) {
 	return result;
 }
 
-up<Rowgroup> Rowgroup::Project(const vector<string>& col_names) {
+up<Rowgroup> Rowgroup::Project(const vector<string>& col_names, const Connection& connection) {
 	vector<idx_t> idxs;
 	for (const auto& col_name : col_names) {
 		idxs.push_back(m_descriptor.LookUp(col_name));
 	}
 
-	return Project(idxs);
+	return Project(idxs, connection);
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -473,24 +476,32 @@ struct rowgroup_equality_visitor {
 	}
 };
 
-std::variant<bool, n_t> Rowgroup::operator==(const Rowgroup& other_rowgroup) const {
+RowgroupComparisonResult Rowgroup::operator==(const Rowgroup& other_rowgroup) const {
+	RowgroupComparisonResult result {true, 0, 0, ""};
 	if (this->n_tup != other_rowgroup.n_tup) {
-		return false;
+		result.is_equal    = false;
+		result.description = "number of values in the rowgroups does not match.";
+		return result;
 	}
 
 	if (this->internal_rowgroup.size() != other_rowgroup.internal_rowgroup.size()) {
-		return false;
+		result.is_equal    = false;
+		result.description = "number of columns in the rowgroups does not match.";
+		return result;
 	}
 
 	for (n_t col_idx {0}; col_idx < this->internal_rowgroup.size(); col_idx++) {
-		const auto result = visit(
+		const auto is_this_col_equal = visit(
 		    rowgroup_equality_visitor {}, this->internal_rowgroup[col_idx], other_rowgroup.internal_rowgroup[col_idx]);
-		if (result == false) {
-			return col_idx;
+		if (is_this_col_equal == false) {
+			result.is_equal                = false;
+			result.first_failed_column_idx = col_idx;
+			result.description = "the content of column with index" + std::to_string(col_idx) + "does not match.";
+			return result;
 		}
 	}
 
-	return true;
+	return result;
 }
 
 void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
@@ -513,82 +524,6 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 	}
 
 	FLS_ASSERT_ZERO(n_tup % CFG::VEC_SZ)
-}
-
-void parse_json_tuple(const nlohmann::json& json, rowgroup_pt& columns, const ColumnDescriptors& footer);
-
-void parse_json_value(const nlohmann::json& json_value, col_pt& column, const ColumnDescriptor& column_descriptor) {
-	const bool is_null = json_value.is_null();
-
-	visit(overloaded {[](std::monostate&) { throw std::runtime_error("Unreachable"); },
-	                  [&](up<List>& list_column) {
-		                  list_column->null_map_arr.push_back(is_null);
-		                  auto& offsets = list_column->ofs_arr;
-		                  offsets.push_back((offsets.empty() ? 0 : offsets.back()) + json_value.size());
-		                  if (is_null) {
-			                  return;
-		                  }
-
-		                  if (column_descriptor.data_type == DataType::MAP) {
-			                  auto& struct_col = std::get<up<Struct>>(list_column->child);
-
-			                  for (auto& [key, value] : json_value.items()) {
-				                  const auto key_value_struct = nlohmann::json {{"key", key}, {"value", value}};
-				                  parse_json_tuple(
-				                      key_value_struct, struct_col->internal_rowgroup, column_descriptor.children);
-				                  struct_col->null_map_arr.push_back(false);
-			                  }
-			                  return;
-		                  }
-
-		                  for (auto& child : json_value) {
-			                  parse_json_value(child, list_column->child, *column_descriptor.children.begin());
-		                  }
-	                  },
-	                  [&](up<Struct>& struct_col) {
-		                  struct_col->null_map_arr.push_back(is_null);
-		                  parse_json_tuple(json_value, struct_col->internal_rowgroup, column_descriptor.children);
-	                  },
-	                  [&](up<str_col_t>& typed_column) {
-		                  string val = json_value.dump();
-		                  Attribute::Ingest(column, val, column_descriptor); // FIXME
-	                  },
-	                  [&]<typename PT>(up<TypedCol<PT>>& typed_column) {
-		                  string val = json_value.dump();
-		                  Attribute::Ingest(column, val, column_descriptor); // FIXME
-	                  },
-	                  [&](up<FLSStrColumn>& typed_column) {
-		                  string val = json_value.dump();
-		                  Attribute::Ingest(column, val, column_descriptor); // FIXME
-	                  },
-	                  [&](auto&) {
-		                  FLS_UNREACHABLE();
-	                  }},
-	      column);
-}
-
-void parse_json_tuple(const nlohmann::json& json, rowgroup_pt& columns, const ColumnDescriptors& footer) {
-	for (idx_t i = 0; i < footer.size(); ++i) {
-		const auto& col_description = footer[i];
-
-		const nlohmann::json* value;
-		if (!json.contains(col_description.name)) {
-			value = nullptr;
-		} else {
-			value = &json[col_description.name];
-		}
-		parse_json_value(value == nullptr ? nlohmann::json() : *value, columns[i], col_description);
-	}
-}
-
-void Rowgroup::ReadJson(const path& json_path) {
-	std::ifstream json_stream = FileSystem::open_r(json_path.c_str());
-	string        line;
-	while (getline(json_stream, line)) {
-		const auto tuple = nlohmann::json::parse(line);
-		parse_json_tuple(tuple, internal_rowgroup, m_descriptor.GetColumnDescriptors());
-		n_tup = n_tup + 1;
-	}
 }
 
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer);

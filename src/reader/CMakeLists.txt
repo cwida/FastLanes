@@ -1,9 +1,14 @@
 add_library(fls_reader
         OBJECT
         column_view.cpp
-        fls_rowgroup.cpp
-        reader.cpp
+        csv_reader.cpp
+        external_reader.cpp
+        json_reader.cpp
+        rowgroup_view.cpp
+        rowgroup_reader.cpp
         segment.cpp
+        table_reader.cpp
+        table_view.cpp
 )
 
 set(FASTLANES_OBJECT_FILES

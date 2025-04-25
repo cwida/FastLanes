@@ -15,7 +15,6 @@ add_library(fls_expression
         fsst_dict_operator.cpp
         fsst_expression.cpp
         interpreter.cpp
-        logical_expression.cpp
         new_rpn.cpp
         null_operator.cpp
         physical_expression.cpp

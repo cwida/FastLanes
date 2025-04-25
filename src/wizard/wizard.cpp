@@ -1356,15 +1356,19 @@ void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, con
 	expression_check(rowgroup, footer, fls); // all left over columns are expression encoded.
 }
 
-up<RowgroupDescriptor> Wizard::Spell(const Connection& fls) {
+up<TableDescriptor> Wizard::Spell(const Connection& fls) {
 	// init
-	const auto& rowgroup = fls.rowgroup();
+	const auto& table = fls.get_table();
 
-	auto footer = make_rowgroup_descriptor(rowgroup);
+	auto table_descriptor = make_table_descriptor(table);
 
-	rowgroup_check(rowgroup.internal_rowgroup, *footer, fls);
+	for (n_t rowgroup_idx {0}; rowgroup_idx < table.get_n_rowgroups(); ++rowgroup_idx) {
+		rowgroup_check(table.m_rowgroups[rowgroup_idx]->internal_rowgroup,
+		               table_descriptor->m_rowgroup_descriptors[rowgroup_idx],
+		               fls);
+	}
 
-	return footer;
+	return table_descriptor;
 }
 
 } // namespace fastlanes

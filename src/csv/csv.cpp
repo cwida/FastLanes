@@ -9,13 +9,11 @@
 
 namespace fastlanes {
 
-constexpr string_view MATERIALIZED_CSV_FILE = "materialized_by_fls.csv";
-constexpr string_view DELIMINATOR           = "|";
-constexpr string_view NEW_LINE              = "\n";
+constexpr string_view DELIMINATOR = "|";
+constexpr string_view NEW_LINE    = "\n";
 
-void CSV::to_csv(const path& dir_path, const Rowgroup& rowgroup) {
-	const auto    file_path = dir_path / MATERIALIZED_CSV_FILE;
-	std::ofstream file(file_path);
+void CSV::to_csv(const path& file_path, const Rowgroup& rowgroup) {
+	auto file = FileSystem::opend_app(file_path);
 
 	if (!file.is_open()) {
 		throw std::runtime_error("Could not open file for writing");

@@ -133,7 +133,7 @@ len_t* dec_fls_str_uncompressed_opr::Length() const {
 dec_struct_opr::dec_struct_opr(const ColumnDescriptor& column_descriptor,
                                const ColumnView&       column_view,
                                InterpreterState&,
-                               Reader& reader) {
+                               RowgroupReader& reader) {
 	auto& children = column_descriptor.children;
 
 	for (n_t children_idx {0}; children_idx < children.size(); ++children_idx) {

@@ -3,12 +3,16 @@
 
 #include "fls/common/alias.hpp"               // for up, idx_t
 #include "fls/footer/rowgroup_descriptor.hpp" // for Footer
-#include "fls/reader/column_view.hpp"         //
-#include "fls/reader/reader.hpp"              // for Reader
+#include "fls/footer/table_descriptor.hpp"
+#include "fls/reader/column_view.hpp" //
+#include "fls/reader/rowgroup_reader.hpp"
+#include "fls/reader/rowgroup_view.hpp" //
 #include "fls/reader/segment.hpp"
+#include "fls/reader/table_reader.hpp"
 #include "fls/std/filesystem.hpp" // for path
 #include "fls/std/vector.hpp"     // for vector
 #include "fls/table/rowgroup.hpp" // for Rowgroup
+#include "fls/table/table.hpp"    // for Reader
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -39,20 +43,20 @@ public:
 	friend class RowgroupEncoder;
 	friend class Wizard;
 	friend class Encoder;
+	friend class CsvReader;
+	friend class Rowgroup;
 
 public:
 	Connection();
 	explicit Connection(const Config& config);
 
 public:
-	/// Read csv or json file.
-	///  - autodetect if it is csv or json.
-	///  - if there is a file with ".csv" extension, then it is csv
-	///  - if there is a file with ".jsonl" extension, then it is json
-	/// - schema is not inferred and is given by "schema.json" file
-	Connection& read(const path& dir_path);
+	/// READ CSV
+	Connection& read_csv(const path& dir_path);
+	/// READ CSV
+	Connection& read_json(const path& dir_path);
 	///! read a fls file return a reader
-	Reader& read_fls(const path& dir_path);
+	TableReader& read_fls(const path& dir_path);
 	///!
 	Connection& spell();
 	///!
@@ -86,22 +90,19 @@ public:
 	//
 	Connection& set_n_vectors_per_rowgroup(n_t n_vector_per_rowgroup);
 	///!
-	[[nodiscard]] Rowgroup& rowgroup() const;
+	[[nodiscard]] Table& get_table() const;
 
 private:
-	/// read from a dir object
-	Connection& read(const Dir& dir);
-	void        prepare_rowgroup();
+	void prepare_table() const;
 
 private:
-	up<Rowgroup>           m_rowgroup;
-	up<RowgroupDescriptor> m_rowgroup_descriptor;
-	up<Reader>             m_reader;
-	up<Config>             m_config;
+	up<TableReader>     m_reader;
+	up<Config>          m_config;
+	up<Table>           m_table;
+	up<TableDescriptor> m_table_descriptor;
 };
 
-constexpr static auto const* FOOTER_FILE_NAME {"fls_footer.json"};
-constexpr static auto const* PROFILING_FILE_NAME {"fls_profiling.json"};
+constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.json"};
 constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
 } // namespace fastlanes

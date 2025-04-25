@@ -1,6 +1,8 @@
 #ifndef FLS_ENCODER_ENCODER_HPP
 #define FLS_ENCODER_ENCODER_HPP
 
+#include "fls/std/filesystem.hpp"
+
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Connection;
@@ -9,7 +11,7 @@ class Buf;
 
 class Encoder {
 public:
-	static void encode(const Connection& fls, Buf& buf);
+	static void encode(const Connection& connection, Buf& buf, const path& dir_path);
 };
 } // namespace fastlanes
 

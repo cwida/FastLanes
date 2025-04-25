@@ -45,7 +45,11 @@ public:
 	///
 	static void flush(io& io, const Buf& buf);
 	///
+	static void append(io& io, const Buf& buf);
+	///
 	static void read(const io& io, Buf& buf);
+	///
+	static void range_read(const io& io, Buf& buf, n_t offset, n_t size);
 	///
 	template <typename PT>
 	static span<PT> read(const io& io);

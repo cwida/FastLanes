@@ -17,6 +17,7 @@ class Vector;
 class LogicalExpr;
 class column;
 class RowgroupDescriptor;
+class Connection;
 /*--------------------------------------------------------------------------------------------------------------------*/
 using null_map_arr = vector<uint8_t>;
 using byte_arr_t   = vector<uint8_t>;
@@ -183,26 +184,33 @@ public:
 	rowgroup_pt internal_rowgroup;
 };
 
+class RowgroupComparisonResult {
+public:
+	bool   is_equal {true};
+	n_t    first_failed_column_idx {0};
+	n_t    first_failed_row_idx {0};
+	string description;
+};
+
 class Rowgroup {
 public:
 	friend class LogicalExpr;
 	friend class column;
 
 public:
-	explicit Rowgroup(const RowgroupDescriptor& rowgroup_footer);
+	explicit Rowgroup(const RowgroupDescriptor& rowgroup_footer, const Connection& connection);
 
 	Rowgroup(const Rowgroup&)             = delete;
 	Rowgroup& operator=(const Rowgroup&)  = delete;
 	Rowgroup(const Rowgroup&&)            = delete;
 	Rowgroup& operator=(const Rowgroup&&) = delete;
 
-	//
-	std::variant<bool, n_t> operator==(const Rowgroup& other_rowgroup) const;
+	RowgroupComparisonResult operator==(const Rowgroup& other_rowgroup) const;
 
 public:
-	///
+	[[deprecated]]
 	void ReadCsv(const path& csv_path, char delimiter = '|', char terminator = '\n');
-	///
+	[[deprecated]]
 	void ReadJson(const path& json_path);
 	///
 	void WriteJson(std::ostream& os) const;
@@ -219,9 +227,9 @@ public:
 	///
 	[[nodiscard]] RowgroupDescriptor& GetRowgroupDescriptor();
 	///
-	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs);
+	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs, const Connection& connection);
 	///
-	[[nodiscard]] up<Rowgroup> Project(const vector<string>& idxs);
+	[[nodiscard]] up<Rowgroup> Project(const vector<string>& idxs, const Connection& connection);
 	///
 	void GetStatistics();
 	///
@@ -235,6 +243,8 @@ public: /* Members */
 	RowgroupDescriptor m_descriptor;
 	n_t                n_tup;
 	rowgroup_pt        internal_rowgroup;
+	const Connection&  m_connection;
+	const n_t          capacity;
 };
 
 std::ostream& operator<<(std::ostream& output, const Rowgroup& mini_arrow);

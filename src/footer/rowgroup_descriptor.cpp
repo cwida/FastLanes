@@ -81,7 +81,7 @@ const ColumnDescriptor& RowgroupDescriptor::operator[](const n_t idx) const {
 
 RowgroupDescriptor::RowgroupDescriptor()
     : m_n_vec(0)
-    , m_rowgroup_size {0} {};
+    , m_size {0} {};
 
 n_t GetNVector(const n_t n_tup) {
 	return static_cast<n_t>(ceil(static_cast<double>(n_tup) / static_cast<double>(CFG::VEC_SZ)));

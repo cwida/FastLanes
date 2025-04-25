@@ -36,7 +36,7 @@ public:
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read(dir_path);
+		con1.reset().read_csv(dir_path);
 		con1.to_fls(thread_specific_fls_dir_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
@@ -48,7 +48,7 @@ public:
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read(dir_path).project(idxs);
+		con1.reset().read_csv(dir_path).project(idxs);
 		con1.to_fls(thread_specific_fls_dir_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
@@ -60,7 +60,7 @@ public:
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read(dir_path);
+		con1.reset().read_csv(dir_path);
 		con1.set_sample_size(sample_size).to_fls(thread_specific_fls_dir_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
@@ -74,13 +74,13 @@ public:
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read(dir_path);
+		con1.reset().read_csv(dir_path);
 		con1.force_schema(operator_tokens).to_fls(thread_specific_fls_dir_path);
 	}
 
 	// Method to get the footer for the thread-specific directory
-	[[nodiscard]] up<RowgroupDescriptor> GetRowgroupDescriptor(const path& thread_specific_fls_dir_path) const {
-		return make_rowgroup_descriptor(thread_specific_fls_dir_path / FOOTER_FILE_NAME);
+	[[nodiscard]] up<TableDescriptor> GetTableDescriptor(const path& thread_specific_fls_dir_path) const {
+		return make_table_descriptor(thread_specific_fls_dir_path / TABLE_DESCRIPTOR_FILE_NAME);
 	}
 
 	// Benchmarks the compression ratio by writing and returning the file size
@@ -109,11 +109,12 @@ public:
 	                                               const path&       thread_specific_fls_dir_path) const {
 		Write(table_path, thread_specific_fls_dir_path);
 		vector<OperatorToken> result;
-		auto                  footer_up = GetRowgroupDescriptor(thread_specific_fls_dir_path);
+		auto                  table_descriptor    = GetTableDescriptor(thread_specific_fls_dir_path);
+		auto                  rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
 
 		// Store the detailed results (thread-safe)
 		{
-			for (const auto& column_descriptor : footer_up->GetColumnDescriptors()) {
+			for (const auto& column_descriptor : rowgroup_descriptor.m_column_descriptors) {
 				result.emplace_back(column_descriptor.encoding_rpn.operator_tokens[0]);
 			}
 		}

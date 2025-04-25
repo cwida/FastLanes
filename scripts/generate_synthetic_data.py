@@ -158,6 +158,25 @@ def generate_fls_i64(_faker, row_id):
     return [constant(row_id)]
 
 
+def generate_irregular_i64_func(_faker, row_id):
+    """Generates a list containing a single integer."""
+    if row_id == 2056:
+        return [constant(999)]
+    return [constant(0)]
+
+
+def generate_irregular_string_func(_faker, row_id):
+    """Generates a list containing a single integer."""
+    if row_id == 2024 - 1:
+        return ["Jasmin"]
+    elif row_id == 12 - 1:
+        return ["Jasmin"]
+    elif row_id == 24 - 1:
+        return ["Jasmin"]
+    else:
+        return [constant("")]
+
+
 def generate_fls_u08(_faker, row_id):
     """Generates a list containing a single integer."""
     return [constant_u08(row_id)]
@@ -297,8 +316,10 @@ def generate_cross_rle_str_func(faker, row_id):
 def generate_alp_flt_func(faker, row_id):
     return [row_id + 0.1]
 
+
 def generate_alp_dbl_func(faker, row_id):
     return [row_id + 0.1]
+
 
 # ---------------------------
 # CSV Generators
@@ -359,7 +380,17 @@ def fls_i64():
     write_fls_i64_to_file('single_columns/fls_i64', generate_fls_i64, ROW_GROUP_SIZE)
 
     # one vec
-    write_fls_i64_to_file('one_vector/fls_i64', generate_fls_i64, 2 * VEC_SIZE)
+    write_fls_i64_to_file('one_vector/fls_i64', generate_fls_i64, VEC_SIZE)
+
+
+def generate_irregular_i64():
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'irregular_i64'
+    write_csv(file, generate_irregular_i64_func, ROW_GROUP_SIZE)
+
+
+def generate_irregular_string():
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'irregular_string'
+    write_csv(file, generate_irregular_string_func, ROW_GROUP_SIZE)
 
 
 def fls_u08():
@@ -492,6 +523,11 @@ def generate_single_column():
     generate_float()
 
 
+def generate_irregular_data():
+    generate_irregular_i64()
+    generate_irregular_string()
+
+
 def generate_expression_data():
     generate_frequency_double()
     generate_frequency_string()
@@ -539,6 +575,7 @@ def main():
     whitebox()
     mostly_null()
     generate_expression_data()
+    generate_irregular_data()
 
 
 if __name__ == "__main__":

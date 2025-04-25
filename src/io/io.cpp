@@ -12,9 +12,25 @@ void IO::flush(io& io, const Buf& buf) {
 	      io);
 }
 
+void IO::append(io& io, const Buf& buf) {
+	// write the buffer
+	visit(overloaded {
+	          [&](up<File>& file) { file->Append(buf); },
+	          [](auto&) { FLS_UNREACHABLE() },
+	      },
+	      io);
+}
+
 void IO::read(const io& io, Buf& buf) {
 	visit(overloaded {
 	          [&](const up<File>& file) { file->Read(buf); },
+	          [](auto&) { FLS_UNREACHABLE() },
+	      },
+	      io);
+}
+void IO::range_read(const io& io, Buf& buf, const n_t offset, const n_t size) {
+	visit(overloaded {
+	          [&](const up<File>& file) { file->ReadRange(buf, offset, size); },
 	          [](auto&) { FLS_UNREACHABLE() },
 	      },
 	      io);

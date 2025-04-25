@@ -7,7 +7,7 @@
 namespace fastlanes {
 class ColumnView;
 struct InterpreterState;
-class Reader;
+class RowgroupReader;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_unffor_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ struct dec_struct_opr {
 	dec_struct_opr(const ColumnDescriptor& column_descriptor,
 	               const ColumnView&       column_view,
 	               InterpreterState&       state,
-	               Reader&                 reader);
+	               RowgroupReader&         reader);
 
 	vector<sp<class PhysicalExpr>> internal_exprs;
 };

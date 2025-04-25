@@ -75,8 +75,9 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 				    thread_specific_dirs.push_back(thread_specific_fls_dir_path);
 			    }
 
-			    auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
-			    const auto& footer_up = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
+			    auto        size                      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
+			    const auto& table_descriptor          = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
+			    const auto& first_rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
 
 			    // Store the main result (thread-safe)
 			    {
@@ -87,9 +88,9 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 			    // Store the detailed results (thread-safe)
 			    {
 				    std::lock_guard<std::mutex> lock(results_mutex);
-				    for (const auto& column_descriptor : footer_up->GetColumnDescriptors()) {
+				    for (const auto& column_descriptor : first_rowgroup_descriptor.GetColumnDescriptors()) {
 					    double byts_per_tuple = static_cast<double>(column_descriptor.total_size) /
-					                            (static_cast<double>(footer_up->m_n_vec * CFG::VEC_SZ));
+					                            (static_cast<double>(first_rowgroup_descriptor.m_n_vec * CFG::VEC_SZ));
 					    double bits_per_tuple = byts_per_tuple * 8;
 
 					    detailed_results.emplace_back(table_name,

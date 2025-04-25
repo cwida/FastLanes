@@ -4,6 +4,7 @@
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/predicate_operator.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/table/table.hpp"
 
 extern "C" {
 

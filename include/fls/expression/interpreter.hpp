@@ -11,7 +11,7 @@ class NewRPN;
 class Buf;
 class ColumnView;
 class ColumnDescriptor;
-class Reader;
+class RowgroupReader;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 struct InterpreterState {
@@ -36,13 +36,13 @@ public:
 		                      const ColumnView&       column_view,
 		                      PhysicalExpr&           physical_expr,
 		                      InterpreterState&       state,
-		                      Reader&                 reader);
+		                      RowgroupReader&         reader);
 	};
 };
 
 sp<PhysicalExpr> make_decoding_expression(const ColumnDescriptor& column_descriptor,
                                           const ColumnView&       column_view,
-                                          Reader&                 reader,
+                                          RowgroupReader&         reader,
                                           InterpreterState&       state);
 } // namespace fastlanes
 

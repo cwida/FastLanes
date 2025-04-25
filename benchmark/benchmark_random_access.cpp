@@ -10,14 +10,15 @@ public:
 
 	double bench_random_access(const path& dir_path) const {
 		Connection conn;
-		auto&      fls_reader = conn.reset().read_fls(dir_path);
+		auto&      fls_reader            = conn.reset().read_fls(dir_path);
+		auto       first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
 
-		const auto rowgroup_up = std::make_unique<Rowgroup>(fls_reader.footer());
+		const auto rowgroup_up = std::make_unique<Rowgroup>(first_rowgroup_reader->get_descriptor(), conn);
 		// RandomAccessor random_accessor {*rowgroup_up};
 
 		auto start = std::chrono::high_resolution_clock::now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			[[maybe_unused]] auto& expressions = fls_reader.get_chunk(0);
+			[[maybe_unused]] auto& expressions = first_rowgroup_reader->get_chunk(0);
 		}
 		const auto                                      end     = std::chrono::high_resolution_clock::now();
 		const std::chrono::duration<double, std::milli> elapsed = end - start; // in milliseconds
@@ -52,7 +53,7 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
 		auto        random_access_ms = benchmarker.bench_random_access(thread_specific_fls_dir_path);
-		const auto& footer_up        = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
+		const auto& footer_up        = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
 
 		az_printer::green_cout << "-- Table " << table_name << " is benchmarked with time(ms): " << random_access_ms
 		                       << std::endl;

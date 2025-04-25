@@ -15,7 +15,7 @@ class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
 struct InterpreterState;
-class Reader;
+class RowgroupReader;
 /*--------------------------------------------------------------------------------------------------------------------*/
 struct enc_fsst12_dict_opr {
 	explicit enc_fsst12_dict_opr(const PhysicalExpr& expr,

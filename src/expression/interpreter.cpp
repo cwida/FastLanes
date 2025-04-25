@@ -1150,7 +1150,7 @@ void make_dec_fsst_dict_ffor_slpatch_expr(PhysicalExpr&     physical_expr,
  * make_dec_fsst_dict_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename FSSTDictTypeDecoder>
-void make_dec_fsst_dict_expr(Reader&           reader,
+void make_dec_fsst_dict_expr(RowgroupReader&   reader,
                              PhysicalExpr&     physical_expr,
                              const ColumnView& column_view,
                              InterpreterState& state) {
@@ -1166,7 +1166,7 @@ void make_dec_fsst_dict_expr(Reader&           reader,
  * make_dec_dict_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename KEY_PT, typename INDEX_PT>
-void make_dec_dict_expr(Reader&           reader,
+void make_dec_dict_expr(RowgroupReader&   reader,
                         PhysicalExpr&     physical_expr,
                         const ColumnView& column_view,
                         InterpreterState& state) {
@@ -1182,7 +1182,7 @@ void make_dec_dict_expr(Reader&           reader,
  * make_dec_rle_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename KEY_PT, typename INDEX_PT>
-void make_dec_rle_expr(Reader&           reader,
+void make_dec_rle_expr(RowgroupReader&   reader,
                        PhysicalExpr&     physical_expr,
                        const ColumnView& column_view,
                        InterpreterState& state) {
@@ -1202,7 +1202,7 @@ void make_dec_rle_expr(Reader&           reader,
  * make_dec_rle_slpatch_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename KEY_PT, typename INDEX_PT>
-void make_dec_rle_slpatch_expr(Reader&           reader,
+void make_dec_rle_slpatch_expr(RowgroupReader&   reader,
                                PhysicalExpr&     physical_expr,
                                const ColumnView& column_view,
                                InterpreterState& state) {
@@ -1223,7 +1223,7 @@ void make_dec_rle_slpatch_expr(Reader&           reader,
  * make_dec_delta_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-void make_dec_delta_expr(Reader&           reader,
+void make_dec_delta_expr(RowgroupReader&   reader,
                          PhysicalExpr&     physical_expr,
                          const ColumnView& column_view,
                          InterpreterState& state) {
@@ -1268,7 +1268,7 @@ void make_dec_constant_str_expr(PhysicalExpr& physical_expr, const ColumnView& c
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_dec_equality_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
-void make_dec_equality_expr(PhysicalExpr& physical_expr, Reader& reader, const vector<n_t>& operand_tokens) {
+void make_dec_equality_expr(PhysicalExpr& physical_expr, RowgroupReader& reader, const vector<n_t>& operand_tokens) {
 	//
 	physical_expr.operators.emplace_back(
 	    reader.m_expressions[operand_tokens.at(0)]
@@ -1282,7 +1282,7 @@ void make_dec_struct_expr(const ColumnDescriptor& column_descriptor,
                           const ColumnView&       column_view,
                           PhysicalExpr&           physical_expr,
                           InterpreterState&       state,
-                          Reader&                 reader) {
+                          RowgroupReader&         reader) {
 
 	physical_expr.operators.emplace_back(make_shared<dec_struct_opr>(column_descriptor, column_view, state, reader));
 	state.cur_operator = state.cur_operator + 1;
@@ -1295,7 +1295,7 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
                                       const ColumnView&       column_view,
                                       PhysicalExpr&           physical_expr,
                                       InterpreterState&       state,
-                                      Reader&                 reader) {
+                                      RowgroupReader&         reader) {
 
 	for (const auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
 	     const auto& operator_token : operator_tokens) {
@@ -1864,7 +1864,7 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 \*--------------------------------------------------------------------------------------------------------------------*/
 sp<PhysicalExpr> make_decoding_expression(const ColumnDescriptor& column_descriptor,
                                           const ColumnView&       column_view,
-                                          Reader&                 reader,
+                                          RowgroupReader&         reader,
                                           InterpreterState&       state) {
 	auto physical_expr = make_shared<PhysicalExpr>();
 	Interpreter::Decoding::Interpret(column_descriptor, column_view, *physical_expr, state, reader);

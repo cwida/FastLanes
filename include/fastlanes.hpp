@@ -2,13 +2,6 @@
 #define FASTLANES_HPP
 
 #include "fls/connection.hpp"
-#include "fls/expression/data_type.hpp"
-#include "fls/expression/decoding_operator.hpp"
-#include "fls/expression/encoding_operator.hpp"
-#include "fls/expression/physical_expression.hpp"
-#include "fls/expression/predicate_operator.hpp"
-#include "fls/reader/reader.hpp"
-
 namespace fastlanes {
 
 class FastLanes {

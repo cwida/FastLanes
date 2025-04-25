@@ -59,61 +59,62 @@ void bench_accuracy_over_rowgroups() {
 			// --------------------------------------------------------------------
 
 			// For now, let's assume just one table (as in your code snippet):
-			futures.emplace_back(
-			    std::async(std::launch::async,
-			               [&results_mutex,
-			                &dirs_mutex,
-			                &thread_specific_dirs,
-			                &main_results,
-			                &detailed_results,
-			                uscensus_table_name,
-			                file_path]() {
-				               CompressionRatioBenchmarker benchmarker;
+			futures.emplace_back(std::async(
+			    std::launch::async,
+			    [&results_mutex,
+			     &dirs_mutex,
+			     &thread_specific_dirs,
+			     &main_results,
+			     &detailed_results,
+			     uscensus_table_name,
+			     file_path]() {
+				    CompressionRatioBenchmarker benchmarker;
 
-				               // Generate a thread-specific directory path
-				               std::ostringstream thread_id_stream;
-				               thread_id_stream << std::this_thread::get_id();
-				               std::filesystem::path thread_specific_fls_dir_path =
-				                   fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str();
+				    // Generate a thread-specific directory path
+				    std::ostringstream thread_id_stream;
+				    thread_id_stream << std::this_thread::get_id();
+				    std::filesystem::path thread_specific_fls_dir_path =
+				        fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str();
 
-				               // Store the directory for cleanup
-				               {
-					               std::lock_guard<std::mutex> lock(dirs_mutex);
-					               thread_specific_dirs.push_back(thread_specific_fls_dir_path);
-				               }
+				    // Store the directory for cleanup
+				    {
+					    std::lock_guard<std::mutex> lock(dirs_mutex);
+					    thread_specific_dirs.push_back(thread_specific_fls_dir_path);
+				    }
 
-				               // Run the benchmark
-				               auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
-				               const auto& footer_up = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
+				    // Run the benchmark
+				    auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
+				    const auto& footer_up = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
+				    const auto& first_rowgroup_descriptor = footer_up->m_rowgroup_descriptors[0];
 
-				               {
-					               // Lock and store the main result
-					               std::lock_guard<std::mutex> lock(results_mutex);
-					               main_results.emplace_back(uscensus_table_name, size);
-				               }
+				    {
+					    // Lock and store the main result
+					    std::lock_guard<std::mutex> lock(results_mutex);
+					    main_results.emplace_back(uscensus_table_name, size);
+				    }
 
-				               {
-					               // Lock and store the detailed results
-					               std::lock_guard<std::mutex> lock(results_mutex);
-					               for (const auto& column_descriptor : footer_up->GetColumnDescriptors()) {
-						               double bpt = static_cast<double>(column_descriptor.total_size) /
-						                            (static_cast<double>(footer_up->m_n_vec * CFG::VEC_SZ));
-						               double Bpt = bpt / 8.0;
+				    {
+					    // Lock and store the detailed results
+					    std::lock_guard<std::mutex> lock(results_mutex);
+					    for (const auto& column_descriptor : first_rowgroup_descriptor.GetColumnDescriptors()) {
+						    double bpt = static_cast<double>(column_descriptor.total_size) /
+						                 (static_cast<double>(first_rowgroup_descriptor.m_n_vec * CFG::VEC_SZ));
+						    double Bpt = bpt / 8.0;
 
-						               detailed_results.emplace_back(uscensus_table_name,
-						                                             column_descriptor.idx,
-						                                             column_descriptor.name,
-						                                             column_descriptor.data_type,
-						                                             column_descriptor.total_size,
-						                                             column_descriptor.encoding_rpn,
-						                                             bpt,
-						                                             Bpt);
-					               }
-				               }
+						    detailed_results.emplace_back(uscensus_table_name,
+						                                  column_descriptor.idx,
+						                                  column_descriptor.name,
+						                                  column_descriptor.data_type,
+						                                  column_descriptor.total_size,
+						                                  column_descriptor.encoding_rpn,
+						                                  bpt,
+						                                  Bpt);
+					    }
+				    }
 
-				               az_printer::green_cout << "-- Table " << uscensus_table_name << " is benchmarked. "
-				                                      << "Size: " << size << std::endl;
-			               }));
+				    az_printer::green_cout << "-- Table " << uscensus_table_name << " is benchmarked. "
+				                           << "Size: " << size << std::endl;
+			    }));
 
 			// Wait for all table-specific futures in this row group
 			for (auto& future : futures) {

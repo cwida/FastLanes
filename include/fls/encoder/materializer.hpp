@@ -7,7 +7,6 @@ namespace fastlanes {
 class Rowgroup;
 class PhysicalExpr;
 
-
 class Materializer {
 public:
 	explicit Materializer(Rowgroup& rowgroup);

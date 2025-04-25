@@ -6,7 +6,9 @@ add_library(fls_table
         column.cpp
         rowgroup.cpp
         stats.cpp
-        vector.cpp)
+        table.cpp
+        vector.cpp
+)
 
 set(FASTLANES_OBJECT_FILES
         ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_table>

@@ -34,6 +34,14 @@ std::ofstream FileSystem::open_w_binary(const path& file) {
 	return stream;
 }
 
+std::ofstream FileSystem::opend_app(const path& file) {
+	std::ofstream stream(file.c_str(), std::ios::app);
+	if (!stream) {
+		throw std::runtime_error(strerror(errno) + std::string {": "} + file.string());
+	}
+	return stream;
+}
+
 void FileSystem::check_if_dir_exists(const path& dir_path) {
 	if (!exists(dir_path) || !is_directory(dir_path)) {
 		throw std::runtime_error("Directory with path | " + dir_path.string() + " | does not exist.");

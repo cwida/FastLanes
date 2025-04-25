@@ -20,6 +20,8 @@ public:
 	static constexpr string_view SINGLE_COLUMN_U08PT {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/fls_u08"};
 	static constexpr string_view SINGLE_COLUMN_DECIMAL {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/decimal"};
 	static constexpr string_view SINGLE_COLUMN_FLOAT {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/float"};
+	static constexpr string_view SINGLE_COLUMN_IRREGULAR_I64 {FLS_CMAKE_SOURCE_DIR
+	                                                          "/data/generated/single_columns/irregular_i64"};
 
 	//
 	static constexpr string_view EQUALITY_I64PT {FLS_CMAKE_SOURCE_DIR "/data/generated/equality/fls_i64"};

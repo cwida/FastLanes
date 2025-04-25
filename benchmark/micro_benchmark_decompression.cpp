@@ -12,19 +12,20 @@ public:
 	double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto& fls_reader = conn.reset().read_fls(dir_path);
+		auto& fls_reader      = conn.reset().read_fls(dir_path);
+		auto  rowgroup_reader = fls_reader.get_rowgroup_reader(0);
 
 		auto start = benchmark::cycleclock::Now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			for (n_t vec_idx {0}; vec_idx < fls_reader.footer().m_n_vec; vec_idx++) {
-				fls_reader.get_chunk(vec_idx);
+			for (n_t vec_idx {0}; vec_idx < rowgroup_reader->get_descriptor().m_n_vec; vec_idx++) {
+				rowgroup_reader->get_chunk(vec_idx);
 			};
 		}
 		const auto end            = benchmark::cycleclock::Now();
 		auto       elapsed_cycles = end - start;
 
 		return static_cast<double>(elapsed_cycles) /
-		       (static_cast<double>(fls_reader.footer().GetNVectors() * CFG::VEC_SZ * n_repetitions));
+		       (static_cast<double>(rowgroup_reader->get_descriptor().GetNVectors() * CFG::VEC_SZ * n_repetitions));
 	}
 
 public:
@@ -52,7 +53,7 @@ void micro_benchmark_decompression(detailed_dataset_view_t dataset_view, const s
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path, idxs);
 		auto        cycles_per_value = benchmarker.bench(thread_specific_fls_dir_path);
-		const auto& footer_up        = benchmarker.GetRowgroupDescriptor(thread_specific_fls_dir_path);
+		const auto& footer_up        = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
 
 		az_printer::result_cout << "--- Table " << table_name << "  with cycles per value: " << cycles_per_value
 		                        << std::endl;

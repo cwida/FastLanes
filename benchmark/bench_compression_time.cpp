@@ -11,12 +11,13 @@ public:
 	double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto& fls_reader = conn.reset().read_fls(dir_path);
+		auto& fls_reader            = conn.reset().read_fls(dir_path);
+		auto  first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
 
 		auto start = std::chrono::high_resolution_clock::now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			for (n_t vec_idx {0}; vec_idx < fls_reader.footer().m_n_vec; vec_idx++) {
-				fls_reader.get_chunk(vec_idx);
+			for (n_t vec_idx {0}; vec_idx < first_rowgroup_reader->get_descriptor().m_n_vec; vec_idx++) {
+				first_rowgroup_reader->get_chunk(vec_idx);
 			};
 		}
 		const auto                                      end     = std::chrono::high_resolution_clock::now();
@@ -33,7 +34,7 @@ public:
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read(dir_path);
+		con1.reset().read_csv(dir_path);
 		auto start = std::chrono::high_resolution_clock::now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
 			con1.to_fls(thread_specific_fls_dir_path);
