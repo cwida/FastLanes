@@ -3,7 +3,7 @@ run-name: "${{ github.actor }} – ${{ github.event.head_commit.message }}"
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Events
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
   pull_request:
@@ -22,7 +22,7 @@ env:
 jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 1️⃣  Format-check (quick)
-  # -----------------------------------------------------------------------------
+  # ──────────────────────────────────────────────────────────────────────────────
   check-format:
     runs-on: ubuntu-latest
     steps:
@@ -31,8 +31,8 @@ jobs:
         run: make format-check
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 2️⃣  Main build + clang‑tidy (Linux + macOS)
-  # -----------------------------------------------------------------------------
+  # 2️⃣  Main build + clang-tidy (Linux + macOS)
+  # ──────────────────────────────────────────────────────────────────────────────
   build:
     needs: check-format
     strategy:
@@ -46,25 +46,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Ensure clang‑tidy is available on both runners
-      - name: Install clang-tidy on macOS
-        if: matrix.platform == 'macos-latest'
+      # ----------------------------------------------------------------------
+      # Install LLVM 20 tool-chain on both runners
+      # ----------------------------------------------------------------------
+      - name: Install LLVM 20 tool-chain
         run: |
-          if ! command -v clang-tidy &> /dev/null; then
-            brew install llvm
-            echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          if [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
+            brew install llvm        # Homebrew ships 20.1.x
+            echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
+          else
+            sudo apt-get update -y
+            sudo apt-get install -y wget gnupg lsb-release software-properties-common
+            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
+              sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+
+            UBUNTU_CODENAME=$(lsb_release -cs)    # e.g. jammy, noble
+            echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+              http://apt.llvm.org/${UBUNTU_CODENAME}/ \
+              llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
+              sudo tee /etc/apt/sources.list.d/llvm20.list
+
+            sudo apt-get update -y
+            sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 lld-20
+
+            sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-20       200
+            sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-20     200
+            sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
+
+            echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
           fi
-          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-      - name: Install clang-tidy on Ubuntu (if missing)
-        if: matrix.platform == 'ubuntu-latest'
+      - name: Print clang/clang-tidy version
         run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-tidy
+          clang --version
+          clang-tidy --version
 
-      - name: Print clang-tidy version
-        run: clang-tidy --version
-
+      # ----------------------------------------------------------------------
+      # Cache build artifacts
+      # ----------------------------------------------------------------------
       - name: Cache build artifacts
         uses: actions/cache@v4
         with:
@@ -73,7 +92,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ matrix.build_type }}-
 
-      - name: Configure (with clang‑tidy checks)
+      # ----------------------------------------------------------------------
+      # Configure (runs clang-tidy via CMake)
+      # ----------------------------------------------------------------------
+      - name: Configure (with clang-tidy checks)
         run: |
           cmake -S ${{ github.workspace }} \
                 -B build_${{ matrix.build_type }} \
@@ -83,12 +105,12 @@ jobs:
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_CXX_CLANG_TIDY="clang-tidy;-quiet"
 
-      - name: Build (runs clang‑tidy pass automatically)
+      - name: Build (clang-tidy runs automatically)
         run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
-  # -----------------------------------------------------------------------------
+  # ──────────────────────────────────────────────────────────────────────────────
   build-iwyu:
     needs: build
     strategy:
@@ -120,8 +142,8 @@ jobs:
         run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 4️⃣  Synthetic‑dataset generator (Python, cached pip)
-  # -----------------------------------------------------------------------------
+  # 4️⃣  Synthetic-dataset generator (Python, cached pip)
+  # ──────────────────────────────────────────────────────────────────────────────
   generate_dataset:
     needs: build
     strategy:
@@ -153,7 +175,7 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 5️⃣  Example build & run
-  # -----------------------------------------------------------------------------
+  # ──────────────────────────────────────────────────────────────────────────────
   example:
     needs: build
     strategy:
@@ -192,7 +214,7 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 6️⃣  Tests (Linux Release)
-  # -----------------------------------------------------------------------------
+  # ──────────────────────────────────────────────────────────────────────────────
   test:
     needs: example
     runs-on: ubuntu-latest
