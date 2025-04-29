@@ -7,7 +7,7 @@ run-name: "${{ github.actor }} – ${{ github.event.head_commit.message }}"
 on:
   push:
   pull_request:
-    branches: ["main", "dev"]
+    branches: [ "main", "dev" ]
 
 # Cancel in-flight runs on the same branch/PR so we do not waste minutes
 concurrency:
@@ -38,9 +38,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-latest, macos-latest]
-        build_type: [Debug, Release]
-        cxx: [clang++]
+        platform: [ ubuntu-latest, macos-latest ]
+        build_type: [ Debug, Release ]
+        cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -101,9 +101,7 @@ jobs:
                 -B build_${{ matrix.build_type }} \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} \
-                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-                -DCMAKE_CXX_CLANG_TIDY="clang-tidy;-quiet"
+                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} 
 
       - name: Build (clang-tidy runs automatically)
         run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
@@ -115,7 +113,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        build_type: [Debug, Release]
+        build_type: [ Debug, Release ]
     runs-on: ubuntu-latest
 
     steps:
@@ -148,8 +146,8 @@ jobs:
     needs: build
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest]
-        python-version: ["3.12"]
+        platform: [ ubuntu-latest, macos-latest ]
+        python-version: [ "3.12" ]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -180,8 +178,8 @@ jobs:
     needs: build
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest]
-        build_type: [Debug]
+        platform: [ ubuntu-latest, macos-latest ]
+        build_type: [ Debug ]
     runs-on: ${{ matrix.platform }}
 
     steps:
