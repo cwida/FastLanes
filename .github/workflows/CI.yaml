@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest, president ]
+        platform: [ ubuntu-latest, macos-latest ]
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
 
@@ -99,7 +99,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        platform: [ president ]
+        platform: [ ubuntu-latest ]
         build_type: [ Release, Debug ]
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
@@ -126,7 +126,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        platform: [ ubuntu-latest, macos-latest, president ]
+        platform: [ ubuntu-latest, macos-latest ]
         python-version: [ 3.12.4 ]  # Python 3 versions
 
     runs-on: ${{ matrix.platform }}
@@ -229,7 +229,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        platform: [ president ]
+        platform: [ ubuntu-latest ]
         build_type: [ Release ] # TODO : ADD DEBUG
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
