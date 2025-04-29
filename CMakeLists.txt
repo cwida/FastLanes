@@ -195,10 +195,15 @@ if (FLS_ENABLE_CLANG_TIDY)
     if (NOT CLANG_TIDY_EXE)
         message(FATAL_ERROR "-- FLS: clang-tidy not found.")
     else ()
-        set(CMAKE_CXX_CLANG_TIDY
-                ${CLANG_TIDY_EXE};
-                -header-filter=include;
-                -warnings-as-errors=*;)
+        if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
+            set(CMAKE_CXX_CLANG_TIDY
+                    ${CLANG_TIDY_EXE};
+                    --quiet;
+                    --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
+            message("-- FLS: Using project-level .clang-tidy")
+        else()
+            message(FATAL_ERROR "-- FLS: Using caller-provided clang-tidy: ${CMAKE_CXX_CLANG_TIDY}")
+        endif()
 
         execute_process(
                 COMMAND ${CLANG_TIDY_EXE} --version
