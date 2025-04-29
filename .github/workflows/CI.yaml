@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: ["main", "dev"]
 
-# Cancel in‑flight runs on the same branch/PR so we do not waste minutes
+# Cancel in-flight runs on the same branch/PR so we do not waste minutes
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -21,7 +21,7 @@ env:
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────────
-  # 1️⃣  Format‑check (quick)
+  # 1️⃣  Format-check (quick)
   # -----------------------------------------------------------------------------
   check-format:
     runs-on: ubuntu-latest
@@ -50,16 +50,20 @@ jobs:
       - name: Install clang-tidy on macOS
         if: matrix.platform == 'macos-latest'
         run: |
-          brew install llvm
-          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
-          clang-tidy --version
+          if ! command -v clang-tidy &> /dev/null; then
+            brew install llvm
+            echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          fi
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
       - name: Install clang-tidy on Ubuntu (if missing)
         if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y clang-tidy
-          clang-tidy --version
+
+      - name: Print clang-tidy version
+        run: clang-tidy --version
 
       - name: Cache build artifacts
         uses: actions/cache@v4
