@@ -6,7 +6,6 @@ run-name: "${{ github.actor }} – ${{ github.event.head_commit.message }}"
 # -----------------------------------------------------------------------------
 on:
   push:
-    branches: ["main", "dev"]
   pull_request:
     branches: ["main", "dev"]
 
