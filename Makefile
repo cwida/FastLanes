@@ -40,6 +40,15 @@ clang-format:
 	    ln -s /usr/bin/clang-format-14 /usr/bin/clang-format && \
 	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include -i --exclude include/fls/json/nlohmann"
 
+
+format-check:
+	$(call echo_green, "Checking formatting...")
+	docker run --rm -v "$$(pwd)":/app -w /app ubuntu:22.04 bash -c "\
+	    apt update && \
+	    apt install -y clang-format-14 python3 && \
+	    ln -s /usr/bin/clang-format-14 /usr/bin/clang-format && \
+	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include --exclude include/fls/json/nlohmann"
+
 # Generate synthetic data
 generate_syntethic_data: $(VENV)/bin/activate
 	$(call echo_green, "Generating synthetic data")
