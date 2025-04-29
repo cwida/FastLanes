@@ -15,16 +15,19 @@ $(VENV)/bin/activate:
 	$(PIP) install --upgrade pip
 	$(PIP) install clang-format faker  # Add other dependencies here
 
-# Run clang-format using prebuilt Docker image
+IMAGE := ghcr.io/azimafroozeh/clang-format-python:14
+
 format:
-	$(call echo_green, "Running clang-format with Docker for consistent formatting...")
-	docker run --rm -v "$$(pwd)":/app -w /app ghcr.io/azimafroozeh/clang-format-python:14 bash -c "\
-	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include -i --exclude include/fls/json/nlohmann"
+	$(call echo_green,"Formatting…")
+	docker run --rm -v "$$(pwd)":/app -w /app $(IMAGE) bash -c "\
+	  python3 scripts/run-clang-format.py -r examples include src benchmark test data/include \
+	  -i --exclude include/fls/json/nlohmann"
 
 format-check:
-	$(call echo_green, "Checking formatting...")
-	docker run --rm -v "$$(pwd)":/app -w /app ghcr.io/azimafroozeh/clang-format-python:14 bash -c "\
-	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include --exclude include/fls/json/nlohmann"
+	$(call echo_green,"Checking formatting…")
+	docker run --rm -v "$$(pwd)":/app -w /app $(IMAGE) bash -c "\
+	  python3 scripts/run-clang-format.py -r examples include src benchmark test data/include \
+	  --exclude include/fls/json/nlohmann"
 
 
 # Generate synthetic data
