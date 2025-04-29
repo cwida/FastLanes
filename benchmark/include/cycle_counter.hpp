@@ -809,7 +809,7 @@ static void SleepForMicroseconds(int microseconds) {
 	// sleep for the remaining microseconds because usleep() will fail if its
 	// argument is greater than 1000000.
 	div_t sleepTime = div(microseconds, kNumMicrosPerSecond);
-	int   seconds   = sleepTime.quot;
+	int seconds = sleepTime.quot;
 	while (seconds != 0) {
 		seconds = sleep(seconds);
 	}
@@ -1146,7 +1146,7 @@ public:
 
 	explicit ValueUnion(size_t buff_size)
 	    : Size(sizeof(DataT) + buff_size)
-	    , Buff(::new(std::malloc(Size)) DataT(), &std::free) {
+	    , Buff(::new (std::malloc(Size)) DataT(), &std::free) {
 	}
 
 	ValueUnion(ValueUnion&& other) = default;
@@ -1186,25 +1186,25 @@ public:
 };
 
 static ValueUnion GetSysctlImp(std::string const& name) {
-#if defined BENCHMARK_OS_OPENBSD
-	int mib[2];
+#if defined       BENCHMARK_OS_OPENBSD
+    int mib[2];
 
-	mib[0] = CTL_HW;
-	if ((Name == "hw.ncpu") || (Name == "hw.cpuspeed")) {
-		ValueUnion buff(sizeof(int));
+    mib[0] = CTL_HW;
+    if ((Name == "hw.ncpu") || (Name == "hw.cpuspeed")) {
+		      ValueUnion buff(sizeof(int));
 
-		if (Name == "hw.ncpu") {
-			mib[1] = HW_NCPU;
-		} else {
-			mib[1] = HW_CPUSPEED;
-		}
+		      if (Name == "hw.ncpu") {
+			      mib[1] = HW_NCPU;
+        } else {
+			      mib[1] = HW_CPUSPEED;
+        }
 
-		if (sysctl(mib, 2, buff.data(), &buff.Size, nullptr, 0) == -1) {
-			return ValueUnion();
-		}
-		return buff;
-	}
-	return ValueUnion();
+		      if (sysctl(mib, 2, buff.data(), &buff.Size, nullptr, 0) == -1) {
+			      return ValueUnion();
+        }
+		      return buff;
+    }
+    return ValueUnion();
 #else
 	size_t cur_buff_size = 0;
 	if (sysctlbyname(name.c_str(), nullptr, &cur_buff_size, nullptr, 0) == -1) {
@@ -1381,9 +1381,9 @@ inline std::vector<CPUInfo::CacheInfo> GetCacheSizesMacOSX() {
 #elif defined(BENCHMARK_OS_WINDOWS)
 std::vector<CPUInfo::CacheInfo> GetCacheSizesWindows() {
 	std::vector<CPUInfo::CacheInfo> res;
-	DWORD                           buffer_size = 0;
-	using PInfo                                 = SYSTEM_LOGICAL_PROCESSOR_INFORMATION;
-	using CInfo                                 = CACHE_DESCRIPTOR;
+	DWORD buffer_size = 0;
+	using PInfo = SYSTEM_LOGICAL_PROCESSOR_INFORMATION;
+	using CInfo = CACHE_DESCRIPTOR;
 
 	using UPtr = std::unique_ptr<PInfo, decltype(&std::free)>;
 	GetLogicalProcessorInformation(nullptr, &buffer_size);
@@ -1391,7 +1391,7 @@ std::vector<CPUInfo::CacheInfo> GetCacheSizesWindows() {
 	if (!GetLogicalProcessorInformation(buff.get(), &buffer_size))
 		PrintErrorAndDie("Failed during call to GetLogicalProcessorInformation: ", GetLastError());
 
-	PInfo* it  = buff.get();
+	PInfo* it = buff.get();
 	PInfo* end = buff.get() + (buffer_size / sizeof(PInfo));
 
 	for (; it != end; ++it) {
@@ -1404,11 +1404,11 @@ std::vector<CPUInfo::CacheInfo> GetCacheSizesWindows() {
 		if (!B.test(0)) {
 			continue;
 		}
-		CInfo*             Cache = &it->Cache;
+		CInfo* Cache = &it->Cache;
 		CPUInfo::CacheInfo C;
 		C.num_sharing = static_cast<int>(B.count());
-		C.level       = Cache->Level;
-		C.size        = Cache->Size;
+		C.level = Cache->Level;
+		C.size = Cache->Size;
 		switch (Cache->Type) {
 		case CacheUnified:
 			C.type = "Unified";
@@ -1433,33 +1433,33 @@ std::vector<CPUInfo::CacheInfo> GetCacheSizesWindows() {
 #elif BENCHMARK_OS_QNX
 std::vector<CPUInfo::CacheInfo> GetCacheSizesQNX() {
 	std::vector<CPUInfo::CacheInfo> res;
-	struct cacheattr_entry*         cache  = SYSPAGE_ENTRY(cacheattr);
-	uint32_t const                  elsize = SYSPAGE_ELEMENT_SIZE(cacheattr);
-	int                             num    = SYSPAGE_ENTRY_SIZE(cacheattr) / elsize;
+	struct cacheattr_entry* cache = SYSPAGE_ENTRY(cacheattr);
+	uint32_t const elsize = SYSPAGE_ELEMENT_SIZE(cacheattr);
+	int num = SYSPAGE_ENTRY_SIZE(cacheattr) / elsize;
 	for (int i = 0; i < num; ++i) {
 		CPUInfo::CacheInfo info;
 		switch (cache->flags) {
 		case CACHE_FLAG_INSTR:
-			info.type  = "Instruction";
+			info.type = "Instruction";
 			info.level = 1;
 			break;
 		case CACHE_FLAG_DATA:
-			info.type  = "Data";
+			info.type = "Data";
 			info.level = 1;
 			break;
 		case CACHE_FLAG_UNIFIED:
-			info.type  = "Unified";
+			info.type = "Unified";
 			info.level = 2;
 			break;
 		case CACHE_FLAG_SHARED:
-			info.type  = "Shared";
+			info.type = "Shared";
 			info.level = 3;
 			break;
 		default:
 			continue;
 			break;
 		}
-		info.size        = cache->line_size * cache->num_lines;
+		info.size = cache->line_size * cache->num_lines;
 		info.num_sharing = 0;
 		res.push_back(std::move(info));
 		cache = SYSPAGE_ARRAY_ADJ_OFFSET(cacheattr, cache, elsize);
@@ -1515,7 +1515,7 @@ inline FLS_BENCH_MAYBE_UNUSED std::string GetSystemName() {
 #endif
 #endif // def HOST_NAME_MAX
 	char hostname[HOST_NAME_MAX];
-	int  retVal = gethostname(hostname, HOST_NAME_MAX);
+	int retVal = gethostname(hostname, HOST_NAME_MAX);
 	if (retVal != 0) {
 		return {""};
 	}
@@ -1814,7 +1814,7 @@ struct SystemInfo {
 #endif
 #endif // def HOST_NAME_MAX
 		char hostname[HOST_NAME_MAX];
-		int  ret_val = gethostname(hostname, HOST_NAME_MAX);
+		int ret_val = gethostname(hostname, HOST_NAME_MAX);
 		if (ret_val != 0) {
 			return {""};
 		}

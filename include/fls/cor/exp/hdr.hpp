@@ -18,5 +18,5 @@ public:
 	std::string&              operator<<(std::string& lhs); /**/
 	[[nodiscard]] std::string ToString() const;             /**/
 };
-}} // namespace fastlanes::exp
+}}     // namespace fastlanes::exp
 #endif // FLS_COR_EXP_HDR_HPP

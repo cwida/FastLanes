@@ -305,7 +305,7 @@ long makeSample(vector<ulong>& sample, ulong nlines, u32 len[]) {
 					i = nlines;                 // break out of both loops;
 			}
 		}
-		sampleProb *= 4; // accelerate the selection process at expense of front-bias (4,16,64,256: 4 passes max)
+		sampleProb *= 4;   // accelerate the selection process at expense of front-bias (4,16,64,256: 4 passes max)
 	} while (i <= nlines); // basically continue until we have enough
 
 	// if the last line (only line?) is excessively long, return a negative samplesize (the amount of front bytes to

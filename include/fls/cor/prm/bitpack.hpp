@@ -76,5 +76,5 @@ void Decompress08(Page&, Vec&, DecompressState&);
 //	if (std::is_same<T, int16_t>()) { return Decompress16; }
 //	if (std::is_same<T, int8_t>()) { return Decompress08; }
 // }
-}} // namespace fastlanes::bitpack
+}}     // namespace fastlanes::bitpack
 #endif // FLS_COR_PRM_BITPACK_HPP

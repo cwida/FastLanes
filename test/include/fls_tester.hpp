@@ -63,7 +63,7 @@ public:
 		auto result = (original_table == *decoded_table);
 		ASSERT_TRUE(result.is_equal) << "Rowgroups differs. The first not matching column index is: " //
 		                             << result.first_failed_column_idx                                //
-		                             << " ❌"                                                         //
+		                             << " ❌"                                                          //
 		                             << "description: "                                               //
 		                             << result.description << std::endl;
 	}

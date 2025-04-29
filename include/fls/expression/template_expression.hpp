@@ -17,12 +17,14 @@ class Reader;
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 struct enc_[EXPRESSION_NAME] _opr {
-	explicit enc_[EXPRESSION_NAME] _opr(
-	    const PhysicalExpr& expr, const col_pt& column, ColumnDescriptor& column_descriptor, InterpreterState& state);
+	explicit enc_[EXPRESSION_NAME] _opr(const PhysicalExpr& expr,
+	                                    const col_pt&       column,
+	                                    ColumnDescriptor&   column_descriptor,
+	                                    InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);
 	void Encode();
-	void MoveSegments(vector<up<Segment>> & segments);
+	void MoveSegments(vector<up<Segment>>& segments);
 
 public:
 	up<Segment> n_exp_segment;

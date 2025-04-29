@@ -24,5 +24,5 @@ public:
 	    FUN_O,
 	};
 };
-}} // namespace fast_lanes::pfor
+}}     // namespace fast_lanes::pfor
 #endif // FLS_EXP_PFOR_CFG_HPP

@@ -39,5 +39,5 @@ static_assert(std::is_trivial<pfor::Exp>(), "fast_lanes::pfor::Exp should be a P
 static_assert(std::is_pod<pfor::Exp>(), "fast_lanes::pfor::Exp should be a POD.");
 static_assert(std::is_standard_layout<pfor::Exp>(), "fast_lanes::pfor::Exp should be a POD.");
 static_assert(sizeof(pfor::Exp) == 44, "fast_lanes::Header should be of size 8.");
-}} // namespace fast_lanes::pfor
+}}     // namespace fast_lanes::pfor
 #endif // FLS_EXP_PFOR_EXP_HPP

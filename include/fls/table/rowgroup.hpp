@@ -86,7 +86,7 @@ public:
 	const PT*            Data(n_t vec_idx);
 	static constexpr n_t GetSizeOfOneVector();
 	void                 PointTo(const n_t a_vec_n) {
-        this->m_vec_idx = a_vec_n;
+		                this->m_vec_idx = a_vec_n;
 	}
 	[[nodiscard]] n_t TotalSize() const;
 	const uint8_t*    NullMap() const;
@@ -141,7 +141,7 @@ public:
 	[[nodiscard]] len_t*    Length() const;
 	void                    PointTo(const n_t a_vec_n);
 	static constexpr n_t    GetSizeOfOneVector() {
-        return sizeof(ofs_t) * CFG::VEC_SZ;
+		   return sizeof(ofs_t) * CFG::VEC_SZ;
 	}
 	[[nodiscard]] uint8_t**     FsstString() const;
 	[[nodiscard]] len_t*        FSSTLength() const;
@@ -208,10 +208,8 @@ public:
 	RowgroupComparisonResult operator==(const Rowgroup& other_rowgroup) const;
 
 public:
-	[[deprecated]]
-	void ReadCsv(const path& csv_path, char delimiter = '|', char terminator = '\n');
-	[[deprecated]]
-	void ReadJson(const path& json_path);
+	[[deprecated]] void ReadCsv(const path& csv_path, char delimiter = '|', char terminator = '\n');
+	[[deprecated]] void ReadJson(const path& json_path);
 	///
 	void WriteJson(std::ostream& os) const;
 	///

@@ -241,7 +241,7 @@ TEST_F(FastLanesReaderTester, Taxpayer) {
 TEST_F(FastLanesReaderTester, Telco) {
 	const vector<n_t> constant_cols = {27, 72};
 	const vector<n_t> equal_cols    = {
-        136, 137, 138, 139, 140, 174}; // Groups: [[22, 136], [23, 137], [24, 138], [25, 139], [26, 140], [171, 174]]
+	       136, 137, 138, 139, 140, 174}; // Groups: [[22, 136], [23, 137], [24, 138], [25, 139], [26, 140], [171, 174]]
 
 	/*
 	* -- One-to-one mapped columns (low cardinality, indices): [(13, 16), (18, 21), (29, 32), (34, 37), (44, 47), (49,

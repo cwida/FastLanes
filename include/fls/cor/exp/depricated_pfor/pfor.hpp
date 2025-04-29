@@ -16,7 +16,7 @@ struct Setting {
 	T        base;  /**/
 	uint64_t exc_c; /**/
 	byte_c   Size(count_t c) {
-        return byte_c {(c * bit_c / CHAR_BIT) + exc_c * sizeof(T)};
+		  return byte_c {(c * bit_c / CHAR_BIT) + exc_c * sizeof(T)};
 	}
 };
 
@@ -231,5 +231,5 @@ sp<CompressionPlan<T>> PFor<T>::ColAnalyse(sp<Scanner<T>> scanner_sp) {
 	/* finalize */
 	return compression_plan;
 }
-}} // namespace fast_lanes::pfor
+}}     // namespace fast_lanes::pfor
 #endif // FLS_EXP_PFOR_PFOR_HPP

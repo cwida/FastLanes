@@ -23,5 +23,5 @@ static_assert(std::is_trivial<pfor::Pyl>(), "pfor::Pyl should be TRIVIAL.");
 static_assert(std::is_pod<pfor::Pyl>(), "pfor::Pyl should be a POD.");
 static_assert(std::is_standard_layout<pfor::Pyl>(), "pfor::Pyl should have STANDARD layout.");
 static_assert(sizeof(pfor::Pyl) == 36, "pfor::Pyl should be of size 36.");
-}} // namespace fast_lanes::pfor
+}}     // namespace fast_lanes::pfor
 #endif // FLS_EXP_PFOR_PYL_HPP

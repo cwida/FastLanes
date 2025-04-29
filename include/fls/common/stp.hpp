@@ -65,7 +65,7 @@ public:
 	void    Release();
 	int64_t UseCount() const noexcept; // Return use count (use count == 0 if stp is empty).
 	T&      operator*() const noexcept {
-        return *ptr;
+		     return *ptr;
 	} // Dereference pointer to managed object.
 	T* operator->() const noexcept {
 		return ptr;
