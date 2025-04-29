@@ -200,6 +200,13 @@ if (FLS_ENABLE_CLANG_TIDY)
                 -header-filter=include;
                 -warnings-as-errors=*;)
 
+        execute_process(
+                COMMAND ${CLANG_TIDY_EXE} --version
+                OUTPUT_VARIABLE CLANG_TIDY_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
+
     endif ()
 endif ()
 
