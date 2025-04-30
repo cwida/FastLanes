@@ -224,11 +224,8 @@ def generate_all_types_dbl_i64_struct_str(_faker, row_id):
     """Generates a list of values for example 2."""
     return {
         'COLUMN_1': row_id + 0.1,
-        'COLUMN_2': row_id + 0,
-        'COLUMN_3': {
-            'FIELD_0': row_id + 0,
-            'FIELD_1': row_id + 0.1,
-        },
+        'COLUMN_2': row_id,
+        'COLUMN_3': {'FIELD_0': row_id, 'FIELD_1': row_id + 0.1},
         'COLUMN_4': faker.language(),
     }
 
