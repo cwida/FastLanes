@@ -21,6 +21,7 @@ ROW_GROUP_SIZE = 64 * VEC_SIZE
 
 def write_jsonl(dir_path, generate_func, size):
     """Writes data to a JSONL file using a generator function."""
+    dir_path.mkdir(parents=True, exist_ok=True)  # <- added
     file_path = dir_path / 'data.jsonl'
     with open(file_path, 'w') as jsonlfile:
         for row_id in range(size):
@@ -29,6 +30,7 @@ def write_jsonl(dir_path, generate_func, size):
 
 def write_csv(dir_path, generate_func, size):
     """Writes data to a CSV file using a generator function."""
+    dir_path.mkdir(parents=True, exist_ok=True)  # <- added
     file_path = dir_path / "generated.csv"
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter='|', lineterminator='\n')
@@ -56,7 +58,6 @@ faker.add_provider(NumberStringsProvider)
 # ---------------------------
 # Utility Functions
 # ---------------------------
-
 
 def range_x_to_y(x, y):
     return random.randint(x, y)
