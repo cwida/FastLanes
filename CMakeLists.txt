@@ -201,9 +201,9 @@ if (FLS_ENABLE_CLANG_TIDY)
                     --quiet;
                     --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
             message("-- FLS: Using project-level .clang-tidy")
-        else()
-            message(FATAL_ERROR "-- FLS: Using caller-provided clang-tidy: ${CMAKE_CXX_CLANG_TIDY}")
-        endif()
+        else ()
+            message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
+        endif ()
 
         execute_process(
                 COMMAND ${CLANG_TIDY_EXE} --version

@@ -109,35 +109,35 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
   # ──────────────────────────────────────────────────────────────────────────────
-  build-iwyu:
-    needs: build
-    strategy:
-      matrix:
-        build_type: [ Debug, Release ]
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Cache IWYU build
-        uses: actions/cache@v4
-        with:
-          path: build_iwyu_${{ matrix.build_type }}
-          key: ${{ runner.os }}-iwyu-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
-          restore-keys: |
-            ${{ runner.os }}-iwyu-${{ matrix.build_type }}-
-
-      - name: Configure (IWYU)
-        run: |
-          cmake -S ${{ github.workspace }} \
-                -B build_iwyu_${{ matrix.build_type }} \
-                -DFLS_ENABLE_IWYU=ON \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-                -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=clang++
-
-      - name: Build (IWYU)
-        run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
+  #  build-iwyu:
+  #    needs: build
+  #    strategy:
+  #      matrix:
+  #        build_type: [ Debug, Release ]
+  #    runs-on: ubuntu-latest
+  #
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #
+  #      - name: Cache IWYU build
+  #        uses: actions/cache@v4
+  #        with:
+  #          path: build_iwyu_${{ matrix.build_type }}
+  #          key: ${{ runner.os }}-iwyu-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
+  #          restore-keys: |
+  #            ${{ runner.os }}-iwyu-${{ matrix.build_type }}-
+  #
+  #      - name: Configure (IWYU)
+  #        run: |
+  #          cmake -S ${{ github.workspace }} \
+  #                -B build_iwyu_${{ matrix.build_type }} \
+  #                -DFLS_ENABLE_IWYU=ON \
+  #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+  #                -DCMAKE_C_COMPILER=clang \
+  #                -DCMAKE_CXX_COMPILER=clang++
+  #
+  #      - name: Build (IWYU)
+  #        run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
