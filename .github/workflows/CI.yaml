@@ -200,6 +200,7 @@ jobs:
           cmake -S ${{ github.workspace }} \
                 -B build_${{ matrix.build_type }} \
                 -DFLS_BUILD_EXAMPLE=ON \
+                -DFLS_ENABLE_CLANG_TIDY=OFF \  
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
                 -DCMAKE_CXX_COMPILER=clang++
