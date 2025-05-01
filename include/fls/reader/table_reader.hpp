@@ -13,9 +13,6 @@ class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class TableReader {
 public:
-	static void verify_the_table(const path& dir_path, Connection& connection);
-
-public:
 	explicit TableReader(const path& dir_path, Connection& fls);
 
 public:

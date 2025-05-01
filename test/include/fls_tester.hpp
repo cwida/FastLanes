@@ -63,7 +63,7 @@ public:
 		auto result = (original_table == *decoded_table);
 		ASSERT_TRUE(result.is_equal) << "Rowgroups differs. The first not matching column index is: " //
 		                             << result.first_failed_column_idx                                //
-		                             << " ❌"                                                          //
+		                             << " ❌"                                                         //
 		                             << "description: "                                               //
 		                             << result.description << std::endl;
 	}
@@ -129,6 +129,11 @@ public:
 		TestConstantness(constant_indexes);
 		TestMap1To1(target_column_indexes);
 		TestEquality(equal_cols);
+	}
+
+	static VerificationResult VerifyFastLanesFile(const path& fls_file_path) {
+		Connection con;
+		return con.verify_fls(fls_file_path);
 	}
 };
 } // namespace fastlanes
