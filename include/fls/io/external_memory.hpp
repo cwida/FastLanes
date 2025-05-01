@@ -21,9 +21,9 @@ private:
 	span<std::byte> m_data_span;
 
 public:
-	static void Write(std::byte*& des_p, std::byte* src_p, bsz_t bsz);
-	static void Copy(std::byte* des_p, std::byte* src_p, bsz_t bsz);
-	static void Copy(void* des_p, void* src_p, bsz_t bsz);
+	static void Write(std::byte*& des_p, std::byte* src_p, n_t bsz);
+	static void Copy(std::byte* des_p, std::byte* src_p, n_t bsz);
+	static void Copy(void* des_p, void* src_p, n_t bsz);
 };
 
 } // namespace fastlanes

@@ -56,7 +56,7 @@ public:
 	template <typename PT>
 	static span<PT> read(const io& io);
 	///
-	static bsz_t get_size(const io& io);
+	static n_t get_size(const io& io);
 };
 
 } // namespace fastlanes

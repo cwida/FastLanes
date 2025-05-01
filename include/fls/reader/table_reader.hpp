@@ -13,13 +13,17 @@ class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class TableReader {
 public:
+	static void verify_the_table(const path& dir_path, Connection& connection);
+
+public:
 	explicit TableReader(const path& dir_path, Connection& fls);
 
 public:
 	up<RowgroupReader> operator[](n_t rowgroup_idx) const;
-	up<RowgroupReader> get_rowgroup_reader(n_t rowgroup_idx) const;
 	//
-	up<Table> materialize() const;
+	[[nodiscard]] up<RowgroupReader> get_rowgroup_reader(n_t rowgroup_idx) const;
+	//
+	[[nodiscard]] up<Table> materialize() const;
 	// API: append to the existing csv.
 	// write to the fle path
 	void to_csv(const path& file_path) const;

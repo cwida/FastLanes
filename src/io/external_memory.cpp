@@ -26,7 +26,7 @@ void ExternalMemory::Ingest(const Buf& buf) {
 	std::memcpy(m_data_span.data(), buf.data(), buf.Size()); //
 }
 
-void ExternalMemory::Write(std::byte*& des_p, std::byte* src_p, bsz_t bsz) {
+void ExternalMemory::Write(std::byte*& des_p, std::byte* src_p, n_t bsz) {
 
 	/**/
 	FLS_ASSERT_NOT_NULL_POINTER(des_p)
@@ -38,7 +38,7 @@ void ExternalMemory::Write(std::byte*& des_p, std::byte* src_p, bsz_t bsz) {
 	des_p = des_p + bsz;
 }
 
-void ExternalMemory::Copy(std::byte* des_p, std::byte* src_p, bsz_t bsz) {
+void ExternalMemory::Copy(std::byte* des_p, std::byte* src_p, n_t bsz) {
 
 	/**/
 	FLS_ASSERT_NOT_NULL_POINTER(des_p)
@@ -48,7 +48,7 @@ void ExternalMemory::Copy(std::byte* des_p, std::byte* src_p, bsz_t bsz) {
 	std::memcpy(des_p, src_p, bsz);
 }
 
-void ExternalMemory::Copy(void* des_p, void* src_p, bsz_t bsz) {
+void ExternalMemory::Copy(void* des_p, void* src_p, n_t bsz) {
 	/**/
 	FLS_ASSERT_NOT_NULL_POINTER(des_p)
 	FLS_ASSERT_NOT_NULL_POINTER(src_p)

@@ -53,6 +53,13 @@ void File::ReadRange(Buf& buf, const n_t offset, const n_t size) {
 	m_if_stream->read(reinterpret_cast<char*>(buf.mutable_data()), static_cast<std::streamsize>(size));
 }
 
+n_t File::Size() const {
+	if (!exists(m_path)) {
+		throw std::runtime_error("File does not exist");
+	}
+	return static_cast<n_t>(std::filesystem::file_size(m_path));
+}
+
 void File::Append(const Buf& buf) {
 	if (m_of_stream == nullptr) {
 		// Open file in append mode
