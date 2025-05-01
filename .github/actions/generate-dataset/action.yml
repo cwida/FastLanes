@@ -1,30 +1,13 @@
 name: Generate Synthetic Dataset
-description: Set up Python and generate synthetic data
-inputs:
-  python-version:
-    description: Python version to use
-    required: false
-    default: '3.12'
+description: Generate synthetic data using Makefile target
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ inputs.python-version }}
-
-    - name: Cache pip
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('scripts/generate_synthetic_data.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-
-    - name: Install dependencies
-      run: pip install --upgrade pip faker
+    - name: Ensure make is available
+      run: make --version
       shell: bash
 
-    - name: Generate data
-      run: python scripts/generate_synthetic_data.py
+    - name: Generate synthetic data via Makefile
+      run: make generate_syntethic_data
       shell: bash
