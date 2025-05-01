@@ -208,13 +208,17 @@ jobs:
         run: build_${{ matrix.build_type }}/examples/cpp_example
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 6️⃣  Tests (Linux Release)
+  # 6️⃣  Tests (Linux + macOS, Release only)
   # ──────────────────────────────────────────────────────────────────────────────
   test:
     #    needs: example
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ]
+        build_type: [ Release ]
+    runs-on: ${{ matrix.platform }}
     env:
-      build_type: Release
+      BUILD_THREADS: 12
 
     steps:
       - uses: actions/checkout@v4
@@ -229,15 +233,15 @@ jobs:
       - name: Configure tests
         run: |
           cmake -S ${{ github.workspace }} \
-                -B test_build_${{ env.build_type }} \
+                -B test_build_${{ matrix.build_type }} \
                 -DFLS_BUILD_TESTING=ON \
-                -DCMAKE_BUILD_TYPE=${{ env.build_type }} \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
                 -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build tests
-        run: cmake --build test_build_${{ env.build_type }} -j $BUILD_THREADS
+        run: cmake --build test_build_${{ matrix.build_type }} -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: test_build_${{ env.build_type }}
+        working-directory: test_build_${{ matrix.build_type }}
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
