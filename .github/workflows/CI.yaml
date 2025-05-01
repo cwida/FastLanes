@@ -236,6 +236,7 @@ jobs:
                 -B test_build_${{ matrix.build_type }} \
                 -DFLS_BUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DFLS_ENABLE_CLANG_TIDY=OFF \
                 -DCMAKE_C_COMPILER=clang \
                 -DCMAKE_CXX_COMPILER=clang++
 
