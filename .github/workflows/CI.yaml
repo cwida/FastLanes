@@ -33,7 +33,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 2️⃣  Main build + clang-tidy (Linux + macOS)
   # ──────────────────────────────────────────────────────────────────────────────
-#  build:
+  #  build:
   #    needs: check-format
   #    strategy:
   #      fail-fast: false
@@ -142,7 +142,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
-#  generate_dataset:
+  #  generate_dataset:
   #    needs: build
   #    strategy:
   #      matrix:
@@ -180,6 +180,7 @@ jobs:
       matrix:
         platform: [ ubuntu-latest, macos-latest ]
         build_type: [ Release ]
+        cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -203,7 +204,7 @@ jobs:
                 -DFLS_ENABLE_CLANG_TIDY=OFF \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=clang++
+                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build example
         run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
