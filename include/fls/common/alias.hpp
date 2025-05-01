@@ -39,6 +39,35 @@ using std::make_shared;
 
 constexpr static n_t   INVALID_N      = std::numeric_limits<n_t>::max(); // INVALID
 constexpr static len_t INVALID_LENGTH = std::numeric_limits<len_t>::max(); // INVALID
+
+/*---------------------------------------------------------------------------------------------------------------------\
+ * FastLanes Boolean:
+\---------------------------------------------------------------------------------------------------------------------*/
+struct fls_bool {
+  enum Value : uint8_t { FLS_FALSE = 'O', FLS_TRUE = 'X' };
+  Value value;
+
+  // Constructor
+  constexpr fls_bool(Value v) : value(v) {}
+
+  // Explicit conversion to bool
+  constexpr explicit operator bool() const {
+    return value == FLS_TRUE;
+  }
+
+  // Equality operators
+  friend constexpr bool operator==(fls_bool a, fls_bool b) {
+    return a.value == b.value;
+  }
+
+  friend constexpr bool operator!=(fls_bool a, fls_bool b) {
+    return a.value != b.value;
+  }
+};
+
+// Inline constants (C++17+)
+inline constexpr fls_bool FLS_TRUE{fls_bool::FLS_TRUE};
+inline constexpr fls_bool FLS_FALSE{fls_bool::FLS_FALSE};
 }
 
 #endif // FLS_COMMON_ALIAS_HPP

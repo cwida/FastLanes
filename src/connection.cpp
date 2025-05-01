@@ -218,8 +218,14 @@ Table& Connection::get_table() const {
 	return *m_table;
 }
 
-bool Connection::is_footer_inlined() const {
+fls_bool Connection::is_footer_inlined() const {
 	return m_config->inline_footer;
+}
+
+Connection& Connection::inline_footer() {
+	m_config->inline_footer = FLS_TRUE;
+
+	return *this;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\

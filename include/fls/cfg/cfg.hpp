@@ -31,7 +31,7 @@ public:
 
 	// Rowgroup
 	struct Footer {
-		static constexpr bool IS_INLINED = false;
+		static constexpr fls_bool IS_INLINED = FLS_FALSE;
 	};
 
 	/* String Config. */

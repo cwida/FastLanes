@@ -33,7 +33,7 @@ public:
 	n_t                   sample_size;
 	n_t                   n_vector_per_rowgroup;
 	//
-	bool inline_footer;
+	fls_bool inline_footer;
 };
 
 class VerificationResult {
@@ -129,7 +129,9 @@ public:
 	///!
 	[[nodiscard]] Table& get_table() const;
 	//
-	[[nodiscard]] bool is_footer_inlined() const;
+	[[nodiscard]] fls_bool is_footer_inlined() const;
+	//
+	Connection& inline_footer();
 
 private:
 	void prepare_table() const;
