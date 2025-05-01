@@ -71,8 +71,7 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 	}
 	csv_file << "table_name,version,random_access_ms,n_repetition\n";
 	for (const auto& [table_name, random_access_ms] : main_results) {
-		csv_file << table_name << "," << Info::get_version() << "," << random_access_ms << "," << n_repetition
-		         << "\n";
+		csv_file << table_name << "," << Info::get_version() << "," << random_access_ms << "," << n_repetition << "\n";
 	}
 	csv_file.close();
 
