@@ -230,6 +230,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
       - name: Configure tests
         run: |
           cmake -S ${{ github.workspace }} \
