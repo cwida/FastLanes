@@ -22,6 +22,8 @@ public:
 	void Read(Buf& buf);
 	// write to file_path
 	void Append(const Buf& buf);
+	// Append
+	void Append(const char* pointer, n_t size);
 	//
 	void ReadRange(Buf& buf, n_t offset, n_t size);
 

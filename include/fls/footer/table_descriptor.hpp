@@ -17,6 +17,7 @@ public:
 	n_t                        m_table_size;
 	//
 	n_t GetNRowgroups() const;
+	//
 };
 
 up<TableDescriptor> make_table_descriptor(const Table& table);

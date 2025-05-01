@@ -8,6 +8,7 @@
 #include "fls/expression/interpreter.hpp"         // for Interpreter
 #include "fls/expression/physical_expression.hpp" // for PhysicalExpr
 #include "fls/expression/predicate_operator.hpp"
+#include "fls/file/file_header.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata
 #include "fls/reader/segment.hpp"
 #include "fls/std/vector.hpp"     // for vector
@@ -21,7 +22,7 @@ void Encoder::encode(const Connection& connection, const path& dir_path) {
 	// init
 	Buf buf; // TODO[memory pool]
 
-	n_t cur_rowgroup_offset {0};
+	n_t cur_rowgroup_offset {sizeof(FileHeader)};
 	io  file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
 
 	for (n_t rowgroup_idx {0}; rowgroup_idx < connection.m_table->get_n_rowgroups(); ++rowgroup_idx) {

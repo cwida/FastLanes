@@ -21,6 +21,15 @@ void IO::append(io& io, const Buf& buf) {
 	      io);
 }
 
+void IO::append(io& io, const char* pointer, n_t size) {
+	// write the buffer
+	visit(overloaded {
+	          [&](up<File>& file) { file->Append(pointer, size); },
+	          [](auto&) { FLS_UNREACHABLE() },
+	      },
+	      io);
+}
+
 void IO::read(const io& io, Buf& buf) {
 	visit(overloaded {
 	          [&](const up<File>& file) { file->Read(buf); },

@@ -4,6 +4,8 @@
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/predicate_operator.hpp"
+#include "fls/file/file_footer.hpp"
+#include "fls/file/file_header.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for RowgroupDescriptor
 #include "fls/io/file.hpp"                    // for File
 #include "fls/io/io.hpp"                      // for IO, io
@@ -95,13 +97,15 @@ Connection& Connection::to_fls(const path& dir_path) {
 		spell();
 	}
 
-	// write_binary_header(dir_path);
+	FileHeader::Write(*this, dir_path);
 
 	// encode
 	Encoder::encode(*this, dir_path);
 
 	// write table descriptor
 	JSON::write<TableDescriptor>(dir_path, *m_table_descriptor);
+
+	FileFooter::Write(*this, dir_path);
 
 	return *this;
 }
@@ -177,6 +181,10 @@ Table& Connection::get_table() const {
 	return *m_table;
 }
 
+bool Connection::is_footer_inlined() const {
+	return m_config->inline_footer;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Config
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -185,6 +193,7 @@ Config::Config()
     : is_forced_schema_pool(false)
     , is_forced_schema(false)
     , sample_size(CFG::SAMPLER::SAMPLE_SIZE)
-    , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP) {
+    , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP)
+    , inline_footer(CFG::Footer::IS_INLINED) {
 }
 } // namespace fastlanes

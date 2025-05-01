@@ -61,6 +61,14 @@ void File::Append(const Buf& buf) {
 	m_of_stream->write(reinterpret_cast<char*>(buf.data()), static_cast<int64_t>(buf.Size()));
 }
 
+void File::Append(const char* pointer, n_t size) {
+	if (m_of_stream == nullptr) {
+		// Open file in append mode
+		m_of_stream = std::make_unique<std::ofstream>(m_path, std::ios::binary | std::ios::app);
+	}
+	m_of_stream->write(pointer, static_cast<int64_t>(size));
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*\
  * STATIC
 \*--------------------------------------------------------------------------------------------------------------------*/

@@ -32,6 +32,8 @@ public:
 	vector<OperatorToken> forced_schema;
 	n_t                   sample_size;
 	n_t                   n_vector_per_rowgroup;
+	//
+	bool inline_footer;
 };
 /*--------------------------------------------------------------------------------------------------------------------*\
  * FLS
@@ -61,16 +63,18 @@ public:
 	Connection& spell();
 	///!
 	Connection& to_fls(const path& dir_path);
-	///!
+	/**
+	 *
+	 */
 	Connection& reset();
 	///!
 	Connection& project(const vector<idx_t>& idxs);
 	///!
-	bool is_forced_schema_pool() const;
+	[[nodiscard]] bool is_forced_schema_pool() const;
 	///!
-	bool is_forced_schema() const;
+	[[nodiscard]] bool is_forced_schema() const;
 	//
-	const vector<OperatorToken>& get_forced_schema_pool() const;
+	[[nodiscard]] const vector<OperatorToken>& get_forced_schema_pool() const;
 	//
 	Connection& force_schema_pool(const vector<OperatorToken>& operator_token);
 	// API:
@@ -82,15 +86,17 @@ public:
 	// @return Reference to the current Connection object.
 	Connection& set_sample_size(n_t n_vecs);
 	//
-	n_t get_sample_size() const;
+	[[nodiscard]] n_t get_sample_size() const;
 	//
 	Connection& force_schema(const vector<OperatorToken>& operator_token);
 	//
-	const vector<OperatorToken>& get_forced_schema() const;
+	[[nodiscard]] const vector<OperatorToken>& get_forced_schema() const;
 	//
 	Connection& set_n_vectors_per_rowgroup(n_t n_vector_per_rowgroup);
 	///!
 	[[nodiscard]] Table& get_table() const;
+	//
+	[[nodiscard]] bool is_footer_inlined() const;
 
 private:
 	void prepare_table() const;

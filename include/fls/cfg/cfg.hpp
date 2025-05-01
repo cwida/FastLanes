@@ -29,6 +29,11 @@ public:
 		static constexpr uint64_t N_VALUES_PER_ROWGROUP  = 64 * 1024;
 	};
 
+	// Rowgroup
+	struct Footer {
+		static constexpr bool IS_INLINED = false;
+	};
+
 	/* String Config. */
 	struct String {
 		static constexpr uint64_t MAX_SIZE             = 4294967295; // max 32 bit unsigned integer
