@@ -17,7 +17,10 @@
 
 namespace fastlanes {
 
-void Encoder::encode(const Connection& connection, Buf& buf, const path& dir_path) {
+void Encoder::encode(const Connection& connection, const path& dir_path) {
+	// init
+	Buf buf; // TODO[memory pool]
+
 	n_t cur_rowgroup_offset {0};
 	io  file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
 

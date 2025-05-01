@@ -95,9 +95,10 @@ Connection& Connection::to_fls(const path& dir_path) {
 		spell();
 	}
 
+	// write_binary_header(dir_path);
+
 	// encode
-	Buf buf; // TODO[memory pool]
-	Encoder::encode(*this, buf, dir_path);
+	Encoder::encode(*this, dir_path);
 
 	// write table descriptor
 	JSON::write<TableDescriptor>(dir_path, *m_table_descriptor);
