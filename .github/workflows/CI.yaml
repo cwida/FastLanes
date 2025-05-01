@@ -209,7 +209,7 @@ jobs:
         run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
 
       - name: Run cpp_example
-        run: build_${{ matrix.build_type }}/example/cpp_example
+        run: build_${{ matrix.build_type }}/examples/cpp_example
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 6️⃣  Tests (Linux Release)
