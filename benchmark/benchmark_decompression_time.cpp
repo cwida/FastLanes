@@ -78,7 +78,7 @@ void bench_decompression(dataset_view_t dataset_view) {
 	}
 	csv_file << "table_name,version,decompression_time_ms,n_repetition\n";
 	for (const auto& [table_name, decompression_time_ms] : main_results) {
-		csv_file << table_name << "," << FastLanes::get_version() << "," << decompression_time_ms << "," << n_repetition
+		csv_file << table_name << "," << Info::get_version() << "," << decompression_time_ms << "," << n_repetition
 		         << "\n";
 	}
 	csv_file.close();

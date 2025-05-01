@@ -95,7 +95,7 @@ void bench_compression(dataset_view_t dataset_view) {
 	}
 	csv_file << "table_name,version,compression_time_ms,n_repetition\n";
 	for (const auto& [table_name, compression_time_ms] : main_results) {
-		csv_file << table_name << "," << FastLanes::get_version() << "," << compression_time_ms << "," << n_repetition
+		csv_file << table_name << "," << Info::get_version() << "," << compression_time_ms << "," << n_repetition
 		         << "\n";
 	}
 	csv_file.close();

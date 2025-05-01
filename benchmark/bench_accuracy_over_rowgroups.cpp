@@ -141,10 +141,10 @@ void bench_accuracy_over_rowgroups() {
 			}
 			detailed_csv_file << "compression,version,name,id,name,data_type,size(bytes),expression,bpt,Bpt\n";
 			for (const auto& [table_name, id, name, data_type, size, encoding_rpn, bpt, Bpt] : detailed_results) {
-				detailed_csv_file << FastLanes::get_name() << "," << FastLanes::get_version() << "," << table_name
-				                  << "," << id << "," << name << "," << data_type << "," << size << "," << '"'
-				                  << encoding_rpn << '"' << "," << std::fixed << std::setprecision(2) << bpt << ","
-				                  << std::fixed << std::setprecision(2) << Bpt << "\n";
+				detailed_csv_file << Info::get_name() << "," << Info::get_version() << "," << table_name << "," << id
+				                  << "," << name << "," << data_type << "," << size << "," << '"' << encoding_rpn << '"'
+				                  << "," << std::fixed << std::setprecision(2) << bpt << "," << std::fixed
+				                  << std::setprecision(2) << Bpt << "\n";
 			}
 			detailed_csv_file.close();
 

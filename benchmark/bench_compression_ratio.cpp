@@ -133,7 +133,7 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	}
 	csv_file << "table_name,version,file_size\n";
 	for (const auto& [table_name, size] : main_results) {
-		csv_file << table_name << "," << FastLanes::get_version() << "," << size << "\n";
+		csv_file << table_name << "," << Info::get_version() << "," << size << "\n";
 	}
 	csv_file.close();
 
@@ -144,8 +144,8 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	detailed_csv_file
 	    << "compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value\n";
 	for (const auto& [table_name, id, name, data_type, size, encoding_rpn, bpt, Bpt] : detailed_results) {
-		detailed_csv_file << FastLanes::get_name() << "," << FastLanes::get_version() << "," << table_name << "," << id
-		                  << "," << name << "," << data_type << "," << size << "," << '"' << encoding_rpn << '"' << ","
+		detailed_csv_file << Info::get_name() << "," << Info::get_version() << "," << table_name << "," << id << ","
+		                  << name << "," << data_type << "," << size << "," << '"' << encoding_rpn << '"' << ","
 		                  << std::fixed << std::setprecision(2) << bpt << "," << std::fixed << std::setprecision(2)
 		                  << Bpt << "\n";
 	}

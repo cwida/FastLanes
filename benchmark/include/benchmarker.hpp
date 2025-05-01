@@ -4,6 +4,7 @@
 #include "data/fastlanes_data.hpp"
 #include "fastlanes.hpp"
 #include "fls/connection.hpp"
+#include "fls/info.hpp"
 #include "fls/printer/az_printer.hpp"
 #include "fls/std/filesystem.hpp"
 #include <algorithm> // For std::sort
