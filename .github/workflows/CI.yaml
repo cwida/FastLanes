@@ -188,13 +188,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Cache example build
-        uses: actions/cache@v4
-        with:
-          path: build_${{ matrix.build_type }}
-          key: ${{ runner.os }}-example-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
-          restore-keys: |
-            ${{ runner.os }}-example-${{ matrix.build_type }}-
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
 
       - name: Configure example
         run: |

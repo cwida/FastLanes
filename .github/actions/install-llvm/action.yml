@@ -1,0 +1,31 @@
+name: Install LLVM 20 Toolchain
+description: Cross-platform LLVM 20 installer for macOS and Ubuntu
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        if [[ "${{ runner.os }}" == "macOS" ]]; then
+          brew install llvm        # Homebrew ships 20.1.x
+          echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
+        else
+          sudo apt-get update -y
+          sudo apt-get install -y wget gnupg lsb-release software-properties-common
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
+            sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+
+          UBUNTU_CODENAME=$(lsb_release -cs)    # e.g. jammy, noble
+          echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+            http://apt.llvm.org/${UBUNTU_CODENAME}/ \
+            llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
+            sudo tee /etc/apt/sources.list.d/llvm20.list
+
+          sudo apt-get update -y
+          sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 lld-20
+
+          sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-20       200
+          sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-20     200
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
+
+          echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+        fi
