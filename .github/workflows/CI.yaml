@@ -33,78 +33,78 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 2️⃣  Main build + clang-tidy (Linux + macOS)
   # ──────────────────────────────────────────────────────────────────────────────
-  #  build:
-  #    needs: check-format
-  #    strategy:
-  #      fail-fast: false
-  #      matrix:
-  #        platform: [ ubuntu-latest, macos-latest ]
-  #        build_type: [ Debug, Release ]
-  #        cxx: [ clang++ ]
-  #    runs-on: ${{ matrix.platform }}
-  #
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #
-  #      # ----------------------------------------------------------------------
-  #      # Install LLVM 20 tool-chain on both runners
-  #      # ----------------------------------------------------------------------
-  #      - name: Install LLVM 20 tool-chain
-  #        run: |
-  #          if [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
-  #            brew install llvm        # Homebrew ships 20.1.x
-  #            echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
-  #          else
-  #            sudo apt-get update -y
-  #            sudo apt-get install -y wget gnupg lsb-release software-properties-common
-  #            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
-  #              sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
-  #
-  #            UBUNTU_CODENAME=$(lsb_release -cs)    # e.g. jammy, noble
-  #            echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
-  #              http://apt.llvm.org/${UBUNTU_CODENAME}/ \
-  #              llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
-  #              sudo tee /etc/apt/sources.list.d/llvm20.list
-  #
-  #            sudo apt-get update -y
-  #            sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 lld-20
-  #
-  #            sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-20       200
-  #            sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-20     200
-  #            sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
-  #
-  #            echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
-  #          fi
-  #
-  #      - name: Print clang/clang-tidy version
-  #        run: |
-  #          clang --version
-  #          clang-tidy --version
-  #
-  #      # ----------------------------------------------------------------------
-  #      # Cache build artifacts
-  #      # ----------------------------------------------------------------------
-  #      - name: Cache build artifacts
-  #        uses: actions/cache@v4
-  #        with:
-  #          path: build_${{ matrix.build_type }}
-  #          key: ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
-  #          restore-keys: |
-  #            ${{ runner.os }}-build-${{ matrix.build_type }}-
-  #
-  #      # ----------------------------------------------------------------------
-  #      # Configure (runs clang-tidy via CMake)
-  #      # ----------------------------------------------------------------------
-  #      - name: Configure (with clang-tidy checks)
-  #        run: |
-  #          cmake -S ${{ github.workspace }} \
-  #                -B build_${{ matrix.build_type }} \
-  #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-  #                -DCMAKE_C_COMPILER=clang \
-  #                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
-  #
-  #      - name: Build (clang-tidy runs automatically)
-  #        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
+  build:
+    needs: check-format
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ]
+        build_type: [ Debug, Release ]
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ----------------------------------------------------------------------
+      # Install LLVM 20 tool-chain on both runners
+      # ----------------------------------------------------------------------
+      - name: Install LLVM 20 tool-chain
+        run: |
+          if [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
+            brew install llvm        # Homebrew ships 20.1.x
+            echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
+          else
+            sudo apt-get update -y
+            sudo apt-get install -y wget gnupg lsb-release software-properties-common
+            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
+              sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+          
+            UBUNTU_CODENAME=$(lsb_release -cs)    # e.g. jammy, noble
+            echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+              http://apt.llvm.org/${UBUNTU_CODENAME}/ \
+              llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
+              sudo tee /etc/apt/sources.list.d/llvm20.list
+          
+            sudo apt-get update -y
+            sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 lld-20
+          
+            sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-20       200
+            sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-20     200
+            sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
+          
+            echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+          fi
+
+      - name: Print clang/clang-tidy version
+        run: |
+          clang --version
+          clang-tidy --version
+
+      # ----------------------------------------------------------------------
+      # Cache build artifacts
+      # ----------------------------------------------------------------------
+      - name: Cache build artifacts
+        uses: actions/cache@v4
+        with:
+          path: build_${{ matrix.build_type }}
+          key: ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ matrix.build_type }}-
+
+      # ----------------------------------------------------------------------
+      # Configure (runs clang-tidy via CMake)
+      # ----------------------------------------------------------------------
+      - name: Configure (with clang-tidy checks)
+        run: |
+          cmake -S ${{ github.workspace }} \
+                -B build_${{ matrix.build_type }} \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DCMAKE_C_COMPILER=clang \
+                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+
+      - name: Build (clang-tidy runs automatically)
+        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
@@ -142,70 +142,70 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
-  #  generate_dataset:
-  #    needs: build
-  #    strategy:
-  #      matrix:
-  #        platform: [ ubuntu-latest, macos-latest ]
-  #        python-version: [ "3.12" ]
-  #    runs-on: ${{ matrix.platform }}
-  #
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #
-  #      - uses: actions/setup-python@v5
-  #        with:
-  #          python-version: ${{ matrix.python-version }}
-  #
-  #      - name: Cache pip
-  #        uses: actions/cache@v4
-  #        with:
-  #          path: ~/.cache/pip
-  #          key: ${{ runner.os }}-pip-${{ hashFiles('scripts/generate_synthetic_data.py') }}
-  #          restore-keys: |
-  #            ${{ runner.os }}-pip-
-  #
-  #      - name: Install dependencies
-  #        run: pip install --upgrade pip faker
-  #
-  #      - name: Generate data
-  #        run: python scripts/generate_synthetic_data.py
+  generate_dataset:
+    #    needs: build
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ]
+        python-version: [ "3.12" ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('scripts/generate_synthetic_data.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install --upgrade pip faker
+
+      - name: Generate data
+        run: python scripts/generate_synthetic_data.py
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 5️⃣  Example build & run
   # ──────────────────────────────────────────────────────────────────────────────
-#  example:
-  #    #    needs: build
-  #    strategy:
-  #      matrix:
-  #        platform: [ ubuntu-latest, macos-latest ]
-  #        build_type: [ Release ]
-  #        cxx: [ clang++ ]
-  #    runs-on: ${{ matrix.platform }}
-  #
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #        with:
-  #          submodules: recursive
-  #
-  #      - name: Install LLVM
-  #        uses: ./.github/actions/install-llvm
-  #
-  #      - name: Configure example
-  #        run: |
-  #          cmake -S ${{ github.workspace }} \
-  #                -B build_${{ matrix.build_type }} \
-  #                -DFLS_BUILD_EXAMPLES=ON \
-  #                -DFLS_ENABLE_CLANG_TIDY=OFF \
-  #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-  #                -DCMAKE_C_COMPILER=clang \
-  #                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
-  #
-  #      - name: Build example
-  #        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
-  #
-  #      - name: Run cpp_example
-  #        run: build_${{ matrix.build_type }}/examples/cpp_example
+  example:
+    #    needs: build
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ]
+        build_type: [ Release ]
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Configure example
+        run: |
+          cmake -S ${{ github.workspace }} \
+                -B build_${{ matrix.build_type }} \
+                -DFLS_BUILD_EXAMPLES=ON \
+                -DFLS_ENABLE_CLANG_TIDY=OFF \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DCMAKE_C_COMPILER=clang \
+                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+
+      - name: Build example
+        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
+
+      - name: Run cpp_example
+        run: build_${{ matrix.build_type }}/examples/cpp_example
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 6️⃣  Tests (Linux Release)
