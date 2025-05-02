@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform: [ ubuntu-latest, macos-latest , windows-latest ]
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
