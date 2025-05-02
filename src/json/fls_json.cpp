@@ -403,39 +403,40 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
-template <typename DATA>
-void JSON::write(const Connection& connection, const path& dir_path, const DATA& data) {
+n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor) {
 
-	const nlohmann::json j = data;
+	const nlohmann::json table_descriptor_json      = table_descriptor;
+	const auto           table_descriptor_json_dump = table_descriptor_json.dump();
 
 	if (connection.is_footer_inlined()) {
 		const path fls_path = dir_path / FASTLANES_FILE_NAME;
-		File::append(fls_path, j.dump());
-		return;
+		File::append(fls_path, table_descriptor_json_dump);
+
+		return table_descriptor_json_dump.size();
 	}
 
 	const path table_descriptor_path = dir_path / TABLE_DESCRIPTOR_FILE_NAME;
-	File::write(table_descriptor_path, j.dump());
-}
+	File::write(table_descriptor_path, table_descriptor_json_dump);
 
-template void JSON::write(const Connection& connection, const path& path, const TableDescriptor& table_descriptor);
+	return table_descriptor_json_dump.size();
+}
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TableDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* ROWGROUP_DESCRIPTORS = "1  [REQUIRED], RowGroup Descriptors";
-constexpr const auto* TABLE_SIZE           = "2  [REQUIRED], Table Size";
+constexpr const auto* TABLE_BINARY_SIZE    = "2  [REQUIRED], Table Binary Size";
 
 void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor) {
 	j = nlohmann::json {
 	    //
 	    {ROWGROUP_DESCRIPTORS, table_descriptor.m_rowgroup_descriptors}, //
-	    {TABLE_SIZE, table_descriptor.m_table_size},                     //
+	    {TABLE_BINARY_SIZE, table_descriptor.m_table_binary_size},       //
 	};
 }
 void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
 	j.at(ROWGROUP_DESCRIPTORS).get_to(table_descriptor.m_rowgroup_descriptors);
-	j.at(TABLE_SIZE).get_to(table_descriptor.m_table_size);
+	j.at(TABLE_BINARY_SIZE).get_to(table_descriptor.m_table_binary_size);
 }
 
 } // namespace fastlanes

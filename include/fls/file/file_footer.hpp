@@ -1,6 +1,7 @@
 #ifndef FLS_FILE_FILE_FOOTER_HPP
 #define FLS_FILE_FILE_FOOTER_HPP
 
+#include "fls/common/alias.hpp"
 #include "fls/std/filesystem.hpp"
 
 namespace fastlanes {
@@ -10,11 +11,14 @@ class Connection;
 
 class FileFooter {
 public:
-	static void Write(const Connection& connection, const path& dir_path);
+	static void write(const Connection& connection, const path& dir_path, n_t table_descriptor_size);
 
 public:
-	uint64_t magic_bytes;
+	n_t table_descriptor_size;
+	n_t magic_bytes;
 };
+
+static_assert(sizeof(FileFooter) == 16);
 
 } // namespace fastlanes
 

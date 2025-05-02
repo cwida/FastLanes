@@ -55,7 +55,7 @@ void Encoder::encode(const Connection& connection, const path& dir_path) {
 		cur_rowgroup_offset          = cur_rowgroup_offset + buf.Size();
 		buf.Reset();
 	}
-	connection.m_table_descriptor->m_table_size = cur_rowgroup_offset;
+	connection.m_table_descriptor->m_table_binary_size = cur_rowgroup_offset;
 }
 
 } // namespace fastlanes

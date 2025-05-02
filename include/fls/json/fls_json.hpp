@@ -1,6 +1,7 @@
 #ifndef FLS_JSON_FLS_JSON_HPP
 #define FLS_JSON_FLS_JSON_HPP
 
+#include "fls/common/alias.hpp"
 #include "fls/std/filesystem.hpp"
 #include "nlohmann/json.hpp"
 
@@ -68,8 +69,7 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p);
 \*--------------------------------------------------------------------------------------------------------------------*/
 class JSON {
 public:
-	template <typename DATA>
-	static void write(const Connection& connection, const path& dir_path, const DATA& data);
+	static n_t write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor);
 };
 
 /// write the footer or profiling as json file

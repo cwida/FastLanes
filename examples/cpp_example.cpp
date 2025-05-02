@@ -24,7 +24,7 @@ int main() {
 		}
 
 		// Step 1: Read the CSV file from the specified directory path
-		con1.inline_footer().set_n_vectors_per_rowgroup(64).read_csv(example_dir_path);
+		con1.set_n_vectors_per_rowgroup(64).read_csv(example_dir_path);
 
 		// Step 2: Write the data to the FastLanes file format in the specified directory
 		con1.to_fls(fls_dir_path);

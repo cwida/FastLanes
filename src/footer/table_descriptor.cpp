@@ -7,7 +7,9 @@
 
 namespace fastlanes {
 
-TableDescriptor::TableDescriptor() = default;
+TableDescriptor::TableDescriptor()
+    : m_table_binary_size {0} {
+}
 
 n_t TableDescriptor::GetNRowgroups() const {
 	return m_rowgroup_descriptors.size();
@@ -20,7 +22,7 @@ up<TableDescriptor> make_table_descriptor(const Table& table) {
 	for (n_t rowgroup_idx = 0; rowgroup_idx < table.get_n_rowgroups(); ++rowgroup_idx) {
 		table_descriptor->m_rowgroup_descriptors.push_back(*make_rowgroup_descriptor(*table.m_rowgroups[rowgroup_idx]));
 	}
-	table_descriptor->m_table_size = 0;
+	table_descriptor->m_table_binary_size = 0;
 
 	return table_descriptor;
 }

@@ -104,9 +104,9 @@ Connection& Connection::to_fls(const path& dir_path) {
 	Encoder::encode(*this, dir_path);
 
 	// write table descriptor
-	JSON::write<TableDescriptor>(*this, dir_path, *m_table_descriptor);
+	const n_t table_descriptor_size = JSON::write(*this, dir_path, *m_table_descriptor);
 
-	FileFooter::Write(*this, dir_path);
+	FileFooter::write(*this, dir_path, table_descriptor_size);
 
 	return *this;
 }

@@ -5,11 +5,12 @@
 
 namespace fastlanes {
 
-void FileFooter::Write(const Connection& connection, const path& dir_path) {
+void FileFooter::write(const Connection& connection, const path& dir_path, n_t table_descriptor_size) {
 	io file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
 
 	FileFooter file_footer {};
-	file_footer.magic_bytes = Info::get_magic_bytes();
+	file_footer.magic_bytes           = Info::get_magic_bytes();
+	file_footer.table_descriptor_size = table_descriptor_size;
 
 	IO::append(file_io, reinterpret_cast<const char*>(&file_footer), sizeof(file_footer));
 }
