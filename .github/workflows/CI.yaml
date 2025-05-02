@@ -58,8 +58,9 @@ jobs:
       # Configure (runs clang-tidy via CMake)
       # ----------------------------------------------------------------------
       - name: Configure (with clang-tidy checks)
+        shell: bash
         run: |
-          cmake -S ${{ github.workspace }} \
+          cmake -S "${{ github.workspace }}" \
                 -B build_${{ matrix.build_type }} \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
