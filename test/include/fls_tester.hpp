@@ -31,14 +31,18 @@ class FastLanesReaderTester : public ::testing::Test {
 public:
 	template <FileT DATA_TYPE = FileT::CSV>
 	void TestCorrectness(const string_view            table,
-	                     const vector<OperatorToken>& expressions   = {},
-	                     const n_t                    rowgroup_size = CFG::RowGroup::N_VECTORS_PER_ROWGROUP) const {
+	                     const vector<OperatorToken>& expressions    = {},
+	                     const n_t                    rowgroup_size  = CFG::RowGroup::N_VECTORS_PER_ROWGROUP,
+	                     bool                         inlined_footer = false) const {
 
 		const path dir_path = fastlanes_repo_data_path / string(table);
 		// original rowgroup
 		Connection con1;
 
 		con1.reset().set_n_vectors_per_rowgroup(rowgroup_size);
+		if (inlined_footer) {
+			con1.inline_footer();
+		}
 
 		if (!expressions.empty()) {
 			con1.force_schema_pool(expressions);
@@ -63,7 +67,7 @@ public:
 		auto result = (original_table == *decoded_table);
 		ASSERT_TRUE(result.is_equal) << "Rowgroups differs. The first not matching column index is: " //
 		                             << result.first_failed_column_idx                                //
-		                             << " ❌"                                                          //
+		                             << " ❌"                                                         //
 		                             << "description: "                                               //
 		                             << result.description << std::endl;
 	}
