@@ -22,6 +22,7 @@ public:
 
 up<TableDescriptor> make_table_descriptor(const Table& table);
 up<TableDescriptor> make_table_descriptor(const path& dir_path);
+up<TableDescriptor> make_table_descriptor(const path& dir_path, n_t offset, n_t size);
 
 } // namespace fastlanes
 

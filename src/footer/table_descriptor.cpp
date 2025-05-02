@@ -34,8 +34,8 @@ up<TableDescriptor> make_table_descriptor(const path& dir_path) {
 	return make_unique<TableDescriptor>(table_descriptor);
 }
 
-up<TableDescriptor> make_table_descriptor(const path& dir_path, n_t offset, n_t size) {
-	File file(dir_path / FASTLANES_FILE_NAME);
+up<TableDescriptor> make_table_descriptor(const path& file_path, n_t offset, n_t size) {
+	File file(file_path);
 	Buf  buf; // OPTIMIZE ME
 	file.ReadRange(buf, offset, size);
 	const nlohmann::json j                = nlohmann::json::parse(buf.data(), buf.data() + size);

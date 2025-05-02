@@ -1,7 +1,8 @@
 #ifndef FLS_CONNECTION_HPP
 #define FLS_CONNECTION_HPP
 
-#include "fls/common/alias.hpp"               // for up, idx_t
+#include "fls/common/alias.hpp" // for up, idx_t
+#include "fls/common/status.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for Footer
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/reader/column_view.hpp" //
@@ -36,35 +37,6 @@ public:
 	fls_bool inline_footer;
 };
 
-class VerificationResult {
-public:
-	enum class ErrorCode {
-		Ok,
-		ERR_1_SMALL_FILE_SIZE,
-		ERR_2_INVALID_HEADER,
-		ERR_3_INVALID_FOOTER,
-		ERR_4_INVALID_CHECKSUM,
-		ERR_5_INVALID_MAGIC_BYTES,
-		ERR_6_INVALID_VERSION_BYTES,
-		ERR_7_INVALID_ROWGROUP_DESCRIPTOR,
-		ERR_8_INVALID_TABLE_DESCRIPTOR,
-		ERR_9_INVALID_ROWGROUP_COUNT,
-		ERR_10_INVALID_ROWGROUP_SIZE,
-		Error2,
-		// Add more as needed
-	};
-
-	bool      success;
-	ErrorCode code;
-
-	static VerificationResult Ok();
-	static VerificationResult Error(ErrorCode code);
-	static string_view        message_for(ErrorCode code);
-
-private:
-	VerificationResult(bool success, ErrorCode code);
-};
-
 /*--------------------------------------------------------------------------------------------------------------------*\
  * FLS
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -94,7 +66,7 @@ public:
 	///!
 	Connection& to_fls(const path& dir_path);
 	//
-	VerificationResult verify_fls(const path& file_path);
+	Status verify_fls(const path& file_path);
 
 	/**
 	 *

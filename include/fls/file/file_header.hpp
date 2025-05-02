@@ -3,6 +3,7 @@
 
 #include "fls/common/alias.hpp"
 #include "fls/std/filesystem.hpp"
+#include "fls/common/status.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -25,7 +26,8 @@ static_assert(sizeof(Setting) == 8);
 
 class FileHeader {
 public:
-	static void Write(const Connection& connection, const path& dir_path);
+	static void   Write(const Connection& connection, const path& dir_path);
+	static Status Load(FileHeader& file_footer, const path& file_path);
 
 public:
 	uint64_t magic_bytes;

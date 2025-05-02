@@ -10,6 +10,7 @@ add_library(fls_common
         decimal.cpp
         double.cpp
         exception.cpp
+        status.cpp
         string.cpp
 )
 

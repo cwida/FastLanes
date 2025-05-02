@@ -131,7 +131,7 @@ public:
 		TestEquality(equal_cols);
 	}
 
-	static VerificationResult VerifyFastLanesFile(const path& fls_file_path) {
+	static Status VerifyFastLanesFile(const path& fls_file_path) {
 		Connection con;
 		return con.verify_fls(fls_file_path);
 	}

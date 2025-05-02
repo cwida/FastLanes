@@ -103,48 +103,35 @@ Connection& Connection::to_fls(const path& dir_path) {
 	// encode
 	Encoder::encode(*this, dir_path);
 
-	// write table descriptor
-	const n_t table_descriptor_size = JSON::write(*this, dir_path, *m_table_descriptor);
+	// Write table descriptor
+	const n_t        table_descriptor_size = JSON::write(*this, dir_path, *m_table_descriptor);
+	const FileFooter file_footer {
+	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
 
-	FileFooter::write(*this, dir_path, table_descriptor_size);
+	FileFooter::Write(*this, dir_path, file_footer);
 
 	return *this;
 }
 
-VerificationResult Connection::verify_fls(const path& file_path) {
-	io io = make_unique<File>(file_path); // todo[IO]
-
-	if (const auto file_size = IO::get_size(io); file_size < sizeof(FileHeader) + sizeof(FileFooter)) {
-		return VerificationResult::Error(VerificationResult::ErrorCode::ERR_1_SMALL_FILE_SIZE);
-	}
-
-	std::ifstream file(file_path, std::ios::binary);
-
-	auto fastlanes_file = FileSystem::open_r(file_path);
-
-	// Read first 24 bytes
+Status Connection::verify_fls(const path& file_path) {
 	FileHeader file_header {};
-	file.read(reinterpret_cast<char*>(&file_header), sizeof(FileHeader));
+	FileHeader::Load(file_header, file_path);
 
 	if (file_header.magic_bytes != Info::get_magic_bytes()) {
-		return VerificationResult::Error(VerificationResult::ErrorCode::ERR_5_INVALID_MAGIC_BYTES);
+		return Status::Error(Status::ErrorCode::ERR_5_INVALID_MAGIC_BYTES);
 	}
 	if (file_header.version != Info::get_version_bytes()) {
-		return VerificationResult::Error(VerificationResult::ErrorCode::ERR_6_INVALID_VERSION_BYTES);
+		return Status::Error(Status::ErrorCode::ERR_6_INVALID_VERSION_BYTES);
 	}
 
-	// Seek to 8 bytes before end
-	file.seekg(-8, std::ios::end);
-
-	// Read last 8 bytes
 	FileFooter file_footer {};
-	file.read(reinterpret_cast<char*>(&file_footer), sizeof(FileFooter));
+	FileFooter::Load(file_footer, file_path);
 
 	if (file_footer.magic_bytes != Info::get_magic_bytes()) {
-		return VerificationResult::Error(VerificationResult::ErrorCode::ERR_5_INVALID_MAGIC_BYTES);
+		return Status::Error(Status::ErrorCode::ERR_5_INVALID_MAGIC_BYTES);
 	}
 
-	return VerificationResult::Ok();
+	return Status::Ok();
 }
 
 Connection& Connection::reset() {
@@ -238,58 +225,6 @@ Config::Config()
     , sample_size(CFG::SAMPLER::SAMPLE_SIZE)
     , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP)
     , inline_footer(CFG::Footer::IS_INLINED) {
-}
-
-/*--------------------------------------------------------------------------------------------------------------------*\
- * VerificationResult
-\*--------------------------------------------------------------------------------------------------------------------*/
-
-// Constructor
-VerificationResult::VerificationResult(bool success, ErrorCode code)
-    : success(success)
-    , code(code) {
-}
-
-// Static factory for Ok
-VerificationResult VerificationResult::Ok() {
-	return {true, ErrorCode::Ok};
-}
-
-// Static factory for Error
-VerificationResult VerificationResult::Error(ErrorCode code) {
-	return {false, code};
-}
-
-// Message lookup
-std::string_view VerificationResult::message_for(ErrorCode code) {
-	switch (code) {
-	case ErrorCode::Ok:
-		return "";
-	case ErrorCode::ERR_1_SMALL_FILE_SIZE:
-		return "File too small";
-	case ErrorCode::ERR_2_INVALID_HEADER:
-		return "Invalid header";
-	case ErrorCode::ERR_3_INVALID_FOOTER:
-		return "Invalid footer";
-	case ErrorCode::ERR_4_INVALID_CHECKSUM:
-		return "Checksum mismatch";
-	case ErrorCode::ERR_5_INVALID_MAGIC_BYTES:
-		return "Invalid magic bytes";
-	case ErrorCode::ERR_6_INVALID_VERSION_BYTES:
-		return "Unsupported version";
-	case ErrorCode::ERR_7_INVALID_ROWGROUP_DESCRIPTOR:
-		return "Corrupt row group descriptor";
-	case ErrorCode::ERR_8_INVALID_TABLE_DESCRIPTOR:
-		return "Corrupt table descriptor";
-	case ErrorCode::ERR_9_INVALID_ROWGROUP_COUNT:
-		return "Invalid row group count";
-	case ErrorCode::ERR_10_INVALID_ROWGROUP_SIZE:
-		return "Row group size mismatch";
-	case ErrorCode::Error2:
-		return "Generic error"; // TODO: Rename or remove
-	default:
-		return "Unknown error";
-	}
 }
 
 } // namespace fastlanes
