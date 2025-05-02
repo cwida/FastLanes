@@ -6,15 +6,16 @@ runs:
     - shell: bash
       run: |
         if [[ "${{ runner.os }}" == "macOS" ]]; then
-          brew install llvm        # Homebrew ships 20.1.x
+          brew install llvm
           echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
-        else
+
+        elif [[ "${{ runner.os }}" == "Linux" ]]; then
           sudo apt-get update -y
           sudo apt-get install -y wget gnupg lsb-release software-properties-common
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
             sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
 
-          UBUNTU_CODENAME=$(lsb_release -cs)    # e.g. jammy, noble
+          UBUNTU_CODENAME=$(lsb_release -cs)
           echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
             http://apt.llvm.org/${UBUNTU_CODENAME}/ \
             llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
@@ -28,4 +29,7 @@ runs:
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
 
           echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+
+        else
+          echo "LLVM installation is not supported on this OS: ${{ runner.os }}"
         fi
