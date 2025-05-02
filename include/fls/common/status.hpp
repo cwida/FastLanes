@@ -26,14 +26,14 @@ public:
 	bool      success;
 	ErrorCode code;
 
-	static Status Ok();
-	static Status Error(ErrorCode code);
-	static string_view        message_for(ErrorCode code);
+	static Status      Ok();
+	static Status      Error(ErrorCode code);
+	static string_view message_for(ErrorCode code);
 
 private:
 	Status(bool success, ErrorCode code);
 };
 
-}
+} // namespace fastlanes
 
-#endif //FOR_NOW_ERROR_HPP
+#endif // FOR_NOW_ERROR_HPP

@@ -47,9 +47,8 @@ TableReader::TableReader(const path& dir_path, Connection& connection)
 	FileFooter::Load(file_footer, fastlanes_file_path);
 
 	if (file_header.settings.inline_footer) {
-		m_table_descriptor = make_table_descriptor(fastlanes_file_path,
-		                                           file_footer.table_descriptor_offset,
-		                                           file_footer.table_descriptor_size);
+		m_table_descriptor = make_table_descriptor(
+		    fastlanes_file_path, file_footer.table_descriptor_offset, file_footer.table_descriptor_size);
 	} else {
 		m_table_descriptor = make_table_descriptor(dir_path / TABLE_DESCRIPTOR_FILE_NAME);
 	}

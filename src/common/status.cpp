@@ -7,8 +7,8 @@ namespace fastlanes {
 
 // Constructor
 Status::Status(bool success, ErrorCode code)
-	: success(success)
-	, code(code) {
+    : success(success)
+    , code(code) {
 }
 
 // Static factory for Ok
@@ -53,4 +53,4 @@ std::string_view Status::message_for(ErrorCode code) {
 	}
 }
 
-}
+} // namespace fastlanes
