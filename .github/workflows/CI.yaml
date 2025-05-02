@@ -62,6 +62,7 @@ jobs:
         run: |
           cmake -S "${{ github.workspace }}" \
                 -B build_${{ matrix.build_type }} \
+                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
                 -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
@@ -159,6 +160,7 @@ jobs:
           cmake -S ${{ github.workspace }} \
                 -B build_${{ matrix.build_type }} \
                 -DFLS_BUILD_EXAMPLES=ON \
+                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DFLS_ENABLE_CLANG_TIDY=OFF \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
@@ -201,6 +203,7 @@ jobs:
           cmake -S ${{ github.workspace }} \
                 -B test_build_${{ matrix.build_type }} \
                 -DFLS_BUILD_TESTING=ON \
+                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DFLS_ENABLE_CLANG_TIDY=OFF \
                 -DCMAKE_C_COMPILER=clang \
