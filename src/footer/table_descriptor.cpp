@@ -3,6 +3,7 @@
 #include "fls/json/fls_json.hpp"
 #include "fls/json/nlohmann/json.hpp"
 #include "fls/table/table.hpp"
+#include <fls/connection.hpp>
 
 namespace fastlanes {
 
@@ -27,6 +28,15 @@ up<TableDescriptor> make_table_descriptor(const Table& table) {
 up<TableDescriptor> make_table_descriptor(const path& dir_path) {
 	auto                 json_string      = File::read(dir_path);
 	const nlohmann::json j                = nlohmann::json::parse(json_string);
+	auto                 table_descriptor = j.get<TableDescriptor>();
+	return make_unique<TableDescriptor>(table_descriptor);
+}
+
+up<TableDescriptor> make_table_descriptor(const path& dir_path, n_t offset, n_t size) {
+	File file(dir_path / FASTLANES_FILE_NAME);
+	Buf  buf; // OPTIMIZE ME
+	file.ReadRange(buf, offset, size);
+	const nlohmann::json j                = nlohmann::json::parse(buf.data(), buf.data() + size);
 	auto                 table_descriptor = j.get<TableDescriptor>();
 	return make_unique<TableDescriptor>(table_descriptor);
 }

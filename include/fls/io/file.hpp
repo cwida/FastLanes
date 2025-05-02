@@ -34,6 +34,8 @@ public:
 	static string read(const path& file_path);
 	/// write to file_path
 	static void write(const path& file_path, const string& dump);
+	/// append to file_path
+	static void append(const path& file_path, const string& dump);
 
 private:
 	path              m_path;

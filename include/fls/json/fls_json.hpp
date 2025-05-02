@@ -17,6 +17,7 @@ class SegmentDescriptor;
 class BinaryValue;
 class ExprSpace;
 class TableDescriptor;
+class Connection;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TableDescriptor
@@ -68,7 +69,7 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p);
 class JSON {
 public:
 	template <typename DATA>
-	static void write(const path& dir_path, const DATA& data);
+	static void write(const Connection& connection, const path& dir_path, const DATA& data);
 };
 
 /// write the footer or profiling as json file

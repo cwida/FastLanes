@@ -93,4 +93,12 @@ void File::write(const path& dir_path, const string& dump) {
 
 	FileSystem::close(file);
 }
+
+void File::append(const path& dir_path, const string& dump) {
+	auto file = FileSystem::opend_app(dir_path);
+
+	file << dump;
+
+	FileSystem::close(file);
+}
 } // namespace fastlanes

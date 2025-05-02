@@ -404,16 +404,21 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename DATA>
-void JSON::write(const path& dir_path, const DATA& data) {
-	path file_path;
-	if constexpr (std::is_same_v<DATA, TableDescriptor>) {
-		file_path = dir_path / TABLE_DESCRIPTOR_FILE_NAME;
-	}
+void JSON::write(const Connection& connection, const path& dir_path, const DATA& data) {
+
 	const nlohmann::json j = data;
-	File::write(file_path, j.dump());
+
+	if (connection.is_footer_inlined()) {
+		const path fls_path = dir_path / FASTLANES_FILE_NAME;
+		File::append(fls_path, j.dump());
+		return;
+	}
+
+	const path table_descriptor_path = dir_path / TABLE_DESCRIPTOR_FILE_NAME;
+	File::write(table_descriptor_path, j.dump());
 }
 
-template void JSON::write(const path& path, const TableDescriptor& table_descriptor);
+template void JSON::write(const Connection& connection, const path& path, const TableDescriptor& table_descriptor);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TableDescriptor
