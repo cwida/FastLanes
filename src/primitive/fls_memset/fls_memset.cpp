@@ -1,9 +1,8 @@
 #include "fls/primitive/fls_memset/fls_memset.hpp"
-#include "fls/expression/data_type.hpp"
 #include "fls/common/common.hpp"
-#include <type_traits>
+#include "fls/expression/data_type.hpp"
 #include <stdexcept>
-
+#include <type_traits>
 
 namespace fastlanes {
 static void unffor_0bw_8ow_8crw_1uf(const uint8_t* __restrict base_p, uint8_t* __restrict a_out_p) {

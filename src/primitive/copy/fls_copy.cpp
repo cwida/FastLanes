@@ -1,8 +1,8 @@
 #include "fls/primitive/copy/fls_copy.hpp"
-#include "fls/expression/data_type.hpp"
 #include "fls/common/common.hpp"
-#include <type_traits>
+#include "fls/expression/data_type.hpp"
 #include <stdexcept>
+#include <type_traits>
 
 namespace fastlanes {
 static void unpack_8bw_8ow_8crw_1uf(const uint8_t* __restrict a_in_p, uint8_t* __restrict a_out_p) {
