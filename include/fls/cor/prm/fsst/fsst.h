@@ -58,7 +58,7 @@
 
 #ifdef _MSC_VER
 #define __restrict__
-#define __BYTE_ORDER__          __ORDER_LITTLE_ENDIAN__
+#define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
 // #define __ORDER_LITTLE_ENDIAN__ 2
 #include <intrin.h>
 static inline int __builtin_ctzl(unsigned long long x) {
