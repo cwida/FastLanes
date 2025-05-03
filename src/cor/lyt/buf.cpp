@@ -2,6 +2,7 @@
 #include "fls/cfg/cfg.hpp"
 #include "fls/io/external_memory.hpp"
 #include <cstring>
+#include <stdexcept>
 
 namespace fastlanes {
 static constexpr uint64_t BUF_SZ = 64ULL * 8 * 256 * 1024;
