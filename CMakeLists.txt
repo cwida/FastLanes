@@ -31,12 +31,6 @@ if (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     message(FATAL_ERROR "Only Clang is supported!")
 endif ()
 
-# Handle Clang-on-Windows (MSVC ABI)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
-    message(STATUS "Detected Clang targeting MSVC (Windows)")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=pass-failed")
-endif ()
-
 if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
     message(FATAL_ERROR "Only Clang >= 13 is supported!")
 endif ()
