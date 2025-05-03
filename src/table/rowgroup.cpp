@@ -400,6 +400,32 @@ void Rowgroup::Init() {
 		column_descriptor.idx   = col_idx;
 	}
 }
+
+void fill_in(col_pt& col, n_t how_many_to_fill) {
+
+	visit(overloaded {
+	          [&](up<FLSStrColumn>& string_col) {},
+	          [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
+		          PT last_element = typed_col->data.back();
+		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+			          typed_col->data.push_back(last_element);
+		          }
+	          },
+	          [&](up<Struct>& struct_col) {},
+	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
+	      },
+	      col);
+}
+
+void Rowgroup::FillMissingValues(const n_t how_many_to_fill) {
+	const auto n_col = internal_rowgroup.size();
+
+	// brute_force
+	for (n_t col_idx {0}; col_idx < n_col; col_idx++) {
+		fill_in(internal_rowgroup[col_idx], how_many_to_fill);
+	}
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_table) {
 	for (idx_t idx {0}; idx < old_table.ColCount(); ++idx) {
@@ -583,8 +609,7 @@ n_t Rowgroup::RowCount() const {
 }
 
 n_t Rowgroup::VecCount() const {
-	//
-	return n_tup / CFG::VEC_SZ;
+	return (n_tup + CFG::VEC_SZ - 1) / CFG::VEC_SZ;
 }
 
 n_t Rowgroup::ColCount() const {

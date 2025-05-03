@@ -53,8 +53,15 @@ public:
 	static constexpr string_view EXP_ALP_FLT {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/alp_flt"};
 	static constexpr string_view EXP_ALP_DBL {FLS_CMAKE_SOURCE_DIR "/data/generated/encodings/alp_dbl"};
 
+	//
 	static constexpr string_view NUMBER_STRINGS {FLS_CMAKE_SOURCE_DIR "/data/generated/whitebox/number_strings"};
 	static constexpr string_view DECIMAL_DOUBLES {FLS_CMAKE_SOURCE_DIR "/data/generated/whitebox/decimal_doubles"};
+
+	// Any count value
+	static constexpr string_view ANY_VALUE_COUNT_I64_1 {FLS_CMAKE_SOURCE_DIR "/data/generated/any_value_count/1"};
+	static constexpr string_view ANY_VALUE_COUNT_I64_666 {FLS_CMAKE_SOURCE_DIR "/data/generated/any_value_count/666"};
+	static constexpr string_view ANY_VALUE_COUNT_I64_52422 {FLS_CMAKE_SOURCE_DIR
+	                                                        "/data/generated/any_value_count/25570"};
 };
 
 } // namespace fastlanes

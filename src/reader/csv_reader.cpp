@@ -69,6 +69,11 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 		}
 	}
 	if (n_tup != 0) {
+		const n_t leftover = n_tup % CFG::VEC_SZ;
+		if (leftover != 0) {
+			n_t how_many_to_fill = CFG::VEC_SZ - leftover;
+			cur_rowgroup->FillMissingValues(how_many_to_fill);
+		}
 		cur_rowgroup->n_tup = n_tup;
 		table->m_rowgroups.push_back(std::move(cur_rowgroup));
 	}

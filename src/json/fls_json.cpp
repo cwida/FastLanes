@@ -243,6 +243,7 @@ constexpr const auto* N_VEC              = "1, [REQUIRED], N VEC";
 constexpr const auto* ROWGROUP_SIZE      = "2, [REQUIRED], Rowgroup size";
 constexpr const auto* COLUMN_DESCRIPTORS = "3  [REQUIRED], Column Descriptors";
 constexpr const auto* ROWGROUP_OFFSET    = "4, [REQUIRED], Rowgroup OFFSET";
+constexpr const auto* N_TUPLES           = "5, [REQUIRED], N TUPLES";
 
 void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
 	j = nlohmann::json {
@@ -251,6 +252,8 @@ void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
 	    {ROWGROUP_SIZE, rowgroup_descriptor.m_size},                    //
 	    {COLUMN_DESCRIPTORS, rowgroup_descriptor.m_column_descriptors}, //
 	    {ROWGROUP_OFFSET, rowgroup_descriptor.m_offset},                //
+	    {N_TUPLES, rowgroup_descriptor.m_n_tuples},                     //
+
 	};
 }
 void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor) {
@@ -259,6 +262,7 @@ void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor)
 		j.at(N_VEC).get_to(rowgroup_descriptor.m_n_vec);
 		j.at(ROWGROUP_SIZE).get_to(rowgroup_descriptor.m_size);
 		j.at(ROWGROUP_OFFSET).get_to(rowgroup_descriptor.m_offset);
+		j.at(N_TUPLES).get_to(rowgroup_descriptor.m_n_tuples);
 
 	} else {
 		j.at("columns").get_to(rowgroup_descriptor.m_column_descriptors);

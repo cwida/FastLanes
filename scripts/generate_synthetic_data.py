@@ -502,6 +502,11 @@ def generate_alp_dbl():
     write_csv(file, generate_alp_dbl_func, ROW_GROUP_SIZE)
 
 
+def generate_specific_number_of_values(count):
+    # one rowgroup
+    write_fls_i64_to_file('any_value_count/' + str(count), generate_fls_i64, count)
+
+
 # ---------------------------
 # Main Generation Functions
 # ---------------------------
@@ -524,6 +529,12 @@ def generate_single_column():
 def generate_irregular_data():
     generate_irregular_i64()
     generate_irregular_string()
+
+
+def generate_any_value_count():
+    counts = [1, 666, 25570]
+    for count in counts:
+        generate_specific_number_of_values(count)
 
 
 def generate_expression_data():
@@ -574,6 +585,7 @@ def main():
     mostly_null()
     generate_expression_data()
     generate_irregular_data()
+    generate_any_value_count()
 
 
 if __name__ == "__main__":

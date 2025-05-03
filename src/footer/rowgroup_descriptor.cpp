@@ -53,22 +53,22 @@ up<RowgroupDescriptor> RowgroupDescriptor::Project(const vector<idx_t>& idxs) co
 	return footer;
 }
 
-const_col_descripption_it RowgroupDescriptor::end() const {
+const_col_description_it RowgroupDescriptor::end() const {
 	/**/
 	return this->m_column_descriptors.end();
 }
 
-col_descripption_it RowgroupDescriptor::end() {
+col_description_it RowgroupDescriptor::end() {
 	/**/
 	return this->m_column_descriptors.end();
 }
 
-const_col_descripption_it RowgroupDescriptor::begin() const {
+const_col_description_it RowgroupDescriptor::begin() const {
 	/**/
 	return this->m_column_descriptors.begin();
 }
 
-col_descripption_it RowgroupDescriptor::begin() {
+col_description_it RowgroupDescriptor::begin() {
 	/**/
 	return this->m_column_descriptors.begin();
 }
@@ -81,7 +81,8 @@ const ColumnDescriptor& RowgroupDescriptor::operator[](const n_t idx) const {
 
 RowgroupDescriptor::RowgroupDescriptor()
     : m_n_vec(0)
-    , m_size {0} {};
+    , m_size {0}
+    , m_n_tuples {0} {};
 
 n_t GetNVector(const n_t n_tup) {
 	return static_cast<n_t>(ceil(static_cast<double>(n_tup) / static_cast<double>(CFG::VEC_SZ)));
@@ -131,7 +132,8 @@ up<RowgroupDescriptor> make_rowgroup_descriptor(const Rowgroup& rowgroup) {
 	set_index(rowgroup_descriptor->m_column_descriptors);
 
 	// set the num of vecs
-	rowgroup_descriptor->m_n_vec = rowgroup.VecCount();
+	rowgroup_descriptor->m_n_vec    = rowgroup.VecCount();
+	rowgroup_descriptor->m_n_tuples = rowgroup.n_tup;
 
 	return rowgroup_descriptor;
 }

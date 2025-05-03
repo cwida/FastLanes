@@ -11,9 +11,9 @@ class Rowgroup;
 enum class DataType : uint8_t;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-using map                       = unordered_map<string, idx_t>;
-using col_descripption_it       = vector<ColumnDescriptor>::iterator;
-using const_col_descripption_it = vector<ColumnDescriptor>::const_iterator;
+using map                      = unordered_map<string, idx_t>;
+using col_description_it       = vector<ColumnDescriptor>::iterator;
+using const_col_description_it = vector<ColumnDescriptor>::const_iterator;
 
 class RowgroupDescriptor {
 public: /* Constructors */
@@ -42,10 +42,10 @@ public:
 	///!
 	[[nodiscard]] map GetMap() const;
 	///
-	col_descripption_it                     begin();
-	[[nodiscard]] const_col_descripption_it begin() const;
-	col_descripption_it                     end();
-	[[nodiscard]] const_col_descripption_it end() const;
+	col_description_it                     begin();
+	[[nodiscard]] const_col_description_it begin() const;
+	col_description_it                     end();
+	[[nodiscard]] const_col_description_it end() const;
 	///
 	[[nodiscard]] idx_t LookUp(const string& name) const;
 	///
@@ -70,6 +70,8 @@ public:
 	sz_t m_size;
 	//
 	n_t m_offset;
+	//
+	n_t m_n_tuples;
 };
 
 up<RowgroupDescriptor> make_rowgroup_descriptor(const Rowgroup& rowgroup);

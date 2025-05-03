@@ -236,6 +236,8 @@ public:
 	void Cast();
 	///
 	void Init();
+	///
+	void FillMissingValues(n_t how_many_to_fill);
 
 public: /* Members */
 	RowgroupDescriptor m_descriptor;
