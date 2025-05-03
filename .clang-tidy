@@ -7,11 +7,11 @@ Checks: >
   clang-analyzer-core.NonNullParamChecker,
   clang-analyzer-core.UndefinedBehavior,
   clang-analyzer-core.BitwiseShift,
-  
+
   # Performance Checks
   performance-*,
   performance-inefficient-vector-operation,
-  
+
   # Modernization
   modernize-deprecated-ios-base-aliases,
   modernize-loop-convert,
@@ -33,24 +33,24 @@ Checks: >
   modernize-use-override,
   modernize-use-using,
   modernize-deprecated-headers,
-  
+
   # Google Style Guide
   google-explicit-constructor,
   google-build-using-namespace,
   google-runtime-int,
   google-global-names-in-headers,
-  
+
   # Readability
   readability-braces-around-statements,
   readability-container-size-empty,
   #  readability-identifier-naming,
   #  readability-magic-numbers,
-  readability-redundant-member-init,           # Detect redundant member initialization
+  readability-redundant-member-init,
 
   # HICPP and Portability
   hicpp-exception-baseclass
   portability-restrict-system-includes
-  
+
   # Disabled/Suppressed Checks
   -bugprone-branch-clone,
   -bugprone-macro-parentheses,
@@ -58,25 +58,25 @@ Checks: >
   -bugprone-misplaced-widening-cast,
   -bugprone-sizeof-expression,
   -bugprone-narrowing-conversions,
-  -bugprone-unchecked-optional-access,       # Unchecked access to std::optional, which could cause runtime crashes
-  -bugprone-dynamic-static-initializers,     # Detects dynamic initializers for static variables
-  -bugprone-implicit-widening-of-multiplication-result,  # Implicit widening of multiplication result
-  -bugprone-too-small-loop-variable,         # Loop variable might not be large enough to iterate correctly
-  -bugprone-exception-escape,                # Exceptions escaping from destructors or non-throwing functions
-  -bugprone-unused-return-value,             # Ignoring return values of functions that require checks
-  -bugprone-integer-division,                # Detects cases of integer division truncating results
-  -bugprone-parent-virtual-call,             # Detects when a virtual call in the base class is skipped unintentionally
-  -bugprone-forward-declaration-namespace,   # Issues with forward declarations inside namespaces
-  -bugprone-assignment-in-if-condition,      # Assignment in an `if` condition; often an error
-  -bugprone-not-null-terminated-result,      # Missing null-termination in strings
-  -bugprone-spuriously-wake-up-functions,    # Misuse of condition variables in threading
-  -bugprone-assert-side-effect,              # Side effects in assert statements (removed in release mode)
-  -bugprone-copy-constructor-init,           # Wrong initialization order in copy constructors
-  -bugprone-move-forwarding-reference,       # Misuse of `std::move` with forwarding references
-  -bugprone-unused-raii,                     # Unused RAII objects that perform important operations in destructors
-  -bugprone-undefined-memory-manipulation,   # Undefined behavior in memory manipulation functions
-  -bugprone-floating-point-implicit-conversion, # Implicit conversion of floating-point values
-  -bugprone-reserved-identifier,             # Use of reserved identifiers, which can clash with system headers
+  -bugprone-unchecked-optional-access,
+  -bugprone-dynamic-static-initializers,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-too-small-loop-variable,
+  -bugprone-exception-escape,
+  -bugprone-unused-return-value,
+  -bugprone-integer-division,
+  -bugprone-parent-virtual-call,
+  -bugprone-forward-declaration-namespace,
+  -bugprone-assignment-in-if-condition,
+  -bugprone-not-null-terminated-result,
+  -bugprone-spuriously-wake-up-functions,
+  -bugprone-assert-side-effect,
+  -bugprone-copy-constructor-init,
+  -bugprone-move-forwarding-reference,
+  -bugprone-unused-raii,
+  -bugprone-undefined-memory-manipulation,
+  -bugprone-floating-point-implicit-conversion,
+  -bugprone-reserved-identifier,
 
 WarningsAsErrors: '*'
 
@@ -134,3 +134,7 @@ CheckOptions:
     value: "S_"
   - key: readability-identifier-naming.VariableCase
     value: lower_case
+
+  # Enforce braces for all control flow statements
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '0'
