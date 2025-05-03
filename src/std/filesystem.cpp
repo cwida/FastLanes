@@ -1,5 +1,7 @@
 #include "fls/std/filesystem.hpp"
 #include <cstring>
+#include <stdexcept> // for std::runtime_error
+#include <string>    // for std::string
 
 namespace fastlanes {
 std::ifstream FileSystem::open_r(const path& file) {
