@@ -1,6 +1,7 @@
 #include "fls/io/external_memory.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include <cstring>
+#include <stdexcept>
 
 namespace fastlanes {
 
