@@ -2,6 +2,7 @@
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/footer/segment_descriptor.hpp"
 #include "fls/std/vector.hpp"
+#include <stdexcept>
 
 namespace fastlanes {
 
