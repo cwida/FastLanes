@@ -1,6 +1,7 @@
 #include "fls/expression/new_rpn.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/expression/interpreter.hpp"
+#include "fls/std/string.hpp"
 #include "fls/std/unordered_set.hpp"
 
 namespace fastlanes {
@@ -16,7 +17,7 @@ n_t NewRPN::ConsumeOperandToken(InterpreterState& state) const {
 	return operand_tokens[state.cur_operator - 1];
 }
 
-std::string token_to_string(OperatorToken token) {
+string token_to_string(OperatorToken token) {
 	switch (token) {
 	case OperatorToken::INVALID:
 		return "INVALID"; // 0
