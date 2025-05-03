@@ -1,6 +1,7 @@
 #ifndef FLS_EXPRESSION_NEW_RPN_HPP
 #define FLS_EXPRESSION_NEW_RPN_HPP
 
+#include "fls/std/string.hpp"
 #include "fls/std/vector.hpp"
 
 namespace fastlanes {
@@ -240,8 +241,8 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Helper Functions */
 /*--------------------------------------------------------------------------------------------------------------------*/
-std::string token_to_string(OperatorToken token);
-bool        is_1_to_1(OperatorToken token);
+string token_to_string(OperatorToken token);
+bool   is_1_to_1(OperatorToken token);
 
 } // namespace fastlanes
 
