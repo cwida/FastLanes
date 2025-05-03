@@ -6,8 +6,8 @@ namespace fastlanes {
 
 std::string Env::GetEnvVariable(const char* key) {
 #ifdef _WIN32
-	char* buffer = nullptr;
-	size_t size = 0;
+	char*  buffer = nullptr;
+	size_t size   = 0;
 	if (_dupenv_s(&buffer, &size, key) != 0 || buffer == nullptr) {
 		throw std::runtime_error(std::string("Environment variable ") + key + " IS NOT SET.");
 	}
