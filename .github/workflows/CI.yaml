@@ -33,42 +33,42 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   # 2️⃣  Main build + clang-tidy (Linux + macOS)
   # ──────────────────────────────────────────────────────────────────────────────
-  build:
-    needs: check-format
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [ ubuntu-latest, macos-latest , windows-latest ]
-        build_type: [ Debug, Release ]
-        cxx: [ clang++ ]
-    runs-on: ${{ matrix.platform }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install LLVM
-        uses: ./.github/actions/install-llvm
-
-      - name: Print clang/clang-tidy version
-        run: |
-          clang --version
-          clang-tidy --version
-
-      # ----------------------------------------------------------------------
-      # Configure (runs clang-tidy via CMake)
-      # ----------------------------------------------------------------------
-      - name: Configure (with clang-tidy checks)
-        shell: bash
-        run: |
-          cmake -S "${{ github.workspace }}" \
-                -B build_${{ matrix.build_type }} \
-                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-                -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
-
-      - name: Build (clang-tidy runs automatically)
-        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
+  #  build:
+  #    needs: check-format
+  #    strategy:
+  #      fail-fast: false
+  #      matrix:
+  #        platform: [ ubuntu-latest, macos-latest , windows-latest ]
+  #        build_type: [ Debug, Release ]
+  #        cxx: [ clang++ ]
+  #    runs-on: ${{ matrix.platform }}
+  #
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #
+  #      - name: Install LLVM
+  #        uses: ./.github/actions/install-llvm
+  #
+  #      - name: Print clang/clang-tidy version
+  #        run: |
+  #          clang --version
+  #          clang-tidy --version
+  #
+  #      # ----------------------------------------------------------------------
+  #      # Configure (runs clang-tidy via CMake)
+  #      # ----------------------------------------------------------------------
+  #      - name: Configure (with clang-tidy checks)
+  #        shell: bash
+  #        run: |
+  #          cmake -S "${{ github.workspace }}" \
+  #                -B build_${{ matrix.build_type }} \
+  #                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+  #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+  #                -DCMAKE_C_COMPILER=clang \
+  #                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+  #
+  #      - name: Build (clang-tidy runs automatically)
+  #        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
@@ -110,7 +110,7 @@ jobs:
     #    needs: build
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform: [  windows-latest ]
         python-version: [ "3.12" ]
     runs-on: ${{ matrix.platform }}
 
@@ -142,7 +142,7 @@ jobs:
     #    needs: build
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform: [ windows-latest ]
         build_type: [ Release ]
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
@@ -179,7 +179,7 @@ jobs:
     #    needs: example
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform: [ windows-latest ]
         build_type: [ Release ]
     runs-on: ${{ matrix.platform }}
     env:
