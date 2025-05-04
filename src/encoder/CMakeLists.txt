@@ -13,4 +13,4 @@ if (FLS_ENABLE_IWYU)
     set_property(TARGET fls_encoder PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-target_compile_options(fls_expression PRIVATE -Wno-macro-redefined)
+target_compile_options(fls_encoder PRIVATE -Wno-macro-redefined)
