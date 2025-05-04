@@ -8,13 +8,6 @@ add_library(ALP
         fastlanes_unffor.cpp
 )
 
-target_compile_options(ALP
-        PRIVATE
-        -Rpass=loop-vectorize
-        -Rpass-missed=loop-vectorize
-        -Rpass-analysis=loop-vectorize
-        -fsave-optimization-record
-)
 
 # Add include directories for the ALP target
 target_include_directories(ALP PUBLIC
