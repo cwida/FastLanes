@@ -139,13 +139,18 @@ jobs:
   # 5️⃣  Example build & run
   # ──────────────────────────────────────────────────────────────────────────────
   example:
-    #    needs: build
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest , windows-latest ]
+        platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Release ]
         cxx: [ clang++ ]
+
     runs-on: ${{ matrix.platform }}
+
+    # All steps use bash, even on Windows (Git Bash is pre-installed)
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - uses: actions/checkout@v4
@@ -157,20 +162,25 @@ jobs:
 
       - name: Configure example
         run: |
-          cmake -S ${{ github.workspace }} \
-                -B build_${{ matrix.build_type }} \
+          cmake -S "${{ github.workspace }}" \
+                -B "build_${{ matrix.build_type }}" \
                 -DFLS_BUILD_EXAMPLES=ON \
                 -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DFLS_ENABLE_CLANG_TIDY=OFF \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" \
                 -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+                -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
 
       - name: Build example
-        run: cmake --build build_${{ matrix.build_type }} -j $BUILD_THREADS
+        run: cmake --build "build_${{ matrix.build_type }}" --parallel
 
       - name: Run cpp_example
-        run: build_${{ matrix.build_type }}/examples/cpp_example
+        run: |
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            ./build_${{ matrix.build_type }}/examples/cpp_example.exe
+          else
+            ./build_${{ matrix.build_type }}/examples/cpp_example
+          fi
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 6️⃣  Tests (Linux + macOS, Release only)
