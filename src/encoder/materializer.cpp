@@ -190,7 +190,7 @@ void Materializer::Materialize(const vector<sp<PhysicalExpr>>& expressions, n_t 
 		visit(material_visitor {vec_idx}, expr->operators[expr->operators.size() - 1], col);
 	}
 
-	rowgroup.n_tup = rowgroup.n_tup + CFG::VEC_SZ;
+	// rowgroup.n_tup = rowgroup.n_tup + CFG::VEC_SZ;
 }
 
 } // namespace fastlanes

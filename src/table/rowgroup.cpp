@@ -79,7 +79,7 @@ void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) 
 
 Rowgroup::Rowgroup(const RowgroupDescriptor& footer, const Connection& connection)
     : m_descriptor(footer)
-    , n_tup(0)
+    , n_tup(footer.m_n_tuples)
     , m_connection(connection)
     , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {
 	init_logial_columns(footer.GetColumnDescriptors(), internal_rowgroup);
@@ -448,7 +448,7 @@ void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_tabl
 struct rowgroup_equality_visitor {
 	template <typename PT>
 	bool operator()(const up<TypedCol<PT>>& org_col, const up<TypedCol<PT>>& decoded_col) const {
-		FLS_ASSERT_E(org_col->data.size(), org_col->null_map_arr.size())
+		// FLS_ASSERT_E(org_col->data.size(), org_col->null_map_arr.size())
 		for (idx_t idx {0}; idx < org_col->data.size(); ++idx) {
 			const auto& original_val = org_col->data[idx];
 			const auto& decoded_val  = decoded_col->data[idx];

@@ -1,6 +1,7 @@
 add_executable(
         fls_reader_tests
         #[[]]
+        incomplete_vectors_test.cpp
         inlined_footer_test.cpp
         rowgroup_size_test.cpp
         verify_fastlanes_files_test.cpp)

@@ -1,6 +1,7 @@
 add_library(fls_wizard
         OBJECT
         #[[]]
+        sampling_layout.cpp
         wizard.cpp)
 
 if (FLS_ENABLE_IWYU)

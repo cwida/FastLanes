@@ -11,6 +11,7 @@
 #include "fls/std/variant.hpp"                // for visit
 #include "fls/std/vector.hpp"                 // for vector
 #include "fls/table/rowgroup.hpp"             // for Rowgroup, TypedCol (ptr ...
+#include "fls/wizard/sampling_layout.hpp"
 #include <cstring>
 #include <memory>    // for unique_ptr, make_unique
 #include <stdexcept> // for runtime_error
@@ -629,100 +630,6 @@ vector<OperatorToken>& get_pool() {
 	FLS_UNREACHABLE()
 }
 
-template <std::size_t N>
-constexpr std::array<uint64_t, N> generate_alternating_min_max_array() {
-	std::array<uint64_t, N> arr {};
-	for (std::size_t i = 0; i < N / 2; ++i) {
-		arr[2 * i]     = i;           // Even indices: increasing order from 0
-		arr[2 * i + 1] = (N - 1) - i; // Odd indices: decreasing order from (N-1)
-	}
-	return arr;
-}
-
-// Function to generate the corrected quad-interleaved sequence
-template <std::size_t N>
-constexpr std::array<uint64_t, N> generate_quad_interleaved_array() {
-	std::array<uint64_t, N> arr {};
-	for (std::size_t i = 0; i < N / 4; ++i) {
-		arr[4 * i]     = i;               // First increasing sequence from 0
-		arr[4 * i + 1] = (N - 1) - i;     // First decreasing sequence from N-1
-		arr[4 * i + 2] = (N / 2) + i;     // Second increasing sequence from N/2
-		arr[4 * i + 3] = (N / 2 - 1) - i; // Second decreasing sequence from N/2-1
-	}
-	return arr;
-}
-
-// Function to generate a three-way interleaved sequence
-template <std::size_t N>
-constexpr std::array<uint64_t, N> generate_three_way_interleaved_array() {
-	std::array<uint64_t, N> arr {};
-
-	for (std::size_t i = 0; i < N / 3; ++i) {
-		arr[3 * i]     = i;                 // First sequence: Increasing from 0
-		arr[3 * i + 1] = (N - 2) - (i * 3); // Second sequence: Decreasing from N-2 in steps of 3
-		arr[3 * i + 2] = (N / 2) + i;       // Third sequence: Increasing from N/2
-	}
-
-	return arr;
-}
-
-// Function to generate the final layout for either 32 or 64 elements.
-template <std::size_t N>
-constexpr std::array<uint64_t, N> final_layout() {
-	std::array<uint64_t, N> arr {};
-
-	if constexpr (N == 64) {
-		// Mapping for 64 elements.
-		arr[0] = 0;
-		arr[1] = 63;
-		// Fill indices 2 to 61 with 30 pairs.
-		for (std::size_t i = 0; i < 30; ++i) {
-			arr[2 + 2 * i]     = 32 - i;
-			arr[2 + 2 * i + 1] = 33 + i;
-		}
-		// The missing numbers (1 and 2) are placed in the final two positions.
-		arr[62] = 1;
-		arr[63] = 2;
-	} else if constexpr (N == 32) {
-		// Mapping for 32 elements.
-		arr[0] = 0;
-		arr[1] = 31;
-		// Fill indices 2 to 29 with 14 pairs.
-		for (std::size_t i = 0; i < 14; ++i) {
-			arr[2 + 2 * i]     = 16 - i;
-			arr[2 + 2 * i + 1] = 17 + i;
-		}
-		// The missing numbers (1 and 2) are placed in the final two positions.
-		arr[30] = 1;
-		arr[31] = 2;
-	} else if constexpr (N == 1) {
-		arr[0] = 0;
-	} else {
-		static_assert(N == 64 || N == 32 || N == 1 || N == 2, "This mapping is defined for 1, 32 or 64 elements only.");
-	}
-
-	return arr;
-}
-
-constexpr std::array<uint64_t, 2>  final_layout_2  = final_layout<2>();
-constexpr std::array<uint64_t, 1>  final_layout_1  = final_layout<1>();
-constexpr std::array<uint64_t, 32> final_layout_32 = final_layout<32>();
-constexpr std::array<uint64_t, 64> final_layout_64 = final_layout<64>();
-
-// Define three-way interleaved arrays for 32 and 64 elements
-[[maybe_unused]] constexpr std::array<uint64_t, 32> three_way_interleaved_array_32 =
-    generate_three_way_interleaved_array<32>();
-[[maybe_unused]] constexpr std::array<uint64_t, 64> three_way_interleaved_array_64 =
-    generate_three_way_interleaved_array<64>();
-
-[[maybe_unused]] constexpr std::array<uint64_t, 32> alternating_min_max_array_32 =
-    generate_alternating_min_max_array<32>();
-[[maybe_unused]] constexpr std::array<uint64_t, 64> alternating_min_max_array_64 =
-    generate_alternating_min_max_array<64>();
-
-[[maybe_unused]] constexpr std::array<uint64_t, 32> quad_interleaved_array_32 = generate_quad_interleaved_array<32>();
-[[maybe_unused]] constexpr std::array<uint64_t, 64> quad_interleaved_array_64 = generate_quad_interleaved_array<64>();
-
 n_t TryExpr(const rowgroup_pt&      col,
             const ColumnDescriptor& column_descriptor,
             const OperatorToken&    token,
@@ -743,17 +650,21 @@ n_t TryExpr(const rowgroup_pt&      col,
 		sample_size = footer.m_n_vec;
 	}
 
-	const n_t* vec_idxs;
+	const n_t*       vec_idxs;
+	std::vector<n_t> dyn_layout; // keeps data alive if we fall back
+
 	if (footer.m_n_vec == 64) {
-		vec_idxs = final_layout_64.data();
+		vec_idxs = sampling_layout_64.data();
 	} else if (footer.m_n_vec == 32) {
-		vec_idxs = final_layout_32.data();
+		vec_idxs = sampling_layout_32.data();
 	} else if (footer.m_n_vec == 2) {
-		vec_idxs = final_layout_2.data();
+		vec_idxs = sampling_layout_2.data();
 	} else if (footer.m_n_vec == 1) {
-		vec_idxs = final_layout_1.data();
+		vec_idxs = sampling_layout_1.data();
 	} else {
-		throw std::runtime_error("what?");
+		// Runtime path
+		dyn_layout = sampling_layout_dynamic(footer.m_n_vec);
+		vec_idxs   = dyn_layout.data();
 	}
 
 	for (n_t vec_idx {0}; vec_idx < sample_size; ++vec_idx) {
