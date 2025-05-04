@@ -50,7 +50,7 @@ format-check:
 	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include --exclude include/fls/json/nlohmann"
 
 # Generate synthetic data
-generate_syntethic_data: $(VENV)/bin/activate
+generate_synthetic_data: $(VENV)/bin/activate
 	$(call echo_green, "Generating synthetic data")
 	cd scripts && PYTHONPATH=$(PWD) ../$(PYTHON) generate_synthetic_data.py
 
