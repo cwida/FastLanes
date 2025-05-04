@@ -81,7 +81,7 @@ void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
 		}
 	}
 
-#pragma clang loop vectorize_width(64)
+	// #pragma clang loop vectorize_width(64)
 	for (uint64_t i {0}; i < config::VECTOR_SIZE; i++) {
 		auto const actual_value = VALUE_ARR_WITHOUT_SPECIALS[i];
 
