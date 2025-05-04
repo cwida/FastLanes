@@ -21,7 +21,9 @@ bool is_impossible_to_encode(const PT n) {
 template <typename PT, typename ST>
 ST encode_value(const PT value, const factor_idx_t factor_idx, const exponent_idx_t exponent_idx) {
 	PT tmp_encoded_value = value * Constants<PT>::EXP_ARR[exponent_idx] * Constants<PT>::FRAC_ARR[factor_idx];
-	if (is_impossible_to_encode<PT>(tmp_encoded_value)) { return static_cast<ST>(Constants<PT>::ENCODING_UPPER_LIMIT); }
+	if (is_impossible_to_encode<PT>(tmp_encoded_value)) {
+		return static_cast<ST>(Constants<PT>::ENCODING_UPPER_LIMIT);
+	}
 
 	tmp_encoded_value = tmp_encoded_value + Constants<PT>::MAGIC_NUMBER - Constants<PT>::MAGIC_NUMBER;
 	return static_cast<ST>(tmp_encoded_value);
@@ -81,7 +83,10 @@ void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
 		}
 	}
 
-	// #pragma clang loop vectorize_width(64)
+#if !defined(_WIN32)
+	// Only non-Windows platforms will see this pragma
+#pragma clang loop vectorize_width(64)
+#endif
 	for (uint64_t i {0}; i < config::VECTOR_SIZE; i++) {
 		auto const actual_value = VALUE_ARR_WITHOUT_SPECIALS[i];
 
@@ -151,8 +156,7 @@ void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
 				not_null_exception_idx++;
 			}
 		}
-			current_exceptions_count = not_null_exception_idx;
-
+		current_exceptions_count = not_null_exception_idx;
 	}
 
 	stt.n_exceptions = current_exceptions_count;
@@ -200,8 +204,12 @@ void encoder<PT, is_null>::find_best_exponent_factor_from_combinations(
 			const ST encoded_value = encode_value<PT, ST>(actual_value, factor_idx, exp_idx);
 			const PT decoded_value = decoder<PT>::decode_value(encoded_value, factor_idx, exp_idx);
 			if (decoded_value == actual_value) {
-				if (encoded_value > max_encoded_value) { max_encoded_value = encoded_value; }
-				if (encoded_value < min_encoded_value) { min_encoded_value = encoded_value; }
+				if (encoded_value > max_encoded_value) {
+					max_encoded_value = encoded_value;
+				}
+				if (encoded_value < min_encoded_value) {
+					min_encoded_value = encoded_value;
+				}
 			} else {
 				exception_count++;
 			}
@@ -274,15 +282,21 @@ void encoder<PT, is_null>::find_top_k_combinations(const PT* smp_arr, state<PT>&
 					    encoded_value, static_cast<uint8_t>(factor_idx), static_cast<uint8_t>(exponent_idx));
 					if (decoded_value == actual_value) {
 						non_exceptions_count++;
-						if (encoded_value > max_encoded_value) { max_encoded_value = encoded_value; }
-						if (encoded_value < min_encoded_value) { min_encoded_value = encoded_value; }
+						if (encoded_value > max_encoded_value) {
+							max_encoded_value = encoded_value;
+						}
+						if (encoded_value < min_encoded_value) {
+							min_encoded_value = encoded_value;
+						}
 					} else {
 						exceptions_count++;
 					}
 				}
 
 				// We do not take into account combinations which yield to almsot all exceptions
-				if (non_exceptions_count < 2) { continue; }
+				if (non_exceptions_count < 2) {
+					continue;
+				}
 
 				// Evaluate factor/exponent compression size (we optimize for FOR)
 				estimated_bits_per_value = fastlanes::count_bits<ST>(max_encoded_value, min_encoded_value);
@@ -352,8 +366,12 @@ void encoder<PT, is_null>::analyze_ffor(const ST* input_vector, bw_t& bit_width,
 	auto max = std::numeric_limits<ST>::min();
 
 	for (uint64_t i {0}; i < config::VECTOR_SIZE; i++) {
-		if (input_vector[i] < min) { min = input_vector[i]; }
-		if (input_vector[i] > max) { max = input_vector[i]; }
+		if (input_vector[i] < min) {
+			min = input_vector[i];
+		}
+		if (input_vector[i] > max) {
+			max = input_vector[i];
+		}
 	}
 
 	bit_width   = fastlanes::count_bits<ST>(max, min);
