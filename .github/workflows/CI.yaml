@@ -187,7 +187,7 @@ jobs:
 
     defaults:
       run:
-        shell: bash  # Force bash shell even on Windows to avoid PowerShell issues
+        shell: bash  # Use bash on all platforms to avoid PowerShell issues on Windows
 
     env:
       BUILD_THREADS: 12
@@ -205,14 +205,23 @@ jobs:
 
       - name: Configure tests
         run: |
-          cmake -S "${{ github.workspace }}" \
-                -B "test_build_${{ matrix.build_type }}" \
-                -DFLS_BUILD_TESTING=ON \
-                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-                -DFLS_ENABLE_CLANG_TIDY=OFF \
-                -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=clang++
+          CMAKE_ARGS=(
+            -S "${{ github.workspace }}"
+            -B "test_build_${{ matrix.build_type }}"
+            -DFLS_BUILD_TESTING=ON
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+            -DFLS_ENABLE_CLANG_TIDY=OFF
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DCMAKE_C_COMPILER=clang
+            -DCMAKE_CXX_COMPILER=clang++
+          )
+
+          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN runtime mismatch
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+          fi
+
+          cmake "${CMAKE_ARGS[@]}"
 
       - name: Build tests
         run: cmake --build "test_build_${{ matrix.build_type }}" -j $BUILD_THREADS

@@ -281,8 +281,14 @@ endif ()
 
 # Test: ----------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_TESTING)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Build Testing.")
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/test/include)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
+
+    if (WIN32)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded" CACHE STRING "" FORCE)
+    endif ()
 endif ()
 
 
