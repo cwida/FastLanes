@@ -1,5 +1,5 @@
 name: Generate Synthetic Dataset
-description: Generate synthetic data using Python
+description: Generate synthetic data using Makefile target
 
 runs:
   using: "composite"
@@ -15,4 +15,4 @@ runs:
 
     - name: Generate synthetic data
       shell: bash
-      run: python scripts/generate_synthetic_data.py
+      run: make generate_synthetic_data
