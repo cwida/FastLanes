@@ -184,6 +184,10 @@ jobs:
         build_type: [ Release ]
 
     runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        shell: bash  # 🔧 Force bash on Windows to avoid PowerShell syntax issues
+
     env:
       BUILD_THREADS: 12
 
@@ -194,8 +198,6 @@ jobs:
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
-        with:
-          python-version: "3.12"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -217,4 +219,5 @@ jobs:
       - name: Run tests
         working-directory: test_build_${{ matrix.build_type }}
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
+
 
