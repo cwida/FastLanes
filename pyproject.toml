@@ -1,0 +1,26 @@
+[build-system]
+requires = [
+    "scikit-build-core>=0.7",
+    "pybind11>=2.12",
+    "setuptools_scm[toml]>=7"
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "FastLanes"
+description = "A next gen big data file format"
+authors = [{ name = "Azim Afroozeh", email = "azim@cwi.nl" }]
+requires-python = ">=3.8"
+dynamic = ["version"]
+
+[tool.setuptools-scm]
+version_scheme = "post-release"
+
+[tool.scikit-build]
+# no extra settings
+
+[tool.scikit-build.wheel]
+license-files = ["LICENSE"]
+
+[tool.cibuildwheel]
+test-command = "pytest -q"

@@ -30,7 +30,6 @@ include(CTest)
 if (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     message(FATAL_ERROR "Only Clang is supported!")
 endif ()
-
 if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
     message(FATAL_ERROR "Only Clang >= 13 is supported!")
 endif ()
@@ -329,4 +328,28 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/playground/CMakeLists.txt")
     message("---------------------------------------------------------------------------------------------------------")
     message("- FLS: Adding Playground ")
     add_subdirectory(playground)
+endif ()
+# Python : -------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_PYTHON)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("- FLS: Building FastLanes Python Extension")
+    # --- top-level CMakeLists.txt -----------------------------
+    if (FLS_BUILD_PYTHON)
+        # Try system package first
+        find_package(pybind11 CONFIG QUIET)
+
+        # If not found, fetch v2.12.0 (or whatever tag you prefer)
+        if (NOT pybind11_FOUND)
+            message(STATUS "pybind11 not found – fetching from GitHub")
+            include(FetchContent)
+            FetchContent_Declare(
+                    pybind11
+                    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+                    GIT_TAG v2.12.0
+            )
+            FetchContent_MakeAvailable(pybind11)
+        endif ()
+    endif ()
+
+    add_subdirectory(python)
 endif ()
