@@ -184,9 +184,10 @@ jobs:
         build_type: [ Release ]
 
     runs-on: ${{ matrix.platform }}
+
     defaults:
       run:
-        shell: bash  # 🔧 Force bash on Windows to avoid PowerShell syntax issues
+        shell: bash  # Force bash shell even on Windows to avoid PowerShell issues
 
     env:
       BUILD_THREADS: 12
@@ -204,8 +205,8 @@ jobs:
 
       - name: Configure tests
         run: |
-          cmake -S ${{ github.workspace }} \
-                -B test_build_${{ matrix.build_type }} \
+          cmake -S "${{ github.workspace }}" \
+                -B "test_build_${{ matrix.build_type }}" \
                 -DFLS_BUILD_TESTING=ON \
                 -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
@@ -214,10 +215,8 @@ jobs:
                 -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build tests
-        run: cmake --build test_build_${{ matrix.build_type }} -j $BUILD_THREADS
+        run: cmake --build "test_build_${{ matrix.build_type }}" -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: test_build_${{ matrix.build_type }}
+        working-directory: "test_build_${{ matrix.build_type }}"
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
-
-
