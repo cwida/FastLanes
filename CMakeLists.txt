@@ -284,11 +284,21 @@ if (FLS_BUILD_TESTING)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Build Testing.")
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/test/include)
+
+    # Helper to apply sanitizer flags only on non-Windows platforms
+    function(fls_enable_sanitizers target)
+        if (NOT WIN32)
+            target_compile_options(${target}
+                    PRIVATE -fsanitize=address -fsanitize=undefined)
+            target_link_options(${target}
+                    PRIVATE -fsanitize=address -fsanitize=undefined)
+        endif ()
+    endfunction()
+
+
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 
-    if (WIN32)
-        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded" CACHE STRING "" FORCE)
-    endif ()
+
 endif ()
 
 

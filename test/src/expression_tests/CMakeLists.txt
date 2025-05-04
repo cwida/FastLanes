@@ -10,13 +10,11 @@ add_executable(test_cross_rle cross_rle_test.cpp)
 target_link_libraries(test_cross_rle PUBLIC gtest_main gmock_main FastLanes)
 add_test(NAME test_cross_rle COMMAND $<TARGET_FILE:test_cross_rle>)
 
-
 add_executable(test_alp alp_test.cpp)
 target_link_libraries(test_alp PUBLIC gtest_main gmock_main FastLanes)
 add_test(NAME test_alp COMMAND $<TARGET_FILE:test_alp>)
 
-# Add sanitizer options if needed
-foreach (test_target IN ITEMS test_frequency test_rle test_cross_rle test_alp)
-    target_compile_options(${test_target} PRIVATE "-fsanitize=address" "-fsanitize=undefined")
-    target_link_options(${test_target} PRIVATE "-fsanitize=address" "-fsanitize=undefined")
-endforeach ()
+fls_enable_sanitizers(test_frequency)
+fls_enable_sanitizers(test_rle)
+fls_enable_sanitizers(test_cross_rle)
+fls_enable_sanitizers(test_alp)
