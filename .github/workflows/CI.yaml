@@ -197,8 +197,8 @@ jobs:
     #    needs: example
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
-        build_type: [ ubuntu-latest, macos-latest , windows-latest ]
+        platform: [ ubuntu-latest, macos-lates, windows-latest ]
+        build_type: [ Release ]
     runs-on: ${{ matrix.platform }}
     env:
       BUILD_THREADS: 12
