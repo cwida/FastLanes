@@ -147,7 +147,6 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
 
-    # All steps use bash, even on Windows (Git Bash is pre-installed)
     defaults:
       run:
         shell: bash
@@ -162,14 +161,23 @@ jobs:
 
       - name: Configure example
         run: |
-          cmake -S "${{ github.workspace }}" \
-                -B "build_${{ matrix.build_type }}" \
-                -DFLS_BUILD_EXAMPLES=ON \
-                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
-                -DFLS_ENABLE_CLANG_TIDY=OFF \
-                -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" \
-                -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
+          CMAKE_ARGS=(
+            -S "${{ github.workspace }}"
+            -B "build_${{ matrix.build_type }}"
+            -DFLS_BUILD_EXAMPLES=ON
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+            -DFLS_ENABLE_CLANG_TIDY=OFF
+            -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
+            -DCMAKE_C_COMPILER=clang
+            -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
+          )
+          
+          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+          fi
+          
+          cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
         run: cmake --build "build_${{ matrix.build_type }}" --parallel
@@ -182,7 +190,7 @@ jobs:
             ./build_${{ matrix.build_type }}/examples/cpp_example
           fi
 
-  # ──────────────────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────
   # 6️⃣  Tests (Linux + macOS, Release only)
   # ──────────────────────────────────────────────────────────────────────────────
   test:
