@@ -34,3 +34,6 @@ endif ()
 set(FASTLANES_OBJECT_FILES
         ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_expression>
         PARENT_SCOPE)
+
+
+target_compile_options(fls_expression PRIVATE -Wno-macro-redefined)
