@@ -12,3 +12,5 @@ set_target_properties(fls_fsst12_prm PROPERTIES CXX_CLANG_TIDY "")
 set(FASTLANES_OBJECT_FILES
     ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_fsst12_prm>
     PARENT_SCOPE)
+
+target_compile_options(fls_fsst12_prm PRIVATE -Wno-macro-redefined)
