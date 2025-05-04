@@ -7,13 +7,11 @@
 #include "gtest/gtest.h"
 #include <fls/table/dir.hpp>
 #if defined(_WIN32)
-    #include <process.h>  // for _getpid()
-    #define getpid _getpid
+#include <process.h> // for _getpid()
+#define getpid _getpid
 #else
-    #include <unistd.h>   // for getpid()
+#include <unistd.h> // for getpid()
 #endif
-
-
 
 namespace fastlanes {
 class FastLanesReaderTester : public ::testing::Test {
