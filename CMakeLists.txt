@@ -294,3 +294,10 @@ if (FLS_BUILD_GPU)
     message("- GPU:")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gpu)
 endif ()
+
+# Playground : ---------------------------------------------------------------------------------------------------------
+if (EXISTS "${CMAKE_SOURCE_DIR}/playground/CMakeLists.txt")
+    message("---------------------------------------------------------------------------------------------------------")
+    message("- FLS: Adding Playground ")
+    add_subdirectory(playground)
+endif ()
