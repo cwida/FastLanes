@@ -124,6 +124,19 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_GPU OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKI
     set_target_properties(gtest_main PROPERTIES CXX_CLANG_TIDY "")
     set_target_properties(gmock PROPERTIES CXX_CLANG_TIDY "")
     set_target_properties(gmock_main PROPERTIES CXX_CLANG_TIDY "")
+
+    # On Windows, GoogleTest uses Microsoft-specific language extensions like `__try`
+    # that trigger Clang's `-Wlanguage-extension-token` warning.
+    # Since we build with `-Werror`, this causes the build to fail.
+    # This block selectively disables that warning (and suppresses all warnings with `-w`)
+    # only for GoogleTest targets, avoiding global suppression across the project.
+    if (MSVC OR WIN32)
+        foreach (target gtest gtest_main gmock gmock_main)
+            if (TARGET ${target})
+                target_compile_options(${target} PRIVATE -Wno-language-extension-token -w)
+            endif ()
+        endforeach ()
+    endif ()
 endif ()
 
 # ALP: -----------------------------------------------------------------------------------------------------------------
