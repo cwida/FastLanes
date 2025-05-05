@@ -77,3 +77,30 @@ time_ctest:
 # ---------------------------------------------------------------------------
 .PHONY: format format-check clang-format \
         generate_synthetic_data check_fastlanes_result_history time_ctest
+
+
+# ---------------------------------------------------------------------------------
+# Python bindings
+# ---------------------------------------------------------------------------------
+PY_DEPS := scikit-build-core pybind11 setuptools_scm
+
+.PHONY: check_python_deps rebuild_python clean_python run_example_python
+
+check_python_deps:
+	$(call echo_green,"📦 Ensuring Python build deps...")
+	$(PIP) install --upgrade $(PY_DEPS)
+
+rebuild_python: check_python_deps
+	$(call echo_green,🔄 Rebuilding FastLanes bindings out-of-source…)
+	$(PYTHON) -m pip install -e . --no-build-isolation
+
+clean_python:
+	$(call echo_green,"🧹 Cleaning Python artefacts...")
+	rm -rf cmake-build-python dist *.egg-info
+	find python/fastlanes -name '_fastlanes*.so' -delete
+	find . -name '__pycache__' -exec rm -rf {} +
+	find . -name '*.pyc' -delete
+
+run_example_python:
+	$(call echo_green,"🚀 Running example...")
+	$(PYTHON) examples/python_example.py

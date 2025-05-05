@@ -6,7 +6,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(fastlanes, m) {
+PYBIND11_MODULE(_fastlanes, m) {
 	m.doc() = "Python bindings for FastLanes";
 
 	// --- free-standing helpers -----------

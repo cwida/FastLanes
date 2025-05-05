@@ -34,6 +34,10 @@ if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
     message(FATAL_ERROR "Only Clang >= 13 is supported!")
 endif ()
 
+# Disallow configuring in the source tree
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "-- FLS : Please run CMake in a separate build directory!")
+endif ()
 # Flags : --------------------------------------------------------------------------------------------------------------
 message("---------------------------------------------------------------------------------------------------------")
 message("-- FLS: detecting flags.")

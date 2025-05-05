@@ -90,3 +90,11 @@ paper/dataset_lib/compress_bi_py.pq
 paper/dataset_lib/compress_bi_py.db
 paper/dataset_lib/compress_bi_py.orc
 DartConfiguration.tcl
+
+
+# CMake build
+cmake-build-python/
+# Python build artefacts
+*.egg-info/
+dist/
+build/

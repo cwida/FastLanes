@@ -16,11 +16,13 @@ dynamic = ["version"]
 [tool.setuptools-scm]
 version_scheme = "post-release"
 
-[tool.scikit-build]
-# no extra settings
-
 [tool.scikit-build.wheel]
 license-files = ["LICENSE"]
 
 [tool.cibuildwheel]
 test-command = "pytest -q"
+
+[tool.scikit-build]
+build-dir = "skbuild-editable"
+editable.mode = "redirect"
+cmake.args = ["-DFLS_BUILD_PYTHON=ON"]
