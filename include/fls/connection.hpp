@@ -60,7 +60,7 @@ public:
 	/// READ CSV
 	Connection& read_json(const path& dir_path);
 	///! read a fls file return a reader
-	TableReader& read_fls(const path& dir_path);
+	up<TableReader>  read_fls(const path& dir_path);
 	///!
 	Connection& spell();
 	///!
@@ -109,7 +109,6 @@ private:
 	void prepare_table() const;
 
 private:
-	up<TableReader>     m_reader;
 	up<Config>          m_config;
 	up<Table>           m_table;
 	up<TableDescriptor> m_table_descriptor;
@@ -118,6 +117,8 @@ private:
 constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.json"};
 constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
+
+up<Connection> connect();
 } // namespace fastlanes
 
 #endif

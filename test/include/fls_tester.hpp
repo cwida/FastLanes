@@ -67,21 +67,21 @@ public:
 
 		// decoded rowgroup
 		Connection con2;
-		auto&      fls_reader    = con2.reset().read_fls(fls_dir_path_process_specific);
-		auto       decoded_table = fls_reader.materialize();
+		auto       fls_reader    = con2.reset().read_fls(fls_dir_path_process_specific);
+		auto       decoded_table = fls_reader->materialize();
 		// Compare rowgroups
 		auto result = (original_table == *decoded_table);
 		ASSERT_TRUE(result.is_equal) << "Rowgroups differs. The first not matching column index is: " //
 		                             << result.first_failed_column_idx                                //
-		                             << " ❌"                                                          //
+		                             << " ❌"                                                         //
 		                             << "description: "                                               //
 		                             << result.description << std::endl;
 	}
 
 	void TestConstantness(const vector<n_t>& constant_indexes) const {
 		Connection  con;
-		const auto& fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
-		auto        first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
+		const auto  fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		auto        first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto& footer                = first_rowgroup_reader->get_descriptor();
 
 		for (const auto col_idx : constant_indexes) {
@@ -95,10 +95,10 @@ public:
 		TestCorrectness(table);
 
 		// decoded rowgroup
-		Connection  con2;
-		const auto& fls_reader            = con2.reset().read_fls(fls_dir_path_process_specific);
-		auto        first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
-		const auto  footer                = first_rowgroup_reader->get_descriptor();
+		Connection con2;
+		const auto fls_reader            = con2.reset().read_fls(fls_dir_path_process_specific);
+		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
+		const auto footer                = first_rowgroup_reader->get_descriptor();
 
 		for (n_t col_idx = 1; col_idx < footer.size(); ++col_idx) {
 			ASSERT_EQ(footer[col_idx].total_size, 0) << col_idx << " should be of size 0";
@@ -106,10 +106,10 @@ public:
 	}
 
 	void TestEquality(const vector<n_t>& equal_cols) const {
-		Connection  con;
-		const auto& fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
-		auto        first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
-		const auto  footer                = first_rowgroup_reader->get_descriptor();
+		Connection con;
+		const auto fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
+		const auto footer                = first_rowgroup_reader->get_descriptor();
 
 		for (const auto col_index : equal_cols) {
 			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];
@@ -119,10 +119,10 @@ public:
 	}
 
 	void TestMap1To1(const vector<n_t>& target_column_indexes) const {
-		Connection  con;
-		const auto& fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
-		auto        first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
-		const auto  footer                = first_rowgroup_reader->get_descriptor();
+		Connection con;
+		const auto fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
+		const auto footer                = first_rowgroup_reader->get_descriptor();
 
 		for (const auto col_index : target_column_indexes) {
 			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];

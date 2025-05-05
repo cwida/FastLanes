@@ -46,13 +46,11 @@ Connection& Connection::read_json(const path& dir_path) {
 	return *this;
 }
 
-TableReader& Connection::read_fls(const path& dir_path) {
+up<TableReader> Connection::read_fls(const path& dir_path) {
 	FileSystem::check_if_dir_exists(dir_path);
 
 	// init
-	m_reader = make_unique<TableReader>(dir_path, *this);
-
-	return *m_reader;
+	return make_unique<TableReader>(dir_path, *this);
 }
 
 void prepare_rowgroup(Rowgroup& rowgroup) {
@@ -68,6 +66,10 @@ void Connection::prepare_table() const {
 	for (auto& rowgroup : m_table->m_rowgroups) {
 		prepare_rowgroup(*rowgroup);
 	}
+}
+
+up<Connection> connect() {
+	return make_unique<Connection>();
 }
 
 Connection& Connection::spell() {
@@ -135,7 +137,6 @@ Status Connection::verify_fls(const path& file_path) {
 }
 
 Connection& Connection::reset() {
-	m_reader.reset();
 	m_table_descriptor.reset();
 	m_table.reset();
 

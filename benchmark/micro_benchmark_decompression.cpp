@@ -12,8 +12,8 @@ public:
 	double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto& fls_reader      = conn.reset().read_fls(dir_path);
-		auto  rowgroup_reader = fls_reader.get_rowgroup_reader(0);
+		auto fls_reader      = conn.reset().read_fls(dir_path);
+		auto rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		auto start = benchmark::cycleclock::Now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
