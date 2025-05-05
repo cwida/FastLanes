@@ -1,4 +1,5 @@
 name: Build & Test Python Bindings
+run-name: "${{ github.workflow }}: ${{ matrix.platform }}/${{ matrix.build_type }} on ${{ github.ref_name }} (#${{ github.run_number }})"
 
 on:
   push:      # any branch

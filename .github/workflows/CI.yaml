@@ -1,5 +1,5 @@
 name: CI
-run-name: "${{ github.actor }} – ${{ github.event.head_commit.message }}"
+run-name: "${{ github.workflow }}: ${{ matrix.platform }}/${{ matrix.build_type }} on ${{ github.ref_name }} (#${{ github.run_number }})"
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Events
