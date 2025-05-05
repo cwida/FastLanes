@@ -1,9 +1,8 @@
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 set(FLS_BINDING_SRC
-        fastlanes_bindings.cpp
-        connection.cpp
-)
+        bindings/init.cpp
+        bindings/connection.cpp)
 
 # 1) Build the extension as "_fastlanes"
 pybind11_add_module(_fastlanes ${FLS_BINDING_SRC})
