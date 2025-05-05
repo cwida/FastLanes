@@ -1,6 +1,15 @@
-# python/fastlanes/__init__.py
-from ._fastlanes import get_version, __doc__ as _doc
+"""
+FastLanes Python API
+"""
 
-__doc__ = _doc  # Export C++ module docstring to package level
+from ._fastlanes import (
+    get_version,
+    Connection,
+    # any other classes you bound, e.g. Table, TableReader, etc.
+)
 
-__all__ = ["get_version"]
+__all__ = [
+    "get_version",
+    "Connection",
+    # etc.
+]

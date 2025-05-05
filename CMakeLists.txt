@@ -335,24 +335,26 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/playground/CMakeLists.txt")
 endif ()
 # Python : -------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_PYTHON)
-    message("---------------------------------------------------------------------------------------------------------")
+    message("-------------------------------------------------------------")
     message("- FLS: Building FastLanes Python Extension")
-    # --- top-level CMakeLists.txt -----------------------------
-    if (FLS_BUILD_PYTHON)
-        # Try system package first
-        find_package(pybind11 CONFIG QUIET)
 
-        # If not found, fetch v2.12.0 (or whatever tag you prefer)
-        if (NOT pybind11_FOUND)
-            message(STATUS "pybind11 not found – fetching from GitHub")
-            include(FetchContent)
-            FetchContent_Declare(
-                    pybind11
-                    GIT_REPOSITORY https://github.com/pybind/pybind11.git
-                    GIT_TAG v2.12.0
-            )
-            FetchContent_MakeAvailable(pybind11)
-        endif ()
+    # 1) First try to find a system / venv install
+    find_package(pybind11 CONFIG QUIET)
+
+    # 2) If not found, fetch the desired tag
+    if (NOT pybind11_FOUND)
+        message(STATUS "pybind11 not found – fetching from GitHub")
+        include(FetchContent)
+        FetchContent_Declare(
+                pybind11
+                GIT_REPOSITORY https://github.com/pybind/pybind11.git
+                GIT_TAG v2.13.6
+        )
+        FetchContent_MakeAvailable(pybind11)
+
+        # 3) Now that we might have fetched it,
+        #    do a *required* find to import the targets
+        find_package(pybind11 CONFIG REQUIRED)
     endif ()
 
     add_subdirectory(python)
