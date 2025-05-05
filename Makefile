@@ -87,8 +87,8 @@ TEST_DIR := python/tests
 
 .PHONY: check_python_deps rebuild_python clean_python run_example_python
 
-check_python_deps:
-	$(call echo_green,"📦 Ensuring Python build deps...")
+check_python_deps: $(VENV)/bin/activate
+	$(call echo_green,📦 Ensuring Python build deps...)
 	$(PIP) install --upgrade $(PY_DEPS)
 
 rebuild_python: check_python_deps

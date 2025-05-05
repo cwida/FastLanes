@@ -19,8 +19,6 @@ jobs:
           python-version: "3.12"
 
       - name: Build & Test via Makefile
-        working-directory: ${{ github.workspace }}
         run: |
-          # ensure Makefile finds 'make' in PATH
           make rebuild_python
           make test_python
