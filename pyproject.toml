@@ -8,7 +8,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "FastLanes"
-description = "A next gen big data file format"
+description = "FastLanes File Format"
 authors = [{ name = "Azim Afroozeh", email = "azim@cwi.nl" }]
 requires-python = ">=3.8"
 dynamic = ["version"]
