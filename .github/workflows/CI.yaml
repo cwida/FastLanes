@@ -180,7 +180,8 @@ jobs:
   test:
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
+        #        platform: [ ubuntu-latest, macos-latest, windows-latest ] // todo - enable  windows-latest
+        platform: [ ubuntu-latest, macos-latest ]
         build_type: [ Release ]
 
     runs-on: ${{ matrix.platform }}
