@@ -1,33 +1,26 @@
 name: Build & Test Python Bindings
 
 on:
-  push:  # Triggers on push to any branch
+  push:      # any branch
   pull_request:
-    branches: [ main, dev ]  # PRs targeting these branches
+    branches: [ main, dev ]
 
 jobs:
   build-test-python:
-    name: Build and test Python bindings
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout FastLanes
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up system Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install Python deps
+      - name: Build & Test via Makefile
+        working-directory: ${{ github.workspace }}
         run: |
-          python -m pip install --upgrade pip
-          pip install scikit-build-core pybind11 setuptools_scm pytest
-
-      - name: Install Python bindings (editable)
-        run: |
-          pip install -e . --no-build-isolation --config-settings=editable.mode=inplace
-
-      - name: Run Python tests
-        run: |
-          pytest -q python/tests
+          # ensure Makefile finds 'make' in PATH
+          make rebuild_python
+          make test_python
