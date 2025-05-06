@@ -2,9 +2,16 @@
 import os
 
 import fastlanes
+import sys
+
+sys.settrace(lambda *a, **k: None)  # forces trace hooks
 
 
 def main():
+    # print(dir(reader))
+    # print(reader.__class__)
+    # help(reader)
+
     # 1) Print module docstring & version
     print(fastlanes.__doc__)
     print(f"FastLanes version: {fastlanes.get_version()}\n")
@@ -14,13 +21,15 @@ def main():
 
     if os.path.exists("data.fls"):
         os.remove("data.fls")
+    if os.path.exists("csv.fls"):
+        os.remove("decoded.csv")
 
     # 4) Use Connection as a context manager
     conn = fastlanes.connect()
-    conn.read_csv(csv_dir)
-    conn.inline_footer().to_fls(".")
+    conn.inline_footer().read_csv(csv_dir).to_fls(".")
+
     reader = conn.read_fls(".")
-    reader.to_csv("fastlanes.csv")
+    reader.to_csv("decoded.csv")
 
 
 if __name__ == "__main__":

@@ -34,6 +34,14 @@ void TableReader::to_csv(const path& file_path) const {
 	}
 }
 
+void TableReader::to_csv(const string& file_path) const {
+	to_csv(path(file_path));
+}
+
+void TableReader::to_csv(const char* file_path) const {
+	to_csv(path(file_path));
+}
+
 TableReader::TableReader(const path& dir_path, Connection& connection)
     : m_connection(connection)
     , m_dir_path(dir_path) {

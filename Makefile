@@ -85,16 +85,31 @@ check_python_deps: $(VENV)/bin/activate
 	$(call echo_green,📦 Ensuring Python build deps...)
 	$(PIP) install --upgrade $(PY_DEPS)
 
-rebuild_python: check_python_deps
-	$(call echo_green,🔄 Rebuilding FastLanes bindings out-of-source…)
-	$(PYTHON) -m pip install -e . --no-build-isolation
+rebuild_python_debug:
+	@echo "🔄 Rebuilding FastLanes bindings (Debug)…"
+	$(CLEAN_SKBUILD)
+	CMAKE_BUILD_TYPE=Debug \
+	CMAKE_BUILD_PARALLEL_LEVEL=12 \
+	CMAKE_VERBOSE_MAKEFILE=ON \
+	PIP_VERBOSE=1 \
+	$(PYTHON) -m pip install -e . --no-build-isolation -v
+
+rebuild_python_release:
+	@echo "🚀 Rebuilding FastLanes bindings (Release)…"
+	$(CLEAN_SKBUILD)
+	CMAKE_BUILD_TYPE=Release \
+	CMAKE_BUILD_PARALLEL_LEVEL=12 \
+	CMAKE_VERBOSE_MAKEFILE=ON \
+	PIP_VERBOSE=1 \
+	$(PYTHON) -m pip install -e . --no-build-isolation -v
 
 clean_python:
 	$(call echo_green,"🧹 Cleaning Python artefacts...")
-	rm -rf cmake-build-python dist *.egg-info
+	rm -rf skbuild-editable  # <- clean scikit-build editable output
 	find python/fastlanes -name '_fastlanes*.so' -delete
 	find . -name '__pycache__' -exec rm -rf {} +
 	find . -name '*.pyc' -delete
+
 
 run_example_python:
 	$(call echo_green,"🚀 Running example...")

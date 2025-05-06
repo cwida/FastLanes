@@ -25,4 +25,7 @@ test-command = "pytest -q"
 [tool.scikit-build]
 build-dir = "skbuild-editable"
 editable.mode = "redirect"
-cmake.args = ["-DFLS_BUILD_PYTHON=ON"]
+cmake.args = [
+    "-DFLS_BUILD_PYTHON=ON",
+    "-DFLS_ENABLE_VERBOSE_OUTPUT=ON"
+]
