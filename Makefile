@@ -20,7 +20,7 @@ IMAGE := ghcr.io/azimafroozeh/clang-format-python/clang-format-python:14
 format:
 	$(call echo_green,"Formatting…")
 	docker run --rm -v "$$(pwd)":/app -w /app $(IMAGE) bash -c "\
-	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include \
+	    python3 scripts/run-clang-format.py -r examples include src benchmark python test data/include \
 	    -i --exclude include/fls/json/nlohmann"
 
 # Run clang-format using Docker (with install step)
