@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    "scikit-build-core>=0.7",
-    "pybind11>=2.12",
-    "setuptools_scm[toml]>=7"
+    "scikit-build-core>=0.7,<0.8",
+    "pybind11>=2.12,<2.13",
+    "setuptools_scm[toml]>=7,<8"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -12,6 +12,7 @@ description = "FastLanes File Format"
 authors = [{ name = "Azim Afroozeh", email = "azim@cwi.nl" }]
 requires-python = ">=3.8"
 dynamic = ["version"]
+license = { file = "LICENSE" }
 
 [tool.setuptools-scm]
 version_scheme = "post-release"
@@ -20,7 +21,7 @@ version_scheme = "post-release"
 license-files = ["LICENSE"]
 
 [tool.cibuildwheel]
-test-command = "pytest -q"
+test-command = "pytest -q tests"
 
 [tool.scikit-build]
 build-dir = "skbuild-editable"
