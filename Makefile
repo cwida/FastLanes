@@ -40,7 +40,6 @@ format-check:
 	    ln -s /usr/bin/clang-format-14 /usr/bin/clang-format && \
 	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include python --exclude include/fls/json/nlohmann"
 
-
 # Generate synthetic data
 generate_syntethic_data: $(VENV)/bin/activate
 	$(call echo_green, "Generating synthetic data")
@@ -51,19 +50,10 @@ check_fastlanes_result_history: $(VENV)/bin/activate
 	$(call echo_green, "Checking CSV history and comparing versions...")
 	cd scripts && ../$(PYTHON) check_fastlanes_result_history.py
 
-# ---------------------------------------------------------------------------
-# Misc utilities
-# ---------------------------------------------------------------------------
+# Time ctest
 time_ctest:
-	$(call echo_green, "Running ctest with timing…")
+	$(call echo_green, "Running ctest with timing...")
 	cd cmake-build-release && time ctest --output-on-failure
-
-# ---------------------------------------------------------------------------
-# Declare phony targets
-# ---------------------------------------------------------------------------
-.PHONY: format format-check clang-format \
-        generate_synthetic_data check_fastlanes_result_history time_ctest
-
 
 # ---------------------------------------------------------------------------------
 # Python bindings
@@ -77,7 +67,7 @@ check_python_deps: $(VENV)/bin/activate
 	$(call echo_green,📦 Ensuring Python build deps...)
 	$(PIP) install --upgrade $(PY_DEPS)
 
-rebuild_python_debug:
+rebuild_python_debug: $(VENV)/bin/activate
 	@echo "🔄 Rebuilding FastLanes bindings (Debug)…"
 	$(CLEAN_SKBUILD)
 	CMAKE_BUILD_TYPE=Debug \
@@ -86,7 +76,7 @@ rebuild_python_debug:
 	PIP_VERBOSE=1 \
 	$(PYTHON) -m pip install -e . --no-build-isolation -v
 
-rebuild_python_release:
+rebuild_python_release: $(VENV)/bin/activate
 	@echo "🚀 Rebuilding FastLanes bindings (Release)…"
 	$(CLEAN_SKBUILD)
 	CMAKE_BUILD_TYPE=Release \
@@ -102,12 +92,10 @@ clean_python:
 	find . -name '__pycache__' -exec rm -rf {} +
 	find . -name '*.pyc' -delete
 
-
-run_example_python:
+run_example_python: $(VENV)/bin/activate
 	$(call echo_green,"🚀 Running example...")
 	$(PYTHON) examples/python_example.py
 
-
-test_python: rebuild_python
+test_python: rebuild_python_release
 	$(call echo_green, "🧪 Running Python unit tests...")
 	PYTHONPATH=$(PWD)/python $(PYTHON) -m pytest -q $(TEST_DIR)
