@@ -23,14 +23,6 @@ format:
 	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include \
 	    -i --exclude include/fls/json/nlohmann"
 
-format-check:
-	$(call echo_green,"Checking formatting…")
-	docker run --rm -v "$$(pwd)":/app -w /app $(IMAGE) bash -c "\
-	    python3 scripts/run-clang-format.py -r examples include src benchmark test data/include \
-	    --exclude include/fls/json/nlohmann"
-
-
-
 # Run clang-format using Docker (with install step)
 clang-format:
 	$(call echo_green, "Running clang-format with Docker for consistent formatting...")
