@@ -14,21 +14,74 @@ jobs:
       - name: Checkout FastLanes
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
+      - name: Set up system Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Upgrade pip and install build tools
+      - name: Install Python build dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build scikit-build-core pybind11 setuptools_scm[toml]
+          pip install scikit-build-core build
 
-      - name: Build Python bindings
-        run: python -m build
+      - name: Build & Test via Makefile
+        run: |
+          make rebuild_python_release
+          make test_python
 
-      - name: Install built package
-        run: pip install dist/*.whl
+  build-wheel:
+    runs-on: ubuntu-latest
+    needs: build-test-python
 
-      - name: Run Python tests
-        run: pytest -q tests
+    steps:
+      - name: Checkout FastLanes
+        uses: actions/checkout@v4
+
+      - name: Set up system Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install wheel build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install scikit-build-core build wheel
+
+      - name: Build wheel
+        run: |
+          python -m build --wheel --outdir dist
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlanes-wheel
+          path: dist/*.whl
+
+  publish-wheel:
+    runs-on: ubuntu-latest
+    needs: build-wheel
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.PYPI_TOKEN
+
+    steps:
+      - name: Checkout FastLanes
+        uses: actions/checkout@v4
+
+      - name: Set up system Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Twine
+        run: pip install twine
+
+      - name: Download wheel artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fastlanes-wheel
+          path: dist
+
+      - name: Publish to PyPI
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          twine upload --non-interactive -u __token__ -p "$TWINE_PASSWORD" dist/*.whl
