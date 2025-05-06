@@ -34,3 +34,10 @@ set_target_properties(_fastlanes PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/python/fastlanes
         RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/python/fastlanes
 )
+
+add_test(
+        NAME PythonTests
+        COMMAND ${Python3_EXECUTABLE} -m pytest -q
+        ${PROJECT_SOURCE_DIR}/python/tests
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)

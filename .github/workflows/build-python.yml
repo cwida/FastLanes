@@ -24,7 +24,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install scikit-build-core build
 
-      - name: Build & Test via Makefile
-        run: |
-          make rebuild_python_release
-          make test_python
+      - name: Build Python bindings
+        run: make rebuild_python_release
+
+      - name: Run Python tests
+        run: make test_python
+
