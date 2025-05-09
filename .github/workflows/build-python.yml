@@ -1,4 +1,7 @@
 name: Build & Check Python package
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
 # ────────────────────────────────────────────────────────
 # Triggers
@@ -79,7 +82,7 @@ jobs:
           path: dist/*.whl
 
   # ────────────────────────────────────────────────────────
-  # 3) (Optional) Publish to TestPyPI
+  # 3) Publish to TestPyPI
   # ────────────────────────────────────────────────────────
   publish-wheel:
     needs: build-wheel
@@ -104,7 +107,3 @@ jobs:
           skip-existing: true
           verbose: true
           print-hash: true
-
-      - name: Skip publish (token missing)
-        if: env.TEST_PYPI_API_TOKEN == ''
-        run: echo "ℹ️  Secret TEST_PYPI_API_TOKEN is not set — skipping publish."
