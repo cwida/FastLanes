@@ -11,7 +11,7 @@ using std::string_view;
 class Info {
 public:
 	static constexpr string_view get_version() {
-		return version_0_0_2;
+		return current_version;
 	}
 	static constexpr string_view get_name() {
 		return lib_name;
@@ -47,10 +47,11 @@ public:
 	}
 
 private:
-	static constexpr auto lib_name      = string_view("FastLanes");
-	static constexpr auto version_0_0_2 = string_view("0.0.2"); // smart entry point
-	static constexpr auto version_0_0_1 = string_view("0.0.1"); // starting version
-	static constexpr auto version_0_1   = string_view("0.1");   // starting version
+	static constexpr auto lib_name        = string_view("FastLanes");
+	static constexpr auto version_0_0_2   = string_view("0.0.2"); // smart entry point
+	static constexpr auto version_0_0_1   = string_view("0.0.1"); // starting version
+	static constexpr auto version_0_1     = string_view("0.1");   // starting version
+	static constexpr auto current_version = string_view("0.1.3"); // smart entry point
 };
 
 } // namespace fastlanes

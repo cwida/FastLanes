@@ -338,21 +338,6 @@ if (FLS_BUILD_PYTHON)
     message("-------------------------------------------------------------")
     message("- FLS: Building FastLanes Python Extension")
 
-    # 1) First try a system / globally-installed copy
-    find_package(pybind11 CONFIG QUIET)   # this is enough
-
-    # 2) If that failed, fetch the desired tag
-    if (NOT TARGET pybind11::pybind11)
-        message(STATUS "pybind11 not found – fetching from GitHub")
-        include(FetchContent)
-        FetchContent_Declare(
-                pybind11
-                GIT_REPOSITORY https://github.com/pybind/pybind11.git
-                GIT_TAG v2.13.6      # current latest release
-        )
-        FetchContent_MakeAvailable(pybind11)   # brings in the targets
-    endif ()
-
     add_subdirectory(python)   # your module’s CMakeLists.txt
 endif ()
 
