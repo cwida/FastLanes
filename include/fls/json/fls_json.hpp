@@ -14,7 +14,7 @@ class Connector;
 class LogicalExpr;
 class NewRPN;
 struct Operand;
-class SegmentDescriptor;
+struct SegmentDescriptorT;
 class BinaryValue;
 class ExprSpace;
 class TableDescriptor;
@@ -61,8 +61,8 @@ void from_json(const nlohmann::json& j, ExprSpace& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * SegmentDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const SegmentDescriptor& p);
-void from_json(const nlohmann::json& j, SegmentDescriptor& p);
+void to_json(nlohmann::json& j, const SegmentDescriptorT& p);
+void from_json(const nlohmann::json& j, SegmentDescriptorT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON

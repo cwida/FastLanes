@@ -165,3 +165,38 @@ build_sdist: $(ACTIVATE)
 	$(PIP) install --upgrade setuptools wheel
 	$(PIP) install --upgrade $(call quote_deps)
 	$(PYTHON) -m build --sdist --no-isolation --outdir dist
+
+
+# ─────────────────────────────────────────────────────────────
+# Generate FlatBuffers C++ code for schema_v_0_2.fbs
+# ─────────────────────────────────────────────────────────────
+
+# Where your .fbs lives, and where to put the generated headers:
+FBS_DIR     := flatbuffers_schemas
+FBS_SCHEMA  := footer.fbs
+FBS_OUT     := include/fls/footer
+
+.PHONY: generate_footer
+generate_footer:
+	@echo "🔍 Checking for schema file..."
+	@if [ ! -d "$(FBS_DIR)" ]; then \
+	  echo "❌ Schema directory '$(FBS_DIR)' not found."; \
+	  exit 1; \
+	fi
+	@if [ ! -f "$(FBS_DIR)/$(FBS_SCHEMA)" ]; then \
+	  echo "❌ Schema file '$(FBS_DIR)/$(FBS_SCHEMA)' not found."; \
+	  exit 1; \
+	fi
+	@echo "📦 Generating FlatBuffers C++ (v0.2) with scoped enums…"
+	@mkdir -p "$(FBS_OUT)"
+	@flatc --cpp \
+	       --gen-object-api \
+	       --scoped-enums \
+	       --no-emit-min-max-enum-values \
+	       -I "$(FBS_DIR)" \
+	       -o "$(FBS_OUT)" \
+	       "$(FBS_DIR)/$(FBS_SCHEMA)"
+	@echo "✅ FlatBuffers C++ (v0.2) generated in $(FBS_OUT)"
+
+
+

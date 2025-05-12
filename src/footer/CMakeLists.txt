@@ -4,7 +4,6 @@ add_library(fls_footer
         #[[]]
         column_descriptor.cpp
         rowgroup_descriptor.cpp
-        segment_descriptor.cpp
         table_descriptor.cpp
 )
 

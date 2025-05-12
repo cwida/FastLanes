@@ -152,10 +152,10 @@ void cast(const std::vector<entry_point_t>& entry_points, EntryPointType entry_p
 	}
 }
 
-up<SegmentDescriptor> Segment::Dump(Buf& external_buf, n_t& current_offset, uint8_t* helper_buffer) const {
+up<SegmentDescriptorT> Segment::Dump(Buf& external_buf, n_t& current_offset, uint8_t* helper_buffer) const {
 	FLS_ASSERT_NOT_NULL_POINTER(entry_points.data())
 
-	SegmentDescriptor segment_descriptor;
+	SegmentDescriptorT segment_descriptor;
 
 	segment_descriptor.entry_point_t = detect_smallest_entry_point_type(*this);
 	cast(entry_points, segment_descriptor.entry_point_t, helper_buffer);
@@ -175,7 +175,7 @@ up<SegmentDescriptor> Segment::Dump(Buf& external_buf, n_t& current_offset, uint
 	external_buf.Append(buf->data(), segment_descriptor.data_size);
 	current_offset += segment_descriptor.data_size;
 
-	return make_unique<SegmentDescriptor>(segment_descriptor);
+	return make_unique<SegmentDescriptorT>(segment_descriptor);
 }
 
 void Segment::MakeBlockBased() {
@@ -219,7 +219,7 @@ template flt_pt* Segment::GetFixedSizeArray<flt_pt>(n_t length);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_segment_view
 \*--------------------------------------------------------------------------------------------------------------------*/
-SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptor& segment_descriptor) {
+SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptorT& segment_descriptor) {
 	auto segment_span = column_span.subspan(segment_descriptor.entrypoint_offset, segment_descriptor.entrypoint_size);
 
 	switch (segment_descriptor.entry_point_t) {

@@ -378,7 +378,7 @@ void from_json(const nlohmann::json& j, BinaryValue& p) {
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
- * SegmentDescriptor
+ * SegmentDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* ENTRY_POINT_OFFSET = "1, [REQUIRED], ENTRY POINT OFFSET";
 constexpr const auto* ENTRY_POINT_SIZE   = "2, [REQUIRED], ENTRY POINT SIZE";
@@ -386,7 +386,7 @@ constexpr const auto* DATA_OFFSET        = "3, [REQUIRED], DATA OFFSET";
 constexpr const auto* DATA_SIZE          = "4, [REQUIRED], DATA SIZE";
 constexpr const auto* ENTRY_POINT_TYPE   = "5, [REQUIRED], ENTRY_POINT_TYPE";
 
-void to_json(nlohmann::json& j, const SegmentDescriptor& p) {
+void to_json(nlohmann::json& j, const SegmentDescriptorT& p) {
 	j = nlohmann::json {
 	    {ENTRY_POINT_OFFSET, p.entrypoint_offset},
 	    {ENTRY_POINT_SIZE, p.entrypoint_size},
@@ -396,7 +396,7 @@ void to_json(nlohmann::json& j, const SegmentDescriptor& p) {
 	    //
 	};
 }
-void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
+void from_json(const nlohmann::json& j, SegmentDescriptorT& p) {
 	j.at(ENTRY_POINT_OFFSET).get_to(p.entrypoint_offset);
 	j.at(ENTRY_POINT_SIZE).get_to(p.entrypoint_size);
 	j.at(DATA_OFFSET).get_to(p.data_offset);

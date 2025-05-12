@@ -158,17 +158,15 @@ if (true)
     message("-- FLS: Building FastLanes Lib.")
     # Include : --------------------------------------------------------------------------------------------------------
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
+
+    # External Include: -----------------------------------------------------------------------------------------------------
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/flatbuffers)
 
     # Primitives: ------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/primitives)
 
     # Source: ----------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-    # Third_party: -----------------------------------------------------------------------------------------------------
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
-
 
     install(
             EXPORT FLSTargets

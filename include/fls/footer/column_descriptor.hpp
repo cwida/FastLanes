@@ -52,7 +52,7 @@ public:
 	///
 	unordered_map<OperatorToken, n_t> expr_space;
 	///
-	vector<SegmentDescriptor> segment_descriptors;
+	vector<SegmentDescriptorT> segment_descriptors;
 	///
 	n_t n_null;
 	///!
