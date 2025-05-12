@@ -168,26 +168,26 @@ build_sdist: $(ACTIVATE)
 
 
 # ─────────────────────────────────────────────────────────────
-# Generate FlatBuffers C++ code for schema_v_0_2.fbs
+# Generate FlatBuffers C++ code for footer schema (with DataType)
 # ─────────────────────────────────────────────────────────────
 
-# Where your .fbs lives, and where to put the generated headers:
-FBS_DIR     := flatbuffers_schemas
-FBS_SCHEMA  := footer.fbs
-FBS_OUT     := include/fls/footer
+FBS_DIR    := flatbuffers_schemas
+FBS_OUT    := include/fls/footer
 
 .PHONY: generate_footer
 generate_footer:
-	@echo "🔍 Checking for schema file..."
+	@echo "🔍 Checking for schema files..."
 	@if [ ! -d "$(FBS_DIR)" ]; then \
-	  echo "❌ Schema directory '$(FBS_DIR)' not found."; \
-	  exit 1; \
+	  echo "❌ Schema directory '$(FBS_DIR)' not found."; exit 1; \
 	fi
-	@if [ ! -f "$(FBS_DIR)/$(FBS_SCHEMA)" ]; then \
-	  echo "❌ Schema file '$(FBS_DIR)/$(FBS_SCHEMA)' not found."; \
-	  exit 1; \
+	@if [ ! -f "$(FBS_DIR)/datatype.fbs" ]; then \
+	  echo "❌ '$(FBS_DIR)/datatype.fbs' not found."; exit 1; \
 	fi
-	@echo "📦 Generating FlatBuffers C++ (v0.2) with scoped enums…"
+	@if [ ! -f "$(FBS_DIR)/footer.fbs" ]; then \
+	  echo "❌ '$(FBS_DIR)/footer.fbs' not found."; exit 1; \
+	fi
+
+	@echo "📦 Generating FlatBuffers C++ (footer + datatype)…"
 	@mkdir -p "$(FBS_OUT)"
 	@flatc --cpp \
 	       --gen-object-api \
@@ -195,8 +195,10 @@ generate_footer:
 	       --no-emit-min-max-enum-values \
 	       -I "$(FBS_DIR)" \
 	       -o "$(FBS_OUT)" \
-	       "$(FBS_DIR)/$(FBS_SCHEMA)"
-	@echo "✅ FlatBuffers C++ (v0.2) generated in $(FBS_OUT)"
+	       "$(FBS_DIR)/datatype.fbs" \
+	       "$(FBS_DIR)/footer.fbs"
+
+	@echo "✅ FlatBuffers C++ generated in $(FBS_OUT)"
 
 
 
