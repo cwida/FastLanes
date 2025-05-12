@@ -5,6 +5,7 @@
 #include "fls/common/decimal.hpp"
 #include "fls/expression/data_type.hpp"
 #include "fls/expression/rpn.hpp" // for NewRPN
+#include "fls/footer/decimal_type_generated.h"
 #include "fls/footer/footer_generated.h"
 #include "fls/std/string.hpp"
 #include "fls/std/unordered_map.hpp"
@@ -55,7 +56,7 @@ public:
 	///
 	n_t n_null;
 	///!
-	DecimalType fix_me_decimal_type;
+	DecimalTypeT fix_me_decimal_type;
 };
 
 } // namespace fastlanes

@@ -197,6 +197,7 @@ generate_footer:
 	       -o "$(FBS_OUT)" \
 		   "$(FBS_DIR)/datatype.fbs" \
 		   "$(FBS_DIR)/operator_token.fbs" \
+		   "$(FBS_DIR)/decimal_type.fbs" \
 		   "$(FBS_DIR)/footer.fbs"
 
 	@echo "✅ FlatBuffers C++ generated in $(FBS_OUT)"
