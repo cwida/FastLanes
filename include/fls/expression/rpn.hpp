@@ -229,13 +229,13 @@ enum class SegmentToken : uint8_t {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * RPN
 \*--------------------------------------------------------------------------------------------------------------------*/
-class NewRPN {
+class RPN {
 public:
 	vector<OperatorToken> operator_tokens;
 	vector<n_t>           operand_tokens;
 	//
 	n_t                  ConsumeOperandToken(InterpreterState& state) const;
-	friend std::ostream& operator<<(std::ostream& os, const NewRPN& rpn);
+	friend std::ostream& operator<<(std::ostream& os, const RPN& rpn);
 };
 
 /*--------------------------------------------------------------------------------------------------------------------*/

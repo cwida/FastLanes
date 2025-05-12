@@ -3,7 +3,7 @@
 #include "fls/common/magic_enum.hpp"
 #include "fls/connection.hpp"
 #include "fls/expression/logical_expression.hpp"
-#include "fls/expression/new_rpn.hpp"
+#include "fls/expression/rpn.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
@@ -354,10 +354,10 @@ void to_json(nlohmann::json& j, const RowgroupEncodingResult& p) {
 constexpr const auto* OPERATORS_KEY = "1, [REQUIRED], OPERATOR KEY";
 constexpr const auto* OPERANDS_KEY  = "2, [OPTIONAL], OPERAND KEY";
 
-void to_json(nlohmann::json& j, const NewRPN& p) {
+void to_json(nlohmann::json& j, const RPN& p) {
 	j = nlohmann::json {{OPERATORS_KEY, p.operator_tokens}, {OPERANDS_KEY, p.operand_tokens}};
 }
-void from_json(const nlohmann::json& j, NewRPN& p) {
+void from_json(const nlohmann::json& j, RPN& p) {
 	j.at(OPERATORS_KEY).get_to(p.operator_tokens); //
 	j.at(OPERANDS_KEY).get_to(p.operand_tokens);   //
 }

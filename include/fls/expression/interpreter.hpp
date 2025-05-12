@@ -7,7 +7,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class PhysicalExpr;
-class NewRPN;
+class RPN;
 class Buf;
 class ColumnView;
 class ColumnDescriptor;

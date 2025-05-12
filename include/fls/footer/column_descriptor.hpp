@@ -4,7 +4,7 @@
 #include "fls/common/alias.hpp"
 #include "fls/common/decimal.hpp"
 #include "fls/expression/data_type.hpp"
-#include "fls/expression/new_rpn.hpp" // for NewRPN
+#include "fls/expression/rpn.hpp" // for NewRPN
 #include "fls/footer/footer_generated.h"
 #include "fls/std/string.hpp"
 #include "fls/std/unordered_map.hpp"
@@ -33,7 +33,7 @@ public:
 	///!
 	DataType data_type;
 	///!
-	NewRPN encoding_rpn;
+	RPN encoding_rpn;
 	///!
 	n_t idx;
 	///!

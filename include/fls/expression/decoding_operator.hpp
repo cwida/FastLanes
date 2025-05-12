@@ -47,7 +47,7 @@ public:
  * dec_uncompressed_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct dec_fls_str_uncompressed_opr {
-	explicit dec_fls_str_uncompressed_opr(const ColumnView& column_view, const NewRPN& rpn);
+	explicit dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPN& rpn);
 
 public:
 	void       PointTo(n_t vec_idx);

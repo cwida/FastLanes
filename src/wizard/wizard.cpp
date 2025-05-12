@@ -6,7 +6,7 @@
 #include "fls/expression/data_type.hpp" // for DataType, get_physical_type
 #include "fls/expression/expression_executor.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/expression/new_rpn.hpp"         // for Operator, Operand, NewRPN
+#include "fls/expression/rpn.hpp"         // for Operator, Operand, NewRPN
 #include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata, RowgroupDescriptor
 #include "fls/std/variant.hpp"                // for visit
 #include "fls/std/vector.hpp"                 // for vector

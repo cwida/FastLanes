@@ -18,7 +18,7 @@ void bench_sampling() {
 
 		// Containers for results to be sorted later
 		std::vector<std::pair<std::string, n_t>>                                                      main_results;
-		std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, NewRPN, double, double>> detailed_results;
+		std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPN, double, double>> detailed_results;
 
 		// Mutex for thread-safe access to the results containers
 		std::mutex results_mutex;

@@ -13,7 +13,7 @@
 #include "fls/expression/fsst12_expression.hpp"
 #include "fls/expression/fsst_dict_operator.hpp"
 #include "fls/expression/fsst_expression.hpp"
-#include "fls/expression/new_rpn.hpp"
+#include "fls/expression/rpn.hpp"
 #include "fls/expression/null_operator.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/expression/rle_expression.hpp"
