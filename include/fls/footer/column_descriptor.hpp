@@ -5,8 +5,7 @@
 #include "fls/common/decimal.hpp"
 #include "fls/expression/data_type.hpp"
 #include "fls/expression/new_rpn.hpp" // for NewRPN
-#include "fls/footer/binary_value.hpp"
-#include "fls/footer/segment_descriptor.hpp"
+#include "fls/footer/footer_generated.h"
 #include "fls/std/string.hpp"
 #include "fls/std/unordered_map.hpp"
 #include "fls/std/vector.hpp"
@@ -44,7 +43,7 @@ public:
 	///!
 	unordered_map<string, idx_t> name_idx_map;
 	///!
-	BinaryValue max;
+	BinaryValueT max;
 	///
 	sz_t column_offset;
 	///

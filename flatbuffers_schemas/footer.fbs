@@ -20,4 +20,11 @@ table SegmentDescriptor {
   entry_point_t:     EntryPointType;
 }
 
+// ─────────────────────────────────────────────────────────────
+// BinaryValue
+// ─────────────────────────────────────────────────────────────
+table BinaryValue {
+  binary_data: [ubyte];
+}
+
 root_type SegmentDescriptor;

@@ -367,13 +367,13 @@ void from_json(const nlohmann::json& j, NewRPN& p) {
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* BINARY_DATA_KEY = "1, [REQUIRED], BINARY DATA";
 
-void to_json(nlohmann::json& j, const BinaryValue& p) {
+void to_json(nlohmann::json& j, const BinaryValueT& p) {
 	j = nlohmann::json {
 	    {BINARY_DATA_KEY, p.binary_data},
 	};
 }
 
-void from_json(const nlohmann::json& j, BinaryValue& p) {
+void from_json(const nlohmann::json& j, BinaryValueT& p) {
 	j.at(BINARY_DATA_KEY).get_to(p.binary_data); //
 }
 

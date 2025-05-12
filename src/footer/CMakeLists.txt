@@ -1,6 +1,5 @@
 add_library(fls_footer
         OBJECT
-        binary_value.cpp
         #[[]]
         column_descriptor.cpp
         rowgroup_descriptor.cpp
