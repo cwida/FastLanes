@@ -12,7 +12,7 @@ class ColumnDescriptor;
 class RowgroupEncodingResult;
 class Connector;
 class LogicalExpr;
-class RPN;
+struct RPNT;
 struct Operand;
 struct SegmentDescriptorT;
 struct BinaryValueT;
@@ -43,8 +43,8 @@ void from_json(const nlohmann::json& j, LogicalExpr& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * NewRpn
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const RPN& p);
-void from_json(const nlohmann::json& j, RPN& p);
+void to_json(nlohmann::json& j, const RPNT& p);
+void from_json(const nlohmann::json& j, RPNT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * BinaryValue

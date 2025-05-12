@@ -108,7 +108,7 @@ template struct dec_constant_opr<str_pt>;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_fls_str_uncompressed_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
-dec_fls_str_uncompressed_opr::dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPN& rpn)
+dec_fls_str_uncompressed_opr::dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPNT& rpn)
     : byte_arr_segment(column_view.GetSegment(rpn.operand_tokens[0]))
     , length_segment(column_view.GetSegment(rpn.operand_tokens[1])) {
 	FLS_ASSERT_EQUALITY(rpn.operand_tokens.size(), 2);

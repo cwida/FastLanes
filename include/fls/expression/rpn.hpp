@@ -2,6 +2,7 @@
 #define FLS_EXPRESSION_NEW_RPN_HPP
 
 #include "fls/footer/operator_token_generated.h"
+#include "fls/footer/rpn_generated.h"
 #include "fls/std/string.hpp"
 #include "fls/std/vector.hpp"
 
@@ -9,18 +10,7 @@ namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 struct InterpreterState;
 /*--------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------------------------------------------------*\
- * RPN
-\*--------------------------------------------------------------------------------------------------------------------*/
-class RPN {
-public:
-	vector<OperatorToken> operator_tokens;
-	vector<n_t>           operand_tokens;
-	//
-	n_t                  ConsumeOperandToken(InterpreterState& state) const;
-	friend std::ostream& operator<<(std::ostream& os, const RPN& rpn);
-};
+std::ostream& operator<<(std::ostream& os, const RPNT& rpn);
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Helper Functions */

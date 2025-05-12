@@ -34,7 +34,7 @@ public:
 	///!
 	DataType data_type;
 	///!
-	RPN encoding_rpn;
+	RPNT encoding_rpn;
 	///!
 	n_t idx;
 	///!

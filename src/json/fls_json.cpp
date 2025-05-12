@@ -354,10 +354,10 @@ void to_json(nlohmann::json& j, const RowgroupEncodingResult& p) {
 constexpr const auto* OPERATORS_KEY = "1, [REQUIRED], OPERATOR KEY";
 constexpr const auto* OPERANDS_KEY  = "2, [OPTIONAL], OPERAND KEY";
 
-void to_json(nlohmann::json& j, const RPN& p) {
+void to_json(nlohmann::json& j, const RPNT& p) {
 	j = nlohmann::json {{OPERATORS_KEY, p.operator_tokens}, {OPERANDS_KEY, p.operand_tokens}};
 }
-void from_json(const nlohmann::json& j, RPN& p) {
+void from_json(const nlohmann::json& j, RPNT& p) {
 	j.at(OPERATORS_KEY).get_to(p.operator_tokens); //
 	j.at(OPERANDS_KEY).get_to(p.operand_tokens);   //
 }

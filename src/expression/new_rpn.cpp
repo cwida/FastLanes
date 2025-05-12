@@ -1,20 +1,12 @@
-#include "fls/expression/rpn.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/expression/interpreter.hpp"
+#include "fls/expression/rpn.hpp"
 #include "fls/std/unordered_set.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * SerializedExpr
 \*--------------------------------------------------------------------------------------------------------------------*/
-
-n_t RPN::ConsumeOperandToken(InterpreterState& state) const {
-	FLS_ASSERT_L(state.cur_operator, operand_tokens.size())
-
-	state.cur_operator++;
-
-	return operand_tokens[state.cur_operator - 1];
-}
 
 string token_to_string(OperatorToken token) {
 	switch (token) {
@@ -312,7 +304,7 @@ string token_to_string(OperatorToken token) {
 }
 
 // Overload the `<<` operator for RPN
-std::ostream& operator<<(std::ostream& os, const RPN& rpn) {
+std::ostream& operator<<(std::ostream& os, const RPNT& rpn) {
 	os << "{";
 
 	// Print operator tokens

@@ -27,7 +27,7 @@ void bench_accuracy_over_rowgroups() {
 
 			// Containers for results
 			std::vector<std::pair<std::string, n_t>> main_results;
-			std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPN, double, double>>
+			std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPNT, double, double>>
 			    detailed_results;
 
 			// Shared mutex to protect result containers within this rowgroup

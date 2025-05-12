@@ -37,8 +37,8 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	create_directories(std::filesystem::path(result_file_path).parent_path());
 
 	// Containers for results to be sorted later
-	std::vector<std::pair<std::string, n_t>>                                                      main_results;
-	std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPN, double, double>> detailed_results;
+	std::vector<std::pair<std::string, n_t>>                                                    main_results;
+	std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPNT, double, double>> detailed_results;
 
 	// Mutex for thread-safe access to the results containers
 	std::mutex results_mutex;
