@@ -1,0 +1,199 @@
+namespace fastlanes;
+
+// ─────────────────────────────────────────────────────────────
+// OperatorToken
+// ─────────────────────────────────────────────────────────────
+enum OperatorToken : ushort {
+  INVALID                            = 0,
+
+  // Basic Expressions
+  EXP_EQUAL                          = 1,
+
+  // Constants
+  EXP_CONSTANT_I64                   = 2,
+  EXP_CONSTANT_I32                   = 3,
+  EXP_CONSTANT_I16                   = 4,
+  EXP_CONSTANT_DBL                   = 5,
+  EXP_CONSTANT_STR                   = 6,
+  EXP_CONSTANT_U08                   = 7,
+
+  // Structures
+  EXP_STRUCT                         = 8,
+
+  // Uncompressed
+  EXP_UNCOMPRESSED_STR               = 9,
+  EXP_UNCOMPRESSED_I64               = 10,
+  EXP_UNCOMPRESSED_I16               = 11,
+  EXP_UNCOMPRESSED_I32               = 12,
+  EXP_UNCOMPRESSED_DBL               = 13,
+  EXP_UNCOMPRESSED_U08               = 14,
+
+  // FOR Encodings
+  EXP_FFOR_I64                       = 15,
+  EXP_FFOR_I32                       = 16,
+  EXP_FFOR_I16                       = 17,
+
+  // Dictionary with FOR Encodings
+  EXP_DICT_I64_FFOR_U32              = 18,
+  EXP_DICT_I64_FFOR_U16              = 19,
+  EXP_DICT_I64_FFOR_U08              = 20,
+  EXP_DICT_I32_FFOR_U32              = 21,
+  EXP_DICT_I32_FFOR_U16              = 22,
+  EXP_DICT_I32_FFOR_U08              = 23,
+  EXP_DICT_I16_FFOR_U16              = 24,
+  EXP_DICT_I16_FFOR_U08              = 25,
+  EXP_DICT_DBL_FFOR_U32              = 26,
+  EXP_DICT_DBL_FFOR_U16              = 27,
+  EXP_DICT_DBL_FFOR_U08              = 28,
+  EXP_DICT_STR_FFOR_U32              = 29,
+  EXP_DICT_STR_FFOR_U16              = 30,
+  EXP_DICT_STR_FFOR_U08              = 31,
+  EXP_FSST_DICT_STR_FFOR_U32         = 32,
+  EXP_FSST_DICT_STR_FFOR_U16         = 33,
+  EXP_FSST_DICT_STR_FFOR_U08         = 34,
+  EXP_FSST12_DICT_STR_FFOR_U32       = 102,
+  EXP_FSST12_DICT_STR_FFOR_U16       = 103,
+  EXP_FSST12_DICT_STR_FFOR_U08       = 104,
+
+  // Wizard Encoding
+  WIZARD_DICTIONARY_ENCODE           = 35,
+
+  // Dictionary
+  EXP_DICT_I64_U32                   = 36,
+  EXP_DICT_I64_U16                   = 37,
+  EXP_DICT_I64_U08                   = 38,
+  EXP_DICT_I32_U32                   = 39,
+  EXP_DICT_I32_U16                   = 40,
+  EXP_DICT_I32_U08                   = 41,
+  EXP_DICT_I16_U16                   = 42,
+  EXP_DICT_I16_U08                   = 43,
+  EXP_DICT_DBL_U32                   = 44,
+  EXP_DICT_DBL_U16                   = 45,
+  EXP_DICT_DBL_U08                   = 46,
+  EXP_DICT_STR_U32                   = 47,
+  EXP_DICT_STR_U16                   = 48,
+  EXP_DICT_STR_U08                   = 49,
+
+  // ALP
+  EXP_ALP_DBL                        = 50,
+  EXP_ALP_RD_DBL                     = 51,
+
+  // FSST
+  EXP_FSST                           = 52,
+  EXP_FSST12                         = 53,
+  EXP_FSST_DELTA                     = 54,
+  EXP_FSST12_DELTA                   = 55,
+
+  // RLE
+  EXP_RLE_I64_U16                    = 56,
+  EXP_RLE_I32_U16                    = 57,
+  EXP_RLE_I16_U16                    = 58,
+  EXP_RLE_DBL_U16                    = 59,
+  EXP_RLE_STR_U16                    = 60,
+
+  // Delta Encoding
+  EXP_DELTA_I64                      = 61,
+  EXP_DELTA_I32                      = 62,
+  EXP_DELTA_I16                      = 63,
+
+  // FOR Encodings with SlPatch
+  EXP_FFOR_SLPATCH_I64               = 64,
+  EXP_FFOR_SLPATCH_I32               = 65,
+  EXP_FFOR_SLPATCH_I16               = 66,
+
+  // Dictionary with FOR + SlPatch
+  EXP_DICT_I64_FFOR_SLPATCH_U32      = 67,
+  EXP_DICT_I64_FFOR_SLPATCH_U16      = 68,
+  EXP_DICT_I64_FFOR_SLPATCH_U08      = 69,
+  EXP_DICT_I32_FFOR_SLPATCH_U32      = 70,
+  EXP_DICT_I32_FFOR_SLPATCH_U16      = 71,
+  EXP_DICT_I32_FFOR_SLPATCH_U08      = 72,
+  EXP_DICT_I16_FFOR_SLPATCH_U16      = 73,
+  EXP_DICT_I16_FFOR_SLPATCH_U08      = 74,
+  EXP_DICT_DBL_FFOR_SLPATCH_U32      = 75,
+  EXP_DICT_DBL_FFOR_SLPATCH_U16      = 76,
+  EXP_DICT_DBL_FFOR_SLPATCH_U08      = 77,
+  EXP_DICT_STR_FFOR_SLPATCH_U32      = 78,
+  EXP_DICT_STR_FFOR_SLPATCH_U16      = 79,
+  EXP_DICT_STR_FFOR_SLPATCH_U08      = 80,
+  EXP_FSST_DICT_STR_FFOR_SLPATCH_U32 = 81,
+  EXP_FSST_DICT_STR_FFOR_SLPATCH_U16 = 82,
+  EXP_FSST_DICT_STR_FFOR_SLPATCH_U08 = 83,
+  EXP_FSST12_DICT_STR_FFOR_SLPATCH_U32 = 99,
+  EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16 = 100,
+  EXP_FSST12_DICT_STR_FFOR_SLPATCH_U08 = 101,
+
+  // NULL
+  EXP_NULL_DBL                       = 84,
+  EXP_NULL_I16                       = 85,
+  EXP_NULL_I32                       = 128,
+
+  // RLE SlPatch
+  EXP_RLE_I64_SLPATCH_U16            = 86,
+  EXP_RLE_I32_SLPATCH_U16            = 87,
+  EXP_RLE_I16_SLPATCH_U16            = 88,
+  EXP_RLE_DBL_SLPATCH_U16            = 89,
+  EXP_RLE_STR_SLPATCH_U16            = 90,
+
+  // FSST DICT
+  EXP_FSST_DICT_STR_U32              = 91,
+  EXP_FSST_DICT_STR_U16              = 92,
+  EXP_FSST_DICT_STR_U08              = 93,
+
+  // FSST12 DICT
+  EXP_FSST12_DICT_STR_U32            = 96,
+  EXP_FSST12_DICT_STR_U16            = 97,
+  EXP_FSST12_DICT_STR_U08            = 98,
+
+  // FSST DELTA SlPatch
+  EXP_FSST_DELTA_SLPATCH             = 94,
+  EXP_FSST12_DELTA_SLPATCH           = 95,
+
+  // Wizard choose
+  WIZARD_CHOOSE_DICT                 = 110,
+
+  // Uncompressed I08
+  EXP_UNCOMPRESSED_I08               = 105,
+  EXP_CONSTANT_I08                   = 106,
+  EXP_DICT_I08_U08                   = 107,
+  EXP_DICT_I08_FFOR_U08              = 108,
+  EXP_FFOR_I08                       = 109,
+  EXP_RLE_I08_U16                    = 111,
+  EXP_DELTA_I08                      = 112,
+  EXP_FFOR_SLPATCH_I08               = 113,
+  EXP_RLE_I08_SLPATCH_U16            = 114,
+  EXP_DICT_I08_FFOR_SLPATCH_U08      = 115,
+
+  // Frequency
+  EXP_FREQUENCY_DBL                  = 116,
+  EXP_FREQUENCY_I08                  = 117,
+  EXP_FREQUENCY_I16                  = 118,
+  EXP_FREQUENCY_I32                  = 119,
+  EXP_FREQUENCY_I64                  = 120,
+  EXP_FREQUENCY_STR                  = 121,
+
+  // Cross RLE
+  EXP_CROSS_RLE_I08                  = 122,
+  EXP_CROSS_RLE_I16                  = 123,
+  EXP_CROSS_RLE_I32                  = 124,
+  EXP_CROSS_RLE_I64                  = 125,
+  EXP_CROSS_RLE_DBL                  = 126,
+  EXP_CROSS_RLE_STR                  = 127,
+
+  // FLOAT
+  EXP_CONSTANT_FLT                   = 129,
+  EXP_UNCOMPRESSED_FLT               = 130,
+  EXP_NULL_FLT                       = 131,
+  EXP_ALP_FLT                        = 132,
+  EXP_RLE_FLT_U16                    = 133,
+  EXP_DICT_FLT_FFOR_U16              = 134,
+  EXP_RLE_FLT_SLPATCH_U16            = 135,
+  EXP_ALP_RD_FLT                     = 136,
+  EXP_FREQUENCY_FLT                  = 137,
+  EXP_CROSS_RLE_FLT                  = 138,
+  EXP_DICT_FLT_FFOR_U08              = 139,
+  EXP_DICT_FLT_FFOR_SLPATCH_U08      = 140,
+  EXP_DICT_FLT_FFOR_SLPATCH_U16      = 141,
+  EXP_DICT_FLT_FFOR_U32              = 142,
+  EXP_DICT_FLT_FFOR_SLPATCH_U32      = 143
+}

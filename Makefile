@@ -195,8 +195,9 @@ generate_footer:
 	       --no-emit-min-max-enum-values \
 	       -I "$(FBS_DIR)" \
 	       -o "$(FBS_OUT)" \
-	       "$(FBS_DIR)/datatype.fbs" \
-	       "$(FBS_DIR)/footer.fbs"
+		   "$(FBS_DIR)/datatype.fbs" \
+		   "$(FBS_DIR)/operator_token.fbs" \
+		   "$(FBS_DIR)/footer.fbs"
 
 	@echo "✅ FlatBuffers C++ generated in $(FBS_OUT)"
 
