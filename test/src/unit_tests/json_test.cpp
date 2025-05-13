@@ -23,8 +23,8 @@ TEST(TableDescriptorTest, RoundTrip) {
     })";
 
 	// Parse JSON and deserialize
-	nlohmann::json  j  = nlohmann::json::parse(sample);
-	TableDescriptor td = j.get<TableDescriptor>();
+	nlohmann::json   j  = nlohmann::json::parse(sample);
+	TableDescriptorT td = j.get<TableDescriptorT>();
 
 	// Validate deserialization
 	EXPECT_EQ(td.m_rowgroup_descriptors.size(), 1u);
@@ -92,7 +92,7 @@ TEST(TableDescriptorTest, ComplexFixture) {
 
 	// 2) Deserialize with full error reporting
 	try {
-		TableDescriptor tdx = j.get<TableDescriptor>();
+		TableDescriptorT tdx = j.get<TableDescriptorT>();
 		// ← if that throws, we’ll catch below
 	} catch (const nlohmann::json::exception& ex) {
 		// FAIL() will stop the test and print our message + ex.what()
@@ -100,7 +100,7 @@ TEST(TableDescriptorTest, ComplexFixture) {
 		       << "Look at the dumped JSON above for mismatched keys/types.";
 	}
 
-	TableDescriptor td = j.get<TableDescriptor>();
+	TableDescriptorT td = j.get<TableDescriptorT>();
 
 	// 3) Top-level checks
 	EXPECT_EQ(td.m_rowgroup_descriptors.size(), 1u);

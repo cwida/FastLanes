@@ -201,7 +201,8 @@ generate_footer:
 		   "$(FBS_DIR)/operator_token.fbs" \
 		   "$(FBS_DIR)/rpn.fbs" \
 		   "$(FBS_DIR)/column_descriptor.fbs" \
-		   "$(FBS_DIR)/rowgroup_descriptor.fbs"
+		   "$(FBS_DIR)/rowgroup_descriptor.fbs" \
+		   "$(FBS_DIR)/table_descriptor.fbs"
 
 	@echo "✅ FlatBuffers C++ generated in $(FBS_OUT)"
 

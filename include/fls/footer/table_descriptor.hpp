@@ -2,31 +2,16 @@
 #define FLS_FOOTER_TABLE_DESCRIPTOR_HPP
 
 #include "fls/footer/rowgroup_descriptor.hpp"
+#include "fls/footer/table_descriptor_generated.h"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-class TableDescriptor {
-public: /* Constructors */
-	TableDescriptor();
-
-public:
-	// deep-copy copy constructor
-	TableDescriptor(const TableDescriptor& o);
-
-public:
-	vector<up<RowgroupDescriptorT>> m_rowgroup_descriptors;
-	//
-	n_t m_table_binary_size;
-	//
-	[[nodiscard]] n_t GetNRowgroups() const;
-};
-
-up<TableDescriptor> make_table_descriptor(const Table& table);
-up<TableDescriptor> make_table_descriptor(const path& dir_path);
-up<TableDescriptor> make_table_descriptor(const path& dir_path, n_t offset, n_t size);
+up<TableDescriptorT> make_table_descriptor(const Table& table);
+up<TableDescriptorT> make_table_descriptor(const path& dir_path);
+up<TableDescriptorT> make_table_descriptor(const path& dir_path, n_t offset, n_t size);
 
 } // namespace fastlanes
 

@@ -17,15 +17,15 @@ struct Operand;
 struct SegmentDescriptorT;
 struct BinaryValueT;
 class ExprSpace;
-class TableDescriptor;
+struct TableDescriptorT;
 class Connection;
 struct ExpressionResultT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
- * TableDescriptor
+ * TableDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor);
-void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor);
+void to_json(nlohmann::json& j, const TableDescriptorT& table_descriptor);
+void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * RowgroupDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ void from_json(const nlohmann::json& j, ExpressionResultT& p);
 \*--------------------------------------------------------------------------------------------------------------------*/
 class JSON {
 public:
-	static n_t write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor);
+	static n_t write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor);
 };
 
 /// write the footer or profiling as json file

@@ -80,7 +80,7 @@ public:
 	}
 
 	// Method to get the footer for the thread-specific directory
-	[[nodiscard]] up<TableDescriptor> GetTableDescriptor(const path& thread_specific_fls_dir_path) const {
+	[[nodiscard]] up<TableDescriptorT> GetTableDescriptor(const path& thread_specific_fls_dir_path) const {
 		return make_table_descriptor(thread_specific_fls_dir_path / TABLE_DESCRIPTOR_FILE_NAME);
 	}
 

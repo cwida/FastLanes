@@ -1281,7 +1281,7 @@ void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, co
 	expression_check(rowgroup, footer, fls); // all left over columns are expression encoded.
 }
 
-up<TableDescriptor> Wizard::Spell(const Connection& fls) {
+up<TableDescriptorT> Wizard::Spell(const Connection& fls) {
 	// init
 	const auto& table = fls.get_table();
 

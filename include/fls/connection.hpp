@@ -111,7 +111,7 @@ private:
 private:
 	up<Config>          m_config;
 	up<Table>           m_table;
-	up<TableDescriptor> m_table_descriptor;
+	up<TableDescriptorT> m_table_descriptor;
 };
 
 constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.json"};

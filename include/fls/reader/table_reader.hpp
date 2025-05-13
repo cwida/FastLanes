@@ -9,7 +9,7 @@ namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Connection;
 class RowgroupReader;
-class TableDescriptor;
+struct TableDescriptorT;
 class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class TableReader {
@@ -29,9 +29,9 @@ public:
 	void to_csv(const char* file_path) const;
 
 private:
-	up<TableDescriptor> m_table_descriptor;
-	Connection&         m_connection;
-	const path&         m_dir_path;
+	up<TableDescriptorT> m_table_descriptor;
+	Connection&          m_connection;
+	const path&          m_dir_path;
 };
 
 } // namespace fastlanes

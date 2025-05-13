@@ -432,7 +432,7 @@ void from_json(const nlohmann::json& j, SegmentDescriptorT& p) {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
-n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor) {
+n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor) {
 
 	const nlohmann::json table_descriptor_json      = table_descriptor;
 	const auto           table_descriptor_json_dump = table_descriptor_json.dump();
@@ -456,14 +456,14 @@ n_t JSON::write(const Connection& connection, const path& dir_path, TableDescrip
 constexpr const auto* ROWGROUP_DESCRIPTORS = "1  [REQUIRED], RowGroup Descriptors";
 constexpr const auto* TABLE_BINARY_SIZE    = "2  [REQUIRED], Table Binary Size";
 
-void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor) {
+void to_json(nlohmann::json& j, const TableDescriptorT& table_descriptor) {
 	j = nlohmann::json {
 	    //
 	    {ROWGROUP_DESCRIPTORS, table_descriptor.m_rowgroup_descriptors}, //
 	    {TABLE_BINARY_SIZE, table_descriptor.m_table_binary_size},       //
 	};
 }
-void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
+void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 	j.at(ROWGROUP_DESCRIPTORS).get_to(table_descriptor.m_rowgroup_descriptors);
 	j.at(TABLE_BINARY_SIZE).get_to(table_descriptor.m_table_binary_size);
 }

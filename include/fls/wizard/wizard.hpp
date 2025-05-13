@@ -12,7 +12,7 @@ class RowGroupView;
 class RowgroupEncodingResult;
 class CorrelationGraph;
 class Rowgroup;
-class TableDescriptor;
+struct TableDescriptorT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 enum class ExpressionChoosingStrategy : uint8_t {
 	INVALID                = 0,
@@ -24,7 +24,7 @@ public:
 	Wizard() = delete;
 
 public:
-	static up<TableDescriptor> Spell(const Connection& fls);
+	static up<TableDescriptorT> Spell(const Connection& fls);
 };
 } // namespace fastlanes
 

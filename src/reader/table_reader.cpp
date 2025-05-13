@@ -19,7 +19,7 @@ up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) cons
 up<Table> TableReader::materialize() const {
 	auto table_up = std::make_unique<Table>(m_connection);
 
-	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->GetNRowgroups(); rowgroup_idx++) {
+	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->m_rowgroup_descriptors.size(); rowgroup_idx++) {
 		auto rowgroup_up = get_rowgroup_reader(rowgroup_idx)->materialize();
 		table_up->m_rowgroups.push_back(std::move(rowgroup_up));
 	}
