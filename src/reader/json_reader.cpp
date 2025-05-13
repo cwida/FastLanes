@@ -106,7 +106,7 @@ up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
 
 	auto                 json_string         = File::read(found_schema_path);
 	const nlohmann::json j                   = nlohmann::json::parse(json_string);
-	auto                 rowgroup_descriptor = j.get<RowgroupDescriptor>();
+	auto                 rowgroup_descriptor = j.get<RowgroupDescriptorT>();
 
 	std::ifstream jsonl_stream = FileSystem::open_r(found_jsonl_path.c_str());
 	string        line;

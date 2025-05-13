@@ -7,7 +7,7 @@
 
 namespace fastlanes {
 
-RowgroupView::RowgroupView(span<std::byte> ptr, const RowgroupDescriptor& footer) {
+RowgroupView::RowgroupView(span<std::byte> ptr, const RowgroupDescriptorT& footer) {
 
 	for (const auto& column_descriptor : footer.m_column_descriptors) {
 		const span<std::byte> column_span = ptr;

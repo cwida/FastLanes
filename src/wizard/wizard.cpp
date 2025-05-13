@@ -36,7 +36,7 @@ struct gather_statistics_visitor {
 		column_descriptor.n_null = col->m_stats.n_nulls;
 	}
 	void operator()(const up<FLSStrColumn>& str_col) const {
-		const auto size       = str_col->m_stats.maximum_n_bytes_p_value;
+		const auto size = str_col->m_stats.maximum_n_bytes_p_value;
 		column_descriptor.max->binary_data.resize(size);
 		std::memcpy(column_descriptor.max->binary_data.data(), str_col->byte_arr.data(), size);
 	}
@@ -641,7 +641,7 @@ vector<OperatorToken>& get_pool() {
 n_t TryExpr(const rowgroup_pt&       col,
             const ColumnDescriptorT& column_descriptor,
             const OperatorToken&     token,
-            RowgroupDescriptor&      footer,
+            RowgroupDescriptorT&     footer,
             const Connection&        con) {
 	n_t size {0};
 
@@ -728,10 +728,10 @@ bool IsDictionaryChoosingRequired(const ColumnDescriptorT& column_descriptor) {
 }
 
 template <typename PT>
-void TypedDecide(const rowgroup_pt&  rowgroup,
-                 ColumnDescriptorT&  column_descriptor,
-                 RowgroupDescriptor& footer,
-                 const Connection&   fls) {
+void TypedDecide(const rowgroup_pt&   rowgroup,
+                 ColumnDescriptorT&   column_descriptor,
+                 RowgroupDescriptorT& footer,
+                 const Connection&    fls) {
 
 	auto evaluate_expressions = [&](const auto& operator_token_list) {
 		for (const auto& expr : operator_token_list) {
@@ -767,10 +767,10 @@ void TypedDecide(const rowgroup_pt&  rowgroup,
 	column_descriptor.encoding_rpn->operator_tokens.emplace_back(best_expr);
 }
 
-void expression_check_column(const rowgroup_pt&  rowgroup,
-                             ColumnDescriptorT&  column_descriptor,
-                             RowgroupDescriptor& footer,
-                             const Connection&   fls) {
+void expression_check_column(const rowgroup_pt&   rowgroup,
+                             ColumnDescriptorT&   column_descriptor,
+                             RowgroupDescriptorT& footer,
+                             const Connection&    fls) {
 	if (IsDetermined(column_descriptor) && !IsDictionaryEncodingRequired(column_descriptor) &&
 	    !IsDictionaryChoosingRequired(column_descriptor)) {
 		return;
@@ -831,7 +831,7 @@ void expression_check_column(const rowgroup_pt&  rowgroup,
 	}
 }
 
-void expression_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
+void expression_check(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 
@@ -1258,7 +1258,7 @@ void set_schema(ColumnDescriptors& column_descriptors, const Connection& fls) {
 	}
 }
 
-void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
+void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 

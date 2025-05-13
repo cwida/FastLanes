@@ -88,7 +88,7 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 			    // Store the detailed results (thread-safe)
 			    {
 				    std::lock_guard<std::mutex> lock(results_mutex);
-				    for (const auto& column_descriptor : first_rowgroup_descriptor->GetColumnDescriptors()) {
+				    for (const auto& column_descriptor : first_rowgroup_descriptor->m_column_descriptors) {
 					    double byts_per_tuple = static_cast<double>(column_descriptor->total_size) /
 					                            (static_cast<double>(first_rowgroup_descriptor->m_n_vec * CFG::VEC_SZ));
 					    double bits_per_tuple = byts_per_tuple * 8;

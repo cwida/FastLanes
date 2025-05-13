@@ -7,7 +7,7 @@
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class RowgroupDescriptor;
+struct RowgroupDescriptorT;
 struct ColumnDescriptorT;
 class RowgroupEncodingResult;
 class Connector;
@@ -29,8 +29,8 @@ void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * RowgroupDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor);
-void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor);
+void to_json(nlohmann::json& j, const RowgroupDescriptorT& rowgroup_descriptor);
+void from_json(const nlohmann::json& j, RowgroupDescriptorT& rowgroup_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ColumnDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/

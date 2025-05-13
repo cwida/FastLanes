@@ -10,6 +10,16 @@
 #include "fls/table/table.hpp"
 
 namespace fastlanes {
+inline void set_index(vector<up<ColumnDescriptorT>>& column_descriptors) {
+	for (n_t col_idx = 0; col_idx < column_descriptors.size(); ++col_idx) {
+		auto& column_descriptor = column_descriptors[col_idx];
+		column_descriptor->idx  = col_idx;
+		if (!column_descriptor->children.empty()) {
+			set_index(column_descriptor->children);
+		}
+	}
+}
+
 up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 	auto table = make_unique<Table>(connection);
 	bool is_schema_found {false};
@@ -40,7 +50,8 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 
 	auto                 json_string         = File::read(found_schema_path);
 	const nlohmann::json j                   = nlohmann::json::parse(json_string);
-	auto                 rowgroup_descriptor = j.get<RowgroupDescriptor>();
+	auto                 rowgroup_descriptor = j.get<RowgroupDescriptorT>();
+	set_index(rowgroup_descriptor.m_column_descriptors);
 
 	char delimiter  = '|';
 	char terminator = '\n';

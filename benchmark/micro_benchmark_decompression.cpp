@@ -25,7 +25,7 @@ public:
 		auto       elapsed_cycles = end - start;
 
 		return static_cast<double>(elapsed_cycles) /
-		       (static_cast<double>(rowgroup_reader->get_descriptor().GetNVectors() * CFG::VEC_SZ * n_repetitions));
+		       (static_cast<double>(rowgroup_reader->get_descriptor().m_n_vec * CFG::VEC_SZ * n_repetitions));
 	}
 
 public:

@@ -17,7 +17,7 @@ public:
 	TableDescriptor(const TableDescriptor& o);
 
 public:
-	vector<up<RowgroupDescriptor>> m_rowgroup_descriptors;
+	vector<up<RowgroupDescriptorT>> m_rowgroup_descriptors;
 	//
 	n_t m_table_binary_size;
 	//

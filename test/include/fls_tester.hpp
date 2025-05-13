@@ -86,7 +86,7 @@ public:
 
 		for (const auto col_idx : constant_indexes) {
 			//
-			auto& col_descriptor = footer.GetColumnDescriptors()[col_idx];
+			auto& col_descriptor = footer.m_column_descriptors[col_idx];
 			ASSERT_EQ(col_descriptor->total_size, 0) << col_idx << " should be constant";
 		}
 	}
@@ -100,8 +100,8 @@ public:
 		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 
-		for (n_t col_idx = 1; col_idx < footer.size(); ++col_idx) {
-			ASSERT_EQ(footer[col_idx].total_size, 0) << col_idx << " should be of size 0";
+		for (n_t col_idx = 1; col_idx < footer.m_column_descriptors.size(); ++col_idx) {
+			ASSERT_EQ(footer.m_column_descriptors[col_idx]->total_size, 0) << col_idx << " should be of size 0";
 		}
 	}
 
@@ -112,7 +112,7 @@ public:
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 
 		for (const auto col_index : equal_cols) {
-			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];
+			auto& col_descriptor = footer.m_column_descriptors[col_index];
 			ASSERT_EQ(col_descriptor->total_size, 0) << "size of column " << col_index << ":" << col_descriptor->name
 			                                         << " should be 0, as it is equal to another col.";
 		}
@@ -125,7 +125,7 @@ public:
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 
 		for (const auto col_index : target_column_indexes) {
-			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];
+			auto& col_descriptor = footer.m_column_descriptors[col_index];
 			ASSERT_TRUE(is_1_to_1(col_descriptor->encoding_rpn->operator_tokens[0])) << "  " << col_index;
 		}
 	}

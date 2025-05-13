@@ -8,7 +8,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 struct ColumnDescriptorT;
-class RowgroupDescriptor;
+struct RowgroupDescriptorT;
 class SegmentView;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -16,9 +16,9 @@ class SegmentView;
 \*--------------------------------------------------------------------------------------------------------------------*/
 class ColumnView {
 public:
-	explicit ColumnView(span<std::byte>           column_span,
-	                    const ColumnDescriptorT&  column_descriptor,
-	                    const RowgroupDescriptor& rowgroup_descriptor);
+	explicit ColumnView(span<std::byte>            column_span,
+	                    const ColumnDescriptorT&   column_descriptor,
+	                    const RowgroupDescriptorT& rowgroup_descriptor);
 	[[nodiscard]] SegmentView GetSegment(n_t segment_idx) const;
 
 public:

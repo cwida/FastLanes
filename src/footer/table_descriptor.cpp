@@ -18,7 +18,7 @@ TableDescriptor::TableDescriptor(const TableDescriptor& o)
 	m_rowgroup_descriptors.reserve(o.m_rowgroup_descriptors.size());
 	for (auto const& up_rg : o.m_rowgroup_descriptors) {
 		// invoke RowgroupDescriptor’s own copy-ctor
-		m_rowgroup_descriptors.emplace_back(std::make_unique<RowgroupDescriptor>(*up_rg));
+		m_rowgroup_descriptors.emplace_back(std::make_unique<RowgroupDescriptorT>(*up_rg));
 	}
 }
 

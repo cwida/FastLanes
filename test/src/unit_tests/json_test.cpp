@@ -88,25 +88,19 @@ TEST(TableDescriptorTest, ComplexFixture) {
 
 	// 1) Parse
 	nlohmann::json j;
-	ASSERT_NO_THROW(j = nlohmann::json::parse(sample))
-		<< "Raw JSON failed to parse:\n" << sample;
-
-	// Dump it so you can see the keys at runtime
-	std::cerr << "‣ Parsed JSON:\n" << j.dump(2) << "\n";
+	ASSERT_NO_THROW(j = nlohmann::json::parse(sample)) << "Raw JSON failed to parse:\n" << sample;
 
 	// 2) Deserialize with full error reporting
 	try {
 		TableDescriptor tdx = j.get<TableDescriptor>();
 		// ← if that throws, we’ll catch below
-	}
-	catch (const nlohmann::json::exception& ex) {
+	} catch (const nlohmann::json::exception& ex) {
 		// FAIL() will stop the test and print our message + ex.what()
 		FAIL() << "Deserialization threw: " << ex.what() << "\n"
-			   << "Look at the dumped JSON above for mismatched keys/types.";
+		       << "Look at the dumped JSON above for mismatched keys/types.";
 	}
 
 	TableDescriptor td = j.get<TableDescriptor>();
-
 
 	// 3) Top-level checks
 	EXPECT_EQ(td.m_rowgroup_descriptors.size(), 1u);

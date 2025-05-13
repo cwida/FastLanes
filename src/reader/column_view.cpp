@@ -7,9 +7,9 @@
 
 namespace fastlanes {
 
-ColumnView::ColumnView(const span<std::byte>     column_span,
+ColumnView::ColumnView(const span<std::byte>      column_span,
                        const ColumnDescriptorT&   column_descriptor,
-                       const RowgroupDescriptor& rowgroup_descriptor)
+                       const RowgroupDescriptorT& rowgroup_descriptor)
     : column_span(column_span)
     , column_descriptor(column_descriptor) {
 	for (n_t child_col_idx {0}; child_col_idx < column_descriptor.children.size(); ++child_col_idx) {
