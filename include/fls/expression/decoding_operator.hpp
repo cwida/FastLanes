@@ -74,7 +74,7 @@ public:
 };
 
 struct dec_struct_opr {
-	dec_struct_opr(const ColumnDescriptor& column_descriptor,
+	dec_struct_opr(const ColumnDescriptorT& column_descriptor,
 	               const ColumnView&       column_view,
 	               InterpreterState&       state,
 	               RowgroupReader&         reader);

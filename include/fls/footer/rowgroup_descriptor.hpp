@@ -12,13 +12,13 @@ enum class DataType : uint8_t;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 using map                      = unordered_map<string, idx_t>;
-using col_description_it       = vector<ColumnDescriptor>::iterator;
-using const_col_description_it = vector<ColumnDescriptor>::const_iterator;
+using col_description_it       = vector<up<ColumnDescriptorT>>::iterator;
+using const_col_description_it = vector<up<ColumnDescriptorT>>::const_iterator;
 
 class RowgroupDescriptor {
 public: /* Constructors */
 	RowgroupDescriptor();
-	RowgroupDescriptor(const RowgroupDescriptor&)              = default;
+	RowgroupDescriptor(const RowgroupDescriptor&);
 	RowgroupDescriptor(RowgroupDescriptor&&)                   = default;
 	RowgroupDescriptor& operator=(const RowgroupDescriptor&) & = default;
 	RowgroupDescriptor& operator=(RowgroupDescriptor&&) &      = default;
@@ -30,11 +30,9 @@ public:
 		return m_column_descriptors;
 	}
 	///
-	void AddCol(const ColumnDescriptor& col);
+	ColumnDescriptorT& operator[](n_t idx);
 	///
-	ColumnDescriptor& operator[](n_t idx);
-	///
-	const ColumnDescriptor& operator[](n_t idx) const;
+	const ColumnDescriptorT& operator[](n_t idx) const;
 	///
 	[[nodiscard]] n_t GetNextColIdx() const;
 	///
@@ -51,7 +49,7 @@ public:
 	///
 	[[nodiscard]] up<RowgroupDescriptor> Project(const vector<idx_t>& idxs) const;
 	///
-	void push_back(ColumnDescriptor&&);
+	void push_back(ColumnDescriptorT&&);
 	//
 	[[nodiscard]] vector<string> GetColumnNames() const;
 	//

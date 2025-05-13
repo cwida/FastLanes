@@ -11,7 +11,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Buf;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 // DECODE
 template <typename PT>
 struct dec_uncompressed_opr;
@@ -354,7 +354,7 @@ public:
 	//
 	void PointTo(n_t vec_idx) const;
 	//
-	void Flush(Buf& buf, ColumnDescriptor& column_descriptor, uint8_t* helper_buffer) const;
+	void Flush(Buf& buf, ColumnDescriptorT& column_descriptor, uint8_t* helper_buffer) const;
 	//
 	[[nodiscard]] n_t Size(n_t sample_size, n_t n_vecs) const;
 	//

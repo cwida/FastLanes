@@ -2,13 +2,13 @@
 #define FLS_JSON_FLS_JSON_HPP
 
 #include "fls/common/alias.hpp"
+#include "fls/json/nlohmann/json.hpp"
 #include "fls/std/filesystem.hpp"
-#include "nlohmann/json.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class RowgroupDescriptor;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class RowgroupEncodingResult;
 class Connector;
 class LogicalExpr;
@@ -19,7 +19,7 @@ struct BinaryValueT;
 class ExprSpace;
 class TableDescriptor;
 class Connection;
-struct ExpressionResult;
+struct ExpressionResultT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TableDescriptor
@@ -34,8 +34,8 @@ void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor)
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ColumnDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const ColumnDescriptor& p);
-void from_json(const nlohmann::json& j, ColumnDescriptor& p);
+void to_json(nlohmann::json& j, const ColumnDescriptorT& p);
+void from_json(const nlohmann::json& j, ColumnDescriptorT& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * LogicalExpr
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -68,8 +68,8 @@ void from_json(const nlohmann::json& j, SegmentDescriptorT& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ExpressionResult
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const ExpressionResult& p);
-void from_json(const nlohmann::json& j, ExpressionResult& p);
+void to_json(nlohmann::json& j, const ExpressionResultT& p);
+void from_json(const nlohmann::json& j, ExpressionResultT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON

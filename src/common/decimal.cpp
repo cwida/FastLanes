@@ -45,15 +45,15 @@ int64_t make_decimal(const std::string& value, n_t scale) {
 	return int_value;
 }
 
-DecimalTypeT make_decimal_t(const std::string& value) {
+up<DecimalTypeT> make_decimal_t(const std::string& value) {
 	static const std::regex pattern {R"(decimal\s*\(\s*(\d+)\s*,\s*(\d+)\s*\))", std::regex::icase};
 	std::smatch             match;
 	if (std::regex_match(value, match, pattern)) {
-		n_t          precision = std::stoull(match.str(1));
-		n_t          scale     = std::stoull(match.str(2));
-		DecimalTypeT dt;
-		dt.precision = precision;
-		dt.scale     = scale;
+		n_t  precision = std::stoull(match.str(1));
+		n_t  scale     = std::stoull(match.str(2));
+		auto dt        = make_unique<DecimalTypeT>();
+		dt->precision  = precision;
+		dt->scale      = scale;
 		return dt;
 	}
 	throw std::invalid_argument(std::format("Invalid decimal format: {}", value));

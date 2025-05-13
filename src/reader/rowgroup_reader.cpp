@@ -45,7 +45,7 @@ RowgroupReader::RowgroupReader(const path&               dir_path,
 			auto& column_view       = (*m_rowgroup_view)[col_idx];
 
 			InterpreterState state;
-			auto             physical_expr = make_decoding_expression(column_descriptor, column_view, *this, state);
+			auto             physical_expr = make_decoding_expression(*column_descriptor, column_view, *this, state);
 			ExprExecutor::CountOperator(*physical_expr);
 			m_expressions.emplace_back(physical_expr);
 		}

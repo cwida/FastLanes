@@ -11,8 +11,8 @@
 
 namespace fastlanes {
 up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) const {
-	auto rowgroup_reader =
-	    make_unique<RowgroupReader>(m_dir_path, m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	auto rowgroup_reader = make_unique<RowgroupReader>(
+	    m_dir_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 
@@ -63,7 +63,7 @@ TableReader::TableReader(const path& dir_path, Connection& connection)
 }
 up<RowgroupReader> TableReader::operator[](const n_t rowgroup_idx) const {
 	auto rowgroup_reader =
-	    make_unique<RowgroupReader>(m_dir_path, m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	    make_unique<RowgroupReader>(m_dir_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 

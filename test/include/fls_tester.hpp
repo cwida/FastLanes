@@ -73,7 +73,7 @@ public:
 		auto result = (original_table == *decoded_table);
 		ASSERT_TRUE(result.is_equal) << "Rowgroups differs. The first not matching column index is: " //
 		                             << result.first_failed_column_idx                                //
-		                             << " ❌"                                                          //
+		                             << " ❌"                                                         //
 		                             << "description: "                                               //
 		                             << result.description << std::endl;
 	}
@@ -87,7 +87,7 @@ public:
 		for (const auto col_idx : constant_indexes) {
 			//
 			auto& col_descriptor = footer.GetColumnDescriptors()[col_idx];
-			ASSERT_EQ(col_descriptor.total_size, 0) << col_idx << " should be constant";
+			ASSERT_EQ(col_descriptor->total_size, 0) << col_idx << " should be constant";
 		}
 	}
 
@@ -113,8 +113,8 @@ public:
 
 		for (const auto col_index : equal_cols) {
 			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];
-			ASSERT_EQ(col_descriptor.total_size, 0) << "size of column " << col_index << ":" << col_descriptor.name
-			                                        << " should be 0, as it is equal to another col.";
+			ASSERT_EQ(col_descriptor->total_size, 0) << "size of column " << col_index << ":" << col_descriptor->name
+			                                         << " should be 0, as it is equal to another col.";
 		}
 	}
 
@@ -126,7 +126,7 @@ public:
 
 		for (const auto col_index : target_column_indexes) {
 			auto& col_descriptor = footer.GetColumnDescriptors()[col_index];
-			ASSERT_TRUE(is_1_to_1(col_descriptor.encoding_rpn.operator_tokens[0])) << "  " << col_index;
+			ASSERT_TRUE(is_1_to_1(col_descriptor->encoding_rpn->operator_tokens[0])) << "  " << col_index;
 		}
 	}
 

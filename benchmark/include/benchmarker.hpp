@@ -111,12 +111,12 @@ public:
 		Write(table_path, thread_specific_fls_dir_path);
 		vector<OperatorToken> result;
 		auto                  table_descriptor    = GetTableDescriptor(thread_specific_fls_dir_path);
-		auto                  rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
+		auto&                 rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
 
 		// Store the detailed results (thread-safe)
 		{
-			for (const auto& column_descriptor : rowgroup_descriptor.m_column_descriptors) {
-				result.emplace_back(column_descriptor.encoding_rpn.operator_tokens[0]);
+			for (const auto& column_descriptor : rowgroup_descriptor->m_column_descriptors) {
+				result.emplace_back(column_descriptor->encoding_rpn->operator_tokens[0]);
 			}
 		}
 

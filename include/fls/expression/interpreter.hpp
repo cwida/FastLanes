@@ -10,7 +10,7 @@ class PhysicalExpr;
 struct RPNT;
 class Buf;
 class ColumnView;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class RowgroupReader;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -28,11 +28,11 @@ public:
 	class Encoding {
 	public:
 		static sp<PhysicalExpr>
-		Interpret(ColumnDescriptor& column_descriptor, const rowgroup_pt& physical_rowgroup, InterpreterState& state);
+		Interpret(ColumnDescriptorT& column_descriptor, const rowgroup_pt& physical_rowgroup, InterpreterState& state);
 	};
 	class Decoding {
 	public:
-		static void Interpret(const ColumnDescriptor& column_descriptor,
+		static void Interpret(const ColumnDescriptorT& column_descriptor,
 		                      const ColumnView&       column_view,
 		                      PhysicalExpr&           physical_expr,
 		                      InterpreterState&       state,
@@ -40,7 +40,7 @@ public:
 	};
 };
 
-sp<PhysicalExpr> make_decoding_expression(const ColumnDescriptor& column_descriptor,
+sp<PhysicalExpr> make_decoding_expression(const ColumnDescriptorT& column_descriptor,
                                           const ColumnView&       column_view,
                                           RowgroupReader&         reader,
                                           InterpreterState&       state);

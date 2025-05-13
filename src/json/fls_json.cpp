@@ -4,9 +4,12 @@
 #include "fls/connection.hpp"
 #include "fls/expression/logical_expression.hpp"
 #include "fls/expression/rpn.hpp"
+#include "fls/footer/column_descriptor.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
+#include "fls/json/json_unique_ptr.hpp" // <─ must appear before you call get_to(...)
+#include <fls/json/nlohmann/json.hpp>
 #include <sstream>
 
 namespace fastlanes {
@@ -269,7 +272,7 @@ void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor)
 	}
 }
 /*--------------------------------------------------------------------------------------------------------------------*\
- * ColumnDescriptor
+ * ColumnDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* LOGICAL_TYPE_KEY      = "0, [REQUIRED], LOGICAL TYPE";
 constexpr const auto* LOGICAL_TYPE_STR_KEY  = "1, [OPTIONAL], LOGICAL TYPE STRING";
@@ -285,17 +288,36 @@ constexpr const auto* CHILDREN_KEY          = "C, [REQUIRED], CHILDREN";
 constexpr const auto* EXPR_SPACE_KEY        = "D, [REQUIRED], EXPR SPACE";
 constexpr const auto* EXPR_SPACE_STRING_KEY = "D, [REQUIRED], EXPR SPACE STRING";
 
-string to_string(const vector<ExpressionResult>& pairs) {
-	std::stringstream results;
-	results << "{";
-	for (const auto& [operator_token, size] : pairs) {
-		results << "[" << token_to_string(operator_token) << "," << size << "]";
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
+template <typename ExpressionResultT>
+std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pairs) {
+	std::ostringstream results;
+	results << '{';
+
+	bool first = true;
+	for (const auto& ptr : pairs) {
+		if (!ptr) {
+			continue;
+		} // defensive: skip nulls
+		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
+
+		if (!first) {
+			results << ','; // comma-separate each element
+		}
+		first = false;
+
+		results << '[' << token_to_string(operator_token) << ',' << size << ']';
 	}
-	results << "}";
+
+	results << '}';
 	return results.str();
 }
 
-void to_json(nlohmann::json& j, const ColumnDescriptor& p) {
+void to_json(nlohmann::json& j, const ColumnDescriptorT& p) {
 	j = nlohmann::json {
 	    {IDX_KEY, p.idx},                                           // A
 	    {LOGICAL_TYPE_KEY, p.data_type},                            // 0
@@ -312,16 +334,19 @@ void to_json(nlohmann::json& j, const ColumnDescriptor& p) {
 	    {N_NULLS_KEY, p.n_null}                                     // D
 	};
 }
-void from_json(const nlohmann::json& j, ColumnDescriptor& p) {
+void from_json(const nlohmann::json& j, ColumnDescriptorT& p) {
+	p.encoding_rpn = std::make_unique<RPNT>();
+	p.max          = std::make_unique<BinaryValueT>();
+
 	if (j.contains(LOGICAL_TYPE_KEY)) {
 		j.at(SEGMENTS_KEY).get_to(p.segment_descriptors); //
-		j.at(RPN_KEY).get_to(p.encoding_rpn);             //
+		j.at(RPN_KEY).get_to(*p.encoding_rpn);            //
 		j.at(NAME_KEY).get_to(p.name);                    //
 		j.at(LOGICAL_TYPE_KEY).get_to(p.data_type);       //
 		j.at(COLUMN_SIZE_KEY).get_to(p.total_size);       //
 		j.at(COLUMN_OFFSET_KEY).get_to(p.column_offset);  //
 		j.at(IDX_KEY).get_to(p.idx);                      //
-		j.at(MAX_KEY).get_to(p.max);                      //
+		j.at(MAX_KEY).get_to(*p.max);                     //
 		j.at(CHILDREN_KEY).get_to(p.children);            //
 		j.at(EXPR_SPACE_KEY).get_to(p.expr_space);        //
 		j.at(N_NULLS_KEY).get_to(p.n_null);               //
@@ -448,14 +473,14 @@ void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
 constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
-void                  to_json(nlohmann::json& j, const ExpressionResult& expression_result) {
+void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
     j = nlohmann::json {
         //
         {OPERATOR_TOKEN, expression_result.operator_token}, //
         {SIZE, expression_result.size},                     //
     };
 }
-void from_json(const nlohmann::json& j, ExpressionResult& expression_result) {
+void from_json(const nlohmann::json& j, ExpressionResultT& expression_result) {
 	j.at(OPERATOR_TOKEN).get_to(expression_result.operator_token);
 	j.at(SIZE).get_to(expression_result.size);
 }

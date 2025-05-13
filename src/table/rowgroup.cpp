@@ -16,11 +16,11 @@ namespace fastlanes {
 void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns);
 
 // TODO [COPY] All return values here are copied to be put inside col_t variant. They should be moved.
-col_pt init_logial_columns(const ColumnDescriptor& col_descriptor) {
+col_pt init_logial_columns(const ColumnDescriptorT& col_descriptor) {
 	switch (static_cast<DataType>(col_descriptor.data_type)) {
 	case DataType::LIST: {
 		auto uped_list   = make_unique<List>();
-		uped_list->child = init_logial_columns(*col_descriptor.children.begin());
+		uped_list->child = init_logial_columns(**col_descriptor.children.begin());
 		return uped_list;
 	}
 	case DataType::STRUCT: {
@@ -73,7 +73,7 @@ col_pt init_logial_columns(const ColumnDescriptor& col_descriptor) {
 void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) {
 	columns.reserve(footer.size());
 	for (const auto& col_descriptor : footer) {
-		columns.emplace_back(init_logial_columns(col_descriptor));
+		columns.emplace_back(init_logial_columns(*col_descriptor));
 	}
 }
 
@@ -230,7 +230,7 @@ void Rowgroup::Finalize() {
  * Cast Check
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct col_cast_visitor {
-	explicit col_cast_visitor(const ColumnDescriptor& column_descriptor)
+	explicit col_cast_visitor(const ColumnDescriptorT& column_descriptor)
 	    : column_descriptor(column_descriptor) {
 	}
 
@@ -311,10 +311,10 @@ struct col_cast_visitor {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
 	}
 
-	const ColumnDescriptor& column_descriptor;
+	const ColumnDescriptorT& column_descriptor;
 };
 
-col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptor& column_descriptor) {
+col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptorT& column_descriptor) {
 	return visit(col_cast_visitor {column_descriptor}, rowgroup[column_descriptor.idx]);
 }
 
@@ -336,7 +336,7 @@ DataType getSmallestSignedType(PT min, PT max) {
 	}
 }
 
-void cast(rowgroup_pt& rowgroup, ColumnDescriptor& column_descriptor) {
+void cast(rowgroup_pt& rowgroup, ColumnDescriptorT& column_descriptor) {
 	bool should_be_cast {false};
 
 	visit(overloaded {
@@ -543,7 +543,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 			[[maybe_unused]] const auto n_cols = ColCount();
 			FLS_ASSERT_EQUALITY(tuple.size(), n_cols)
 			col_pt& physical_column = internal_rowgroup[col_idx];
-			Attribute::Ingest(physical_column, val, m_descriptor.m_column_descriptors[col_idx]);
+			Attribute::Ingest(physical_column, val, *m_descriptor.m_column_descriptors[col_idx]);
 			col_idx = col_idx + 1;
 		}
 		n_tup = n_tup + 1;
@@ -554,7 +554,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer);
 
-nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_description) {
+nlohmann::json to_json(const col_pt& column, const ColumnDescriptorT& col_description) {
 	return std::visit( //
 	    overloaded {
 	        [](const std::monostate&) {
@@ -575,7 +575,7 @@ nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_descrip
 
 		        return nlohmann::json {{"nullmap", list_col->null_map_arr},
 		                               {"offsets", list_col->ofs_arr},
-		                               {"data", to_json(list_col->child, *col_description.children.begin())}};
+		                               {"data", to_json(list_col->child, **col_description.children.begin())}};
 	        },
 	        [&](const up<Struct>& struct_col) {
 		        return nlohmann::json {{"nullmap", struct_col->null_map_arr},
@@ -591,9 +591,9 @@ nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_descrip
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer) {
 	nlohmann::json json_object;
 	for (idx_t i = 0; i < footer.size(); ++i) {
-		const auto& column                = columns[i];
-		const auto& col_description       = footer[i];
-		json_object[col_description.name] = to_json(column, col_description);
+		const auto& column                 = columns[i];
+		const auto& col_description        = footer[i];
+		json_object[col_description->name] = to_json(column, *col_description);
 	}
 	return json_object;
 }

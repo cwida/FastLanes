@@ -36,10 +36,10 @@ struct DictExprVisitor {
 template <typename VALUE_PT>
 enc_dict_opr<VALUE_PT>::enc_dict_opr(const PhysicalExpr& expr,
                                      const col_pt&       column,
-                                     ColumnDescriptor&   column_descriptor,
+                                     ColumnDescriptorT&  column_descriptor,
                                      InterpreterState&   state)
     : typed_column_view(column) {
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	state.cur_operator++;
 	key_segment = make_unique<Segment>();
@@ -75,13 +75,13 @@ template struct enc_dict_opr<flt_pt>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 enc_dict_opr<fls_string_t>::enc_dict_opr(const PhysicalExpr& expr,
                                          const col_pt&       column,
-                                         ColumnDescriptor&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state)
     : col_view {column} {
 	offset_segment = make_unique<Segment>();
 	bytes_segment  = make_unique<Segment>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 	state.cur_operator++;
@@ -127,7 +127,7 @@ dec_dict_opr<KEY_PT, INDEX_PT>::dec_dict_opr(const PhysicalExpr& physical_expr,
                                              const ColumnView&   column_view,
                                              InterpreterState&   state)
     : key_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0]))
     , index_arr(nullptr) {
 
 	state.cur_operand = state.cur_operand - 1;

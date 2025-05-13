@@ -9,7 +9,7 @@ int main() {
 
 	try {
 		Connection con1;
-		const path example_dir_path = string(issue::ISSUE_000);
+		const path example_dir_path = string(GENERATED::ONE_VEC_I08PT);
 		const path fls_dir_path     = path {FLS_CMAKE_SOURCE_DIR} / "data" / "fls";
 		const path csv_file_path    = fls_dir_path / "fastlanes.csv";
 

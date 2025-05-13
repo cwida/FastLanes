@@ -13,7 +13,11 @@ public: /* Constructors */
 	TableDescriptor();
 
 public:
-	vector<RowgroupDescriptor> m_rowgroup_descriptors;
+	// deep-copy copy constructor
+	TableDescriptor(const TableDescriptor& o);
+
+public:
+	vector<up<RowgroupDescriptor>> m_rowgroup_descriptors;
 	//
 	n_t m_table_binary_size;
 	//

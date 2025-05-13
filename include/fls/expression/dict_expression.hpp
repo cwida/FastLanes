@@ -9,7 +9,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
@@ -24,7 +24,7 @@ template <typename KEY_PT>
 struct enc_dict_opr {
 	explicit enc_dict_opr(const PhysicalExpr& expr,
 	                      const col_pt&       column,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 	void Finalize();
 	void MoveSegments(vector<up<Segment>>& segments);
@@ -37,7 +37,7 @@ template <>
 struct enc_dict_opr<fls_string_t> {
 	explicit enc_dict_opr(const PhysicalExpr& expr,
 	                      const col_pt&       column,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);

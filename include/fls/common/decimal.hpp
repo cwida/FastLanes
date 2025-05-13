@@ -7,7 +7,7 @@
 namespace fastlanes {
 
 int64_t      make_decimal(const std::string& value, n_t scale);
-DecimalTypeT make_decimal_t(const std::string& value);
+up<DecimalTypeT> make_decimal_t(const std::string& value);
 
 } // namespace fastlanes
 

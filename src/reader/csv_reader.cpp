@@ -56,7 +56,7 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 			[[maybe_unused]] const auto n_cols = cur_rowgroup->ColCount();
 			FLS_ASSERT_EQUALITY(tuple.size(), n_cols)
 			col_pt& physical_column = cur_rowgroup->internal_rowgroup[col_idx];
-			Attribute::Ingest(physical_column, val, cur_rowgroup->m_descriptor.m_column_descriptors[col_idx]);
+			Attribute::Ingest(physical_column, val, *cur_rowgroup->m_descriptor.m_column_descriptors[col_idx]);
 			col_idx = col_idx + 1;
 		}
 		n_tup = n_tup + 1;

@@ -96,17 +96,17 @@ void bench_accuracy_over_rowgroups() {
 				    {
 					    // Lock and store the detailed results
 					    std::lock_guard<std::mutex> lock(results_mutex);
-					    for (const auto& column_descriptor : first_rowgroup_descriptor.GetColumnDescriptors()) {
-						    double bpt = static_cast<double>(column_descriptor.total_size) /
-						                 (static_cast<double>(first_rowgroup_descriptor.m_n_vec * CFG::VEC_SZ));
+					    for (const auto& column_descriptor : first_rowgroup_descriptor->GetColumnDescriptors()) {
+						    double bpt = static_cast<double>(column_descriptor->total_size) /
+						                 (static_cast<double>(first_rowgroup_descriptor->m_n_vec * CFG::VEC_SZ));
 						    double Bpt = bpt / 8.0;
 
 						    detailed_results.emplace_back(uscensus_table_name,
-						                                  column_descriptor.idx,
-						                                  column_descriptor.name,
-						                                  column_descriptor.data_type,
-						                                  column_descriptor.total_size,
-						                                  column_descriptor.encoding_rpn,
+						                                  column_descriptor->idx,
+						                                  column_descriptor->name,
+						                                  column_descriptor->data_type,
+						                                  column_descriptor->total_size,
+						                                  *column_descriptor->encoding_rpn,
 						                                  bpt,
 						                                  Bpt);
 					    }
