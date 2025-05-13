@@ -285,7 +285,7 @@ constexpr const auto* CHILDREN_KEY          = "C, [REQUIRED], CHILDREN";
 constexpr const auto* EXPR_SPACE_KEY        = "D, [REQUIRED], EXPR SPACE";
 constexpr const auto* EXPR_SPACE_STRING_KEY = "D, [REQUIRED], EXPR SPACE STRING";
 
-string to_string(const unordered_map<OperatorToken, n_t>& pairs) {
+string to_string(const vector<ExpressionResult>& pairs) {
 	std::stringstream results;
 	results << "{";
 	for (const auto& [operator_token, size] : pairs) {
@@ -441,6 +441,23 @@ void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor) {
 void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
 	j.at(ROWGROUP_DESCRIPTORS).get_to(table_descriptor.m_rowgroup_descriptors);
 	j.at(TABLE_BINARY_SIZE).get_to(table_descriptor.m_table_binary_size);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * ExpressionResult
+\*--------------------------------------------------------------------------------------------------------------------*/
+constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
+constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
+void                  to_json(nlohmann::json& j, const ExpressionResult& expression_result) {
+    j = nlohmann::json {
+        //
+        {OPERATOR_TOKEN, expression_result.operator_token}, //
+        {SIZE, expression_result.size},                     //
+    };
+}
+void from_json(const nlohmann::json& j, ExpressionResult& expression_result) {
+	j.at(OPERATOR_TOKEN).get_to(expression_result.operator_token);
+	j.at(SIZE).get_to(expression_result.size);
 }
 
 } // namespace fastlanes

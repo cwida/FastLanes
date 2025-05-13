@@ -19,6 +19,7 @@ struct BinaryValueT;
 class ExprSpace;
 class TableDescriptor;
 class Connection;
+struct ExpressionResult;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TableDescriptor
@@ -63,6 +64,12 @@ void from_json(const nlohmann::json& j, ExprSpace& p);
 \*--------------------------------------------------------------------------------------------------------------------*/
 void to_json(nlohmann::json& j, const SegmentDescriptorT& p);
 void from_json(const nlohmann::json& j, SegmentDescriptorT& p);
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * ExpressionResult
+\*--------------------------------------------------------------------------------------------------------------------*/
+void to_json(nlohmann::json& j, const ExpressionResult& p);
+void from_json(const nlohmann::json& j, ExpressionResult& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON

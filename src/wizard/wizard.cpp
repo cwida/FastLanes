@@ -6,7 +6,7 @@
 #include "fls/expression/data_type.hpp" // for DataType, get_physical_type
 #include "fls/expression/expression_executor.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/expression/rpn.hpp"         // for Operator, Operand, NewRPN
+#include "fls/expression/rpn.hpp"             // for Operator, Operand, NewRPN
 #include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata, RowgroupDescriptor
 #include "fls/std/variant.hpp"                // for visit
 #include "fls/std/vector.hpp"                 // for vector
@@ -679,17 +679,17 @@ n_t TryExpr(const rowgroup_pt&      col,
 	return size;
 }
 
-OperatorToken ChooseBestExpr(const unordered_map<OperatorToken, n_t>& options) {
+OperatorToken ChooseBestExpr(const vector<ExpressionResult>& options) {
 	FLS_ASSERT_FALSE(options.empty())
 
 	auto smallest = options.begin();
 	for (auto it = options.begin(); it != options.end(); ++it) {
-		if (it->second < smallest->second) {
+		if (it->size < smallest->size) {
 			smallest = it;
 		}
 	}
 
-	return smallest->first;
+	return smallest->operator_token;
 }
 
 bool IsDictionaryEncodingRequired(const ColumnDescriptor& column_descriptor) {
@@ -728,7 +728,7 @@ void TypedDecide(const rowgroup_pt&  rowgroup,
 	auto evaluate_expressions = [&](const auto& expr_list) {
 		for (const auto& expr : expr_list) {
 			n_t size = TryExpr(rowgroup, column_descriptor, expr, footer, fls);
-			column_descriptor.expr_space.emplace(expr, size);
+			column_descriptor.expr_space.emplace_back(expr, size);
 		}
 	};
 
