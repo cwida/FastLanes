@@ -45,8 +45,6 @@ public:
 	///!
 	ColumnDescriptors children;
 	///!
-	unordered_map<string, idx_t> name_idx_map;
-	///!
 	BinaryValueT max;
 	///
 	sz_t column_offset;
