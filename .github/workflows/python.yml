@@ -94,7 +94,6 @@ jobs:
   # 3) Publish to TestPyPI
   # ────────────────────────────────────────────────────────
   publish-wheel:
-    needs: build-wheel
     runs-on: ubuntu-latest
 
     steps:
