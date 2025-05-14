@@ -45,16 +45,14 @@ jobs:
           pip install -U pip
           pip install -q "scikit-build-core>=0.8" pybind11 cmake ninja pytest
 
-      - name: Build the Python extension once
+      - name: Build the Python extension
         run: |
           source .venv/bin/activate
           make rebuild_python_release
 
-      - name: Build & run native CMake tests
+      - name: Run native CMake tests
         run: |
           source .venv/bin/activate
-          make rebuild_python_release
-          
           ctest \
             --output-on-failure \
             -j4 \
@@ -65,6 +63,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest python/tests -q
+
   # ────────────────────────────────────────────────────────
   # 2) Build manylinux wheel with your GHCR Clang image
   # ────────────────────────────────────────────────────────
@@ -105,10 +104,10 @@ jobs:
           path: dist
 
       - name: Publish to TestPyPI
-        env:
-          TEST_PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
         if: env.TEST_PYPI_API_TOKEN != ''
         uses: pypa/gh-action-pypi-publish@v1.7.0
+        env:
+          TEST_PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
         with:
           user: __token__
           password: ${{ env.TEST_PYPI_API_TOKEN }}
