@@ -8,10 +8,10 @@ if (NOT TARGET pybind11::pybind11)
     FetchContent_Declare(
             pybind11
             GIT_REPOSITORY https://github.com/pybind/pybind11.git
-            GIT_TAG        v2.13.6
+            GIT_TAG v2.13.6
     )
     FetchContent_MakeAvailable(pybind11)
-endif()
+endif ()
 
 # 3) Build the extension module
 set(FLS_BINDING_SRC
@@ -48,6 +48,10 @@ enable_testing()
 add_test(
         NAME PythonTests
         COMMAND ${Python3_EXECUTABLE} -m pytest -q
-        ${PROJECT_SOURCE_DIR}/pytest_tests
+        ${PROJECT_SOURCE_DIR}/python/tests
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
+set_tests_properties(PythonTests
+        PROPERTIES LABELS "python"
 )

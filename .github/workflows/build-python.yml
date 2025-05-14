@@ -50,11 +50,17 @@ jobs:
           source .venv/bin/activate
           make rebuild_python_release
 
-      - name: Run pytest suite (without rebuilding)
+      - name: Build & run CMake-native tests
+        run: |
+          make rebuild_python_release
+          cd cmake-build-release
+          # skip any test labeled “python”
+          ctest --output-on-failure -j4 -LE python
+
+      - name: Run Python tests
         run: |
           source .venv/bin/activate
           pytest python/tests -q
-
   # ────────────────────────────────────────────────────────
   # 2) Build manylinux wheel with your GHCR Clang image
   # ────────────────────────────────────────────────────────

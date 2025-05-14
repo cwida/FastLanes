@@ -48,10 +48,10 @@ public:
 
 private:
 	static constexpr auto lib_name        = string_view("FastLanes");
-	static constexpr auto version_0_0_2   = string_view("0.0.2"); // smart entry point
-	static constexpr auto version_0_0_1   = string_view("0.0.1"); // starting version
-	static constexpr auto version_0_1     = string_view("0.1");   // starting version
-	static constexpr auto current_version = string_view("0.1.3"); // smart entry point
+	static constexpr auto version_0_0_2   = string_view("0.0.2");       // smart entry point
+	static constexpr auto version_0_0_1   = string_view("0.0.1");       // starting version
+	static constexpr auto version_0_1     = string_view("0.1");         // starting version
+	static constexpr auto current_version = string_view("0.1.3.post1"); // smart entry point
 };
 
 } // namespace fastlanes
