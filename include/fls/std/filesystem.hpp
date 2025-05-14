@@ -26,6 +26,7 @@ public:
 	static void close(STREAM& stream);
 	/// check if file system exist
 	static void check_if_dir_exists(const path& dir_path);
+	static void check_if_file_exists(const path& path);
 };
 
 } // namespace fastlanes

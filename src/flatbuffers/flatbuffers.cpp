@@ -1,74 +1,44 @@
 #include "fls/flatbuffers/flatbuffers.hpp"
+#include "fls/connection.hpp"
 #include "fls/footer/table_descriptor.hpp"
-#include <fls/connection.hpp>
-#include <fls/printer/az_printer.hpp>
+#include <filesystem>
+#include <fstream>
+#include <stdexcept>
 
 namespace fastlanes {
 
-constexpr string_view FOOTER_NAME = "table_descriptor.fbb";
+constexpr std::string_view FOOTER_NAME = "table_descriptor.fbb";
 
-void FlatBuffers::Write(const path& dir_path, TableDescriptorT& data) {
-	// Construct the output path, e.g. "<dir_path>/footer.bin"
-	const auto file_path = dir_path / FOOTER_NAME;
-
-	// Reserve a bit of headroom to avoid reallocations
-	flatbuffers::FlatBufferBuilder builder(1024);
-
-	// Pack your in‐memory TableDescriptorT into the FlatBuffer
-	auto table_off = fastlanes::TableDescriptor::Pack(builder, &data);
-
-	// Write the root offset and seal the buffer
-	builder.Finish(table_off);
-
-	// Open the file for binary output
-	std::ofstream out {file_path, std::ios::binary};
+n_t WriteBuffer(const std::filesystem::path& file_path,
+                const void*                  buf_ptr,
+                std::size_t                  buf_size,
+                std::ios_base::openmode      mode = std::ios::binary | std::ios::out) {
+	std::ofstream out {file_path, mode};
 	if (!out) {
-		az_printer::cyan_cout << "Failed to open for writing: " << file_path << "\n";
-		return;
+		throw std::runtime_error("Failed to open for writing: " + file_path.string());
 	}
-
-	// Dump the buffer to disk
-	out.write(reinterpret_cast<const char*>(builder.GetBufferPointer()),
-	          static_cast<std::streamsize>(builder.GetSize()));
-	out.close();
-
-	az_printer::cyan_cout << "FlatBuffer written to " << file_path << "\n";
+	out.write(reinterpret_cast<const char*>(buf_ptr), static_cast<std::streamsize>(buf_size));
+	if (!out) {
+		throw std::runtime_error("Failed to write buffer to: " + file_path.string());
+	}
+	return static_cast<n_t>(buf_size);
 }
 
-n_t FlatBuffers::Write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor) {
-	if (connection.is_footer_inlined()) {
+n_t FlatBuffers::Write(const Connection&            conn,
+                       const std::filesystem::path& file_path,
+                       TableDescriptorT&            table_descriptor) {
+	const auto inlined = conn.is_footer_inlined();
 
-		flatbuffers::FlatBufferBuilder builder(1024);
-		auto                           table_off = fastlanes::TableDescriptor::Pack(builder, &table_descriptor);
-		builder.Finish(table_off);
+	const auto footer_path = inlined ? file_path : (file_path.parent_path() / FOOTER_NAME);
+	const auto mode        = std::ios::binary | (inlined ? std::ios::app : std::ios::out);
 
-		// Append raw bytes to <dir_path>/FASTLANES_FILE_NAME
-		const path    fls_path = dir_path / FASTLANES_FILE_NAME;
-		std::ofstream out {fls_path, std::ios::binary | std::ios::app};
-		if (!out) {
-			az_printer::cyan_cout << "Failed to open for appending: " << fls_path << "\n";
-			return 0;
-		}
-		auto buf_ptr = reinterpret_cast<const char*>(builder.GetBufferPointer());
-		auto buf_sz  = static_cast<std::streamsize>(builder.GetSize());
-		out.write(buf_ptr, buf_sz);
-		out.close();
+	// build the FlatBuffer in memory
+	flatbuffers::FlatBufferBuilder builder(1024);
+	auto                           tbl_off = TableDescriptor::Pack(builder, &table_descriptor);
+	builder.Finish(tbl_off);
 
-		return static_cast<n_t>(buf_sz);
-	}
-
-	// --- Non-inlined: write a standalone FlatBuffer footer.bin ---
-	FlatBuffers::Write(dir_path, table_descriptor);
-
-	// Measure the written footer
-	const path      footer_path = dir_path / FOOTER_NAME;
-	std::error_code ec;
-	auto            size = std::filesystem::file_size(footer_path, ec);
-	if (ec) {
-		az_printer::cyan_cout << "Failed to stat " << footer_path << ": " << ec.message() << "\n";
-		return 0;
-	}
-	return static_cast<n_t>(size);
+	// write it out (will auto-create directories as needed)
+	return WriteBuffer(footer_path, builder.GetBufferPointer(), builder.GetSize(), mode);
 }
 
 } // namespace fastlanes

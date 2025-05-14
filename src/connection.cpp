@@ -47,11 +47,11 @@ Connection& Connection::read_json(const path& dir_path) {
 	return *this;
 }
 
-up<TableReader> Connection::read_fls(const path& dir_path) {
-	FileSystem::check_if_dir_exists(dir_path);
+up<TableReader> Connection::read_fls(const path& file_path) {
+	FileSystem::check_if_file_exists(file_path);
 
 	// init
-	return make_unique<TableReader>(dir_path, *this);
+	return make_unique<TableReader>(file_path, *this);
 }
 
 void prepare_rowgroup(Rowgroup& rowgroup) {
@@ -69,14 +69,14 @@ void Connection::prepare_table() const {
 	}
 }
 
-void Connection::write_footer(const path& dir_path) const {
+void Connection::write_footer(const path& file_path) const {
 	// Write table descriptor
 
-	const n_t        table_descriptor_size = FlatBuffers::Write(*this, dir_path, *m_table_descriptor);
+	const n_t        table_descriptor_size = FlatBuffers::Write(*this, file_path, *m_table_descriptor);
 	const FileFooter file_footer {
 	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
 
-	FileFooter::Write(*this, dir_path, file_footer);
+	FileFooter::Write(*this, file_path, file_footer);
 }
 
 up<Connection> connect() {
@@ -94,8 +94,8 @@ Connection& Connection::spell() {
 	return *this;
 }
 
-Connection& Connection::to_fls(const path& dir_path) {
-	if (const path file_path = dir_path / FASTLANES_FILE_NAME; exists(file_path)) {
+Connection& Connection::to_fls(const path& file_path) {
+	if (exists(file_path)) {
 		throw std::runtime_error("Fastlanes file already exists at: " + file_path.string());
 	}
 
@@ -111,13 +111,13 @@ Connection& Connection::to_fls(const path& dir_path) {
 		spell();
 	}
 
-	FileHeader::Write(*this, dir_path);
+	FileHeader::Write(*this, file_path);
 
 	// encode
-	Encoder::encode(*this, dir_path);
+	Encoder::encode(*this, file_path);
 
 	// write the footer
-	write_footer(dir_path);
+	write_footer(file_path);
 
 	return *this;
 }

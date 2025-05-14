@@ -6,8 +6,8 @@
 
 namespace fastlanes {
 
-void FileFooter::Write(const Connection& connection, const path& dir_path, const FileFooter& file_footer) {
-	io file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
+void FileFooter::Write(const Connection& connection, const path& file_path, const FileFooter& file_footer) {
+	io file_io = make_unique<File>(file_path); // TODO[io]
 
 	IO::append(file_io, reinterpret_cast<const char*>(&file_footer), sizeof(file_footer));
 }

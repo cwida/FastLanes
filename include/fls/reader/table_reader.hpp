@@ -14,7 +14,7 @@ class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class TableReader {
 public:
-	explicit TableReader(const path& dir_path, Connection& fls);
+	explicit TableReader(const path& file_path, Connection& fls);
 
 public:
 	up<RowgroupReader> operator[](n_t rowgroup_idx) const;

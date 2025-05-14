@@ -22,7 +22,7 @@
 
 namespace fastlanes {
 
-RowgroupReader::RowgroupReader(const path&                dir_path,
+RowgroupReader::RowgroupReader(const path&                file_path,
                                const RowgroupDescriptorT& rowgroup_descriptor,
                                Connection&                connection)
     : m_connection(connection)
@@ -31,8 +31,8 @@ RowgroupReader::RowgroupReader(const path&                dir_path,
 	// read file
 	{
 		// allocate buffer
-		m_buf = make_unique<Buf>(m_rowgroup_descriptor.m_size);    // todo[memory_pool]
-		io io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // todo[IO]
+		m_buf = make_unique<Buf>(m_rowgroup_descriptor.m_size); // todo[memory_pool]
+		io io = make_unique<File>(file_path);                   // todo[IO]
 		IO::range_read(io, *m_buf, m_rowgroup_descriptor.m_offset, m_rowgroup_descriptor.m_size);
 		m_rowgroup_view = make_unique<RowgroupView>(m_buf->Span(), m_rowgroup_descriptor);
 	}

@@ -63,11 +63,11 @@ public:
 		const auto& original_table = con1.get_table();
 
 		// to_fls
-		con1.to_fls(fls_dir_path_process_specific);
+		con1.to_fls(fls_file_path_process_specific);
 
 		// decoded rowgroup
 		Connection con2;
-		auto       fls_reader    = con2.reset().read_fls(fls_dir_path_process_specific);
+		auto       fls_reader    = con2.reset().read_fls(fls_file_path_process_specific);
 		auto       decoded_table = fls_reader->materialize();
 		// Compare rowgroups
 		auto result = (original_table == *decoded_table);
@@ -80,7 +80,7 @@ public:
 
 	void TestConstantness(const vector<n_t>& constant_indexes) const {
 		Connection  con;
-		const auto  fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		const auto  fls_reader            = con.reset().read_fls(fls_file_path_process_specific);
 		auto        first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto& footer                = first_rowgroup_reader->get_descriptor();
 
@@ -96,7 +96,7 @@ public:
 
 		// decoded rowgroup
 		Connection con2;
-		const auto fls_reader            = con2.reset().read_fls(fls_dir_path_process_specific);
+		const auto fls_reader            = con2.reset().read_fls(fls_file_path_process_specific);
 		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 
@@ -107,7 +107,7 @@ public:
 
 	void TestEquality(const vector<n_t>& equal_cols) const {
 		Connection con;
-		const auto fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		const auto fls_reader            = con.reset().read_fls(fls_file_path_process_specific);
 		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 
@@ -120,7 +120,7 @@ public:
 
 	void TestMap1To1(const vector<n_t>& target_column_indexes) const {
 		Connection con;
-		const auto fls_reader            = con.reset().read_fls(fls_dir_path_process_specific);
+		const auto fls_reader            = con.reset().read_fls(fls_file_path_process_specific);
 		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 		const auto footer                = first_rowgroup_reader->get_descriptor();
 

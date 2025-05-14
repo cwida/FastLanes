@@ -62,7 +62,7 @@ public:
 	/// READ CSV
 	Connection& read_json(const path& dir_path);
 	///! read a fls file return a reader
-	up<TableReader> read_fls(const path& dir_path);
+	up<TableReader> read_fls(const path& file_path);
 	///!
 	Connection& spell();
 	///!

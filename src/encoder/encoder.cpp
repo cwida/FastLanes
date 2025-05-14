@@ -18,12 +18,12 @@
 
 namespace fastlanes {
 
-void Encoder::encode(const Connection& connection, const path& dir_path) {
+void Encoder::encode(const Connection& connection, const path& file_path) {
 	// init
 	Buf buf; // TODO[memory pool]
 
 	n_t cur_rowgroup_offset {sizeof(FileHeader)};
-	io  file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
+	io  file_io = make_unique<File>(file_path); // TODO[io]
 
 	for (n_t rowgroup_idx {0}; rowgroup_idx < connection.m_table->get_n_rowgroups(); ++rowgroup_idx) {
 		[[maybe_unused]] auto& rowgroup_descriptor =

@@ -17,7 +17,7 @@ class Rowgroup;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class RowgroupReader {
 public:
-	explicit RowgroupReader(const path& dir_path, const RowgroupDescriptorT& rowgroup_descriptor, Connection& fls);
+	explicit RowgroupReader(const path& file_path, const RowgroupDescriptorT& rowgroup_descriptor, Connection& fls);
 
 public:
 	vector<sp<PhysicalExpr>>& get_chunk(n_t vec_idx);
