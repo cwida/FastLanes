@@ -57,7 +57,7 @@ jobs:
             --output-on-failure \
             -j4 \
             -LE python \
-            --test-dir skbuild-editable/cmake-build
+            --test-dir skbuild-editable
 
       - name: Run Python tests
         run: |
