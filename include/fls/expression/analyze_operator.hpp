@@ -37,7 +37,7 @@ struct enc_analyze_opr {
 public:
 	explicit enc_analyze_opr(const PhysicalExpr& expr,
 	                         const col_pt&       col,
-	                         ColumnDescriptorT&   column_descriptor,
+	                         ColumnDescriptorT&  column_descriptor,
 	                         InterpreterState&   state);
 
 	void Analyze();

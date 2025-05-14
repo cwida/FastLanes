@@ -33,7 +33,7 @@ struct FSST12DictExprVisitor {
 
 enc_fsst12_dict_opr::enc_fsst12_dict_opr(const PhysicalExpr& expr,
                                          const col_pt&       column,
-                                         ColumnDescriptorT&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state)
     : col_view {column} {
 

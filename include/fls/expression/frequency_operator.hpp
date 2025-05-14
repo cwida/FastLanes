@@ -21,7 +21,7 @@ struct enc_frequency_opr {
 public:
 	explicit enc_frequency_opr(const PhysicalExpr& expr,
 	                           const col_pt&       col,
-	                           ColumnDescriptorT&   column_descriptor,
+	                           ColumnDescriptorT&  column_descriptor,
 	                           InterpreterState&   state);
 
 	void Encode();
@@ -44,7 +44,7 @@ struct enc_frequency_str_opr {
 public:
 	explicit enc_frequency_str_opr(const PhysicalExpr& expr,
 	                               const col_pt&       col,
-	                               ColumnDescriptorT&   column_descriptor,
+	                               ColumnDescriptorT&  column_descriptor,
 	                               InterpreterState&   state);
 
 	void Encode();

@@ -17,7 +17,7 @@ namespace fastlanes {
 \*--------------------------------------------------------------------------------------------------------------------*/
 enc_fsst_opr::enc_fsst_opr(const PhysicalExpr& expr,
                            const col_pt&       column,
-                           ColumnDescriptorT&   column_descriptor,
+                           ColumnDescriptorT&  column_descriptor,
                            InterpreterState&   state)
     : str_col_view(column)
     , fsst_encoder_p(fsst_helper::make_fsst(str_col_view)) {

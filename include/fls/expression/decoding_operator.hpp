@@ -75,9 +75,9 @@ public:
 
 struct dec_struct_opr {
 	dec_struct_opr(const ColumnDescriptorT& column_descriptor,
-	               const ColumnView&       column_view,
-	               InterpreterState&       state,
-	               RowgroupReader&         reader);
+	               const ColumnView&        column_view,
+	               InterpreterState&        state,
+	               RowgroupReader&          reader);
 
 	vector<sp<class PhysicalExpr>> internal_exprs;
 };

@@ -20,7 +20,7 @@ struct enc_transpose_opr {
 public:
 	explicit enc_transpose_opr(const PhysicalExpr& expr,
 	                           const col_pt&       col,
-	                           ColumnDescriptorT&   column_descriptor,
+	                           ColumnDescriptorT&  column_descriptor,
 	                           InterpreterState&   state);
 
 	void Transpose();

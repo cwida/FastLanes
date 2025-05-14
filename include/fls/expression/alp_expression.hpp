@@ -24,7 +24,7 @@ template <typename PT>
 struct enc_alp_opr {
 	explicit enc_alp_opr(const PhysicalExpr& expr,
 	                     const col_pt&       column,
-	                     ColumnDescriptorT&   column_descriptor,
+	                     ColumnDescriptorT&  column_descriptor,
 	                     InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);
@@ -86,7 +86,7 @@ template <typename PT>
 struct enc_alp_rd_opr {
 	explicit enc_alp_rd_opr(const PhysicalExpr& expr,
 	                        const col_pt&       column,
-	                        ColumnDescriptorT&   column_descriptor,
+	                        ColumnDescriptorT&  column_descriptor,
 	                        InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);

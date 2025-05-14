@@ -18,7 +18,7 @@ namespace fastlanes {
 template <typename PT>
 enc_transpose_opr<PT>::enc_transpose_opr(const PhysicalExpr& expr,
                                          const col_pt&       col,
-                                         ColumnDescriptorT&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state) {
 
 	visit(overloaded {

@@ -84,8 +84,8 @@ struct SLPatchExprVisitor {
 		this_opr.data = opr->unffored_data;
 	}
 	template <typename T = PT>
-	    requires(!std::is_same_v<T, std::make_unsigned_t<T>>)
-	void operator()(const sp<dec_unffor_opr<std::make_unsigned_t<PT>>>& opr) {
+	requires(!std::is_same_v<T, std::make_unsigned_t<T>>) void
+	operator()(const sp<dec_unffor_opr<std::make_unsigned_t<PT>>>& opr) {
 		this_opr.data = reinterpret_cast<PT*>(opr->unffored_data);
 	}
 	void operator()(std::monostate& arg) {

@@ -21,7 +21,7 @@ struct enc_rsum_opr {
 public:
 	explicit enc_rsum_opr(const PhysicalExpr& expr,
 	                      const col_pt&       col,
-	                      ColumnDescriptorT&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void Rsum();

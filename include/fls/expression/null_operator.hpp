@@ -21,7 +21,7 @@ struct enc_null_opr {
 public:
 	explicit enc_null_opr(const PhysicalExpr& expr,
 	                      const col_pt&       col,
-	                      ColumnDescriptorT&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void Store();
