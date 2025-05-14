@@ -50,12 +50,16 @@ jobs:
           source .venv/bin/activate
           make rebuild_python_release
 
-      - name: Build & run CMake-native tests
+      - name: Build & run native CMake tests
         run: |
+          source .venv/bin/activate
           make rebuild_python_release
-          cd cmake-build-release
-          # skip any test labeled “python”
-          ctest --output-on-failure -j4 -LE python
+          
+          ctest \
+            --output-on-failure \
+            -j4 \
+            -LE python \
+            --test-dir skbuild-editable/cmake-build
 
       - name: Run Python tests
         run: |
