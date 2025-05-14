@@ -10,6 +10,18 @@ if (CLANG_CXX AND CLANG_C)
     set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
 endif ()
 
+
+#  ---------------------------------------------------------------------------------------------------------------------
+# Prevent Windows <minwindef.h> from defining min/max macros,
+# which collide with std::numeric_limits<…>::max() and
+# Flatbuffers’ own max() methods.
+#
+# Defining NOMINMAX here ensures that any inclusion of
+# windows.h or other Win32 headers won’t inject those macros.
+# ----------------------------------------------------------------------------------------------------------------------
+add_compile_definitions(NOMINMAX)
+
+
 # Project : ------------------------------------------------------------------------------------------------------------
 project(FastLanes)
 
