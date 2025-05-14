@@ -6,6 +6,7 @@
 #include "fls/expression/predicate_operator.hpp"
 #include "fls/file/file_footer.hpp"
 #include "fls/file/file_header.hpp"
+#include "fls/flatbuffers/flatbuffers.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for RowgroupDescriptor
 #include "fls/info.hpp"
 #include "fls/io/file.hpp"       // for File
@@ -68,6 +69,16 @@ void Connection::prepare_table() const {
 	}
 }
 
+void Connection::write_footer(const path& dir_path) const {
+	// Write table descriptor
+
+	const n_t        table_descriptor_size = FlatBuffers::Write(*this, dir_path, *m_table_descriptor);
+	const FileFooter file_footer {
+	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+
+	FileFooter::Write(*this, dir_path, file_footer);
+}
+
 up<Connection> connect() {
 	return make_unique<Connection>();
 }
@@ -105,12 +116,8 @@ Connection& Connection::to_fls(const path& dir_path) {
 	// encode
 	Encoder::encode(*this, dir_path);
 
-	// Write table descriptor
-	const n_t        table_descriptor_size = JSON::write(*this, dir_path, *m_table_descriptor);
-	const FileFooter file_footer {
-	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
-
-	FileFooter::Write(*this, dir_path, file_footer);
+	// write the footer
+	write_footer(dir_path);
 
 	return *this;
 }
@@ -225,7 +232,8 @@ Config::Config()
     , is_forced_schema(false)
     , sample_size(CFG::SAMPLER::SAMPLE_SIZE)
     , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP)
-    , inline_footer(CFG::Footer::IS_INLINED) {
+    , inline_footer(CFG::Footer::IS_INLINED)
+    , enable_verbose(CFG::Defaults::ENABLE_VERBOSE) {
 }
 
 } // namespace fastlanes

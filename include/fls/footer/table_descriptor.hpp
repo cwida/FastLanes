@@ -8,10 +8,11 @@ namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
-
 up<TableDescriptorT> make_table_descriptor(const Table& table);
-up<TableDescriptorT> make_table_descriptor(const path& dir_path);
-up<TableDescriptorT> make_table_descriptor(const path& dir_path, n_t offset, n_t size);
+//
+up<TableDescriptorT> make_table_descriptor(const path& file_path);
+//
+up<TableDescriptorT> make_table_descriptor(const path& file_path, n_t offset, n_t size);
 
 } // namespace fastlanes
 

@@ -1,9 +1,10 @@
 #include "fls/footer/table_descriptor.hpp"
+#include "fls/connection.hpp"
+#include "fls/flatbuffers/flatbuffers.hpp"
 #include "fls/io/file.hpp"
 #include "fls/json/fls_json.hpp"
 #include "fls/json/nlohmann/json.hpp"
 #include "fls/table/table.hpp"
-#include <fls/connection.hpp>
 
 namespace fastlanes {
 
@@ -26,7 +27,15 @@ namespace fastlanes {
 // 	return m_rowgroup_descriptors.size();
 // }
 
-// FIX ME
+//
+// template <enum FooterType::JSON>
+// up<TableDescriptorT> make_table_descriptor(const path& file_path) {
+// 	auto                 json_string      = File::read(file_path);
+// 	const nlohmann::json j                = nlohmann::json::parse(json_string);
+// 	auto                 table_descriptor = j.get<TableDescriptorT>();
+// 	return make_unique<TableDescriptorT>(table_descriptor);
+// }
+
 up<TableDescriptorT> make_table_descriptor(const Table& table) {
 	auto table_descriptor = make_unique<TableDescriptorT>();
 
@@ -38,20 +47,55 @@ up<TableDescriptorT> make_table_descriptor(const Table& table) {
 	return table_descriptor;
 }
 
-up<TableDescriptorT> make_table_descriptor(const path& dir_path) {
-	auto                 json_string      = File::read(dir_path);
-	const nlohmann::json j                = nlohmann::json::parse(json_string);
-	auto                 table_descriptor = j.get<TableDescriptorT>();
-	return make_unique<TableDescriptorT>(table_descriptor);
+std::unique_ptr<TableDescriptorT> make_table_descriptor(const std::filesystem::path& file_path) {
+	// init
+	std::ifstream in {file_path, std::ios::binary | std::ios::ate};
+	if (!in) {
+		throw std::runtime_error("Failed to open footer: " + file_path.string());
+	}
+
+	//
+	auto size = in.tellg();
+	in.seekg(0, std::ios::beg);
+	std::vector<uint8_t> buffer(static_cast<size_t>(size));
+	if (!in.read(reinterpret_cast<char*>(buffer.data()), size)) {
+		throw std::runtime_error("Failed to read footer: " + file_path.string());
+	}
+	in.close();
+
+#ifdef DEBUG
+	flatbuffers::Verifier verifier(buffer.data(), buffer.size());
+	if (!fastlanes::VerifyTableDescriptorBuffer(verifier)) {
+		throw std::runtime_error("Invalid FlatBuffer in file: " + file_path.string());
+	}
+#endif
+
+	const auto accessor = GetTableDescriptor(buffer.data());
+
+	// (deep copy)
+	TableDescriptorT* raw = accessor->UnPack();
+	if (!raw) {
+		throw std::runtime_error("Failed to unpack TableDescriptor from buffer: " + file_path.string());
+	}
+
+	return up<TableDescriptorT>(raw);
 }
 
-up<TableDescriptorT> make_table_descriptor(const path& file_path, n_t offset, n_t size) {
+up<TableDescriptorT> make_table_descriptor(const path& file_path, const n_t offset, const n_t size) {
+	// init
 	File file(file_path);
-	Buf  buf; // OPTIMIZE ME
+	Buf  buf; // OPTIMIZE
+
 	file.ReadRange(buf, offset, size);
-	const nlohmann::json j                = nlohmann::json::parse(buf.data(), buf.data() + size);
-	auto                 table_descriptor = j.get<TableDescriptorT>();
-	return make_unique<TableDescriptorT>(table_descriptor);
+	const auto accessor = fastlanes::GetTableDescriptor(buf.data());
+
+	// 4) Deep-copy into a TableDescriptorT and wrap in a unique_ptr
+	TableDescriptorT* raw = accessor->UnPack();
+	if (!raw) {
+		throw std::runtime_error("Failed to unpack TableDescriptor from slice in file: " + file_path.string());
+	}
+
+	return up<TableDescriptorT>(raw);
 }
 
 } // namespace fastlanes
