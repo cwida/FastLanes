@@ -89,12 +89,11 @@ time_ctest:
 # ─────────────────────────────────────────────────────────────
 # Python bindings
 # ─────────────────────────────────────────────────────────────
-# >>> keep *one* word per line, no trailing back-slash on the last entry <<<
 PY_DEPS = \
   cmake>=3.22 \
-  scikit-build-core>=0.11,<0.12 \
-  pybind11>=2.12,<2.13 \
-  setuptools_scm[toml]>=7,<8 \
+  "scikit-build-core>=0.11,<0.12" \
+  "pybind11>=2.12,<2.13" \
+  "setuptools_scm[toml]>=7,<8" \
   pytest \
   ninja>=1.5 \
   pyproject_metadata \
