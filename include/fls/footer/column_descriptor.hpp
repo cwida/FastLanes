@@ -21,5 +21,11 @@ namespace fastlanes {
 \*--------------------------------------------------------------------------------------------------------------------*/
 using ColumnDescriptors = vector<up<struct ColumnDescriptorT>>;
 
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * set index
+\*--------------------------------------------------------------------------------------------------------------------*/
+void set_index(vector<up<ColumnDescriptorT>>& column_descriptors);
+
 } // namespace fastlanes
 #endif // FLS_FOOTER_COLUMN_DESCRIPTOR_HPP
