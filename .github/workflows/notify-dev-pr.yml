@@ -3,7 +3,7 @@ name: Notify Discord on PR Merge to Dev
 
 on:
   pull_request_target:
-    types: [ closed ]
+    types: [closed]
     branches:
       - dev
 
@@ -12,13 +12,26 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Build payload
+        id: build
+        run: |
+          payload=$(jq -Rn \
+            --arg num  "${{ github.event.pull_request.number }}" \
+            --arg title "${{ github.event.pull_request.title }}" \
+            --arg author "${{ github.event.pull_request.merged_by.login }}" \
+            --arg url   "${{ github.event.pull_request.html_url }}" \
+            --arg body  "${{ github.event.pull_request.body }}" '
+            {
+              content:
+              "🔔 **FastLanes update**\n" +
+              "**PR #\($num) – \($title)** was merged into *dev* by \($author).\n" +
+              "🔗 \($url)\n\n" +
+              "**PR description:**\n" + $body
+            }')
+          echo "::set-output name=json::$payload"
       - name: Notify Discord
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \
-                    \"🔔 **FastLanes update**\\n\
-                    **PR #${{ github.event.pull_request.number }} – ${{ github.event.pull_request.title }}** was merged into *dev* by ${{ github.event.pull_request.merged_by.login }}.\\n\
-                    🔗 ${{ github.event.pull_request.html_url }}\\n\\n\
-                    **PR description:**\\n${{ github.event.pull_request.body }}\"}" \
+               -d '${{ steps.build.outputs.json }}' \
                "${{ secrets.DISCORD_WEBHOOK_URL }}"
