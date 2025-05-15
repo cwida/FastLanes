@@ -123,7 +123,8 @@ PY_DEPS = \
   pytest \
   ninja>=1.5 \
   pyproject_metadata \
-  Faker
+  Faker \
+  twine>=4.0.0
 
 TEST_DIR := python/tests
 quote_deps = $(foreach dep,$(PY_DEPS),$(dep))
@@ -210,19 +211,19 @@ build_wheel_release: check_python_deps $(ACTIVATE)
 	  $(PYTHON) -m build --wheel --no-isolation --outdir dist
 	$(call echo_done,PyFastLanes wheel built (Release).)
 
-upload_pypi: $(ACTIVATE)
+upload_pypi: check_python_deps $(ACTIVATE)
 	$(call echo_start,Uploading to PyPI…)
 	$(PYTHON) -m twine upload dist/*
 	$(call echo_done,Upload to PyPI complete.)
 
-upload_testpypi: $(ACTIVATE)
+upload_testpypi: check_python_deps $(ACTIVATE)
 	$(call echo_start,Uploading to TestPyPI…)
 	$(PYTHON) -m twine upload --repository testpypi dist/*
 	$(call echo_done,Upload to TestPyPI complete.)
 
 build_sdist: check_python_deps $(ACTIVATE)
 	$(call echo_start,Building source distribution…)
-	$(PIP) install --upgrade setuptools wheel
+	$(PIP) install --upgrade setuptools wheel build
 	$(PIP) install --upgrade $(call quote_deps)
 	$(PYTHON) -m build --sdist --no-isolation --outdir dist
 	$(call echo_done,Source distribution built.)
