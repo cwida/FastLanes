@@ -14,7 +14,5 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{
-                 \"content\": \"🔔 **FastLanes update:** New commit pushed to \\`dev\\` by \\`${{ github.actor }}\\`.\\n🔗 https://github.com/${{ github.repository }}/commit/${{ github.sha }}\"
-               }" \
-               \"${{ secrets.DISCORD_WEBHOOK_URL }}\"
+               -d "{\"content\": \"🔔 **FastLanes update:** New commit pushed to \\\`dev\\\` by \\\`${{ github.actor }}\\\`.\\n🔗 https://github.com/${{ github.repository }}/commit/${{ github.sha }}\"}" \
+               "${{ secrets.DISCORD_WEBHOOK_URL }}"
