@@ -1,37 +1,35 @@
-# .github/workflows/notify-dev-pr.yml
 name: Notify Discord on PR Merge to Dev
 
 on:
   pull_request_target:
-    types: [closed]
+    types:
+      - closed          # fires when PR is closed
     branches:
-      - dev
+      - dev             # …and its base branch is dev
 
 jobs:
   notify:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Build payload
+      # 1️⃣ Build JSON safely
+      - name: Build JSON payload
         id: build
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          AUTHOR: ${{ github.event.pull_request.merged_by.login }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          payload=$(jq -Rn \
-            --arg num  "${{ github.event.pull_request.number }}" \
-            --arg title "${{ github.event.pull_request.title }}" \
-            --arg author "${{ github.event.pull_request.merged_by.login }}" \
-            --arg url   "${{ github.event.pull_request.html_url }}" \
-            --arg body  "${{ github.event.pull_request.body }}" '
-            {
-              content:
-              "🔔 **FastLanes update**\n" +
-              "**PR #\($num) – \($title)** was merged into *dev* by \($author).\n" +
-              "🔗 \($url)\n\n" +
-              "**PR description:**\n" + $body
-            }')
-          echo "::set-output name=json::$payload"
+          msg="🔔 FastLanes update:\n**PR #${PR_NUM} – ${PR_TITLE}** was merged into dev by ${AUTHOR}.\n🔗 ${PR_URL}\n\n**PR description:**\n${PR_BODY}"
+          payload=$(jq -Rn --arg content "$msg" '{content:$content}')
+          echo "json=$payload" >> "$GITHUB_OUTPUT"
+
+      # 2️⃣ Post to Discord
       - name: Notify Discord
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '${{ steps.build.outputs.json }}' \
+               -d "${{ steps.build.outputs.json }}" \
                "${{ secrets.DISCORD_WEBHOOK_URL }}"
