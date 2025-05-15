@@ -12,7 +12,7 @@
 namespace fastlanes {
 up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) const {
 	auto rowgroup_reader = make_unique<RowgroupReader>(
-	    m_dir_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	    m_file_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 
@@ -44,7 +44,7 @@ void TableReader::to_csv(const char* file_path) const {
 
 TableReader::TableReader(const path& file_path, Connection& connection)
     : m_connection(connection)
-    , m_dir_path(file_path) {
+    , m_file_path(file_path) {
 
 	FileFooter file_footer {};
 	FileHeader file_header {};
@@ -62,7 +62,7 @@ TableReader::TableReader(const path& file_path, Connection& connection)
 }
 up<RowgroupReader> TableReader::operator[](const n_t rowgroup_idx) const {
 	auto rowgroup_reader = make_unique<RowgroupReader>(
-	    m_dir_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	    m_file_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 

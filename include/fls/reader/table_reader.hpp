@@ -31,7 +31,7 @@ public:
 private:
 	up<TableDescriptorT> m_table_descriptor;
 	Connection&          m_connection;
-	const path&          m_dir_path;
+	const path           m_file_path;
 };
 
 } // namespace fastlanes
