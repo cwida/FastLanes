@@ -1,0 +1,24 @@
+# .github/workflows/notify-dev-pr.yml
+name: Notify Discord on PR Merge to Dev
+
+on:
+  pull_request_target:
+    types: [ closed ]
+    branches:
+      - dev
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \
+                    \"🔔 **FastLanes update**\\n\
+                    **PR #${{ github.event.pull_request.number }} – ${{ github.event.pull_request.title }}** was merged into *dev* by ${{ github.event.pull_request.merged_by.login }}.\\n\
+                    🔗 ${{ github.event.pull_request.html_url }}\\n\\n\
+                    **PR description:**\\n${{ github.event.pull_request.body }}\"}" \
+               "${{ secrets.DISCORD_WEBHOOK_URL }}"
