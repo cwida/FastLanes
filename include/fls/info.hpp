@@ -42,16 +42,23 @@ public:
 	//
 	static constexpr uint64_t FASTLANES_VERSION_01 = 0x302E312E30567C53ULL;
 
+	// ──────────────────────────────────────────────────────────────
+	// VERSION TAG  (little-endian encoding of "0.1.3.P2")
+	//
+	// ASCII          :  0   .   1   .   3   .   P   2
+	// byte values    : 0x30 0x2E 0x31 0x2E 0x33 0x2E 0x50 0x32
+	// little-endian  : 0x32 0x50 0x2E 0x33 0x2E 0x31 0x2E 0x30
+	//                  = 0x32502E332E312E30
+	//
+	static constexpr uint64_t FASTLANES_VERSION_0_1_3_POST2 = 0x32502E332E312E30ULL;
+
 	static constexpr uint64_t get_version_bytes() {
-		return FASTLANES_VERSION_01;
+		return FASTLANES_VERSION_0_1_3_POST2;
 	}
 
 private:
 	static constexpr auto lib_name        = string_view("FastLanes");
-	static constexpr auto version_0_0_2   = string_view("0.0.2");       // smart entry point
-	static constexpr auto version_0_0_1   = string_view("0.0.1");       // starting version
-	static constexpr auto version_0_1     = string_view("0.1");         // starting version
-	static constexpr auto current_version = string_view("0.1.3.post1"); // smart entry point
+	static constexpr auto current_version = string_view("0.1.3.post2"); // smart entry point
 };
 
 } // namespace fastlanes
