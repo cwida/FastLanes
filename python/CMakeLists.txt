@@ -2,6 +2,7 @@
 set(PYBIND11_FINDPYTHON ON)
 
 # 2) Locate pybind11 (system first, else fetch from GitHub)
+)
 find_package(pybind11 CONFIG QUIET)
 if (NOT TARGET pybind11::pybind11)
     include(FetchContent)

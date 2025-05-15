@@ -141,12 +141,13 @@ check_python_deps: $(ACTIVATE)
 rebuild_python_debug: check_python_deps $(ACTIVATE)
 	$(call echo_start,Rebuilding PyFastLanes bindings (Debug)…)
 	$(CLEAN_SKBUILD)
-	CMAKE_BUILD_TYPE=Debug \
-	  CMAKE_BUILD_PARALLEL_LEVEL=12 \
-	  CMAKE_VERBOSE_MAKEFILE=ON \
-	  PIP_VERBOSE=1 \
-	  $(PYTHON) -m pip install -e . --no-build-isolation -v
+	CMAKE_BUILD_PARALLEL_LEVEL=12 \
+	CMAKE_VERBOSE_MAKEFILE=ON \
+	PIP_VERBOSE=1 \
+	$(PYTHON) -m pip install -e . --no-build-isolation -v \
+	  --config-settings=cmake.build-type=Debug
 	$(call echo_done,PyFastLanes bindings rebuilt (Debug).)
+
 
 rebuild_python_release: check_python_deps $(ACTIVATE)
 	$(call echo_start,Rebuilding PyFastLanes bindings (Release)…)
@@ -159,12 +160,16 @@ rebuild_python_release: check_python_deps $(ACTIVATE)
 	$(call echo_done,PyFastLanes bindings rebuilt (Release).)
 
 clean_python:
-	$(call echo_start,Cleaning Python artefacts…)
-	rm -rf skbuild-editable dist
+	$(call echo_start, Cleaning Python artefacts…)
+	# Remove scikit-build editable tree, distribution archives, and the virtual environment
+	rm -rf skbuild-editable dist .venv
+	# Delete any built extension modules (in case they linger elsewhere)
 	find python/pyfastlanes -name '_pyfastlanes*.so' -delete
+	# Purge byte-code caches
 	find . -name '__pycache__'   -exec rm -rf {} +
 	find . -name '*.pyc'         -delete
-	$(call echo_done,Python artefacts cleaned.)
+	$(call echo_done, Python artefacts cleaned.)
+
 
 run_example_python: $(ACTIVATE)
 	$(call echo_start,Running example…)
