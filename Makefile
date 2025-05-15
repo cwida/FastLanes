@@ -145,7 +145,7 @@ rebuild_python_release: check_python_deps $(ACTIVATE)
 	  CMAKE_BUILD_PARALLEL_LEVEL=12 \
 	  CMAKE_VERBOSE_MAKEFILE=ON \
 	  PIP_VERBOSE=1 \
-	  $(PYTHON) -m pip install -e . -no-build-isolation -v
+	  $(PYTHON) -m pip install -e . --no-build-isolation -v
 	$(call echo_done,PyFastLanes bindings rebuilt (Release).)
 
 clean_python:
