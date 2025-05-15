@@ -1,0 +1,22 @@
+# .github/workflows/notify-dev-merge.yml
+name: Notify Discord on Merge to Dev
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches:
+      - dev
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "content": "🔔 **FastLanes update:** `${{ github.event.pull_request.title }}` was merged into `dev` by `${{ github.actor }}`.\n🔗 ${{ github.event.pull_request.html_url }}\n\n**PR Description:**\n${{ github.event.pull_request.body }}"
+               }' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
