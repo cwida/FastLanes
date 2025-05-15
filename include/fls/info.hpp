@@ -1,6 +1,7 @@
 #ifndef FASTLANES_FLS_INFO_HPP
 #define FASTLANES_FLS_INFO_HPP
 
+#include "fls/std/array.hpp"
 #include <cstdint>
 #include <string_view>
 
@@ -51,6 +52,13 @@ public:
 	//                  = 0x32502E332E312E30
 	//
 	static constexpr uint64_t FASTLANES_VERSION_0_1_3_POST2 = 0x32502E332E312E30ULL;
+
+	static constexpr array<uint64_t, 2> get_all_versions() {
+		return {//
+		        //
+		        FASTLANES_VERSION_01,
+		        FASTLANES_VERSION_0_1_3_POST2};
+	}
 
 	static constexpr uint64_t get_version_bytes() {
 		return FASTLANES_VERSION_0_1_3_POST2;
