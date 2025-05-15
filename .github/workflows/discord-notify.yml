@@ -4,7 +4,7 @@ run-name: >-
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
 on:
-  push:                     # run JSON build/validate on every commit
+  push:                     # always build & validate JSON
   pull_request_target: # full flow when a PR to dev is closed
     types: [ closed ]
     branches: [ dev ]
@@ -24,20 +24,23 @@ jobs:
         run: |
           set -eo pipefail
 
-          if [[ "${{ github.event_name }}" == "pull_request_target" && "${{ github.event.action }}" == "closed" ]]; then
-            # ----- metadata for a merged PR -----
+          if [[ "${{ github.event_name }}" == "pull_request_target" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            # merged PR metadata
             MERGER=$(jq -r '.pull_request.merged_by.login' < "$GITHUB_EVENT_PATH")
             PR_NUMBER=$(jq -r '.pull_request.number'       < "$GITHUB_EVENT_PATH")
             PR_TITLE=$(jq -r '.pull_request.title'         < "$GITHUB_EVENT_PATH")
             PR_URL=$(jq -r '.pull_request.html_url'        < "$GITHUB_EVENT_PATH")
             BASE_REF=$(jq -r '.pull_request.base.ref'      < "$GITHUB_EVENT_PATH")
+            PR_BODY=$(jq -r '.pull_request.body'           < "$GITHUB_EVENT_PATH")
 
-            printf -v MSG '%s\n%s\n%s' \
+            # assemble a 4-line message: header / title / URL / body
+            printf -v MSG '%s\n%s\n%s\n\n%s' \
               "📦 PR #${PR_NUMBER} merged into **${BASE_REF}** by **${MERGER}**" \
               "**${PR_TITLE}**" \
-              "${PR_URL}"
+              "${PR_URL}" \
+              "${PR_BODY}"
           else
-            # ----- metadata for a direct push -----
+            # direct push metadata
             SHORT_SHA=${GITHUB_SHA::7}
             AUTHOR=$(git show -s --format='%an' "$GITHUB_SHA")
             REF_NAME=${GITHUB_REF#refs/heads/}
@@ -48,8 +51,8 @@ jobs:
               "${COMMIT_URL}"
           fi
 
-          # compact JSON for Discord and expose as output
-          JSON=$(jq -n -c --arg content "$MSG" '{content:$content}')
+          # wrap in compact JSON and expose
+          JSON=$(jq -n -c --arg content "$MSG" '{content: $content}')
           echo "json=$JSON" >> "$GITHUB_OUTPUT"
 
       - name: Validate JSON
