@@ -1,8 +1,18 @@
 # 1) Enable pybind11's modern Python finder (auto-locates headers & libpython)
 set(PYBIND11_FINDPYTHON ON)
 
-# 2) Locate pybind11 (system first, else fetch from GitHub)
+# ─────────────────────────────────────────────────────────────
+# 2) Binding Sources: Specify all C++ files for the pyfastlanes extension
+# ─────────────────────────────────────────────────────────────
+set(FLS_BINDING_SRC
+        bindings/init_binding.cpp
+        bindings/connection_binding.cpp
+        bindings/table_reader_binding.cpp
 )
+
+# ─────────────────────────────────────────────────────────────
+# 3) Extension Build: Locate pybind11 & declare the _fastlanes Python module
+# ─────────────────────────────────────────────────────────────
 find_package(pybind11 CONFIG QUIET)
 if (NOT TARGET pybind11::pybind11)
     include(FetchContent)
