@@ -202,7 +202,7 @@ fsst_decompress(fsst_decoder_t* decoder, /* IN: use this symbol table for compre
 			}
 		}
 	}
-	if (pos_out + 24 <= size) { // handle the possibly 3 last bytes without a loop
+	if (pos_out + 32 <= size) { // handle the possibly 3 last bytes without a loop
 		if (pos_in + 2 <= len_in) {
 			str_out[pos_out] = str_in[pos_in + 1];
 			if (str_in[pos_in] != FSST_ESC) {
