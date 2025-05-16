@@ -1,17 +1,13 @@
-# ─────────────────────────────────────────────────────────────
-# Root Makefile
-# ─────────────────────────────────────────────────────────────
-SHELL := /usr/bin/env bash
-
-MK_DIR := mk
-
--include $(wildcard $(MK_DIR)/*.mk)
+# root Makefile
+include mk/preamble.mk   # echo helpers first
+include mk/python.mk     # defines $(ACTIVATE) $(PYTHON) $(PIP) …
+include mk/format.mk
+include mk/cpp.mk
+include mk/rust.mk
+include mk/data.mk       # uses $(ACTIVATE) and $(PIP)
 
 .PHONY: all clean
-
-all: build-cpp build-rust  # etc…
+all: build-cpp build-rust          # or whatever top-level build you need
 
 clean:
-	@$(MAKE) clean-cpp
-	@$(MAKE) clean-rust
-	@$(MAKE) clean-python
+	$(MAKE) clean-cpp clean-rust clean-python
