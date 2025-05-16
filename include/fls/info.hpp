@@ -18,6 +18,14 @@ public:
 		return lib_name;
 	}
 
+	static constexpr array<uint64_t, 3> get_all_versions() {
+		return {//
+		        //
+		        FASTLANES_VERSION_01,
+		        FASTLANES_VERSION_0_1_3_POST2,
+		        FASTLANES_VERSION_0_1_3_POST3};
+	}
+
 	// ──────────────────────────────────────────────────────────────
 	// MAGIC BYTES  (little-endian encoding of "FastLane")
 	//
@@ -53,20 +61,23 @@ public:
 	//
 	static constexpr uint64_t FASTLANES_VERSION_0_1_3_POST2 = 0x32502E332E312E30ULL;
 
-	static constexpr array<uint64_t, 2> get_all_versions() {
-		return {//
-		        //
-		        FASTLANES_VERSION_01,
-		        FASTLANES_VERSION_0_1_3_POST2};
-	}
+	// ──────────────────────────────────────────────────────────────
+	// VERSION TAG  (little-endian encoding of "0.1.3.P3")
+	//
+	// ASCII          :  0   .   1   .   3   .   P   3
+	// byte values    : 0x30 0x2E 0x31 0x2E 0x33 0x2E 0x50 0x33
+	// little-endian  : 0x33 0x50 0x2E 0x33 0x2E 0x31 0x2E 0x30
+	//                  = 0x33502E332E312E30
+	//
+	static constexpr uint64_t FASTLANES_VERSION_0_1_3_POST3 = 0x33502E332E312E30ULL;
 
 	static constexpr uint64_t get_version_bytes() {
-		return FASTLANES_VERSION_0_1_3_POST2;
+		return FASTLANES_VERSION_0_1_3_POST3;
 	}
 
 private:
 	static constexpr auto lib_name        = string_view("FastLanes");
-	static constexpr auto current_version = string_view("0.1.3.post2"); // smart entry point
+	static constexpr auto current_version = string_view("0.1.3.post3"); // smart entry point
 };
 
 } // namespace fastlanes

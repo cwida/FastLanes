@@ -15,7 +15,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pyfastlanes"
-version = "0.1.3.post2"
+version = "0.1.3.post3"
 description = "FastLanes File Format"
 readme = { file = "README.md", content-type = "text/markdown" }
 authors = [{ name = "Azim Afroozeh", email = "azim@cwi.nl" }]
