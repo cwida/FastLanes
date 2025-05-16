@@ -101,4 +101,8 @@ TEST_F(FastLanesReaderTester, DECIMAL_DOUBLES) {
 	TestCorrectness(GENERATED::DECIMAL_DOUBLES);
 }
 
+TEST_F(FastLanesReaderTester, SUBNORMALS) {
+	TestCorrectness(GENERATED::SUBNORMALS);
+}
+
 } // namespace fastlanes
