@@ -51,8 +51,27 @@ class NumberStringsProvider(BaseProvider):
         return random.choice(['1', '12', '123', '1234', '12345', '123456'])
 
 
+# ──────────────────────────────────────────────────────
+#  Provider for IEEE-754 subnormal float32 values
+# ──────────────────────────────────────────────────────
+class SubnormalProvider(BaseProvider):
+    def subnormal_str(self):
+        # A few representative subnormal decimal literals (float32)
+        subs = [
+            "1.401298464324817e-45",  # smallest subnormal
+            "2.802596928649634e-45",
+            "5.605193857299268e-45",
+            "1e-44",
+            "8.71226632e-39",  # just below normalized min
+            "5e-40",
+            "1e-39"
+        ]
+        return random.choice(subs)
+
+
 faker.add_provider(LanguageProvider)
 faker.add_provider(NumberStringsProvider)
+faker.add_provider(SubnormalProvider)
 
 
 # ---------------------------
@@ -83,10 +102,13 @@ def constant_u08(value):
 
 def map_value(row_id, map_info):
     original = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    original_plus = [10000000000000, 10000000000001, 10000000000002, 10000000000003, 10000000000004, 10000000000005,
-                     10000000000006, 10000000000007, 10000000000008, 10000000000009]
+    original_plus = [10000000000000, 10000000000001, 10000000000002,
+                     10000000000003, 10000000000004, 10000000000005,
+                     10000000000006, 10000000000007, 10000000000008,
+                     10000000000009]
 
-    str = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    str = ['zero', 'one', 'two', 'three', 'four', 'five',
+           'six', 'seven', 'eight', 'nine']
 
     chosen_list = []
     if map_info == "original":
@@ -241,9 +263,7 @@ def generate_x_plus_y_equal_z(faker, row_id):
 
 def generate_example_one(faker, row_id):
     NAMES = ["Azim", "Amir", "Ali", "Omid"]
-
     size_of_list = len(NAMES)
-
     return [
         NAMES[row_id % size_of_list],
     ]
@@ -251,9 +271,7 @@ def generate_example_one(faker, row_id):
 
 def generate_mostly_null(faker, row_id):
     NAMES = ["NULL"]
-
     size_of_list = len(NAMES)
-
     if row_id % 999 == 0:
         return [row_id + 1000]
     return [
@@ -263,9 +281,7 @@ def generate_mostly_null(faker, row_id):
 
 def generate_number_strings_func(faker, row_id):
     NAMES = ["1234", "12335", "135152215", "532552"]
-
     size_of_list = len(NAMES)
-
     return [
         NAMES[row_id % size_of_list],
     ]
@@ -273,9 +289,7 @@ def generate_number_strings_func(faker, row_id):
 
 def generate_decimal_doubles_func(faker, row_id):
     NAMES = ["123.0", "11.0", "105.0", "56.0"]
-
     size_of_list = len(NAMES)
-
     return [
         NAMES[row_id % size_of_list],
     ]
@@ -504,7 +518,20 @@ def generate_alp_dbl():
 
 def generate_specific_number_of_values(count):
     # one rowgroup
-    write_fls_i64_to_file('any_value_count/' + str(count), generate_fls_i64, count)
+    write_csv(Path.cwd() / '..' / 'data' / 'generated' / f'any_value_count/{count}',
+              generate_fls_i64, count)
+
+
+# ---------------------------
+# New subnormal CSV generator
+# ---------------------------
+def generate_subnormals():
+    """
+    Generate a CSV of pure subnormal float32 values (as decimal strings)
+    for testing denormal handling.
+    """
+    file = Path.cwd() / '..' / 'data' / 'generated' / 'subnormals'
+    write_csv(file, lambda faker, row_id: [faker.subnormal_str()], ROW_GROUP_SIZE)
 
 
 # ---------------------------
@@ -586,6 +613,7 @@ def main():
     generate_expression_data()
     generate_irregular_data()
     generate_any_value_count()
+    generate_subnormals()
 
 
 if __name__ == "__main__":
