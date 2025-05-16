@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FLS_DETAIL_PARSE_FP_HPP
+#define FLS_DETAIL_PARSE_FP_HPP
 
 #include "fls/std/string.hpp"
 #include <charconv> // for integer from_chars detection
@@ -19,3 +20,5 @@ template <typename FloatT>
 FloatT parse_fp(const std::string& s);
 
 } // namespace fastlanes::detail
+
+#endif // FLS_DETAIL_PARSE_FP_HPP

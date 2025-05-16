@@ -1,25 +1,20 @@
 #include "fls/detail/parse_fp.hpp"
-#include <charconv>    // for std::from_chars
-#include <cstdlib>     // for strtof / strtod
-#include <cerrno>      // for errno, ERANGE
-#include <limits>      // for numeric_limits
-#include <stdexcept>   // for exceptions
-#include <sstream>     // for fallback parsing
-#include <locale>      // for classic locale
+#include <cerrno>    // for errno, ERANGE
+#include <charconv>  // for std::from_chars
+#include <cstdlib>   // for strtof / strtod
+#include <limits>    // for numeric_limits
+#include <locale>    // for classic locale
+#include <sstream>   // for fallback parsing
+#include <stdexcept> // for exceptions
 
-namespace fastlanes {
-namespace detail {
+namespace fastlanes { namespace detail {
 
 template <typename FloatT>
-FloatT parse_fp(const std::string &s) {
+FloatT parse_fp(const std::string& s) {
 #if FASTLANES_HAS_FP_FROM_CHARS
 	// Fast path: C++20 from_chars for floats
-	FloatT value{};
-	auto rc = std::from_chars(
-		s.data(), s.data() + s.size(),
-		value,
-		std::chars_format::general
-	);
+	FloatT value {};
+	auto   rc = std::from_chars(s.data(), s.data() + s.size(), value, std::chars_format::general);
 	if (rc.ec == std::errc::invalid_argument)
 		throw std::invalid_argument("invalid floating-point literal: " + s);
 	if (rc.ec == std::errc::result_out_of_range)
@@ -27,9 +22,9 @@ FloatT parse_fp(const std::string &s) {
 	return value;
 #else
 	// Fallback: use strtof/strtod which handle subnormals correctly
-	errno = 0;
-	char *end = nullptr;
-	FloatT value{};
+	errno      = 0;
+	char*  end = nullptr;
+	FloatT value {};
 	if constexpr (std::is_same_v<FloatT, float>) {
 		value = strtof(s.c_str(), &end);
 	} else {
@@ -41,10 +36,7 @@ FloatT parse_fp(const std::string &s) {
 		throw std::invalid_argument("invalid floating-point literal: " + s);
 	}
 	// Overflow check: strto* sets errno==ERANGE only on true overflow
-	if (errno == ERANGE &&
-	   (value == static_cast<FloatT>(HUGE_VAL) ||
-		value == static_cast<FloatT>(-HUGE_VAL)))
-	{
+	if (errno == ERANGE && (value == static_cast<FloatT>(HUGE_VAL) || value == static_cast<FloatT>(-HUGE_VAL))) {
 		throw std::out_of_range("floating-point out of representable range: " + s);
 	}
 	return value;
@@ -52,8 +44,7 @@ FloatT parse_fp(const std::string &s) {
 }
 
 // Explicit instantiations for float and double:
-template float parse_fp<float>(const string &);
-template double parse_fp<double>(const string &);
+template float  parse_fp<float>(const string&);
+template double parse_fp<double>(const string&);
 
-} // namespace detail
-} // namespace fastlanes
+}} // namespace fastlanes::detail
