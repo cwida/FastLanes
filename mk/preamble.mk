@@ -1,3 +1,6 @@
+ifndef PREAMBLE_MK_INCLUDED
+PREAMBLE_MK_INCLUDED := yes
+
 # mk/preamble.mk — Helpers for colored echo + root paths
 
 define echo_done
@@ -15,13 +18,13 @@ CRATE_ROOT  := $(REPO_ROOT)/rust
 
 # ── Parallelism ────────────────────────────────────────────────────
 
-NUM_JOBS := $(shell                            \
-	if command -v nproc >/dev/null 2>&1; then  \
-		nproc --all;                         \
-	elif command -v sysctl >/dev/null 2>&1; then \
-		sysctl -n hw.logicalcpu;            \
-	else                                      \
-		echo $${NUMBER_OF_PROCESSORS:-1};   \
+NUM_JOBS := $(shell                                                  \
+	if command -v nproc >/dev/null 2>&1; then                             \
+		nproc --all;                                                   \
+	elif command -v sysctl >/dev/null 2>&1; then                          \
+		sysctl -n hw.logicalcpu;                                       \
+	else                                                                  \
+		echo $${NUMBER_OF_PROCESSORS:-1};                               \
 	fi)
 
 # ── Exports & Info ─────────────────────────────────────────────────
@@ -39,3 +42,5 @@ endif
 .PHONY: detect-cpu
 detect-cpu:
 	@echo "BUILD_THREADS=$(NUM_JOBS)"
+
+endif
