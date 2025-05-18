@@ -1,9 +1,8 @@
-# .github/workflows/install-cpp.yml
+name: C++ Install
 run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
-name: C++ Install Only
 
 on:
   push:

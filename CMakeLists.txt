@@ -24,6 +24,8 @@ add_compile_definitions(NOMINMAX)
 
 # Project : ------------------------------------------------------------------------------------------------------------
 project(FastLanes)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -258,30 +260,10 @@ if (FLS_ENABLE_IWYU)
     endif ()
 endif ()
 
+# Verbose : ------------------------------------------------------------------------------------------------------------
 if (FLS_ENABLE_VERBOSE_OUTPUT)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("-- FLS: Verbose Enabled:")
-
-    cmake_print_variables(
-            CMAKE_SYSTEM_PROCESSOR
-            CMAKE_SYSTEM_NAME
-            CMAKE_VERSION
-            CMAKE_BUILD_TYPE
-            CMAKE_CXX_COMPILER
-            CMAKE_CXX_COMPILER_VERSION
-            CMAKE_CXX_STANDARD
-            CMAKE_SYSTEM
-            CMAKE_HOST_SYSTEM_NAME
-            CMAKE_HOST_SYSTEM_PROCESSOR
-            CMAKE_GENERATOR
-            CMAKE_BINARY_DIR
-            CMAKE_SOURCE_DIR
-            CMAKE_LINKER
-            CMAKE_CXX_FLAGS
-            CMAKE_C_FLAGS
-            CMAKE_CROSSCOMPILING
-            CMAKE_CXX_FLAGS_DEBUG
-    )
+    include(verbose_options)
+    print_verbose_options()
 endif ()
 
 # Benchmark : ----------------------------------------------------------------------------------------------------------
@@ -345,7 +327,7 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/playground/CMakeLists.txt")
 endif ()
 # Python : -------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_PYTHON)
-    message("-------------------------------------------------------------")
+    message("----------------------------------------------------------------------------------------------------------")
     message("- FLS: Building FastLanes Python Extension")
 
     add_subdirectory(python)   # your module’s CMakeLists.txt
