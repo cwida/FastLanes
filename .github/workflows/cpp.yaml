@@ -19,21 +19,25 @@ concurrency:
 # Global env (tweak once, use everywhere)
 env:
   CMAKE_GENERATOR: Ninja            # much faster than Makefiles
-  # BUILD_THREADS will be detected dynamically per‑job
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────────
-  # 1️⃣  Format‑check (quick)
+  # 1️⃣  Format-check (quick)
   # ──────────────────────────────────────────────────────────────────────────────
   check-format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        shell: bash
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+
       - name: Run format check
         run: make format-check
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 2️⃣  Main build + clang-tidy (Linux + macOS + Windows)
+  # 2️⃣  Main build + clang-tidy (Linux + macOS)
   # ──────────────────────────────────────────────────────────────────────────────
   build:
     needs: check-format
@@ -48,18 +52,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Detect the maximum available cores/threads (cross‑platform)
       - name: Detect CPU count
-        id: cpu
         shell: bash
-        run: |
-          if command -v nproc &>/dev/null; then
-            echo "BUILD_THREADS=$(nproc --all)" >> "$GITHUB_ENV"
-          elif command -v sysctl &>/dev/null; then
-            echo "BUILD_THREADS=$(sysctl -n hw.logicalcpu)" >> "$GITHUB_ENV"
-          else
-            echo "BUILD_THREADS=${NUMBER_OF_PROCESSORS:-1}" >> "$GITHUB_ENV"
-          fi
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -101,12 +96,7 @@ jobs:
   #
   #      - name: Detect CPU count
   #        shell: bash
-  #        run: |
-  #          if command -v nproc &>/dev/null; then
-  #            echo "BUILD_THREADS=$(nproc --all)" >> "$GITHUB_ENV"
-  #          else
-  #            echo "BUILD_THREADS=2" >> "$GITHUB_ENV"
-  #          fi
+  #        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
   #
   #      - name: Cache IWYU build
   #        uses: actions/cache@v4
@@ -129,7 +119,7 @@ jobs:
   #        run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 4️⃣  Synthetic‑dataset generator (Python, cached pip)
+  # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
   generate_dataset:
     strategy:
@@ -140,7 +130,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Not CPU‑bound, so no need for BUILD_THREADS
+      - name: Detect CPU count
+        shell: bash
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
@@ -167,18 +159,9 @@ jobs:
         with:
           submodules: recursive
 
-      # Detect CPU count
       - name: Detect CPU count
-        id: cpu
         shell: bash
-        run: |
-          if command -v nproc &>/dev/null; then
-            echo "BUILD_THREADS=$(nproc --all)" >> "$GITHUB_ENV"
-          elif command -v sysctl &>/dev/null; then
-            echo "BUILD_THREADS=$(sysctl -n hw.logicalcpu)" >> "$GITHUB_ENV"
-          else
-            echo "BUILD_THREADS=${NUMBER_OF_PROCESSORS:-1}" >> "$GITHUB_ENV"
-          fi
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -203,7 +186,7 @@ jobs:
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
-        run: cmake --build "build_${{ matrix.build_type }}" --parallel $BUILD_THREADS
+        run: cmake --build "build_${{ matrix.build_type }}" --parallel
 
       - name: Run cpp_example
         run: |
@@ -235,16 +218,8 @@ jobs:
           submodules: recursive
 
       - name: Detect CPU count
-        id: cpu
         shell: bash
-        run: |
-          if command -v nproc &>/dev/null; then
-            echo "BUILD_THREADS=$(nproc --all)" >> "$GITHUB_ENV"
-          elif command -v sysctl &>/dev/null; then
-            echo "BUILD_THREADS=$(sysctl -n hw.logicalcpu)" >> "$GITHUB_ENV"
-          else
-            echo "BUILD_THREADS=${NUMBER_OF_PROCESSORS:-1}" >> "$GITHUB_ENV"
-          fi
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
@@ -289,18 +264,9 @@ jobs:
         with:
           submodules: recursive
 
-      # Detect CPU count
       - name: Detect CPU count
-        id: cpu
         shell: bash
-        run: |
-          if command -v nproc &>/dev/null; then
-            echo "BUILD_THREADS=$(nproc --all)" >> "$GITHUB_ENV"
-          elif command -v sysctl &>/dev/null; then
-            echo "BUILD_THREADS=$(sysctl -n hw.logicalcpu)" >> "$GITHUB_ENV"
-          else
-            echo "BUILD_THREADS=${NUMBER_OF_PROCESSORS:-1}" >> "$GITHUB_ENV"
-          fi
+        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
       # ───────────────────────────────────────────────────────────────
       # Use the same LLVM toolchain as the other jobs (clang-18 today)
