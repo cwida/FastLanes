@@ -300,34 +300,29 @@ jobs:
           echo "✅ Found install include directory; installed headers:"
           find "$INSTALL_INCLUDE" -type f -print
 
-          # 3) build a list of every .h/.hpp under your source include/
-          mapfile -t expected_headers < <(
+          # 3) walk every .h/.hpp under your source include/, check its counterpart
+          missing=()
+          while IFS= read -r -d '' src; do
+            # strip leading "./"
+            rel="${src#./}"
+            if [[ ! -f "$INSTALL_INCLUDE/$rel" ]]; then
+              missing+=("$rel")
+            fi
+          done < <(
             cd "$SOURCE_INCLUDE"
-            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0 \
-            | while IFS= read -r -d '' f; do
-                # strip leading "./"
-                printf '%s\n' "${f#./}"
-              done
+            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0
           )
 
-          # 4) verify each one made it into the install tree
-          missing=()
-          for hdr in "${expected_headers[@]}"; do
-            if [[ ! -f "$INSTALL_INCLUDE/$hdr" ]]; then
-              missing+=("$hdr")
-            fi
-          done
-
+          # 4) report & fail if anything’s missing
           if (( ${#missing[@]} > 0 )); then
             echo "❌ Missing expected header(s):"
-            for m in "${missing[@]}"; do
-              echo "   • $m"
+            for hdr in "${missing[@]}"; do
+              echo "   • $hdr"
             done
             exit 1
           fi
 
           echo "✅ All expected headers are present."
-      
 
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
