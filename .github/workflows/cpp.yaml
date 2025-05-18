@@ -282,6 +282,26 @@ jobs:
           cmake "${CMAKE_ARGS[@]}"
           cmake --build build --target install -j $BUILD_THREADS
 
+      - name: Verify installed header files
+        shell: bash
+        run: |
+          # fail if the include directory is missing
+          if [ ! -d build/install/include ]; then
+            echo "❌ Error: install/include directory not found"
+            exit 1
+          fi
+          # list out what actually got installed
+          echo "✅ Found include directory; installed headers:"
+          find build/install/include -type f -print
+          # (optional) check for specific expected headers:
+          for hdr in foo.h bar.hpp baz/detail/qux.h; do
+            if [ ! -f build/install/include/$hdr ]; then
+              echo "❌ Missing expected header: $hdr"
+              exit 1
+            fi
+          done
+          echo "✅ All expected headers are present."
+
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
         with:
