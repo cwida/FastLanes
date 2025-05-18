@@ -3,10 +3,8 @@ run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
-
 on:
   push:
-    branches: [ main ]
   pull_request:
 
 jobs:
@@ -42,8 +40,7 @@ jobs:
 
       - name: Build & install FastLanes (C++)
         run: make install
-        # this will run the `install` target from your root Makefile,
-        # which includes mk/cpp.mk and stages into build/install
+        # Runs your top‐level `install` target (mk/cpp.mk) which stages into build/install
         shell: bash
 
       - name: Upload C++ install tree
