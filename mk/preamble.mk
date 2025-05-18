@@ -13,29 +13,35 @@ endef
 
 # ── Root paths ─────────────────────────────────────────────────────
 
-REPO_ROOT   := $(patsubst %/,%,$(abspath $(dir $(lastword $(MAKEFILE_LIST)))))
-CRATE_ROOT  := $(REPO_ROOT)/rust
+# if that directory’s name is “mk”, repo-root is its parent; else it is itself
+ifeq ($(notdir $(MKFILE_PATH)),mk)
+REPO_ROOT := $(abspath $(MKFILE_PATH)/..)
+else
+REPO_ROOT := $(MKFILE_PATH)
+endif
+
+# CRATE_ROOT always under repo
+CRATE_ROOT := $(REPO_ROOT)/rust
 
 # ── Parallelism ────────────────────────────────────────────────────
-
-NUM_JOBS := $(shell                                                  \
-	if command -v nproc >/dev/null 2>&1; then                             \
-		nproc --all;                                                   \
-	elif command -v sysctl >/dev/null 2>&1; then                          \
-		sysctl -n hw.logicalcpu;                                       \
-	else                                                                  \
-		echo $${NUMBER_OF_PROCESSORS:-1};                               \
+NUM_JOBS := $(shell                            \
+	if command -v nproc >/dev/null 2>&1; then  \
+	  nproc --all;                           \
+	elif command -v sysctl >/dev/null 2>&1; then \
+	  sysctl -n hw.logicalcpu;              \
+	else                                      \
+	  echo $${NUMBER_OF_PROCESSORS:-1};     \
 	fi)
 
 # ── Exports & Info ─────────────────────────────────────────────────
 
 export REPO_ROOT CRATE_ROOT NUM_JOBS
 
-# Don’t print when we're only running detect-cpu
+# only print during normal runs
 ifneq ($(MAKECMDGOALS),detect-cpu)
-$(info REPO_ROOT:  $(REPO_ROOT))
-$(info CRATE_ROOT: $(CRATE_ROOT))
-$(info NUM_JOBS:   $(NUM_JOBS))
+$(info REPO_ROOT:   $(REPO_ROOT))
+$(info CRATE_ROOT:  $(CRATE_ROOT))
+$(info NUM_JOBS:    $(NUM_JOBS))
 endif
 
 # ── CI helper ─────────────────────────────────────────────────────
@@ -43,4 +49,4 @@ endif
 detect-cpu:
 	@echo "BUILD_THREADS=$(NUM_JOBS)"
 
-endif
+endif # PREAMBLE_MK_INCLUDED

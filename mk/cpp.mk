@@ -23,7 +23,7 @@ CMAKE_FLAGS  ?= \
 CMAKE_BUILD  ?= $(CMAKE) --build $(PROJECT_ROOT)/$(BUILD_DIR) --parallel $(NUM_JOBS)
 
 # 5) Targets
-.PHONY: build-cpp install clean-cpp
+.PHONY: build-cpp install-cpp clean-cpp
 
 build-cpp:
 	$(call echo_start,Configuring & building C++ (Release, verbose, $(NUM_JOBS) jobs)…)
@@ -33,7 +33,7 @@ build-cpp:
 	  $(CMAKE_BUILD)
 	$(call echo_done,C++ build complete.)
 
-install: build-cpp
+install-cpp: build-cpp
 	$(call echo_start,Installing C++ library to $(PREFIX) (using $(NUM_JOBS) jobs)…)
 	$(CMAKE) --install $(PROJECT_ROOT)/$(BUILD_DIR) \
 	            --prefix $(PREFIX) \
