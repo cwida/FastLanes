@@ -17,8 +17,15 @@ CRATE_ROOT  := $(REPO_ROOT)/rust
 
 # ── Parallelism ────────────────────────────────────────────────────
 
-# NUM_JOBS: number of online processors
-NUM_JOBS    := $(shell getconf _NPROCESSORS_ONLN)
+# NUM_JOBS: number of logical processors (Linux, macOS, Windows fallback)
+NUM_JOBS    := $(shell                                                  \
+  if command -v nproc >/dev/null 2>&1; then                               \
+    nproc --all;                                                         \
+  elif command -v sysctl >/dev/null 2>&1; then                            \
+    sysctl -n hw.logicalcpu;                                             \
+  else                                                                    \
+    echo $${NUMBER_OF_PROCESSORS:-1};                                     \
+  fi)
 
 # ── Exports & Info ─────────────────────────────────────────────────
 
@@ -35,12 +42,4 @@ $(info NUM_JOBS:   $(NUM_JOBS))
 #   suitable for appending directly to $GITHUB_ENV
 .PHONY: detect-cpu
 detect-cpu:
-	@{ \
-	if command -v nproc >/dev/null 2>&1; then \
-	  echo "BUILD_THREADS=$$(nproc --all)"; \
-	elif command -v sysctl >/dev/null 2>&1; then \
-	  echo "BUILD_THREADS=$$(sysctl -n hw.logicalcpu)"; \
-	else \
-	  echo "BUILD_THREADS=$${NUMBER_OF_PROCESSORS:-1}"; \
-	fi; \
-	}
+	@echo "BUILD_THREADS=$(NUM_JOBS)"

@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest , windows-latest ]
+        platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
@@ -75,7 +75,7 @@ jobs:
                 -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
-                -DFLS_ENABLE_CLANG_TIDY= ON \
+                -DFLS_ENABLE_CLANG_TIDY=ON \
                 -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build (clang-tidy runs automatically)
@@ -93,11 +93,9 @@ jobs:
   #
   #    steps:
   #      - uses: actions/checkout@v4
-  #
   #      - name: Detect CPU count
   #        shell: bash
   #        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
-  #
   #      - name: Cache IWYU build
   #        uses: actions/cache@v4
   #        with:
@@ -105,7 +103,6 @@ jobs:
   #          key: ${{ runner.os }}-iwyu-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
   #          restore-keys: |
   #            ${{ runner.os }}-iwyu-${{ matrix.build_type }}-
-  #
   #      - name: Configure (IWYU)
   #        run: |
   #          cmake -S ${{ github.workspace }} \
@@ -114,7 +111,6 @@ jobs:
   #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
   #                -DCMAKE_C_COMPILER=clang \
   #                -DCMAKE_CXX_COMPILER=clang++
-  #
   #      - name: Build (IWYU)
   #        run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
 
@@ -137,7 +133,6 @@ jobs:
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
 
-
   # ──────────────────────────────────────────────────────────────────────────────
   # 5️⃣  Example build & run
   # ──────────────────────────────────────────────────────────────────────────────
@@ -147,7 +142,6 @@ jobs:
         platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Release ]
         cxx: [ clang++ ]
-
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -177,12 +171,10 @@ jobs:
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
           )
-          
           # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
-          
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
@@ -202,10 +194,8 @@ jobs:
   test:
     strategy:
       matrix:
-        #        platform: [ ubuntu-latest, macos-latest, windows-latest ] // todo - enable  windows-latest
         platform: [ ubuntu-latest, macos-latest ]
         build_type: [ Release ]
-
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -238,12 +228,10 @@ jobs:
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER=clang++
           )
-
-          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN runtime mismatch
+          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
-
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build tests
@@ -253,6 +241,9 @@ jobs:
         working-directory: "test_build_${{ matrix.build_type }}"
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
 
+  # ──────────────────────────────────────────────────────────────────────────────
+  # 7️⃣  Install job
+  # ──────────────────────────────────────────────────────────────────────────────
   install:
     strategy:
       matrix:
@@ -268,15 +259,10 @@ jobs:
         shell: bash
         run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
 
-      # ───────────────────────────────────────────────────────────────
-      # Use the same LLVM toolchain as the other jobs (clang-18 today)
-      # ───────────────────────────────────────────────────────────────
+      # Use the same LLVM toolchain as the other jobs
       - name: Install LLVM toolchain
         uses: ./.github/actions/install-llvm
 
-      # ───────────────────────────────────────────────────────────────
-      # Configure, build and install with clang/clang++
-      # ───────────────────────────────────────────────────────────────
       - name: Configure + build + install
         shell: bash
         run: |
@@ -289,18 +275,13 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_INSTALL_PREFIX=build/install
           )
-
           # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
-
           cmake "${CMAKE_ARGS[@]}"
           cmake --build build --target install -j $BUILD_THREADS
 
-      # ───────────────────────────────────────────────────────────────
-      # Publish the install tree as an artifact
-      # ───────────────────────────────────────────────────────────────
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
         with:
