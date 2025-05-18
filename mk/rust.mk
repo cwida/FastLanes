@@ -1,32 +1,65 @@
-# mk/rust.mk — Rust build & test rules
+# mk/rust.mk — build/install Rust bindings after C++ is installed
+ifndef RUST_MK_INCLUDED
+RUST_MK_INCLUDED := yes
 
-# ── locate this makefile and compute the project root ─────────────
-MKFILE_PATH   := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-PROJECT_ROOT  := $(abspath $(MKFILE_PATH)/..)
+# ── common helpers and C++ rules ───────────────────────────────────
+include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/preamble.mk
+include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/cpp.mk
 
-# ── where your actual Rust crate is (so Cargo.toml lives there) ──
-# override it on the command line if your crate folder is named differently
-CRATE_DIR     ?= $(PROJECT_ROOT)/rust
-MANIFEST_PATH := $(CRATE_DIR)/Cargo.toml
-LOCK_FILE     := $(CRATE_DIR)/Cargo.lock
+# ── compute paths relative to this file’s directory ────────────────
+MK_DIR      := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+PROJECT_DIR := $(abspath $(MK_DIR)/..)
 
-CARGO ?= cargo
+# ── override crate root and install prefix ─────────────────────────
+CRATE_ROOT  := $(PROJECT_DIR)/rust
+PREFIX      := $(PROJECT_DIR)/build/install
 
-.PHONY: build-rust test clean-rust
+# ── config ─────────────────────────────────────────────────────────
+CARGO       ?= cargo
+C_ENV       := \
+  C_INCLUDE_PATH=$(PREFIX)/include \
+  LIBRARY_PATH=$(PREFIX)/lib \
+  CXXFLAGS=-I$(PREFIX)/include
 
-build-rust:
-	$(call echo_start,Building Rust crate in $(CRATE_DIR)…)
-	cd $(CRATE_DIR) && $(CARGO) build
-	$(call echo_done,Rust build complete.)
+# ── targets ────────────────────────────────────────────────────────
+.PHONY: build-rust install-rust clean-rust
 
-test: build-cpp build-rust
-	$(call echo_start,Running Rust tests…)
-	cd $(CRATE_DIR) && $(CARGO) test -- --nocapture
-	$(call echo_done,Rust tests complete.)
+# 1. Build Rust *after* C++ is installed
+build-rust: install-cpp
+	@echo "Building Rust crate (release, $(NUM_JOBS) jobs)…"
+	# point the C/C++ compiler at your freshly installed headers & libs
+	CXXFLAGS="-I$(PREFIX)/include" \
+	C_INCLUDE_PATH="$(PREFIX)/include" \
+	LIBRARY_PATH="$(PREFIX)/lib" \
+	$(CARGO) build --release \
+	  --manifest-path $(CRATE_ROOT)/Cargo.toml \
+	  --jobs $(NUM_JOBS)
+	@echo "Rust build complete."
 
+# 2. Install Rust *after* C++ is installed
+install-rust: install-cpp
+	$(call echo_start,Installing Rust crate …)
+	$(C_ENV) \
+	$(CARGO) install --path $(CRATE_ROOT) \
+	  --root $(PREFIX) \
+	  --jobs $(NUM_JOBS)
+	$(call echo_done,Rust install complete.)
+
+run-rust-example: build-rust
+	@echo "Running Rust example ‘rust_example’…"
+	# If your crate root is e.g. ./rust:
+	cd $(CRATE_ROOT) && \
+	C_INCLUDE_PATH="$(PREFIX)/include" \
+	LIBRARY_PATH="$(PREFIX)/lib" \
+	cargo run --example rust_example
+
+# 3. Clean Rust only (no C++!):
 clean-rust:
 	$(call echo_start,Cleaning Rust build…)
-	cd $(CRATE_DIR) && $(CARGO) clean
-	$(call echo_start,Removing Cargo.lock…)
-	rm -f $(LOCK_FILE)
+	$(CARGO) clean --manifest-path $(CRATE_ROOT)/Cargo.toml
 	$(call echo_done,Rust clean complete.)
+
+# 4. Top-level “clean” kills *both* C++ and Rust
+clean: clean-cpp clean-rust
+
+endif  # RUST_MK_INCLUDED
