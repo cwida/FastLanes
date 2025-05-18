@@ -24,7 +24,9 @@ jobs:
         run: |
           set -eo pipefail
 
-          if [[ "${{ github.event_name }}" == "pull_request_target" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+          if [[ "${{ github.event_name }}" == "pull_request_target" && \
+                "${{ github.event.action }}" == "closed" && \
+                "${{ github.event.pull_request.merged }}" == "true" ]]; then
             # merged PR metadata
             MERGER=$(jq -r '.pull_request.merged_by.login' < "$GITHUB_EVENT_PATH")
             PR_NUMBER=$(jq -r '.pull_request.number'       < "$GITHUB_EVENT_PATH")
@@ -51,6 +53,12 @@ jobs:
               "${COMMIT_URL}"
           fi
 
+          # enforce Discord's 2000-character limit (reserve 3 chars for “…”)
+          MAX=2000
+          if (( ${#MSG} > MAX )); then
+            MSG="${MSG:0:MAX-3}…"
+          fi
+
           # wrap in compact JSON and expose
           JSON=$(jq -n -c --arg content "$MSG" '{content: $content}')
           echo "json=$JSON" >> "$GITHUB_OUTPUT"
@@ -74,8 +82,9 @@ jobs:
       - name: Send Discord notification
         env:
           PAYLOAD: ${{ needs.build-json.outputs.json }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           curl -s -X POST \
                -H "Content-Type: application/json" \
                -d "$PAYLOAD" \
-               "${{ secrets.DISCORD_WEBHOOK_URL }}"
+               "$DISCORD_WEBHOOK_URL"
