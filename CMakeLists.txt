@@ -173,9 +173,6 @@ if (true)
     # Include : --------------------------------------------------------------------------------------------------------
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-    # External Include: -----------------------------------------------------------------------------------------------------
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/flatbuffers)
-
     # Primitives: ------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/primitives)
 
@@ -193,6 +190,16 @@ if (true)
             EXPORT FLSTargets
             FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
             NAMESPACE FLS::
+    )
+
+    install(
+            DIRECTORY
+            ${CMAKE_SOURCE_DIR}/include/     # your "include/fls/…" tree
+            DESTINATION
+            include                           # will land under <prefix>/include/fls/…
+            FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.hpp"
     )
 
 endif ()
