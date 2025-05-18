@@ -287,30 +287,32 @@ jobs:
         run: |
           set -euo pipefail
 
-          # where your source headers live vs where they should be installed
           SOURCE_INCLUDE=include
           INSTALL_INCLUDE=build/install/include
 
-          # 1) fail if the install include directory is missing
+          # 1) fail fast if the install tree isn't there
           if [[ ! -d "$INSTALL_INCLUDE" ]]; then
             echo "❌ Error: '$INSTALL_INCLUDE' directory not found"
             exit 1
           fi
 
-          # 2) list out what actually got installed
+          # 2) show what *did* get installed
           echo "✅ Found install include directory; installed headers:"
           find "$INSTALL_INCLUDE" -type f -print
 
-          # 3) build the list of all headers under SOURCE_INCLUDE
-          mapfile -t EXPECTED_HEADERS < <(
+          # 3) build a list of every .h/.hpp under your source include/
+          mapfile -t expected_headers < <(
             cd "$SOURCE_INCLUDE"
-            find . -type f \( -name '*.h' -o -name '*.hpp' \) \
-              | sed 's|^\./||'
+            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0 \
+            | while IFS= read -r -d '' f; do
+                # strip leading "./"
+                printf '%s\n' "${f#./}"
+              done
           )
 
-          # 4) check that each expected header exists in the install tree
+          # 4) verify each one made it into the install tree
           missing=()
-          for hdr in "${EXPECTED_HEADERS[@]}"; do
+          for hdr in "${expected_headers[@]}"; do
             if [[ ! -f "$INSTALL_INCLUDE/$hdr" ]]; then
               missing+=("$hdr")
             fi
@@ -318,11 +320,14 @@ jobs:
 
           if (( ${#missing[@]} > 0 )); then
             echo "❌ Missing expected header(s):"
-            printf '   • %s\n' "${missing[@]}"
+            for m in "${missing[@]}"; do
+              echo "   • $m"
+            done
             exit 1
           fi
 
           echo "✅ All expected headers are present."
+      
 
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
