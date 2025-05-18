@@ -31,7 +31,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       - name: Run format check
         run: make format-check
@@ -54,7 +54,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -95,7 +95,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - name: Detect CPU count
   #        shell: bash
-  #        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+  #        run: make detect-cpu >> "$GITHUB_ENV"
   #      - name: Cache IWYU build
   #        uses: actions/cache@v4
   #        with:
@@ -128,7 +128,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
@@ -155,7 +155,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -209,7 +209,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
@@ -257,7 +257,7 @@ jobs:
 
       - name: Detect CPU count
         shell: bash
-        run: make -f mk/preamble.mk detect-cpu >> "$GITHUB_ENV"
+        run: make detect-cpu >> "$GITHUB_ENV"
 
       # Use the same LLVM toolchain as the other jobs
       - name: Install LLVM toolchain
