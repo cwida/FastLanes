@@ -1,4 +1,4 @@
-name: CI
+name: CPP
 run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
@@ -231,3 +231,43 @@ jobs:
       - name: Run tests
         working-directory: "test_build_${{ matrix.build_type }}"
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
+
+  install-cpp:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3              # unchanged
+
+      - name: Install system dependencies on Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make cmake build-essential
+        shell: bash
+
+      - name: Install system dependencies on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install cmake make
+        shell: bash
+
+      - name: Install system dependencies on Windows
+        if: runner.os == 'Windows'
+        run: |
+          choco install make cmake -y
+        shell: powershell
+
+      - name: Build & install FastLanes (C++)
+        run: make install                     # top-level `install` target
+        shell: bash
+
+      - name: Upload C++ install tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlanes-cpp-install-${{ matrix.os }}
+          path: build/install
