@@ -38,7 +38,6 @@ editable.mode = "redirect"
 # CMake flags used for *every* build (editable, wheel, etc.)
 cmake.args = [
     "-DFLS_BUILD_PYTHON=ON",
-    "-DFLS_ENABLE_CLANG_TIDY=OFF",
     "-DFLS_ENABLE_VERBOSE_OUTPUT=ON"
 ]
 
