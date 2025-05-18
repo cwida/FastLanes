@@ -9,7 +9,9 @@ format:
 	docker run --rm -v "$$(pwd)":/app -w /app $(IMAGE) \
 	  bash -c "python3 scripts/run-clang-format.py \
 	    -r examples include src benchmark python test data/include \
-	    -i --exclude include/fls/json/nlohmann"
+	    -i \
+	    --exclude include/fls/json/nlohmann \
+	    --exclude include/flatbuffers"
 	$(call echo_done,Formatting complete.)
 
 clang-format:
@@ -19,7 +21,10 @@ clang-format:
 	           ln -s /usr/bin/clang-format-14 /usr/bin/clang-format && \
 	           python3 scripts/run-clang-format.py \
 	             -r examples include src benchmark test data/include python \
-	             -i --exclude include/fls/json/nlohmann"
+	             -i \
+	             --exclude include/fls/json/nlohmann \
+	             --exclude include/flatbuffers \
+	           "
 	$(call echo_done,clang-format run complete.)
 
 format-check:
