@@ -44,7 +44,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake build-essential pkg-config
 
-      - name: Build & run Rust example
+      - name: Build & run Rust example with Clang
         run: |
-          # now BUILD_THREADS is set in the env
+          export CC=clang
+          export CXX=clang++
           make -j $BUILD_THREADS run-rust-example
+
