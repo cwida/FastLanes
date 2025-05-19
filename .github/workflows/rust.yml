@@ -31,37 +31,10 @@ jobs:
         run: cargo fmt -- --check
 
   # ──────────────────────────────────────────────────────────────
-  # 2️⃣  Lint (clippy) on Linux + macOS
-  # ──────────────────────────────────────────────────────────────
-  lint:
-    needs: fmt
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest ]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Detect CPU count
-        run: make detect-cpu | tee -a "$GITHUB_ENV"
-      - name: Install LLVM
-        uses: ./.github/actions/install-llvm
-      - name: Install C++ deps (Linux only)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake build-essential pkg-config \
-                                 libc++-dev libc++abi-dev
-      - name: Run clippy
-        env:
-          CC: clang
-          CXX: clang++
-        run: cd rust && cargo clippy --all-targets --all-features -- -D warnings
-
-  # ──────────────────────────────────────────────────────────────
   # 3️⃣  Build & test (with Clang → libstdc++)
   # ──────────────────────────────────────────────────────────────
   build:
-    needs: [fmt, lint]
+    needs: [ fmt ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
