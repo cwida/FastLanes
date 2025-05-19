@@ -2,20 +2,20 @@ use fastlanes::{connect, inline_footer, read_csv, read_fls, to_csv, to_fls};
 use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
-    // 1) CARGO_MANIFEST_DIR == ".../fastlanes_copy/rust"
+    // 1) CARGO_MANIFEST_DIR == ".../fastlanes/rust"
     let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
 
-    // 2) repo_root == ".../fastlanes_copy"
+    // 2) repo_root == ".../fastlanes"
     let repo_root = manifest_dir
         .parent()
         .expect("rust/Cargo.toml must live one level down from repo root");
 
-    // 3) repo_root_dir_name == "fastlanes_copy"
+    // 3) repo_root_dir_name == "fastlanes"
     let repo_root_dir_name = repo_root
         .file_name()
         .and_then(|os| os.to_str())
         .expect("repo root folder must be valid UTF-8");
-    assert_eq!(repo_root_dir_name, "fastlanes_copy");
+    assert_eq!(repo_root_dir_name, "fastlanes_cy");
 
     // 4) build your real paths off of `repo_root`
     let csv_path = repo_root.join("data/generated/issues/issue_000");
