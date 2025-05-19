@@ -1,0 +1,33 @@
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Detect CPU count
+        shell: bash
+        run: |
+          # this prints BUILD_THREADS=<n>
+          make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Install C++ deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config
+
+      - name: Build & run Rust example
+        run: |
+          # now BUILD_THREADS is set in the env
+          make -j $BUILD_THREADS run-rust-example
