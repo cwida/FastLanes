@@ -10,3 +10,7 @@ rust::String get_version() {
     // rust::String has a constructor from const std::string&
     return rust::String(s);
 }
+
+std::unique_ptr<Connection> connect() {
+    return fastlanes::connect();
+}

@@ -1,5 +1,8 @@
-use fastlanes_version::get_version;
+use cxx::UniquePtr;
+use fastlanes::{get_version, connect, Connection};
 
 fn main() {
-    println!("Library version: {}", get_version());
+    let version = get_version();
+    let conn: UniquePtr<Connection> = connect();
+    println!("FastLanes version: {version}");
 }

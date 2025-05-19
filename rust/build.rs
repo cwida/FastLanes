@@ -13,7 +13,7 @@ fn main() {
         .include(&std::env::var("CARGO_MANIFEST_DIR").unwrap())
         // <-- find your own headers in ./src
         .file("bridge_shim.cpp")      // <-- implement get_version() here
-        .flag_if_supported("-std=c++17")
+        .flag_if_supported("-std=c++20")
         .compile("fastlanes_version");
 
     // 3) Tell rustc where to find & link the FastLanes library
