@@ -12,7 +12,7 @@ FMT_CMD := python3 scripts/run-clang-format.py \
            -r $(DIRS) \
            $(EXCLUDES)
 
-.PHONY: format clang-format format-check
+.PHONY: format clang-format format-check rust-format-check
 
 clang-format:
 	$(call echo_start,Running clang-format with Docker…)
@@ -29,3 +29,14 @@ format-check:
 	           ln -s /usr/bin/clang-format-14 /usr/bin/clang-format && \
 	           $(FMT_CMD)"
 	$(call echo_done,Formatting check complete.)
+
+
+rust-format-check:
+	$(call echo_start,Checking Rust formatting in rust/…)
+	@cd ../rust && cargo fmt -- --check
+	$(call echo_done,Rust formatting check complete.)
+
+rust-format:
+	$(call echo_start,Formatting Rust code in rust/…)
+	@cd ../rust && cargo fmt
+	$(call echo_done,Rust formatting complete.)

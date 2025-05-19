@@ -13,16 +13,12 @@ mod ffi {
         // free functions again – one explicit lifetime ties
         // the input & output pins together
         fn inline_footer<'a>(c: Pin<&'a mut Connection>) -> Pin<&'a mut Connection>;
-        fn read_csv<'a>   (c: Pin<&'a mut Connection>, dir: &'a str)
-                           -> Pin<&'a mut Connection>;
-        fn to_fls<'a>     (c: Pin<&'a mut Connection>, out: &'a str)
-                           -> Pin<&'a mut Connection>;
+        fn read_csv<'a>(c: Pin<&'a mut Connection>, dir: &'a str) -> Pin<&'a mut Connection>;
+        fn to_fls<'a>(c: Pin<&'a mut Connection>, out: &'a str) -> Pin<&'a mut Connection>;
 
-        fn read_fls<'a>(c: Pin<&'a mut Connection>, p: &'a str)
-                        -> UniquePtr<TableReader>;
+        fn read_fls<'a>(c: Pin<&'a mut Connection>, p: &'a str) -> UniquePtr<TableReader>;
 
-        fn to_csv<'a>(r: Pin<&'a mut TableReader>, p: &'a str)
-                      -> Pin<&'a mut TableReader>;
+        fn to_csv<'a>(r: Pin<&'a mut TableReader>, p: &'a str) -> Pin<&'a mut TableReader>;
     }
 }
 
@@ -43,7 +39,7 @@ pub fn get_version() -> String {
 pub use ffi::{
     inline_footer,
     read_csv,
+    read_fls, // <-- new
+    to_csv,   // <-- new
     to_fls,
-    read_fls,      // <-- new
-    to_csv,        // <-- new
 };

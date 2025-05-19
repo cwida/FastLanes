@@ -1,5 +1,5 @@
+use fastlanes::{connect, inline_footer, read_csv, read_fls, to_csv, to_fls};
 use std::path::PathBuf;
-use fastlanes::{connect, inline_footer, read_csv, to_fls, read_fls, to_csv};
 
 fn main() -> anyhow::Result<()> {
     // 1) CARGO_MANIFEST_DIR == ".../fastlanes_copy/rust"
@@ -24,16 +24,15 @@ fn main() -> anyhow::Result<()> {
 
     // 5) now call into C++
     let mut conn = connect();
-    let mut pin  = conn.pin_mut();
+    let mut pin = conn.pin_mut();
 
     inline_footer(pin.as_mut());
-    read_csv    (pin.as_mut(), csv_path.to_str().unwrap());
-    to_fls      (pin.as_mut(), fls_path.to_str().unwrap());
-
+    read_csv(pin.as_mut(), csv_path.to_str().unwrap());
+    to_fls(pin.as_mut(), fls_path.to_str().unwrap());
 
     // NEW ----------------------------------------------------
-    let mut rdr  = read_fls(pin.as_mut(),  fls_path.to_str().unwrap());
-    to_csv(rdr.pin_mut(),               decoded_csv_path.to_str().unwrap());
+    let mut rdr = read_fls(pin.as_mut(), fls_path.to_str().unwrap());
+    to_csv(rdr.pin_mut(), decoded_csv_path.to_str().unwrap());
     //---------------------------------------------------------
 
     println!("✓ everything finished");
