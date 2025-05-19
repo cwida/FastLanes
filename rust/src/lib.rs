@@ -5,6 +5,7 @@ mod ffi {
     unsafe extern "C++" {
         include!("bridge_shim.hpp");
         type Connection;
+        type TableReader;
 
         fn connect() -> UniquePtr<Connection>;
         fn get_version() -> String;
@@ -16,6 +17,12 @@ mod ffi {
                            -> Pin<&'a mut Connection>;
         fn to_fls<'a>     (c: Pin<&'a mut Connection>, out: &'a str)
                            -> Pin<&'a mut Connection>;
+
+        fn read_fls<'a>(c: Pin<&'a mut Connection>, p: &'a str)
+                        -> UniquePtr<TableReader>;
+
+        fn to_csv<'a>(r: Pin<&'a mut TableReader>, p: &'a str)
+                      -> Pin<&'a mut TableReader>;
     }
 }
 
@@ -33,4 +40,10 @@ pub fn get_version() -> String {
     ffi::get_version()
 }
 
-pub use ffi::{inline_footer, read_csv, to_fls};   // add this near the bottom
+pub use ffi::{
+    inline_footer,
+    read_csv,
+    to_fls,
+    read_fls,      // <-- new
+    to_csv,        // <-- new
+};

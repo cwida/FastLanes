@@ -1,5 +1,5 @@
 use std::path::PathBuf;
-use fastlanes::{connect, inline_footer, read_csv, to_fls};
+use fastlanes::{connect, inline_footer, read_csv, to_fls, read_fls, to_csv};
 
 fn main() -> anyhow::Result<()> {
     // 1) CARGO_MANIFEST_DIR == ".../fastlanes_copy/rust"
@@ -20,6 +20,7 @@ fn main() -> anyhow::Result<()> {
     // 4) build your real paths off of `repo_root`
     let csv_path = repo_root.join("data/generated/issues/issue_000");
     let fls_path = repo_root.join("data/fls/written_by_rust.fls");
+    let decoded_csv_path = repo_root.join("data/fls/decoded_by_fastlanes_rs.csv");
 
     // 5) now call into C++
     let mut conn = connect();
@@ -29,6 +30,12 @@ fn main() -> anyhow::Result<()> {
     read_csv    (pin.as_mut(), csv_path.to_str().unwrap());
     to_fls      (pin.as_mut(), fls_path.to_str().unwrap());
 
-    println!("ok — finished (repo root was “{}”)", repo_root_dir_name);
+
+    // NEW ----------------------------------------------------
+    let mut rdr  = read_fls(pin.as_mut(),  fls_path.to_str().unwrap());
+    to_csv(rdr.pin_mut(),               decoded_csv_path.to_str().unwrap());
+    //---------------------------------------------------------
+
+    println!("✓ everything finished");
     Ok(())
 }
