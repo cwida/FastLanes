@@ -86,7 +86,7 @@ public:
 	const PT*            Data(n_t vec_idx);
 	static constexpr n_t GetSizeOfOneVector();
 	void                 PointTo(const n_t a_vec_n) {
-		                this->m_vec_idx = a_vec_n;
+        this->m_vec_idx = a_vec_n;
 	}
 	[[nodiscard]] n_t TotalSize() const;
 	const uint8_t*    NullMap() const;
@@ -141,12 +141,12 @@ public:
 	[[nodiscard]] len_t*    Length() const;
 	void                    PointTo(const n_t a_vec_n);
 	static constexpr n_t    GetSizeOfOneVector() {
-		   return sizeof(ofs_t) * CFG::VEC_SZ;
+        return sizeof(ofs_t) * CFG::VEC_SZ;
 	}
 	[[nodiscard]] uint8_t**     FsstString() const;
 	[[nodiscard]] len_t*        FSSTLength() const;
 	[[nodiscard]] fls_string_t* String() const;
-	const n_t                   GetNTuples() const;
+	[[nodiscard]] n_t           GetNTuples() const;
 
 public:
 	uint8_t**       string_p;

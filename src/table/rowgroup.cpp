@@ -728,7 +728,7 @@ fls_string_t* FlsStrColumnView::String() const {
 	return fls_string_p + (vec_idx * CFG::VEC_SZ);
 }
 
-const n_t FlsStrColumnView::GetNTuples() const {
+n_t FlsStrColumnView::GetNTuples() const {
 	return n_tuples;
 }
 

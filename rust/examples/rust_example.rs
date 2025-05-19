@@ -10,13 +10,6 @@ fn main() -> anyhow::Result<()> {
         .parent()
         .expect("rust/Cargo.toml must live one level down from repo root");
 
-    // 3) repo_root_dir_name == "fastlanes"
-    let repo_root_dir_name = repo_root
-        .file_name()
-        .and_then(|os| os.to_str())
-        .expect("repo root folder must be valid UTF-8");
-    assert_eq!(repo_root_dir_name, "fastlanes_cy");
-
     // 4) build your real paths off of `repo_root`
     let csv_path = repo_root.join("data/generated/issues/issue_000");
     let fls_path = repo_root.join("data/fls/written_by_rust.fls");
