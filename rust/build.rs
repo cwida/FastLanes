@@ -10,7 +10,7 @@ fn main() {
     // 2) Generate the cxx bridge & compile our shim.cpp
     cxx_build::bridge("src/lib.rs") // <-- your #[cxx::bridge] mod
         .include(&inc) // <-- find <fls/info.hpp>
-        .include(&std::env::var("CARGO_MANIFEST_DIR").unwrap())
+        .include(std::env::var("CARGO_MANIFEST_DIR").unwrap())
         // <-- find your own headers in ./src
         .file("bridge_shim.cpp") // <-- implement get_version() here
         .flag_if_supported("-std=c++20")
