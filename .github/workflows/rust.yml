@@ -1,14 +1,31 @@
-# .github/workflows/ci.yml
-name: CI
+# ──────────────────────────────────────────────────────────────────────────────
+# Rust CI workflow
+# Builds and runs the Rust example after C++ dependencies are installed
+# This file is included automatically by GitHub Actions
+# ──────────────────────────────────────────────────────────────────────────────
 
+name: Rust
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Events
+# ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
   pull_request:
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Jobs
+# ──────────────────────────────────────────────────────────────────────────────
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    # ──────────────────────────────────────────────────────────────────────────
+    # Steps
+    # ──────────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout
         uses: actions/checkout@v3
