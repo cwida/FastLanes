@@ -13,10 +13,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  # mirror detect-cpu into a JOBS env var so cargo/tests/etc can use it
-  CARGO_BUILD_JOBS: ${{ env.BUILD_THREADS }}
-
 jobs:
   # ──────────────────────────────────────────────────────────────
   # 1️⃣  Format‐check
@@ -58,7 +54,7 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings
 
   # ──────────────────────────────────────────────────────────────
-  # 3️⃣  Build & test (with Clang → libstdc++)
+  # 3️⃣  Build & test (with Clang → libc++)
   # ──────────────────────────────────────────────────────────────
   build:
     needs: [fmt, lint]
