@@ -70,8 +70,9 @@ install-rust: install-cpp
 publish-rust: install-cpp
 	$(call echo_start,Publishing Rust crate to crates.io…)
 	$(C_ENV) \
+	RUSTFLAGS="-L$(PREFIX)/lib" \
 	$(CARGO) publish --manifest-path $(CRATE_ROOT)/Cargo.toml
-	$(call echo_done,Rust crate published.)
+	$(call echo_done,Rust publish complete.)
 
 # Dry-run publish Rust crate to crates.io without uploading
 dry-run-rust: install-cpp
