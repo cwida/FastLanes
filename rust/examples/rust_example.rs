@@ -1,4 +1,4 @@
-use fastlanes::{connect, inline_footer, read_csv, read_fls, to_csv, to_fls};
+use fls_rs::{connect, inline_footer, read_csv, read_fls, to_csv, to_fls};
 use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
