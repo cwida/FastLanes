@@ -1,40 +1,85 @@
-# ──────────────────────────────────────────────────────────────────────────────
-# Rust CI workflow
-# Builds and runs the Rust example after C++ dependencies are installed
-# This file is included automatically by GitHub Actions
-# ──────────────────────────────────────────────────────────────────────────────
-
 name: Rust
 run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Events
-# ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
   pull_request:
+    branches: [ "main", "dev" ]
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Jobs
-# ──────────────────────────────────────────────────────────────────────────────
+# cancel redundant runs for the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # mirror detect-cpu into a JOBS env var so cargo/tests/etc can use it
+  CARGO_BUILD_JOBS: ${{ env.BUILD_THREADS }}
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  #  # ──────────────────────────────────────────────────────────────
+  #  # 1️⃣  Format‐check
+  #  # ──────────────────────────────────────────────────────────────
+  #  fmt:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - name: Detect CPU count
+  #        run: make detect-cpu | tee -a "$GITHUB_ENV"
+  #      - name: Check formatting
+  #        run: cargo fmt -- --check
 
-    # ──────────────────────────────────────────────────────────────────────────
-    # Steps
-    # ──────────────────────────────────────────────────────────────────────────
+  #  # ──────────────────────────────────────────────────────────────
+  #  # 2️⃣  Lint (clippy) on Linux + macOS
+  #  # ──────────────────────────────────────────────────────────────
+  #  lint:
+  #    needs: fmt
+  #    strategy:
+  #      matrix:
+  #        os: [ ubuntu-latest, macos-latest ]
+  #    runs-on: ${{ matrix.os }}
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - name: Detect CPU count
+  #        run: make detect-cpu | tee -a "$GITHUB_ENV"
+  #      - name: Install LLVM
+  #        uses: ./.github/actions/install-llvm
+  #      - name: Install C++ deps (Linux only)
+  #        if: matrix.os == 'ubuntu-latest'
+  #        run: |
+  #          sudo apt-get update
+  #          sudo apt-get install -y cmake build-essential pkg-config \
+  #                                 libc++-dev libc++abi-dev
+  #      - name: Run clippy
+  #        env:
+  #          CC: clang
+  #          CXX: clang++
+  #        run: cargo clippy --all-targets --all-features -- -D warnings
+
+  # ──────────────────────────────────────────────────────────────
+  # 3️⃣  Build & test (with Clang → libstdc++)
+  # ──────────────────────────────────────────────────────────────
+  build:
+    #    needs: [ fmt, lint ]
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Detect CPU count
-        shell: bash
-        run: |
-          # this prints BUILD_THREADS=<n>
-          make detect-cpu | tee -a "$GITHUB_ENV"
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/debug/deps
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -42,11 +87,23 @@ jobs:
       - name: Install C++ deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake build-essential pkg-config
+          sudo apt-get install -y cmake build-essential pkg-config \
+                                 libc++-dev libc++abi-dev
 
-      - name: Build & run Rust example with Clang
-        run: |
-          export CC=clang
-          export CXX=clang++
-          make -j $BUILD_THREADS run-rust-example
+      - name: Build & run Rust example
+        env:
+          CC: clang
+          CXX: clang++
+        run: make -j $BUILD_THREADS run-rust-example
 
+      - name: Run Rust tests
+        run: cargo test -- --test-threads $BUILD_THREADS
+
+  # ──────────────────────────────────────────────────────────────
+  # 4️⃣  (Optional) Publish docs or other post‐build steps…
+  # ──────────────────────────────────────────────────────────────
+  # deploy-docs:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     …
