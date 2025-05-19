@@ -20,10 +20,14 @@ jobs:
   fmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Detect CPU count
         run: make detect-cpu | tee -a "$GITHUB_ENV"
-      - name: Check formatting
+
+      - name: Check Rust formatting
+        working-directory: rust
         run: cargo fmt -- --check
 
   # ──────────────────────────────────────────────────────────────
@@ -51,16 +55,17 @@ jobs:
         env:
           CC: clang
           CXX: clang++
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: cd rust && cargo clippy --all-targets --all-features -- -D warnings
 
   # ──────────────────────────────────────────────────────────────
-  # 3️⃣  Build & test (with Clang → libc++)
+  # 3️⃣  Build & test (with Clang → libstdc++)
   # ──────────────────────────────────────────────────────────────
   build:
     needs: [fmt, lint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -93,7 +98,7 @@ jobs:
         run: make -j $BUILD_THREADS run-rust-example
 
       - name: Run Rust tests
-        run: cargo test -- --test-threads $BUILD_THREADS
+        run: cd rust && cargo test -- --test-threads $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────
   # 4️⃣  (Optional) Publish docs or other post‐build steps…
