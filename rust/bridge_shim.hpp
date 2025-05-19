@@ -1,11 +1,17 @@
+// bridge_shim.hpp
 #pragma once
 #include <rust/cxx.h>
 #include <memory>
-#include "fls/connection.hpp"  // this header puts `fastlanes::Connection` in scope
+#include <filesystem>
+#include "fls/connection.hpp"
 
-// **Bring the real class into the global namespace:**
 using Connection = fastlanes::Connection;
 
-// Expose exactly the Rust–C++ signatures you want:
+// factory + version
 rust::String get_version();
 std::unique_ptr<Connection> connect();
+
+// previously-added helpers
+inline Connection& inline_footer(Connection& c)               { return c.inline_footer(); }
+inline Connection& read_csv     (Connection& c, rust::Str dir){ return c.read_csv(std::filesystem::path(std::string(dir))); }
+inline Connection& to_fls       (Connection& c, rust::Str out){ return c.to_fls  (std::filesystem::path(std::string(out))); }

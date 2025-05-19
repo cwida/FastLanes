@@ -19,6 +19,9 @@ fn main() {
     // 3) Tell rustc where to find & link the FastLanes library
     println!("cargo:rustc-link-search=native={}", lib);
     println!("cargo:rustc-link-lib=static=FastLanes");
+    println!("cargo:rustc-link-lib=static=ALP");
+    println!("cargo:rustc-link-lib=static=primitives");
+    println!("cargo:rustc-link-lib=c++");                    // libc++
     // if you built a shared lib instead:
     // println!("cargo:rustc-link-lib=dylib=FastLanes");
 

@@ -1,18 +1,21 @@
 // lib.rs
 
 #[cxx::bridge]
-pub mod ffi {
+mod ffi {
     unsafe extern "C++" {
         include!("bridge_shim.hpp");
-
-        /// Opaque C++ Connection type
         type Connection;
 
-        /// Factory function from your C++ shim
         fn connect() -> UniquePtr<Connection>;
-
-        /// This returns a Rust String, not a C++ CxxString
         fn get_version() -> String;
+
+        // free functions again – one explicit lifetime ties
+        // the input & output pins together
+        fn inline_footer<'a>(c: Pin<&'a mut Connection>) -> Pin<&'a mut Connection>;
+        fn read_csv<'a>   (c: Pin<&'a mut Connection>, dir: &'a str)
+                           -> Pin<&'a mut Connection>;
+        fn to_fls<'a>     (c: Pin<&'a mut Connection>, out: &'a str)
+                           -> Pin<&'a mut Connection>;
     }
 }
 
@@ -29,3 +32,5 @@ pub fn connect() -> UniquePtr<Connection> {
 pub fn get_version() -> String {
     ffi::get_version()
 }
+
+pub use ffi::{inline_footer, read_csv, to_fls};   // add this near the bottom
