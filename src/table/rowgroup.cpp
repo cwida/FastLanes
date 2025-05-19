@@ -648,7 +648,7 @@ const uint8_t* TypedColumnView<PT>::NullMap() const {
 }
 
 template <typename PT>
-const n_t TypedColumnView<PT>::GetNTuples() const {
+n_t TypedColumnView<PT>::GetNTuples() const {
 	return n_tuples;
 }
 
