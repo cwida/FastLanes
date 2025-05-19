@@ -1,5 +1,5 @@
 [package]
-name = "fastlanes"
+name = "fastlanes-rs"
 version = "0.1.0"
 edition = "2021"
 authors = ["Azim Afroozeh <afroozeh3@gmail.com>"]
