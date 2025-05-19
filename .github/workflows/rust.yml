@@ -78,6 +78,12 @@ jobs:
           cd rust
           cargo test -- --test-threads $BUILD_THREADS
 
+      - name: Dry-run publish check
+        env:
+          CC: clang
+          CXX: clang++
+        run: make -j $BUILD_THREADS dry-run-rust
+
   # ──────────────────────────────────────────────────────────────
   # 4️⃣  (Optional) Publish docs or other post‐build steps…
   # ──────────────────────────────────────────────────────────────

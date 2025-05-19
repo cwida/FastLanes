@@ -3,10 +3,12 @@
 # This file is auto-included by the root Makefile:
 #   no need to invoke with “-f mk/rust.mk”
 # Usage:
-#   make build-rust      # build Rust crate (release) after C++ install
-#   make install-rust    # install Rust crate after C++ install
-#   make run-rust-example # build + run the “rust_example”
-#   make clean-rust      # clean only Rust build artifacts
+#   make build-rust            # build Rust crate (release) after C++ install
+#   make install-rust          # install Rust crate after C++ install
+#   make run-rust-example      # build + run the “rust_example”
+#   make publish-rust          # publish Rust crate to crates.io
+#   make dry-run-rust          # dry run publish to test before actual upload
+#   make clean-rust            # clean only Rust build artifacts
 # ─────────────────────────────────────────────────────────────
 
 ifndef RUST_MK_INCLUDED
@@ -42,7 +44,7 @@ C_ENV       := \
 # ─────────────────────────────────────────────────────────────
 # Targets
 # ─────────────────────────────────────────────────────────────
-.PHONY: build-rust install-rust run-rust-example clean-rust clean
+.PHONY: build-rust install-rust run-rust-example publish-rust dry-run-rust clean-rust clean
 
 # Build Rust *after* C++ is installed
 build-rust: install-cpp
@@ -63,6 +65,21 @@ install-rust: install-cpp
 	  --root $(PREFIX) \
 	  --jobs $(NUM_JOBS)
 	$(call echo_done,Rust install complete.)
+
+# Publish Rust crate to crates.io
+publish-rust: install-cpp
+	$(call echo_start,Publishing Rust crate to crates.io…)
+	$(C_ENV) \
+	$(CARGO) publish --manifest-path $(CRATE_ROOT)/Cargo.toml
+	$(call echo_done,Rust crate published.)
+
+# Dry-run publish Rust crate to crates.io without uploading
+dry-run-rust: install-cpp
+	$(call echo_start,Performing dry run of publishing Rust crate…)
+	$(C_ENV) \
+	RUSTFLAGS="-L$(PREFIX)/lib" \
+	$(CARGO) publish --manifest-path $(CRATE_ROOT)/Cargo.toml --dry-run
+	$(call echo_done,Dry run complete.)
 
 # Build then run the “rust_example” in your crate
 run-rust-example: build-rust
