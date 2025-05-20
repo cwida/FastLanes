@@ -18,6 +18,9 @@ public:
 public:
 	up<RowgroupReader> operator[](n_t rowgroup_idx) const;
 	//
+	n_t get_n_rowgroups() const;
+	TableDescriptor& get_file_metadata() const;
+	//
 	[[nodiscard]] up<RowgroupReader> get_rowgroup_reader(n_t rowgroup_idx) const;
 	//
 	[[nodiscard]] up<Table> materialize() const;

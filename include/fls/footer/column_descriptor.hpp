@@ -45,7 +45,16 @@ public:
 	unordered_map<string, idx_t> name_idx_map;
 	///!
 	BinaryValue max;
-	///
+	/**
+	 * @brief Represents the offset (in bytes) of the column's data within the serialized buffer.
+	 *
+	 * This value is used to indicate the starting position of the column's data in a serialized storage
+	 * format. It is set during the serialization process and helps in locating and accessing the column's
+	 * data efficiently. The offset is relative to the beginning of the buffer.
+	 *
+	 * This member is read and written during serialization and deserialization processes, ensuring that
+	 * data integrity and structure are maintained during storage and retrieval operations.
+	 */
 	sz_t column_offset;
 	///
 	sz_t total_size;
