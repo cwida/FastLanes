@@ -17,13 +17,12 @@ up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) cons
 }
 
 n_t TableReader::get_n_rowgroups() const {
-	return m_table_descriptor->GetNRowgroups();
+	return m_table_descriptor->m_rowgroup_descriptors.size();
 }
 
-TableDescriptor& TableReader::get_file_metadata() const {
+TableDescriptorT& TableReader::get_file_metadata() const {
 	return *m_table_descriptor;
 };
-
 
 up<Table> TableReader::materialize() const {
 	auto table_up = std::make_unique<Table>(m_connection);
