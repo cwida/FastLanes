@@ -9,7 +9,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Buf;
-class SegmentDescriptor;
+struct SegmentDescriptorT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -58,7 +58,7 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_segment_view
 \*--------------------------------------------------------------------------------------------------------------------*/
-SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptor& segment_descriptor);
+SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptorT& segment_descriptor);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Segment
@@ -75,7 +75,7 @@ public:
 	//
 	void MakeTemporary();
 	//
-	up<SegmentDescriptor> Dump(Buf& external_buf, n_t& current_offset, uint8_t* entry_point_buffer) const;
+	up<SegmentDescriptorT> Dump(Buf& external_buf, n_t& current_offset, uint8_t* entry_point_buffer) const;
 	//
 	void MakeBlockBased();
 	//

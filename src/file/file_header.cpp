@@ -6,10 +6,10 @@
 
 namespace fastlanes {
 
-void FileHeader::Write(const Connection& connection, const path& dir_path) {
-	io file_io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // TODO[io]
-
+void FileHeader::Write(const Connection& connection, const path& file_path) {
+	io         file_io = make_unique<File>(file_path); // TODO[io]
 	FileHeader file_header {};
+
 	file_header.magic_bytes            = Info::get_magic_bytes();
 	file_header.version                = Info::get_version_bytes();
 	file_header.settings.inline_footer = connection.is_footer_inlined();

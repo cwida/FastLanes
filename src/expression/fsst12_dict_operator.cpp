@@ -33,7 +33,7 @@ struct FSST12DictExprVisitor {
 
 enc_fsst12_dict_opr::enc_fsst12_dict_opr(const PhysicalExpr& expr,
                                          const col_pt&       column,
-                                         ColumnDescriptor&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state)
     : col_view {column} {
 
@@ -49,7 +49,7 @@ enc_fsst12_dict_opr::enc_fsst12_dict_opr(const PhysicalExpr& expr,
 	fsst12_bytes_buf = make_unique<Buf>();
 	out_offset_buf   = make_unique<Buf>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
@@ -112,11 +112,11 @@ dec_fsst12_dict_opr<INDEX_PT>::dec_fsst12_dict_opr(const PhysicalExpr& physical_
                                                    const ColumnView&   column_view,
                                                    InterpreterState&   state)
     : fsst12_header_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
     , fsst12_bytes_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , fsst12_offset_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0]))
     , index_arr(nullptr) {
 
 	visit(FSST12DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);

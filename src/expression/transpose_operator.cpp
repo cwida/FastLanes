@@ -18,7 +18,7 @@ namespace fastlanes {
 template <typename PT>
 enc_transpose_opr<PT>::enc_transpose_opr(const PhysicalExpr& expr,
                                          const col_pt&       col,
-                                         ColumnDescriptor&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state) {
 
 	visit(overloaded {
@@ -31,7 +31,7 @@ enc_transpose_opr<PT>::enc_transpose_opr(const PhysicalExpr& expr,
 		          if constexpr (std::is_same_v<PT, ofs_t>) {
 			          data = opr->fsst_encoded_offset_arr + 1;
 			          opr->fsst_offset_segment->MakeTemporary();
-			          column_descriptor.encoding_rpn.operand_tokens.pop_back();
+			          column_descriptor.encoding_rpn->operand_tokens.pop_back();
 			          state.cur_operand -= 1;
 		          } else {
 			          FLS_UNREACHABLE();
@@ -41,7 +41,7 @@ enc_transpose_opr<PT>::enc_transpose_opr(const PhysicalExpr& expr,
 		          if constexpr (std::is_same_v<PT, ofs_t>) {
 			          data = opr->fsst12_encoded_offset_arr + 1;
 			          opr->fsst12_offset_segment->MakeTemporary();
-			          column_descriptor.encoding_rpn.operand_tokens.pop_back();
+			          column_descriptor.encoding_rpn->operand_tokens.pop_back();
 			          state.cur_operand -= 1;
 		          } else {
 			          FLS_UNREACHABLE();

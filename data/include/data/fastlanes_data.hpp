@@ -7,6 +7,7 @@
 #include "data/fc_bench.hpp"
 #include "data/generated.hpp"
 #include "data/issue.hpp"
+#include "data/issues.hpp"
 #include "data/public_bi.hpp"
 #include "data/sdrbench.hpp"
 #include "data/test.hpp"

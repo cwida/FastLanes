@@ -14,11 +14,11 @@ namespace fastlanes {
 template <typename KEY_PT, typename INDEX_PT>
 enc_rle_map_opr<KEY_PT, INDEX_PT>::enc_rle_map_opr(const PhysicalExpr& expr,
                                                    const col_pt&       column,
-                                                   ColumnDescriptor&   column_descriptor,
+                                                   ColumnDescriptorT&  column_descriptor,
                                                    InterpreterState&   state)
     : typed_column_view(column) {
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	rle_val_segment = make_unique<Segment>();
 }
@@ -58,10 +58,10 @@ void enc_rle_map_opr<fls_string_t, INDEX_PT>::MoveSegments(vector<up<Segment>>& 
 template <typename INDEX_PT>
 enc_rle_map_opr<fls_string_t, INDEX_PT>::enc_rle_map_opr(const PhysicalExpr& expr,
                                                          const col_pt&       column,
-                                                         ColumnDescriptor&   column_descriptor,
+                                                         ColumnDescriptorT&  column_descriptor,
                                                          InterpreterState&   state)
     : string_col(column) {
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 
 	rle_val_bytes_segment  = make_unique<Segment>();
 	rle_val_offset_segment = make_unique<Segment>();
@@ -129,7 +129,7 @@ dec_rle_map_opr<KEY_PT, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical_ex
                                                    const ColumnView& column_view,
                                                    InterpreterState& state)
     : rle_vals_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand])) {
 	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand = state.cur_operand - 1;
 }
@@ -160,9 +160,9 @@ dec_rle_map_opr<FlsString, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical
                                                       const ColumnView& column_view,
                                                       InterpreterState& state)
     : rle_vals_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , rle_offset_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand = state.cur_operand - 2;
 }

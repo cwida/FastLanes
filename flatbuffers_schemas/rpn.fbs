@@ -1,0 +1,18 @@
+// file: flatbuffers_schemas/rpn.fbs
+
+// ─────────────────────────────────────────────────────────────
+// Includes (must come before any declarations)
+// ─────────────────────────────────────────────────────────────
+include "operator_token.fbs";
+
+namespace fastlanes;
+
+// ─────────────────────────────────────────────────────────────
+// RPN
+// ─────────────────────────────────────────────────────────────
+table RPN  {
+  operator_tokens: [OperatorToken];
+  operand_tokens:  [ulong];  // maps to vector<n_t>
+}
+
+root_type RPN;

@@ -6,13 +6,13 @@
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class RowgroupDescriptor;
+struct RowgroupDescriptorT;
 class ColumnView;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 class RowgroupView {
 public:
-	explicit RowgroupView(span<std::byte> ptr, const RowgroupDescriptor& footer);
+	explicit RowgroupView(span<std::byte> ptr, const RowgroupDescriptorT& footer);
 
 public:
 	ColumnView&       operator[](n_t col_idx);

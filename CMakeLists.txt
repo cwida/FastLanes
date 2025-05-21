@@ -10,8 +10,22 @@ if (CLANG_CXX AND CLANG_C)
     set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
 endif ()
 
+
+#  ---------------------------------------------------------------------------------------------------------------------
+# Prevent Windows <minwindef.h> from defining min/max macros,
+# which collide with std::numeric_limits<…>::max() and
+# Flatbuffers’ own max() methods.
+#
+# Defining NOMINMAX here ensures that any inclusion of
+# windows.h or other Win32 headers won’t inject those macros.
+# ----------------------------------------------------------------------------------------------------------------------
+add_compile_definitions(NOMINMAX)
+
+
 # Project : ------------------------------------------------------------------------------------------------------------
 project(FastLanes)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,11 +44,14 @@ include(CTest)
 if (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     message(FATAL_ERROR "Only Clang is supported!")
 endif ()
-
 if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
     message(FATAL_ERROR "Only Clang >= 13 is supported!")
 endif ()
 
+# Disallow configuring in the source tree
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "-- FLS : Please run CMake in a separate build directory!")
+endif ()
 # Flags : --------------------------------------------------------------------------------------------------------------
 message("---------------------------------------------------------------------------------------------------------")
 message("-- FLS: detecting flags.")
@@ -91,7 +108,7 @@ option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLES "Build Examples" OFF)
 option(FLS_BUILD_GPU "Build GPU" OFF)
 option(FLS_BUILD_GTEST "Build GTEST" OFF)
-option(FLS_ENABLE_CLANG_TIDY "Enable clang_tidy on all targets" ON)
+option(FLS_ENABLE_CLANG_TIDY "Enable clang_tidy on all targets" OFF)
 option(FLS_ENABLE_IWYU "Enable include-what-you-use tool" OFF)
 option(FLS_ENABLE_DOC "Enable Doc build" OFF)
 option(FLS_ENABLE_TABLE_LOG "Enable Table Log" OFF)
@@ -155,17 +172,12 @@ if (true)
     message("-- FLS: Building FastLanes Lib.")
     # Include : --------------------------------------------------------------------------------------------------------
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
 
     # Primitives: ------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/primitives)
 
     # Source: ----------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-    # Third_party: -----------------------------------------------------------------------------------------------------
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
-
 
     install(
             EXPORT FLSTargets
@@ -178,6 +190,16 @@ if (true)
             EXPORT FLSTargets
             FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
             NAMESPACE FLS::
+    )
+
+    install(
+            DIRECTORY
+            ${CMAKE_SOURCE_DIR}/include/     # your "include/fls/…" tree
+            DESTINATION
+            include                           # will land under <prefix>/include/fls/…
+            FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.hpp"
     )
 
 endif ()
@@ -245,30 +267,10 @@ if (FLS_ENABLE_IWYU)
     endif ()
 endif ()
 
+# Verbose : ------------------------------------------------------------------------------------------------------------
 if (FLS_ENABLE_VERBOSE_OUTPUT)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("-- FLS: Verbose Enabled:")
-
-    cmake_print_variables(
-            CMAKE_SYSTEM_PROCESSOR
-            CMAKE_SYSTEM_NAME
-            CMAKE_VERSION
-            CMAKE_BUILD_TYPE
-            CMAKE_CXX_COMPILER
-            CMAKE_CXX_COMPILER_VERSION
-            CMAKE_CXX_STANDARD
-            CMAKE_SYSTEM
-            CMAKE_HOST_SYSTEM_NAME
-            CMAKE_HOST_SYSTEM_PROCESSOR
-            CMAKE_GENERATOR
-            CMAKE_BINARY_DIR
-            CMAKE_SOURCE_DIR
-            CMAKE_LINKER
-            CMAKE_CXX_FLAGS
-            CMAKE_C_FLAGS
-            CMAKE_CROSSCOMPILING
-            CMAKE_CXX_FLAGS_DEBUG
-    )
+    include(verbose_options)
+    print_verbose_options()
 endif ()
 
 # Benchmark : ----------------------------------------------------------------------------------------------------------
@@ -330,3 +332,12 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/playground/CMakeLists.txt")
     message("- FLS: Adding Playground ")
     add_subdirectory(playground)
 endif ()
+# Python : -------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_PYTHON)
+    message("----------------------------------------------------------------------------------------------------------")
+    message("- FLS: Building FastLanes Python Extension")
+
+    add_subdirectory(python)   # your module’s CMakeLists.txt
+endif ()
+
+

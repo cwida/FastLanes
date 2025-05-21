@@ -10,7 +10,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
@@ -24,7 +24,7 @@ template <typename PT>
 struct enc_alp_opr {
 	explicit enc_alp_opr(const PhysicalExpr& expr,
 	                     const col_pt&       column,
-	                     ColumnDescriptor&   column_descriptor,
+	                     ColumnDescriptorT&  column_descriptor,
 	                     InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);
@@ -86,7 +86,7 @@ template <typename PT>
 struct enc_alp_rd_opr {
 	explicit enc_alp_rd_opr(const PhysicalExpr& expr,
 	                        const col_pt&       column,
-	                        ColumnDescriptor&   column_descriptor,
+	                        ColumnDescriptorT&  column_descriptor,
 	                        InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);

@@ -1,0 +1,118 @@
+name: Python
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+# ────────────────────────────────────────────────────────
+# Triggers
+# ────────────────────────────────────────────────────────
+on:
+  push:
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+    inputs:
+      publish:
+        type: boolean
+        description: "Upload the wheel to TestPyPI?"
+        default: false
+
+# ────────────────────────────────────────────────────────
+# Default permissions for all jobs
+# ────────────────────────────────────────────────────────
+permissions:
+  contents: read
+  packages: write
+  id-token: write          # ⇢ for pypi-publish OIDC
+
+jobs:
+  # ────────────────────────────────────────────────────────
+  # 1) Host-side build + unit tests (build once, test once)
+  # ────────────────────────────────────────────────────────
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build + test dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -U pip
+          pip install -q "scikit-build-core>=0.8" pybind11 cmake ninja pytest
+
+      - name: Build the Python extension
+        run: |
+          source .venv/bin/activate
+          make rebuild_python_release
+
+      - name: Run native CMake tests
+        run: |
+          source .venv/bin/activate
+          ctest \
+            --output-on-failure \
+            -j4 \
+            -LE python \
+            --test-dir skbuild-editable
+
+      - name: Run Python tests
+        run: |
+          source .venv/bin/activate
+          pytest python/tests -q
+
+  # ────────────────────────────────────────────────────────
+  # 2) Build manylinux wheel with your GHCR Clang image
+  # ────────────────────────────────────────────────────────
+  build-wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build wheels via cibuildwheel
+        uses: pypa/cibuildwheel@v2.23.3
+        with:
+          output-dir: dist
+        env:
+          CIBW_BUILD: "cp312-manylinux_x86_64"
+          CIBW_TEST_COMMAND: "pytest {project}/python/tests -q"
+          CIBW_TEST_REQUIRES: "pytest"
+          CIBW_BUILD_VERBOSITY: "2"
+          CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/azimafroozeh/manylinux-clang:latest-x86_64
+          CIBW_BEFORE_ALL: |
+            yum install -y glibc-devel libstdc++-devel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pyfastlanes-wheel
+          path: dist/*.whl
+
+  # ────────────────────────────────────────────────────────
+  # 3) Publish to TestPyPI
+  # ────────────────────────────────────────────────────────
+  publish-wheel:
+    needs: build-wheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pyfastlanes-wheel
+          path: dist
+
+      - name: Publish to TestPyPI
+        if: env.TEST_PYPI_API_TOKEN != ''
+        uses: pypa/gh-action-pypi-publish@v1.7.0
+        env:
+          TEST_PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        with:
+          user: __token__
+          password: ${{ env.TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist
+          skip-existing: true
+          verbose: true
+          print-hash: true

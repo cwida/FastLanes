@@ -10,8 +10,8 @@ public:
 
 	double bench_random_access(const path& dir_path) const {
 		Connection conn;
-		auto&      fls_reader            = conn.reset().read_fls(dir_path);
-		auto       first_rowgroup_reader = fls_reader.get_rowgroup_reader(0);
+		auto       fls_reader            = conn.reset().read_fls(dir_path);
+		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		const auto rowgroup_up = std::make_unique<Rowgroup>(first_rowgroup_reader->get_descriptor(), conn);
 		// RandomAccessor random_accessor {*rowgroup_up};

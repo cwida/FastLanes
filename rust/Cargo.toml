@@ -1,0 +1,29 @@
+[package]
+name = "fls-rs"
+version = "0.1.3-alpha.1"
+edition = "2021"
+authors = ["Azim Afroozeh <afroozeh3@gmail.com>"]
+description = "FastLanes File Format"
+license = "MIT"
+repository = "https://github.com/cwida/FastLanes"
+homepage = "https://fastlanes.io"
+documentation = "https://docs.rs/fls-rs"
+readme = "README.md"
+keywords = ["FastLanes", "FileFormat", "Compression"]
+categories = ["database", "compression"]
+exclude = ["/build/*"]
+
+[badges]
+[badges.docsrs]
+status = "true"
+
+[badges."github-actions"]
+repository = "cwida/FastLanes"
+workflow   = "rust"
+
+[dependencies]
+cxx = "1.0"
+anyhow = "1.0"
+
+[build-dependencies]
+cxx-build = "1.0"

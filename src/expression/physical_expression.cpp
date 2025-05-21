@@ -236,7 +236,7 @@ void PhysicalExpr::PointTo(n_t vec_idx) const {
 struct flush_segments_visitor {
 	explicit flush_segments_visitor(vector<up<Segment>>& a_segments,
 	                                Buf&                 buf,
-	                                ColumnDescriptor&    column_descriptor,
+	                                ColumnDescriptorT&   column_descriptor,
 	                                uint8_t*             helper_buffer)
 	    : segments(a_segments)
 	    , buf(buf)
@@ -293,7 +293,7 @@ struct flush_segments_visitor {
 		for (n_t expr_idx {0}; expr_idx < opr->internal_exprs.size(); expr_idx++) {
 			FLS_ASSERT_E(opr->internal_exprs.size(), column_descriptor.children.size())
 			opr->internal_exprs[expr_idx]->Finalize();
-			opr->internal_exprs[expr_idx]->Flush(buf, column_descriptor.children[expr_idx], helper_buffer);
+			opr->internal_exprs[expr_idx]->Flush(buf, *column_descriptor.children[expr_idx], helper_buffer);
 		}
 	}
 
@@ -360,10 +360,10 @@ struct flush_segments_visitor {
 
 	vector<up<Segment>>& segments;
 	Buf&                 buf;
-	ColumnDescriptor&    column_descriptor;
+	ColumnDescriptorT&   column_descriptor;
 	uint8_t*             helper_buffer;
 };
-void PhysicalExpr::Flush(Buf& buf, ColumnDescriptor& column_descriptor, uint8_t* helper_buffer) const {
+void PhysicalExpr::Flush(Buf& buf, ColumnDescriptorT& column_descriptor, uint8_t* helper_buffer) const {
 
 	column_descriptor.column_offset = buf.Size();
 
@@ -381,7 +381,7 @@ void PhysicalExpr::Flush(Buf& buf, ColumnDescriptor& column_descriptor, uint8_t*
 
 		auto segment_descriptor = segment->Dump(buf, current_offset, helper_buffer);
 
-		column_descriptor.segment_descriptors.push_back(*segment_descriptor);
+		column_descriptor.segment_descriptors.push_back(std::move(segment_descriptor));
 	}
 
 	column_descriptor.total_size = buf.Size() - column_descriptor.column_offset;

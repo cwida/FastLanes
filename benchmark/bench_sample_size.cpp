@@ -17,8 +17,8 @@ void bench_sampling() {
 		create_directories(std::filesystem::path(result_file_path).parent_path());
 
 		// Containers for results to be sorted later
-		std::vector<std::pair<std::string, n_t>>                                                      main_results;
-		std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, NewRPN, double, double>> detailed_results;
+		std::vector<std::pair<std::string, n_t>>                                                    main_results;
+		std::vector<std::tuple<std::string, n_t, std::string, DataType, n_t, RPNT, double, double>> detailed_results;
 
 		// Mutex for thread-safe access to the results containers
 		std::mutex results_mutex;
@@ -71,17 +71,17 @@ void bench_sampling() {
 				    // Store the detailed results (thread-safe)
 				    {
 					    std::lock_guard<std::mutex> lock(results_mutex);
-					    for (const auto& column_descriptor : first_rowgroup_descriptor.GetColumnDescriptors()) {
-						    double bpt = static_cast<double>(column_descriptor.total_size) /
-						                 (static_cast<double>(first_rowgroup_descriptor.m_n_vec * CFG::VEC_SZ));
+					    for (const auto& column_descriptor : first_rowgroup_descriptor->m_column_descriptors) {
+						    double bpt = static_cast<double>(column_descriptor->total_size) /
+						                 (static_cast<double>(first_rowgroup_descriptor->m_n_vec * CFG::VEC_SZ));
 						    double Bpt = bpt / 8;
 
 						    detailed_results.emplace_back(table_name,
-						                                  column_descriptor.idx,
-						                                  column_descriptor.name,
-						                                  column_descriptor.data_type,
-						                                  column_descriptor.total_size,
-						                                  column_descriptor.encoding_rpn,
+						                                  column_descriptor->idx,
+						                                  column_descriptor->name,
+						                                  column_descriptor->data_type,
+						                                  column_descriptor->total_size,
+						                                  *column_descriptor->encoding_rpn,
 						                                  bpt,
 						                                  Bpt);
 					    }

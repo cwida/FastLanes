@@ -35,6 +35,8 @@ public:
 	n_t                   n_vector_per_rowgroup;
 	//
 	fls_bool inline_footer;
+	//
+	bool enable_verbose;
 };
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -60,7 +62,7 @@ public:
 	/// READ CSV
 	Connection& read_json(const path& dir_path);
 	///! read a fls file return a reader
-	TableReader& read_fls(const path& dir_path);
+	up<TableReader> read_fls(const path& file_path);
 	///!
 	Connection& spell();
 	///!
@@ -107,17 +109,19 @@ public:
 
 private:
 	void prepare_table() const;
+	void write_footer(const path& dir_path) const;
 
 private:
-	up<TableReader>     m_reader;
-	up<Config>          m_config;
-	up<Table>           m_table;
-	up<TableDescriptor> m_table_descriptor;
+	up<Config>           m_config;
+	up<Table>            m_table;
+	up<TableDescriptorT> m_table_descriptor;
 };
 
-constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.json"};
+constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.fbb"};
 constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
+
+up<Connection> connect();
 } // namespace fastlanes
 
 #endif

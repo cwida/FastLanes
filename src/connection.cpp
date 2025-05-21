@@ -6,6 +6,7 @@
 #include "fls/expression/predicate_operator.hpp"
 #include "fls/file/file_footer.hpp"
 #include "fls/file/file_header.hpp"
+#include "fls/flatbuffers/flatbuffers.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for RowgroupDescriptor
 #include "fls/info.hpp"
 #include "fls/io/file.hpp"       // for File
@@ -46,13 +47,11 @@ Connection& Connection::read_json(const path& dir_path) {
 	return *this;
 }
 
-TableReader& Connection::read_fls(const path& dir_path) {
-	FileSystem::check_if_dir_exists(dir_path);
+up<TableReader> Connection::read_fls(const path& file_path) {
+	FileSystem::check_if_file_exists(file_path);
 
 	// init
-	m_reader = make_unique<TableReader>(dir_path, *this);
-
-	return *m_reader;
+	return make_unique<TableReader>(file_path, *this);
 }
 
 void prepare_rowgroup(Rowgroup& rowgroup) {
@@ -70,6 +69,20 @@ void Connection::prepare_table() const {
 	}
 }
 
+void Connection::write_footer(const path& file_path) const {
+	// Write table descriptor
+
+	const n_t        table_descriptor_size = FlatBuffers::Write(*this, file_path, *m_table_descriptor);
+	const FileFooter file_footer {
+	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+
+	FileFooter::Write(*this, file_path, file_footer);
+}
+
+up<Connection> connect() {
+	return make_unique<Connection>();
+}
+
 Connection& Connection::spell() {
 	if (m_table == nullptr) {
 		/**/
@@ -81,8 +94,8 @@ Connection& Connection::spell() {
 	return *this;
 }
 
-Connection& Connection::to_fls(const path& dir_path) {
-	if (const path file_path = dir_path / FASTLANES_FILE_NAME; exists(file_path)) {
+Connection& Connection::to_fls(const path& file_path) {
+	if (exists(file_path)) {
 		throw std::runtime_error("Fastlanes file already exists at: " + file_path.string());
 	}
 
@@ -98,17 +111,13 @@ Connection& Connection::to_fls(const path& dir_path) {
 		spell();
 	}
 
-	FileHeader::Write(*this, dir_path);
+	FileHeader::Write(*this, file_path);
 
 	// encode
-	Encoder::encode(*this, dir_path);
+	Encoder::encode(*this, file_path);
 
-	// Write table descriptor
-	const n_t        table_descriptor_size = JSON::write(*this, dir_path, *m_table_descriptor);
-	const FileFooter file_footer {
-	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
-
-	FileFooter::Write(*this, dir_path, file_footer);
+	// write the footer
+	write_footer(file_path);
 
 	return *this;
 }
@@ -120,7 +129,9 @@ Status Connection::verify_fls(const path& file_path) {
 	if (file_header.magic_bytes != Info::get_magic_bytes()) {
 		return Status::Error(Status::ErrorCode::ERR_5_INVALID_MAGIC_BYTES);
 	}
-	if (file_header.version != Info::get_version_bytes()) {
+
+	if (constexpr auto versions = Info::get_all_versions();
+	    std::ranges::none_of(versions, [&](uint64_t v) { return file_header.version == v; })) {
 		return Status::Error(Status::ErrorCode::ERR_6_INVALID_VERSION_BYTES);
 	}
 
@@ -135,7 +146,6 @@ Status Connection::verify_fls(const path& file_path) {
 }
 
 Connection& Connection::reset() {
-	m_reader.reset();
 	m_table_descriptor.reset();
 	m_table.reset();
 
@@ -224,7 +234,8 @@ Config::Config()
     , is_forced_schema(false)
     , sample_size(CFG::SAMPLER::SAMPLE_SIZE)
     , n_vector_per_rowgroup(CFG::RowGroup::N_VECTORS_PER_ROWGROUP)
-    , inline_footer(CFG::Footer::IS_INLINED) {
+    , inline_footer(CFG::Footer::IS_INLINED)
+    , enable_verbose(CFG::Defaults::ENABLE_VERBOSE) {
 }
 
 } // namespace fastlanes

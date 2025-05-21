@@ -60,6 +60,13 @@ void FileSystem::check_if_dir_exists(const path& dir_path) {
 	}
 }
 
+void FileSystem::check_if_file_exists(const fs::path& file_path) {
+	if (!exists(file_path) || !is_regular_file(file_path)) {
+		throw std::runtime_error("File with path | " + file_path.string() +
+		                         " | does not exist or is not a regular file.");
+	}
+}
+
 template <typename STREAM>
 void FileSystem::close(STREAM& stream) {
 	stream.close();

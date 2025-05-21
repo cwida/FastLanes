@@ -8,7 +8,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
@@ -23,7 +23,7 @@ template <typename KEY_PT, typename INDEX_PT>
 struct enc_rle_map_opr {
 	explicit enc_rle_map_opr(const PhysicalExpr& expr,
 	                         const col_pt&       column,
-	                         ColumnDescriptor&   column_descriptor,
+	                         ColumnDescriptorT&  column_descriptor,
 	                         InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);
@@ -41,7 +41,7 @@ template <typename INDEX_PT>
 struct enc_rle_map_opr<fls_string_t, INDEX_PT> {
 	explicit enc_rle_map_opr(const PhysicalExpr& expr,
 	                         const col_pt&       column,
-	                         ColumnDescriptor&   column_descriptor,
+	                         ColumnDescriptorT&  column_descriptor,
 	                         InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);

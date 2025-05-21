@@ -6,14 +6,14 @@
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class TableDescriptor;
+struct TableDescriptorT;
 class ColumnView;
 class RowgroupView;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 class TableView {
 public:
-	explicit TableView(span<std::byte> ptr, const TableDescriptor& table_descriptor);
+	explicit TableView(span<std::byte> ptr, const TableDescriptorT& table_descriptor);
 
 public:
 	RowgroupView&       operator[](n_t row_idx);

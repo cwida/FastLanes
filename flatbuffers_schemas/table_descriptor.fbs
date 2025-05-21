@@ -1,0 +1,24 @@
+// file: flatbuffers_schemas/table_descriptor.fbs
+
+// ─────────────────────────────────────────────────────────────
+// Includes (must come before any declarations)
+// ─────────────────────────────────────────────────────────────
+include "rowgroup_descriptor.fbs";
+
+namespace fastlanes;
+
+// ─────────────────────────────────────────────────────────────
+// TableDescriptor (maps to your C++ class via native_type)
+// ─────────────────────────────────────────────────────────────
+table TableDescriptor {
+  /// A list of row‐group descriptors
+  m_rowgroup_descriptors: [RowgroupDescriptor];
+
+  /// Total size in bytes of the table binary
+  m_table_binary_size:    ulong;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Root type (the top‐level object for footer serialization)
+// ─────────────────────────────────────────────────────────────
+root_type TableDescriptor;

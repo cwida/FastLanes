@@ -1,0 +1,90 @@
+name: Discord Notify
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  push:                     # always build & validate JSON
+  pull_request_target: # full flow when a PR to dev is closed
+    types: [ closed ]
+    branches: [ dev ]
+
+jobs:
+  build-json:
+    runs-on: ubuntu-latest
+    outputs:
+      json: ${{ steps.build.outputs.json }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build message JSON
+        id: build
+        shell: bash
+        run: |
+          set -eo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request_target" && \
+                "${{ github.event.action }}" == "closed" && \
+                "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            # merged PR metadata
+            MERGER=$(jq -r '.pull_request.merged_by.login' < "$GITHUB_EVENT_PATH")
+            PR_NUMBER=$(jq -r '.pull_request.number'       < "$GITHUB_EVENT_PATH")
+            PR_TITLE=$(jq -r '.pull_request.title'         < "$GITHUB_EVENT_PATH")
+            PR_URL=$(jq -r '.pull_request.html_url'        < "$GITHUB_EVENT_PATH")
+            BASE_REF=$(jq -r '.pull_request.base.ref'      < "$GITHUB_EVENT_PATH")
+            PR_BODY=$(jq -r '.pull_request.body'           < "$GITHUB_EVENT_PATH")
+
+            # assemble a 4-line message: header / title / URL / body
+            printf -v MSG '%s\n%s\n%s\n\n%s' \
+              "📦 PR #${PR_NUMBER} merged into **${BASE_REF}** by **${MERGER}**" \
+              "**${PR_TITLE}**" \
+              "${PR_URL}" \
+              "${PR_BODY}"
+          else
+            # direct push metadata
+            SHORT_SHA=${GITHUB_SHA::7}
+            AUTHOR=$(git show -s --format='%an' "$GITHUB_SHA")
+            REF_NAME=${GITHUB_REF#refs/heads/}
+            COMMIT_URL="https://github.com/${{ github.repository }}/commit/${GITHUB_SHA}"
+
+            printf -v MSG '%s\n%s' \
+              "✏️ Commit **${SHORT_SHA}** pushed to **${REF_NAME}** by **${AUTHOR}**" \
+              "${COMMIT_URL}"
+          fi
+
+          # enforce Discord's 2000-character limit (reserve 3 chars for “…”)
+          MAX=2000
+          if (( ${#MSG} > MAX )); then
+            MSG="${MSG:0:MAX-3}…"
+          fi
+
+          # wrap in compact JSON and expose
+          JSON=$(jq -n -c --arg content "$MSG" '{content: $content}')
+          echo "json=$JSON" >> "$GITHUB_OUTPUT"
+
+      - name: Validate JSON
+        env:
+          JSON: ${{ steps.build.outputs.json }}
+        run: |
+          echo "$JSON" | jq -e '.'
+
+  notify-discord:
+    needs: build-json
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord notification
+        env:
+          PAYLOAD: ${{ needs.build-json.outputs.json }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -s -X POST \
+               -H "Content-Type: application/json" \
+               -d "$PAYLOAD" \
+               "$DISCORD_WEBHOOK_URL"

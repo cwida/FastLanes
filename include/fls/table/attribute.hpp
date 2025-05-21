@@ -15,7 +15,7 @@ public:
 	Attribute() = delete;
 
 public:
-	static void   Ingest(col_pt& typed_column, const string& val_str, const ColumnDescriptor& column_descriptor);
+	static void   Ingest(col_pt& typed_column, const string& val_str, const ColumnDescriptorT& column_descriptor);
 	static string ToStr(const col_pt& typed_column, n_t row_idx);
 };
 

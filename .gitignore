@@ -90,3 +90,33 @@ paper/dataset_lib/compress_bi_py.pq
 paper/dataset_lib/compress_bi_py.db
 paper/dataset_lib/compress_bi_py.orc
 DartConfiguration.tcl
+
+
+# CMake build
+cmake-build-python/
+# Python build artefacts
+*.egg-info/
+dist/
+build/
+
+# ─────────────────────────────────────────────────────────────
+# Rust build artifacts & lockfile
+# ─────────────────────────────────────────────────────────────
+
+# Everything in any target/ folder
+target/
+
+# If you ever run `cargo install --path .` it creates this
+.cargo/
+
+# Don’t commit the crate’s lockfile (library convention)
+rust/Cargo.lock
+
+# VSCode’s Rust extension
+.vscode/
+
+# Rustfmt
+rustfmt.toml
+
+# Coverage reports
+coverage/

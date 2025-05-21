@@ -9,7 +9,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 class ColumnView;
 struct InterpreterState;
@@ -22,7 +22,7 @@ struct enc_cross_rle_opr {
 public:
 	explicit enc_cross_rle_opr(const PhysicalExpr& expr,
 	                           const col_pt&       col,
-	                           ColumnDescriptor&   column_descriptor,
+	                           ColumnDescriptorT&  column_descriptor,
 	                           InterpreterState&   state);
 
 	void Finalize();
@@ -41,7 +41,7 @@ struct enc_cross_rle_opr<fls_string_t> {
 public:
 	explicit enc_cross_rle_opr(const PhysicalExpr& expr,
 	                           const col_pt&       col,
-	                           ColumnDescriptor&   column_descriptor,
+	                           ColumnDescriptorT&  column_descriptor,
 	                           InterpreterState&   state);
 
 	void Finalize();

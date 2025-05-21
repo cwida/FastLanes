@@ -11,8 +11,8 @@
 
 namespace fastlanes {
 up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) const {
-	auto rowgroup_reader =
-	    make_unique<RowgroupReader>(m_dir_path, m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	auto rowgroup_reader = make_unique<RowgroupReader>(
+	    m_file_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 
@@ -28,7 +28,7 @@ TableDescriptor& TableReader::get_file_metadata() const {
 up<Table> TableReader::materialize() const {
 	auto table_up = std::make_unique<Table>(m_connection);
 
-	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->GetNRowgroups(); rowgroup_idx++) {
+	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->m_rowgroup_descriptors.size(); rowgroup_idx++) {
 		auto rowgroup_up = get_rowgroup_reader(rowgroup_idx)->materialize();
 		table_up->m_rowgroups.push_back(std::move(rowgroup_up));
 	}
@@ -43,28 +43,35 @@ void TableReader::to_csv(const path& file_path) const {
 	}
 }
 
-TableReader::TableReader(const path& dir_path, Connection& connection)
-    : m_connection(connection)
-    , m_dir_path(dir_path) {
+void TableReader::to_csv(const string& file_path) const {
+	to_csv(path(file_path));
+}
 
-	const auto fastlanes_file_path = dir_path / FASTLANES_FILE_NAME;
+void TableReader::to_csv(const char* file_path) const {
+	to_csv(path(file_path));
+}
+
+TableReader::TableReader(const path& file_path, Connection& connection)
+    : m_connection(connection)
+    , m_file_path(file_path) {
 
 	FileFooter file_footer {};
 	FileHeader file_header {};
 
-	FileHeader::Load(file_header, fastlanes_file_path);
-	FileFooter::Load(file_footer, fastlanes_file_path);
+	FileHeader::Load(file_header, file_path);
+	FileFooter::Load(file_footer, file_path);
 
 	if (file_header.settings.inline_footer) {
-		m_table_descriptor = make_table_descriptor(
-		    fastlanes_file_path, file_footer.table_descriptor_offset, file_footer.table_descriptor_size);
+		m_table_descriptor =
+		    make_table_descriptor(file_path, file_footer.table_descriptor_offset, file_footer.table_descriptor_size);
 	} else {
-		m_table_descriptor = make_table_descriptor(dir_path / TABLE_DESCRIPTOR_FILE_NAME);
+
+		m_table_descriptor = make_table_descriptor(file_path.parent_path() / TABLE_DESCRIPTOR_FILE_NAME);
 	}
 }
 up<RowgroupReader> TableReader::operator[](const n_t rowgroup_idx) const {
-	auto rowgroup_reader =
-	    make_unique<RowgroupReader>(m_dir_path, m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
+	auto rowgroup_reader = make_unique<RowgroupReader>(
+	    m_file_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
 	return rowgroup_reader;
 }
 

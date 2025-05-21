@@ -10,6 +10,7 @@
 #include "fls/table/table.hpp"
 
 namespace fastlanes {
+
 up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 	auto table = make_unique<Table>(connection);
 	bool is_schema_found {false};
@@ -40,7 +41,8 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 
 	auto                 json_string         = File::read(found_schema_path);
 	const nlohmann::json j                   = nlohmann::json::parse(json_string);
-	auto                 rowgroup_descriptor = j.get<RowgroupDescriptor>();
+	auto                 rowgroup_descriptor = j.get<RowgroupDescriptorT>();
+	set_index(rowgroup_descriptor.m_column_descriptors);
 
 	char delimiter  = '|';
 	char terminator = '\n';
@@ -56,7 +58,7 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 			[[maybe_unused]] const auto n_cols = cur_rowgroup->ColCount();
 			FLS_ASSERT_EQUALITY(tuple.size(), n_cols)
 			col_pt& physical_column = cur_rowgroup->internal_rowgroup[col_idx];
-			Attribute::Ingest(physical_column, val, cur_rowgroup->m_descriptor.m_column_descriptors[col_idx]);
+			Attribute::Ingest(physical_column, val, *cur_rowgroup->m_descriptor.m_column_descriptors[col_idx]);
 			col_idx = col_idx + 1;
 		}
 		n_tup = n_tup + 1;

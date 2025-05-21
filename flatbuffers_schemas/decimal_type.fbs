@@ -1,0 +1,9 @@
+namespace fastlanes;
+
+// ─────────────────────────────────────────────────────────────
+// DecimalType
+// ─────────────────────────────────────────────────────────────
+table DecimalType {
+  precision: ulong;  // maps to your uint64_t n_t
+  scale:     ulong;  // maps to your uint64_t n_t
+}

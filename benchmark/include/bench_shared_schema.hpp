@@ -4,7 +4,7 @@
 
 #ifndef BENCH_SHARED_SCHEMA_HPP
 #define BENCH_SHARED_SCHEMA_HPP
-#include <fls/expression/new_rpn.hpp>
+#include <fls/expression/rpn.hpp>
 #include <vector>
 
 using namespace fastlanes; // NOLINT

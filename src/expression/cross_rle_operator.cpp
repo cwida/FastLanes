@@ -15,7 +15,7 @@ namespace fastlanes {
 template <typename PT>
 enc_cross_rle_opr<PT>::enc_cross_rle_opr(const PhysicalExpr& expr,
                                          const col_pt&       col,
-                                         ColumnDescriptor&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state)
     : col_viewer(col) {
 
@@ -26,7 +26,7 @@ enc_cross_rle_opr<PT>::enc_cross_rle_opr(const PhysicalExpr& expr,
 	values  = make_unique<Buf>();
 	lengths = make_unique<Buf>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 }
@@ -71,7 +71,7 @@ template struct enc_cross_rle_opr<i64_pt>;
 
 enc_cross_rle_opr<fls_string_t>::enc_cross_rle_opr(const PhysicalExpr& expr,
                                                    const col_pt&       col,
-                                                   ColumnDescriptor&   column_descriptor,
+                                                   ColumnDescriptorT&  column_descriptor,
                                                    InterpreterState&   state)
     : col_viewer(col) {
 
@@ -86,7 +86,7 @@ enc_cross_rle_opr<fls_string_t>::enc_cross_rle_opr(const PhysicalExpr& expr,
 	lengths_seg = make_unique<Segment>();
 	lengths_seg->MakeBlockBased();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
@@ -136,9 +136,9 @@ dec_cross_rle_opr<PT>::dec_cross_rle_opr(PhysicalExpr&     physical_expr,
                                          const ColumnView& column_view,
                                          InterpreterState& state)
     : values_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , lengths_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	state.cur_operand = state.cur_operand - 2;
 
 	values_segment.PointTo(0);
@@ -212,11 +212,11 @@ dec_cross_rle_opr<fls_string_t>::dec_cross_rle_opr(PhysicalExpr&     physical_ex
                                                    const ColumnView& column_view,
                                                    InterpreterState& state)
     : values_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
     , values_offset_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , lengths_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	state.cur_operand = state.cur_operand - 3;
 
 	values_bytes_seg.PointTo(0);

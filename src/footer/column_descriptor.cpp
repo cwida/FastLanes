@@ -1,24 +1,15 @@
 #include "fls/footer/column_descriptor.hpp"
-#include "fls/expression/data_type.hpp"
 
 namespace fastlanes {
 
-ColumnDescriptor::ColumnDescriptor()
-    : data_type(DataType::INVALID)
-    , encoding_rpn {}
-    , idx(0)
-    , column_offset(0)
-    , total_size {0}
-    , n_null(0) {};
-
-ColumnDescriptor::ColumnDescriptor(const idx_t idx, string name, const DataType type)
-    : data_type(type)
-    , idx(idx)
-    , name {std::move(name)}
-    , column_offset(0)
-    , total_size(0)
-    , n_null(0)
-    , fix_me_decimal_type() {
+void set_index(vector<up<ColumnDescriptorT>>& column_descriptors) {
+	for (n_t col_idx = 0; col_idx < column_descriptors.size(); ++col_idx) {
+		auto& column_descriptor = column_descriptors[col_idx];
+		column_descriptor->idx  = col_idx;
+		if (!column_descriptor->children.empty()) {
+			set_index(column_descriptor->children);
+		}
+	}
 }
 
 } // namespace fastlanes

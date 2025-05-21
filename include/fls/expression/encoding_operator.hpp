@@ -7,7 +7,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -19,7 +19,7 @@ struct enc_scan_opr {
 public:
 	explicit enc_scan_opr(const PhysicalExpr& expr,
 	                      const col_pt&       column,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);
@@ -37,7 +37,7 @@ template <typename KEY_PT, typename INDEX_PT>
 struct enc_dict_map_opr {
 	explicit enc_dict_map_opr(const PhysicalExpr& expr,
 	                          const col_pt&       column,
-	                          ColumnDescriptor&   column_descriptor,
+	                          ColumnDescriptorT&  column_descriptor,
 	                          InterpreterState&   state);
 	void PointTo(n_t vec_idx);
 	void Map();
@@ -50,7 +50,7 @@ template <typename INDEX_PT>
 struct enc_dict_map_opr<fls_string_t, INDEX_PT> {
 	explicit enc_dict_map_opr(const PhysicalExpr& expr,
 	                          const col_pt&       column,
-	                          ColumnDescriptor&   column_descriptor,
+	                          ColumnDescriptorT&  column_descriptor,
 	                          InterpreterState&   state);
 	void PointTo(n_t vec_idx);
 	void Map();
@@ -73,7 +73,7 @@ struct enc_uncompressed_opr {
 public:
 	explicit enc_uncompressed_opr(const PhysicalExpr& physical_expr,
 	                              const col_pt&       column,
-	                              ColumnDescriptor&   column_descriptor,
+	                              ColumnDescriptorT&  column_descriptor,
 	                              InterpreterState&   state);
 
 	void Copy();
@@ -105,7 +105,7 @@ public:
  * enc_struct_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct enc_struct_opr {
-	enc_struct_opr(const col_pt& column, ColumnDescriptor& column_descriptor);
+	enc_struct_opr(const col_pt& column, ColumnDescriptorT& column_descriptor);
 
 	vector<sp<class PhysicalExpr>> internal_exprs;
 };
@@ -118,7 +118,7 @@ struct enc_ffor_opr {
 public:
 	explicit enc_ffor_opr(const PhysicalExpr& expr,
 	                      const col_pt&       col,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void PointTo(n_t vec_idx);

@@ -16,7 +16,7 @@ namespace fastlanes {
 template <typename PT>
 enc_frequency_opr<PT>::enc_frequency_opr(const PhysicalExpr& expr,
                                          const col_pt&       col,
-                                         ColumnDescriptor&   column_descriptor,
+                                         ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state)
     : col_viewer(col) {
 
@@ -28,7 +28,7 @@ enc_frequency_opr<PT>::enc_frequency_opr(const PhysicalExpr& expr,
 	exception_positions_seg = make_unique<Segment>();
 	exception_values_seg    = make_unique<Segment>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
@@ -80,7 +80,7 @@ template struct enc_frequency_opr<i64_pt>;
 
 enc_frequency_str_opr::enc_frequency_str_opr(const PhysicalExpr& expr,
                                              const col_pt&       col,
-                                             ColumnDescriptor&   column_descriptor,
+                                             ColumnDescriptorT&  column_descriptor,
                                              InterpreterState&   state)
     : col_viewer(col) {
 
@@ -98,7 +98,7 @@ enc_frequency_str_opr::enc_frequency_str_opr(const PhysicalExpr& expr,
 	exception_values_bytes_seg  = make_unique<Segment>();
 	exception_values_offset_seg = make_unique<Segment>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
@@ -158,13 +158,13 @@ dec_frequency_opr<PT>::dec_frequency_opr(PhysicalExpr&     physical_expr,
                                          const ColumnView& column_view,
                                          InterpreterState& state)
     : frequent_value_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 3]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 3]))
     , exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
     , exceptions_position_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , n_exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	state.cur_operand = state.cur_operand - 4;
 
 	frequent_value_seg.PointTo(0);
@@ -216,17 +216,17 @@ dec_frequency_str_opr::dec_frequency_str_opr(PhysicalExpr&     physical_expr,
                                              const ColumnView& column_view,
                                              InterpreterState& state)
     : frequent_value_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 5]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 5]))
     , frequent_value_size_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 4]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 4]))
     , n_exceptions_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 3]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 3]))
     , exception_positions_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
     , exception_values_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , exception_values_offset_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	state.cur_operand = state.cur_operand - 6;
 
 	frequent_value_bytes_seg.PointTo(0);

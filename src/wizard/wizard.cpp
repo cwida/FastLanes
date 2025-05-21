@@ -6,7 +6,7 @@
 #include "fls/expression/data_type.hpp" // for DataType, get_physical_type
 #include "fls/expression/expression_executor.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/expression/new_rpn.hpp"         // for Operator, Operand, NewRPN
+#include "fls/expression/rpn.hpp"             // for Operator, Operand, NewRPN
 #include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata, RowgroupDescriptor
 #include "fls/std/variant.hpp"                // for visit
 #include "fls/std/vector.hpp"                 // for vector
@@ -19,33 +19,33 @@
 namespace fastlanes {
 DataType FindBestDataTypeForColumn(const col_pt& col);
 
-bool IsDetermined(const ColumnDescriptor& column_descriptor) {
-	const bool is_determined = !column_descriptor.encoding_rpn.operator_tokens.empty();
+bool IsDetermined(const ColumnDescriptorT& column_descriptor) {
+	const bool is_determined = !column_descriptor.encoding_rpn->operator_tokens.empty();
 	return is_determined;
 }
 
 struct gather_statistics_visitor {
-	explicit gather_statistics_visitor(ColumnDescriptor& a_column_descriptor)
+	explicit gather_statistics_visitor(ColumnDescriptorT& a_column_descriptor)
 	    : column_descriptor(a_column_descriptor) {
 	}
 
 	template <typename PT>
 	void operator()(const up<TypedCol<PT>>& col) const {
-		column_descriptor.max.binary_data.resize(sizeof(PT));
-		std::memcpy(column_descriptor.max.binary_data.data(), &col->m_stats.max, sizeof(PT));
+		column_descriptor.max->binary_data.resize(sizeof(PT));
+		std::memcpy(column_descriptor.max->binary_data.data(), &col->m_stats.max, sizeof(PT));
 		column_descriptor.n_null = col->m_stats.n_nulls;
 	}
 	void operator()(const up<FLSStrColumn>& str_col) const {
 		const auto size = str_col->m_stats.maximum_n_bytes_p_value;
-		column_descriptor.max.binary_data.resize(size);
-		std::memcpy(column_descriptor.max.binary_data.data(), str_col->byte_arr.data(), size);
+		column_descriptor.max->binary_data.resize(size);
+		std::memcpy(column_descriptor.max->binary_data.data(), str_col->byte_arr.data(), size);
 	}
 
 	void operator()(const up<Struct>& fls_struct) const {
 
 		for (n_t col_idx {0}; col_idx < column_descriptor.children.size(); col_idx++) {
 			auto& nested_column_descriptor = column_descriptor.children[col_idx];
-			visit(gather_statistics_visitor {nested_column_descriptor}, fls_struct->internal_rowgroup[col_idx]);
+			visit(gather_statistics_visitor {*nested_column_descriptor}, fls_struct->internal_rowgroup[col_idx]);
 		}
 	}
 
@@ -53,19 +53,27 @@ struct gather_statistics_visitor {
 		FLS_UNREACHABLE();
 	}
 
-	ColumnDescriptor& column_descriptor;
+	ColumnDescriptorT& column_descriptor;
 };
 
-void gather_statistics(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& column_descriptors) {
+void gather_statistics(const rowgroup_pt& rowgroup, vector<up<ColumnDescriptorT>>& column_descriptors) {
 	for (n_t col_idx {0}; col_idx < column_descriptors.size(); col_idx++) {
 		auto& column_descriptor = column_descriptors[col_idx];
-		visit(gather_statistics_visitor {column_descriptor}, rowgroup[col_idx]);
+		visit(gather_statistics_visitor {*column_descriptor}, rowgroup[col_idx]);
+	}
+}
+
+void init(vector<up<ColumnDescriptorT>>& column_descriptors) {
+	for (n_t col_idx {0}; col_idx < column_descriptors.size(); col_idx++) {
+		auto& column_descriptor         = column_descriptors[col_idx];
+		column_descriptor->max          = make_unique<BinaryValueT>();
+		column_descriptor->encoding_rpn = make_unique<RPNT>();
 	}
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 struct constant_visitor {
-	ColumnDescriptor& column_descriptor;
+	ColumnDescriptorT& column_descriptor;
 
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
@@ -75,31 +83,31 @@ struct constant_visitor {
 		if (typed_col->m_stats.IsConstant()) {
 			switch (column_descriptor.data_type) {
 			case DataType::DOUBLE: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_DBL);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_DBL);
 				break;
 			}
 			case DataType::FLOAT: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_FLT);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_FLT);
 				break;
 			}
 			case DataType::INT64: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I64);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I64);
 				break;
 			}
 			case DataType::INT32: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I32);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I32);
 				break;
 			}
 			case DataType::INT16: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I16);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I16);
 				break;
 			}
 			case DataType::INT8: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I08);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_I08);
 				break;
 			}
 			case DataType::UINT8: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_U08);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_U08);
 				break;
 			}
 			case DataType::INVALID:
@@ -112,7 +120,7 @@ struct constant_visitor {
 	}
 	void operator()(const up<FLSStrColumn>& fls_str_column) {
 		if (fls_str_column->m_stats.is_constant) {
-			column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_STR);
+			column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_STR);
 		}
 	}
 	void operator()(auto&) {
@@ -120,20 +128,20 @@ struct constant_visitor {
 	}
 };
 
-void constant_visit(const col_pt& col, ColumnDescriptor& column_descriptor) {
+void constant_visit(const col_pt& col, ColumnDescriptorT& column_descriptor) {
 	//
 	visit(constant_visitor {column_descriptor}, col);
 }
 
-void constant_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& column_descriptors) {
+void constant_check(const rowgroup_pt& rowgroup, vector<up<ColumnDescriptorT>>& column_descriptors) {
 	for (n_t col_idx {0}; col_idx < rowgroup.size(); col_idx++) {
-		constant_visit(rowgroup[col_idx], column_descriptors[col_idx]);
+		constant_visit(rowgroup[col_idx], *column_descriptors[col_idx]);
 	}
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 struct null_visitor {
-	ColumnDescriptor& column_descriptor;
+	ColumnDescriptorT& column_descriptor;
 
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
@@ -145,19 +153,19 @@ struct null_visitor {
 		if (nulls_percentage > CFG::NULLS::NULLS_THRESHOLD_PERCENTAGE) {
 			switch (column_descriptor.data_type) {
 			case DataType::DOUBLE: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_DBL);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_NULL_DBL);
 				break;
 			}
 			case DataType::FLOAT: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_FLT);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_NULL_FLT);
 				break;
 			}
 			case DataType::INT16: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_I16);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_NULL_I16);
 				break;
 			}
 			case DataType::INT32: {
-				column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_NULL_I32);
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_NULL_I32);
 				break;
 			}
 			case DataType::INT64:
@@ -177,16 +185,16 @@ struct null_visitor {
 	}
 };
 
-void null_visit(const col_pt& col, ColumnDescriptor& column_descriptor) {
+void null_visit(const col_pt& col, ColumnDescriptorT& column_descriptor) {
 	visit(null_visitor {column_descriptor}, col);
 }
 
-void null_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& column_descriptors) {
+void null_check(const rowgroup_pt& rowgroup, vector<up<ColumnDescriptorT>>& column_descriptors) {
 	for (n_t col_idx {0}; col_idx < rowgroup.size(); col_idx++) {
-		if (IsDetermined(column_descriptors[col_idx])) {
+		if (IsDetermined(*column_descriptors[col_idx])) {
 			continue;
 		}
-		null_visit(rowgroup[col_idx], column_descriptors[col_idx]);
+		null_visit(rowgroup[col_idx], *column_descriptors[col_idx]);
 	}
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -249,19 +257,19 @@ bool Equal(const col_pt& first_col, const col_pt& second_col) {
 	return true;
 }
 
-void equality_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& column_descriptors) {
+void equality_check(const rowgroup_pt& rowgroup, vector<up<ColumnDescriptorT>>& column_descriptors) {
 	const auto n_col = rowgroup.size();
 
 	// brute_force
 	for (n_t first_col_idx {0}; first_col_idx < n_col; first_col_idx++) {
 		for (n_t second_col_idx {first_col_idx + 1}; second_col_idx < n_col; second_col_idx++) {
 			auto& column_descriptor = column_descriptors[second_col_idx];
-			if (IsDetermined(column_descriptor)) {
+			if (IsDetermined(*column_descriptor)) {
 				continue;
 			}
 
 			if (const auto is_equal = Equal(rowgroup[first_col_idx], rowgroup[second_col_idx]); is_equal) {
-				switch (column_descriptor.data_type) {
+				switch (column_descriptor->data_type) {
 				case DataType::DOUBLE:
 				case DataType::FLS_STR:
 				case DataType::INT64:
@@ -269,8 +277,8 @@ void equality_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& colum
 				case DataType::INT16:
 				case DataType::FLOAT:
 				case DataType::INT8: {
-					column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_EQUAL);
-					column_descriptor.encoding_rpn.operand_tokens.emplace_back(first_col_idx);
+					column_descriptor->encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_EQUAL);
+					column_descriptor->encoding_rpn->operand_tokens.emplace_back(first_col_idx);
 					break;
 				}
 				case DataType::INVALID:
@@ -630,17 +638,17 @@ vector<OperatorToken>& get_pool() {
 	FLS_UNREACHABLE()
 }
 
-n_t TryExpr(const rowgroup_pt&      col,
-            const ColumnDescriptor& column_descriptor,
-            const OperatorToken&    token,
-            RowgroupDescriptor&     footer,
-            const Connection&       con) {
+n_t TryExpr(const rowgroup_pt&       col,
+            const ColumnDescriptorT& column_descriptor,
+            const OperatorToken&     token,
+            RowgroupDescriptorT&     footer,
+            const Connection&        con) {
 	n_t size {0};
 
 	// interpret
-	InterpreterState state;
-	ColumnDescriptor new_column_descriptor = column_descriptor;
-	new_column_descriptor.encoding_rpn.operator_tokens.push_back(token);
+	InterpreterState  state;
+	ColumnDescriptorT new_column_descriptor = column_descriptor;
+	new_column_descriptor.encoding_rpn->operator_tokens.push_back(token);
 
 	const auto physical_expr_up = Interpreter::Encoding::Interpret(new_column_descriptor, col, state);
 
@@ -679,25 +687,25 @@ n_t TryExpr(const rowgroup_pt&      col,
 	return size;
 }
 
-OperatorToken ChooseBestExpr(const unordered_map<OperatorToken, n_t>& options) {
-	FLS_ASSERT_FALSE(options.empty())
+OperatorToken ChooseBestExpr(const std::vector<up<ExpressionResultT>>& options) {
+	FLS_ASSERT_FALSE(options.empty()); // make sure to add the semicolon
 
-	auto smallest = options.begin();
-	for (auto it = options.begin(); it != options.end(); ++it) {
-		if (it->second < smallest->second) {
-			smallest = it;
-		}
-	}
+	// Find the element with the smallest 'size' member
+	auto bestIt = std::min_element(
+	    options.begin(), options.end(), [](const up<ExpressionResultT>& a, const up<ExpressionResultT>& b) {
+		    return a->size < b->size;
+	    });
 
-	return smallest->first;
+	// Dereference the unique_ptr to get the operator_token
+	return (*bestIt)->operator_token;
 }
 
-bool IsDictionaryEncodingRequired(const ColumnDescriptor& column_descriptor) {
-	if (column_descriptor.encoding_rpn.operator_tokens.empty()) {
+bool IsDictionaryEncodingRequired(const ColumnDescriptorT& column_descriptor) {
+	if (column_descriptor.encoding_rpn->operator_tokens.empty()) {
 		return false;
 	}
 
-	if (column_descriptor.encoding_rpn.operator_tokens[0] == OperatorToken::WIZARD_DICTIONARY_ENCODE) {
+	if (column_descriptor.encoding_rpn->operator_tokens[0] == OperatorToken::WIZARD_DICTIONARY_ENCODE) {
 		//
 		return true;
 	}
@@ -705,12 +713,12 @@ bool IsDictionaryEncodingRequired(const ColumnDescriptor& column_descriptor) {
 	return false;
 }
 
-bool IsDictionaryChoosingRequired(const ColumnDescriptor& column_descriptor) {
-	if (column_descriptor.encoding_rpn.operator_tokens.empty()) {
+bool IsDictionaryChoosingRequired(const ColumnDescriptorT& column_descriptor) {
+	if (column_descriptor.encoding_rpn->operator_tokens.empty()) {
 		return false;
 	}
 
-	const auto operator_token = column_descriptor.encoding_rpn.operator_tokens[0];
+	const auto operator_token = column_descriptor.encoding_rpn->operator_tokens[0];
 
 	if (operator_token == OperatorToken::WIZARD_CHOOSE_DICT) {
 		return true;
@@ -720,29 +728,34 @@ bool IsDictionaryChoosingRequired(const ColumnDescriptor& column_descriptor) {
 }
 
 template <typename PT>
-void TypedDecide(const rowgroup_pt&  rowgroup,
-                 ColumnDescriptor&   column_descriptor,
-                 RowgroupDescriptor& footer,
-                 const Connection&   fls) {
+void TypedDecide(const rowgroup_pt&   rowgroup,
+                 ColumnDescriptorT&   column_descriptor,
+                 RowgroupDescriptorT& footer,
+                 const Connection&    fls) {
 
-	auto evaluate_expressions = [&](const auto& expr_list) {
-		for (const auto& expr : expr_list) {
-			n_t size = TryExpr(rowgroup, column_descriptor, expr, footer, fls);
-			column_descriptor.expr_space.emplace(expr, size);
+	auto evaluate_expressions = [&](const auto& operator_token_list) {
+		for (const auto& expr : operator_token_list) {
+			n_t  size = TryExpr(rowgroup, column_descriptor, expr, footer, fls);
+			auto res  = std::make_unique<ExpressionResultT>();
+
+			res->operator_token = expr;
+			res->size           = size;
+
+			column_descriptor.expr_space.push_back(std::move(res));
 		}
 	};
 
 	if (fls.is_forced_schema_pool()) {
 		evaluate_expressions(fls.get_forced_schema_pool());
 	} else if (IsDictionaryEncodingRequired(column_descriptor)) {
-		column_descriptor.encoding_rpn.operator_tokens.clear();
-		const n_t index_type = column_descriptor.encoding_rpn.operand_tokens.back();
-		column_descriptor.encoding_rpn.operand_tokens.clear();
+		column_descriptor.encoding_rpn->operator_tokens.clear();
+		const n_t index_type = column_descriptor.encoding_rpn->operand_tokens.back();
+		column_descriptor.encoding_rpn->operand_tokens.clear();
 		evaluate_expressions(get_dict_encoding_pool<PT>(index_type));
 	} else if (IsDictionaryChoosingRequired(column_descriptor)) {
-		column_descriptor.encoding_rpn.operator_tokens.clear();
-		const n_t index_type = column_descriptor.encoding_rpn.operand_tokens.back();
-		column_descriptor.encoding_rpn.operand_tokens.pop_back();
+		column_descriptor.encoding_rpn->operator_tokens.clear();
+		const n_t index_type = column_descriptor.encoding_rpn->operand_tokens.back();
+		column_descriptor.encoding_rpn->operand_tokens.pop_back();
 		evaluate_expressions(get_dict_pool<PT>(index_type));
 	} else {
 		const n_t index_type = static_cast<n_t>(FindBestDataTypeForColumn(rowgroup[column_descriptor.idx]));
@@ -751,13 +764,13 @@ void TypedDecide(const rowgroup_pt&  rowgroup,
 	}
 
 	auto best_expr = ChooseBestExpr(column_descriptor.expr_space);
-	column_descriptor.encoding_rpn.operator_tokens.emplace_back(best_expr);
+	column_descriptor.encoding_rpn->operator_tokens.emplace_back(best_expr);
 }
 
-void expression_check_column(const rowgroup_pt&  rowgroup,
-                             ColumnDescriptor&   column_descriptor,
-                             RowgroupDescriptor& footer,
-                             const Connection&   fls) {
+void expression_check_column(const rowgroup_pt&   rowgroup,
+                             ColumnDescriptorT&   column_descriptor,
+                             RowgroupDescriptorT& footer,
+                             const Connection&    fls) {
 	if (IsDetermined(column_descriptor) && !IsDictionaryEncodingRequired(column_descriptor) &&
 	    !IsDictionaryChoosingRequired(column_descriptor)) {
 		return;
@@ -785,12 +798,12 @@ void expression_check_column(const rowgroup_pt&  rowgroup,
 		break;
 	}
 	case DataType::STRUCT: {
-		column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_STRUCT);
+		column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_STRUCT);
 		auto& struct_col = rowgroup[column_descriptor.idx];
 		visit(overloaded {
 		          [&](const up<Struct>& struct_cp) {
 			          for (auto& child_column_descriptor : column_descriptor.children) {
-				          expression_check_column(struct_cp->internal_rowgroup, child_column_descriptor, footer, fls);
+				          expression_check_column(struct_cp->internal_rowgroup, *child_column_descriptor, footer, fls);
 			          }
 		          },
 		          [](auto&) { FLS_UNREACHABLE() },
@@ -818,13 +831,13 @@ void expression_check_column(const rowgroup_pt&  rowgroup,
 	}
 }
 
-void expression_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
+void expression_check(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 
 	for (n_t col_idx {0}; col_idx < rowgroup.size(); col_idx++) {
 		auto& column_descriptor = column_descriptors[col_idx];
-		expression_check_column(rowgroup, column_descriptor, footer, fls);
+		expression_check_column(rowgroup, *column_descriptor, footer, fls);
 	}
 }
 
@@ -1051,20 +1064,20 @@ bool IsMap1t1(const col_pt& first_col, const col_pt& second_col) {
 	return map_1t1_visit(first_col, second_col);
 }
 
-void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, DataType common_data_type_for_index) {
+void PushExternalDictionaryEncoding(ColumnDescriptorT& second_column_descriptor, DataType common_data_type_for_index) {
 	switch (second_column_descriptor.data_type) {
 	case DataType::INT64: {
 		switch (common_data_type_for_index) {
 		case DataType::UINT32: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U32);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U32);
 			break;
 		}
 		case DataType::UINT16: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U16);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U16);
 			break;
 		}
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U08);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I64_U08);
 			break;
 		}
 		default:
@@ -1075,15 +1088,15 @@ void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, 
 	case DataType::INT32: {
 		switch (common_data_type_for_index) {
 		case DataType::UINT32: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U32);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U32);
 			break;
 		}
 		case DataType::UINT16: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U16);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U16);
 			break;
 		}
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U08);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I32_U08);
 			break;
 		}
 		default:
@@ -1094,11 +1107,11 @@ void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, 
 	case DataType::INT16: {
 		switch (common_data_type_for_index) {
 		case DataType::UINT16: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I16_U16);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I16_U16);
 			break;
 		}
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I16_U08);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I16_U08);
 			break;
 		}
 		default:
@@ -1109,15 +1122,15 @@ void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, 
 	case DataType::DOUBLE: {
 		switch (common_data_type_for_index) {
 		case DataType::UINT32: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U32);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U32);
 			break;
 		}
 		case DataType::UINT16: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U16);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U16);
 			break;
 		}
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U08);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_DBL_U08);
 			break;
 		}
 		default:
@@ -1126,18 +1139,18 @@ void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, 
 		break;
 	}
 	case DataType::FLS_STR: {
-		second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::WIZARD_CHOOSE_DICT);
+		second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::WIZARD_CHOOSE_DICT);
 		switch (common_data_type_for_index) {
 		case DataType::UINT32: {
-			second_column_descriptor.encoding_rpn.operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT32));
+			second_column_descriptor.encoding_rpn->operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT32));
 			break;
 		}
 		case DataType::UINT16: {
-			second_column_descriptor.encoding_rpn.operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT16));
+			second_column_descriptor.encoding_rpn->operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT16));
 			break;
 		}
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT8));
+			second_column_descriptor.encoding_rpn->operand_tokens.emplace_back(static_cast<n_t>(DataType::UINT8));
 			break;
 		}
 		default:
@@ -1148,7 +1161,7 @@ void PushExternalDictionaryEncoding(ColumnDescriptor& second_column_descriptor, 
 	case DataType::INT8: {
 		switch (common_data_type_for_index) {
 		case DataType::UINT8: {
-			second_column_descriptor.encoding_rpn.operator_tokens.emplace_back(OperatorToken::EXP_DICT_I08_U08);
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_I08_U08);
 			break;
 		}
 		default:
@@ -1201,19 +1214,19 @@ DataType FindBestDataTypeForIndex(const col_pt& right, const col_pt& left) {
 	return FindBestDataTypeForColumn(left_col_cardinality > right_col_cardinality ? left : right);
 }
 
-void map_1t1_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& footer) {
+void map_1t1_check(const rowgroup_pt& rowgroup, vector<up<ColumnDescriptorT>>& footer) {
 	const auto n_col = rowgroup.size();
 
 	// brute_force
 	for (n_t first_col_idx {0}; first_col_idx < n_col; first_col_idx++) {
 		auto& first_column_descriptor = footer[first_col_idx];
-		if (IsDetermined(first_column_descriptor)) {
+		if (IsDetermined(*first_column_descriptor)) {
 			continue;
 		}
 
 		for (n_t second_col_idx {first_col_idx + 1}; second_col_idx < n_col; second_col_idx++) {
 			auto& second_column_descriptor = footer[second_col_idx];
-			if (IsDetermined(second_column_descriptor)) {
+			if (IsDetermined(*second_column_descriptor)) {
 				continue;
 			}
 			if (!is_good_for_dictionary_encoding(rowgroup[first_col_idx])) {
@@ -1225,13 +1238,13 @@ void map_1t1_check(const rowgroup_pt& rowgroup, vector<ColumnDescriptor>& footer
 				auto common_data_type_for_index =
 				    FindBestDataTypeForIndex(rowgroup[first_col_idx], rowgroup[second_col_idx]);
 
-				first_column_descriptor.encoding_rpn.operator_tokens.emplace_back(
+				first_column_descriptor->encoding_rpn->operator_tokens.emplace_back(
 				    OperatorToken::WIZARD_DICTIONARY_ENCODE);
-				first_column_descriptor.encoding_rpn.operand_tokens.emplace_back(
+				first_column_descriptor->encoding_rpn->operand_tokens.emplace_back(
 				    static_cast<n_t>(common_data_type_for_index));
 
-				second_column_descriptor.encoding_rpn.operand_tokens.emplace_back(first_col_idx);
-				PushExternalDictionaryEncoding(second_column_descriptor, common_data_type_for_index);
+				second_column_descriptor->encoding_rpn->operand_tokens.emplace_back(first_col_idx);
+				PushExternalDictionaryEncoding(*second_column_descriptor, common_data_type_for_index);
 			}
 		}
 	}
@@ -1241,11 +1254,11 @@ void set_schema(ColumnDescriptors& column_descriptors, const Connection& fls) {
 	auto& forced_schema = fls.get_forced_schema();
 	for (n_t col_idx {0}; col_idx < column_descriptors.size(); ++col_idx) {
 		auto& column_descriptor = column_descriptors[col_idx];
-		column_descriptor.encoding_rpn.operator_tokens.emplace_back(forced_schema[col_idx]);
+		column_descriptor->encoding_rpn->operator_tokens.emplace_back(forced_schema[col_idx]);
 	}
 }
 
-void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, const Connection& fls) {
+void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, const Connection& fls) {
 
 	auto& column_descriptors = footer.m_column_descriptors;
 
@@ -1259,6 +1272,7 @@ void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, con
 		return;
 	}
 
+	init(column_descriptors);
 	gather_statistics(rowgroup, column_descriptors);
 	constant_check(rowgroup, column_descriptors);
 	equality_check(rowgroup, column_descriptors);
@@ -1267,7 +1281,7 @@ void rowgroup_check(const rowgroup_pt& rowgroup, RowgroupDescriptor& footer, con
 	expression_check(rowgroup, footer, fls); // all left over columns are expression encoded.
 }
 
-up<TableDescriptor> Wizard::Spell(const Connection& fls) {
+up<TableDescriptorT> Wizard::Spell(const Connection& fls) {
 	// init
 	const auto& table = fls.get_table();
 
@@ -1275,7 +1289,7 @@ up<TableDescriptor> Wizard::Spell(const Connection& fls) {
 
 	for (n_t rowgroup_idx {0}; rowgroup_idx < table.get_n_rowgroups(); ++rowgroup_idx) {
 		rowgroup_check(table.m_rowgroups[rowgroup_idx]->internal_rowgroup,
-		               table_descriptor->m_rowgroup_descriptors[rowgroup_idx],
+		               *table_descriptor->m_rowgroup_descriptors[rowgroup_idx],
 		               fls);
 	}
 

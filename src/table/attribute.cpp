@@ -3,12 +3,16 @@
 #include "fls/common/decimal.hpp"
 #include "fls/common/double.hpp"
 #include "fls/common/string.hpp"
+#include "fls/detail/parse_fp.hpp"
 #include "fls/expression/data_type.hpp"
 #include <algorithm>
+#include <charconv>
 #include <cstring>
 #include <limits>
 #include <sstream>
 #include <stdexcept>
+#include <string>
+#include <system_error>
 
 namespace fastlanes {
 
@@ -70,14 +74,17 @@ PT TypedCast(const std::string& val_str) {
 			if (val_str != "true" && val_str != "false")
 				throw std::invalid_argument("Invalid boolean value");
 			return val_str == "true";
-		} else if constexpr (std::is_same_v<PT, flt_pt>) {
-			return std::stof(val_str);
-		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
-			auto value = stod(val_str);
-			if (value < std::numeric_limits<dbl_pt>::lowest() || value > std::numeric_limits<dbl_pt>::max())
-				throw std::out_of_range("Value exceeds dbl_pt range");
-			return value;
-		} else if constexpr (std::is_same_v<PT, str_pt>) {
+		}
+		/**/
+		else if constexpr (std::is_same_v<PT, flt_pt>) {
+			return detail::parse_fp<flt_pt>(val_str);
+		}
+		/**/
+		else if constexpr (std::is_same_v<PT, dbl_pt>) {
+			return detail::parse_fp<dbl_pt>(val_str);
+		}
+		//
+		else if constexpr (std::is_same_v<PT, str_pt>) {
 			return val_str;
 		}
 	} catch (const std::exception& e) {
@@ -148,7 +155,7 @@ std::string TypedToStr(TypedCol<PT>& typed_column, n_t row_idx) {
 }
 
 template <typename PT>
-void TypedIngest(TypedCol<PT>& typed_column, const string& val_str, const ColumnDescriptor& column_descriptor) {
+void TypedIngest(TypedCol<PT>& typed_column, const string& val_str, const ColumnDescriptorT& column_descriptor) {
 	// init
 	auto& n_nulls            = typed_column.m_stats.n_nulls;
 	auto& min                = typed_column.m_stats.min;
@@ -177,7 +184,7 @@ void TypedIngest(TypedCol<PT>& typed_column, const string& val_str, const Column
 	PT current_val;
 	if (!is_null && column_descriptor.data_type == DataType::DECIMAL) {
 		if constexpr (std::is_same_v<PT, int64_t>) { // fix me
-			current_val                        = make_decimal(val_str, column_descriptor.fix_me_decimal_type.scale);
+			current_val                        = make_decimal(val_str, column_descriptor.fix_me_decimal_type->scale);
 			typed_column.m_stats.last_seen_val = current_val;
 		}
 	} else if (!is_null) {
@@ -386,7 +393,7 @@ void FLSStringIngest(FLSStrColumn& fls_str_column, const string& val_str) {
 	}
 }
 
-void Attribute::Ingest(col_pt& column, const string& val_str, const ColumnDescriptor& column_descriptor) {
+void Attribute::Ingest(col_pt& column, const string& val_str, const ColumnDescriptorT& column_descriptor) {
 	visit(overloaded {
 	          [&]<typename PT>(up<TypedCol<PT>>& typed_column) {
 		          TypedIngest<PT>(*typed_column, val_str, column_descriptor);

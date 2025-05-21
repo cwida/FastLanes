@@ -19,7 +19,7 @@ namespace fastlanes {
 template <typename PT>
 enc_rsum_opr<PT>::enc_rsum_opr(const PhysicalExpr& expr,
                                const col_pt&       col,
-                               ColumnDescriptor&   column_descriptor,
+                               ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state) {
 
 	visit(overloaded {
@@ -30,7 +30,7 @@ enc_rsum_opr<PT>::enc_rsum_opr(const PhysicalExpr& expr,
 	      },
 	      expr.operators[state.cur_operator++]);
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
 
 	bases_segment = make_unique<Segment>();

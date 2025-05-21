@@ -8,7 +8,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 class ColumnView;
 struct InterpreterState;
@@ -21,7 +21,7 @@ struct enc_rsum_opr {
 public:
 	explicit enc_rsum_opr(const PhysicalExpr& expr,
 	                      const col_pt&       col,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 
 	void Rsum();

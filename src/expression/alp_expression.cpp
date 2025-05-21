@@ -16,7 +16,7 @@ namespace fastlanes {
 template <typename PT>
 enc_alp_opr<PT>::enc_alp_opr(const PhysicalExpr& expr,
                              const col_pt&       column,
-                             ColumnDescriptor&   column_descriptor,
+                             ColumnDescriptorT&  column_descriptor,
                              InterpreterState&   state)
     : typed_column_view(column)
     , pos_arr {} {
@@ -145,7 +145,7 @@ template struct dec_alp_opr<flt_pt>;
 template <typename PT>
 enc_alp_rd_opr<PT>::enc_alp_rd_opr(const PhysicalExpr& expr,
                                    const col_pt&       column,
-                                   ColumnDescriptor&   column_descriptor,
+                                   ColumnDescriptorT&  column_descriptor,
                                    InterpreterState&   state)
     : typed_column_view(column)
     , rd_exc_arr {}

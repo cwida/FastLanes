@@ -10,7 +10,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
@@ -24,7 +24,7 @@ class RowgroupReader;
 struct enc_fsst_opr {
 	explicit enc_fsst_opr(const PhysicalExpr& expr,
 	                      const col_pt&       column,
-	                      ColumnDescriptor&   column_descriptor,
+	                      ColumnDescriptorT&  column_descriptor,
 	                      InterpreterState&   state);
 	~enc_fsst_opr();
 

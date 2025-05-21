@@ -12,8 +12,8 @@ public:
 	double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto& fls_reader      = conn.reset().read_fls(dir_path);
-		auto  rowgroup_reader = fls_reader.get_rowgroup_reader(0);
+		auto fls_reader      = conn.reset().read_fls(dir_path);
+		auto rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		auto start = benchmark::cycleclock::Now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
@@ -25,7 +25,7 @@ public:
 		auto       elapsed_cycles = end - start;
 
 		return static_cast<double>(elapsed_cycles) /
-		       (static_cast<double>(rowgroup_reader->get_descriptor().GetNVectors() * CFG::VEC_SZ * n_repetitions));
+		       (static_cast<double>(rowgroup_reader->get_descriptor().m_n_vec * CFG::VEC_SZ * n_repetitions));
 	}
 
 public:

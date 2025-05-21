@@ -159,7 +159,7 @@ template class Histogram<i64_pt>;
 template <typename PT, bool IS_PATCHED>
 enc_analyze_opr<PT, IS_PATCHED>::enc_analyze_opr(const PhysicalExpr& expr,
                                                  const col_pt&       col,
-                                                 ColumnDescriptor&   column_descriptor,
+                                                 ColumnDescriptorT&  column_descriptor,
                                                  InterpreterState&   state)
     : null_map_view(col) {
 

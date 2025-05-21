@@ -1,0 +1,27 @@
+// file: flatbuffers_schemas/rowgroup_descriptor.fbs
+
+// ─────────────────────────────────────────────────────────────
+// Includes (must come before any declarations)
+// ─────────────────────────────────────────────────────────────
+include "column_descriptor.fbs";  // brings in ColumnDescriptor, NameIndexEntry, etc.
+
+// ─────────────────────────────────────────────────────────────
+// Namespace
+// ─────────────────────────────────────────────────────────────
+namespace fastlanes;
+
+// ─────────────────────────────────────────────────────────────
+// RowgroupDescriptor (maps to your C++ class via native_type)
+// ─────────────────────────────────────────────────────────────
+table RowgroupDescriptor {
+  m_n_vec:              ulong;                  // m_n_vec
+  m_column_descriptors: [ColumnDescriptor];     // m_column_descriptors
+  m_size:               ulong;                  // m_size
+  m_offset:             ulong;                  // m_offset
+  m_n_tuples:           ulong;                  // m_n_tuples
+}
+
+// ─────────────────────────────────────────────────────────────
+// Root type
+// ─────────────────────────────────────────────────────────────
+root_type RowgroupDescriptor;

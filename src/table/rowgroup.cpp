@@ -16,11 +16,11 @@ namespace fastlanes {
 void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns);
 
 // TODO [COPY] All return values here are copied to be put inside col_t variant. They should be moved.
-col_pt init_logial_columns(const ColumnDescriptor& col_descriptor) {
+col_pt init_logial_columns(const ColumnDescriptorT& col_descriptor) {
 	switch (static_cast<DataType>(col_descriptor.data_type)) {
 	case DataType::LIST: {
 		auto uped_list   = make_unique<List>();
-		uped_list->child = init_logial_columns(*col_descriptor.children.begin());
+		uped_list->child = init_logial_columns(**col_descriptor.children.begin());
 		return uped_list;
 	}
 	case DataType::STRUCT: {
@@ -73,46 +73,28 @@ col_pt init_logial_columns(const ColumnDescriptor& col_descriptor) {
 void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) {
 	columns.reserve(footer.size());
 	for (const auto& col_descriptor : footer) {
-		columns.emplace_back(init_logial_columns(col_descriptor));
+		columns.emplace_back(init_logial_columns(*col_descriptor));
 	}
 }
 
-Rowgroup::Rowgroup(const RowgroupDescriptor& footer, const Connection& connection)
+Rowgroup::Rowgroup(const RowgroupDescriptorT& footer, const Connection& connection)
     : m_descriptor(footer)
     , n_tup(footer.m_n_tuples)
     , m_connection(connection)
     , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {
-	init_logial_columns(footer.GetColumnDescriptors(), internal_rowgroup);
-}
-
-DataType Rowgroup::GetDataType(const idx_t col_idx) const {
-	/**/
-	return m_descriptor[col_idx].data_type;
-}
-
-RowgroupDescriptor& Rowgroup::GetRowgroupDescriptor() {
-	/**/
-	return m_descriptor;
+	init_logial_columns(footer.m_column_descriptors, internal_rowgroup);
 }
 
 up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs, const Connection& connection) {
 	/**/
-	auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs), connection);
-	idx_t c      = {0};
-	for (const auto idx : idxs) {
-		result->internal_rowgroup[c++] = std::move(internal_rowgroup[idx]);
-	}
-	result->n_tup = n_tup;
-	return result;
-}
-
-up<Rowgroup> Rowgroup::Project(const vector<string>& col_names, const Connection& connection) {
-	vector<idx_t> idxs;
-	for (const auto& col_name : col_names) {
-		idxs.push_back(m_descriptor.LookUp(col_name));
-	}
-
-	return Project(idxs, connection);
+	FLS_IMPLEMENT_THIS()
+	// auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs), connection);
+	// idx_t c      = {0};
+	// for (const auto idx : idxs) {
+	// 	result->internal_rowgroup[c++] = std::move(internal_rowgroup[idx]);
+	// }
+	// result->n_tup = n_tup;
+	// return result;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -230,7 +212,7 @@ void Rowgroup::Finalize() {
  * Cast Check
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct col_cast_visitor {
-	explicit col_cast_visitor(const ColumnDescriptor& column_descriptor)
+	explicit col_cast_visitor(const ColumnDescriptorT& column_descriptor)
 	    : column_descriptor(column_descriptor) {
 	}
 
@@ -311,10 +293,10 @@ struct col_cast_visitor {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
 	}
 
-	const ColumnDescriptor& column_descriptor;
+	const ColumnDescriptorT& column_descriptor;
 };
 
-col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptor& column_descriptor) {
+col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptorT& column_descriptor) {
 	return visit(col_cast_visitor {column_descriptor}, rowgroup[column_descriptor.idx]);
 }
 
@@ -336,7 +318,7 @@ DataType getSmallestSignedType(PT min, PT max) {
 	}
 }
 
-void cast(rowgroup_pt& rowgroup, ColumnDescriptor& column_descriptor) {
+void cast(rowgroup_pt& rowgroup, ColumnDescriptorT& column_descriptor) {
 	bool should_be_cast {false};
 
 	visit(overloaded {
@@ -380,13 +362,13 @@ void cast(rowgroup_pt& rowgroup, ColumnDescriptor& column_descriptor) {
 	}
 }
 
-void cast_check(rowgroup_pt& rowgroup, RowgroupDescriptor& footer) {
+void cast_check(rowgroup_pt& rowgroup, RowgroupDescriptorT& footer) {
 	const auto n_col = rowgroup.size();
 
 	// brute_force
 	for (n_t col_idx {0}; col_idx < n_col; col_idx++) {
-		auto& column_descriptor = footer[col_idx];
-		cast(rowgroup, column_descriptor);
+		auto& column_descriptor = footer.m_column_descriptors[col_idx];
+		cast(rowgroup, *column_descriptor);
 	}
 }
 
@@ -395,9 +377,9 @@ void Rowgroup::Cast() {
 }
 
 void Rowgroup::Init() {
-	for (n_t col_idx {0}; col_idx < m_descriptor.size(); col_idx++) {
-		auto& column_descriptor = m_descriptor[col_idx];
-		column_descriptor.idx   = col_idx;
+	for (n_t col_idx {0}; col_idx < m_descriptor.m_size; col_idx++) {
+		auto& column_descriptor = m_descriptor.m_column_descriptors[col_idx];
+		column_descriptor->idx  = col_idx;
 	}
 }
 
@@ -543,7 +525,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 			[[maybe_unused]] const auto n_cols = ColCount();
 			FLS_ASSERT_EQUALITY(tuple.size(), n_cols)
 			col_pt& physical_column = internal_rowgroup[col_idx];
-			Attribute::Ingest(physical_column, val, m_descriptor.m_column_descriptors[col_idx]);
+			Attribute::Ingest(physical_column, val, *m_descriptor.m_column_descriptors[col_idx]);
 			col_idx = col_idx + 1;
 		}
 		n_tup = n_tup + 1;
@@ -554,7 +536,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer);
 
-nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_description) {
+nlohmann::json to_json(const col_pt& column, const ColumnDescriptorT& col_description) {
 	return std::visit( //
 	    overloaded {
 	        [](const std::monostate&) {
@@ -575,7 +557,7 @@ nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_descrip
 
 		        return nlohmann::json {{"nullmap", list_col->null_map_arr},
 		                               {"offsets", list_col->ofs_arr},
-		                               {"data", to_json(list_col->child, *col_description.children.begin())}};
+		                               {"data", to_json(list_col->child, **col_description.children.begin())}};
 	        },
 	        [&](const up<Struct>& struct_col) {
 		        return nlohmann::json {{"nullmap", struct_col->null_map_arr},
@@ -591,15 +573,15 @@ nlohmann::json to_json(const col_pt& column, const ColumnDescriptor& col_descrip
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer) {
 	nlohmann::json json_object;
 	for (idx_t i = 0; i < footer.size(); ++i) {
-		const auto& column                = columns[i];
-		const auto& col_description       = footer[i];
-		json_object[col_description.name] = to_json(column, col_description);
+		const auto& column                 = columns[i];
+		const auto& col_description        = footer[i];
+		json_object[col_description->name] = to_json(column, *col_description);
 	}
 	return json_object;
 }
 
 void Rowgroup::WriteJson(std::ostream& os) const {
-	const auto json = to_json(internal_rowgroup, m_descriptor.GetColumnDescriptors());
+	const auto json = to_json(internal_rowgroup, m_descriptor.m_column_descriptors);
 	os << json;
 }
 
@@ -614,12 +596,7 @@ n_t Rowgroup::VecCount() const {
 
 n_t Rowgroup::ColCount() const {
 	/**/
-	return m_descriptor.size();
-}
-
-idx_t Rowgroup::LookUp(const string& name) const {
-	/**/
-	return m_descriptor.LookUp(name);
+	return m_descriptor.m_column_descriptors.size();
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -671,7 +648,7 @@ const uint8_t* TypedColumnView<PT>::NullMap() const {
 }
 
 template <typename PT>
-const n_t TypedColumnView<PT>::GetNTuples() const {
+n_t TypedColumnView<PT>::GetNTuples() const {
 	return n_tuples;
 }
 
@@ -751,7 +728,7 @@ fls_string_t* FlsStrColumnView::String() const {
 	return fls_string_p + (vec_idx * CFG::VEC_SZ);
 }
 
-const n_t FlsStrColumnView::GetNTuples() const {
+n_t FlsStrColumnView::GetNTuples() const {
 	return n_tuples;
 }
 

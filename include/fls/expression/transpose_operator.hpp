@@ -7,7 +7,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Segment;
-class ColumnDescriptor;
+struct ColumnDescriptorT;
 class PhysicalExpr;
 struct InterpreterState;
 class ColumnView;
@@ -20,7 +20,7 @@ struct enc_transpose_opr {
 public:
 	explicit enc_transpose_opr(const PhysicalExpr& expr,
 	                           const col_pt&       col,
-	                           ColumnDescriptor&   column_descriptor,
+	                           ColumnDescriptorT&  column_descriptor,
 	                           InterpreterState&   state);
 
 	void Transpose();

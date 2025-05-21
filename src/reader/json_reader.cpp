@@ -12,7 +12,7 @@ namespace fastlanes {
 
 void parse_json_tuple(const nlohmann::json& json, rowgroup_pt& columns, const ColumnDescriptors& column_descriptor);
 
-void parse_json_value(const nlohmann::json& json_value, col_pt& column, const ColumnDescriptor& column_descriptor) {
+void parse_json_value(const nlohmann::json& json_value, col_pt& column, const ColumnDescriptorT& column_descriptor) {
 	const bool is_null = json_value.is_null();
 
 	visit(overloaded {
@@ -37,7 +37,7 @@ void parse_json_value(const nlohmann::json& json_value, col_pt& column, const Co
 		          }
 
 		          for (auto& child : json_value) {
-			          parse_json_value(child, list_column->child, *column_descriptor.children.begin());
+			          parse_json_value(child, list_column->child, **column_descriptor.children.begin());
 		          }
 	          },
 	          [&](up<Struct>& struct_col) {
@@ -67,12 +67,12 @@ void parse_json_tuple(const nlohmann::json& json, rowgroup_pt& columns, const Co
 		const auto& col_description = column_descriptor[i];
 
 		const nlohmann::json* value;
-		if (!json.contains(col_description.name)) {
+		if (!json.contains(col_description->name)) {
 			value = nullptr;
 		} else {
-			value = &json[col_description.name];
+			value = &json[col_description->name];
 		}
-		parse_json_value(value == nullptr ? nlohmann::json() : *value, columns[i], col_description);
+		parse_json_value(value == nullptr ? nlohmann::json() : *value, columns[i], *col_description);
 	}
 }
 
@@ -106,7 +106,7 @@ up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
 
 	auto                 json_string         = File::read(found_schema_path);
 	const nlohmann::json j                   = nlohmann::json::parse(json_string);
-	auto                 rowgroup_descriptor = j.get<RowgroupDescriptor>();
+	auto                 rowgroup_descriptor = j.get<RowgroupDescriptorT>();
 
 	std::ifstream jsonl_stream = FileSystem::open_r(found_jsonl_path.c_str());
 	string        line;

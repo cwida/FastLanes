@@ -1,0 +1,48 @@
+// file: flatbuffers_schemas/column_descriptor.fbs
+
+// ─────────────────────────────────────────────────────────────
+// Includes (must come before any declarations)
+// ─────────────────────────────────────────────────────────────
+include "datatype.fbs";
+include "decimal_type.fbs";
+include "footer.fbs";
+include "operator_token.fbs";
+include "rpn.fbs";
+
+// ─────────────────────────────────────────────────────────────
+// Namespace
+// ─────────────────────────────────────────────────────────────
+namespace fastlanes;
+
+
+// ─────────────────────────────────────────────────────────────
+// ExpressionResult (inline struct, no vtable overhead)
+// ─────────────────────────────────────────────────────────────
+table ExpressionResult{
+  operator_token: OperatorToken;  // your enum
+  size:           ulong;          // maps to n_t (uint64_t)
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// ColumnDescriptor (maps to your C++ class via native_type)
+// ─────────────────────────────────────────────────────────────
+table ColumnDescriptor  {
+  data_type:           DataType;               // enum
+  encoding_rpn:        RPN;                    // table
+  idx:                 ulong;                  // uint64_t
+  name:                string;
+  children:            [ColumnDescriptor];     // recursive
+  max:                 BinaryValue;            // table
+  column_offset:       ulong;
+  total_size:          ulong;
+  expr_space:          [ExpressionResult];       // vector of map entries
+  segment_descriptors: [SegmentDescriptor];     // vector of tables
+  n_null:              ulong;
+  fix_me_decimal_type: DecimalType;            // table
+}
+
+// ─────────────────────────────────────────────────────────────
+// Root type (if this is your top-level object)
+// ─────────────────────────────────────────────────────────────
+root_type ColumnDescriptor;

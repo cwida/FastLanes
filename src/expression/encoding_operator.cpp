@@ -19,7 +19,7 @@ namespace fastlanes {
 template <typename PT>
 enc_scan_opr<PT>::enc_scan_opr(const PhysicalExpr& expr,
                                const col_pt&       column,
-                               ColumnDescriptor&   column_descriptor,
+                               ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state)
     : typed_column_view(column) {
 }
@@ -48,7 +48,7 @@ template struct enc_scan_opr<u08_pt>;
 template <typename VALUE_PT, typename INDEX_PT>
 enc_dict_map_opr<VALUE_PT, INDEX_PT>::enc_dict_map_opr(const PhysicalExpr& expr,
                                                        const col_pt&       column,
-                                                       ColumnDescriptor&   column_descriptor,
+                                                       ColumnDescriptorT&  column_descriptor,
                                                        InterpreterState&   state)
     : typed_column_view(column) {
 }
@@ -90,7 +90,7 @@ template struct enc_dict_map_opr<flt_pt, u08_pt>;
 template <typename INDEX_PT>
 enc_dict_map_opr<fls_string_t, INDEX_PT>::enc_dict_map_opr(const PhysicalExpr& expr,
                                                            const col_pt&       column,
-                                                           ColumnDescriptor&   column_descriptor,
+                                                           ColumnDescriptorT&  column_descriptor,
                                                            InterpreterState&   state)
     : column_view(column) {
 }
@@ -124,7 +124,7 @@ template struct enc_dict_map_opr<fls_string_t, u08_pt>;
 template <typename PT>
 enc_uncompressed_opr<PT>::enc_uncompressed_opr(const PhysicalExpr& physical_expr,
                                                const col_pt&       column,
-                                               ColumnDescriptor&   column_descriptor,
+                                               ColumnDescriptorT&  column_descriptor,
                                                InterpreterState&   state)
     : typed_column_view(column) {
 
@@ -178,7 +178,7 @@ void enc_fls_str_uncompressed_op::Copy() const {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * enc struct opr
 \*--------------------------------------------------------------------------------------------------------------------*/
-enc_struct_opr::enc_struct_opr(const col_pt& column, ColumnDescriptor& column_descriptor) {
+enc_struct_opr::enc_struct_opr(const col_pt& column, ColumnDescriptorT& column_descriptor) {
 
 	auto visitor = overloaded {[&](std::monostate&) { FLS_UNREACHABLE(); },
 	                           [&](const up<Struct>& struct_col) {
@@ -186,7 +186,7 @@ enc_struct_opr::enc_struct_opr(const col_pt& column, ColumnDescriptor& column_de
 			                           InterpreterState state;
 
 			                           auto child_physical_expr = Interpreter::Encoding::Interpret(
-			                               child_column_descriptor, struct_col->internal_rowgroup, state);
+			                               *child_column_descriptor, struct_col->internal_rowgroup, state);
 			                           internal_exprs.emplace_back(child_physical_expr);
 		                           }
 	                           },
@@ -258,7 +258,7 @@ struct VisitorFunctor {
 template <typename PT>
 enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
                                const col_pt&       col,
-                               ColumnDescriptor&   column_descriptor,
+                               ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state) {
 
 	VisitorFunctor functor {this, &expr};
@@ -267,7 +267,7 @@ enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
 		visit(functor, expr.operators.back());
 	}
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);

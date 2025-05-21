@@ -60,17 +60,17 @@ class MakeDecimalTTest : public ::testing::Test {};
 
 // ✅ Test valid "decimal(p, s)" parsing cases
 TEST_F(MakeDecimalTTest, ValidDecimalFormatParsing) {
-	DecimalType d1 = make_decimal_t("decimal(11, 6)");
-	EXPECT_EQ(d1.precision, 11);
-	EXPECT_EQ(d1.scale, 6);
+	auto d1 = make_decimal_t("decimal(11, 6)");
+	EXPECT_EQ(d1->precision, 11);
+	EXPECT_EQ(d1->scale, 6);
 
-	DecimalType d2 = make_decimal_t("decimal(20,10)");
-	EXPECT_EQ(d2.precision, 20);
-	EXPECT_EQ(d2.scale, 10);
+	auto d2 = make_decimal_t("decimal(20,10)");
+	EXPECT_EQ(d2->precision, 20);
+	EXPECT_EQ(d2->scale, 10);
 
-	DecimalType d3 = make_decimal_t("decimal(5,2)");
-	EXPECT_EQ(d3.precision, 5);
-	EXPECT_EQ(d3.scale, 2);
+	auto d3 = make_decimal_t("decimal(5,2)");
+	EXPECT_EQ(d3->precision, 5);
+	EXPECT_EQ(d3->scale, 2);
 }
 
 // ❌ Test invalid formats (should throw exceptions)

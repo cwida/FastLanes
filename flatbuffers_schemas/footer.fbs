@@ -1,0 +1,30 @@
+// schema_v_0_2.fbs
+namespace fastlanes;
+
+// ─── enum ───────────────────────────────────────────────────────
+enum EntryPointType : ubyte {
+  UINT8  = 0,
+  UINT16 = 1,
+  UINT32 = 2,
+  UINT64 = 3
+}
+
+// ─── table ──────────────────────────────────────────────────────
+// A fixed-layout struct would work too if you never need "optional" fields,
+// but using a table here gives you the full object API right away.
+table SegmentDescriptor {
+  entrypoint_offset: ulong;    // maps to uint64_t
+  entrypoint_size:   ulong;    // maps to uint64_t
+  data_offset:       ulong;    // maps to uint64_t
+  data_size:         ulong;    // maps to uint64_t
+  entry_point_t:     EntryPointType;
+}
+
+// ─────────────────────────────────────────────────────────────
+// BinaryValue
+// ─────────────────────────────────────────────────────────────
+table BinaryValue {
+  binary_data: [ubyte];
+}
+
+root_type SegmentDescriptor;

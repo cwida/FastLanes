@@ -11,7 +11,7 @@ class Buf;
 
 class Encoder {
 public:
-	static void encode(const Connection& connection, const path& dir_path);
+	static void encode(const Connection& connection, const path& file_path);
 };
 } // namespace fastlanes
 

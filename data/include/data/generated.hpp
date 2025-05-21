@@ -62,6 +62,9 @@ public:
 	static constexpr string_view ANY_VALUE_COUNT_I64_666 {FLS_CMAKE_SOURCE_DIR "/data/generated/any_value_count/666"};
 	static constexpr string_view ANY_VALUE_COUNT_I64_52422 {FLS_CMAKE_SOURCE_DIR
 	                                                        "/data/generated/any_value_count/25570"};
+
+	// SUBNORMAL
+	static constexpr string_view SUBNORMALS {FLS_CMAKE_SOURCE_DIR "/data/generated/subnormals"};
 };
 
 } // namespace fastlanes

@@ -17,11 +17,11 @@ namespace fastlanes {
 \*--------------------------------------------------------------------------------------------------------------------*/
 enc_fsst_opr::enc_fsst_opr(const PhysicalExpr& expr,
                            const col_pt&       column,
-                           ColumnDescriptor&   column_descriptor,
+                           ColumnDescriptorT&  column_descriptor,
                            InterpreterState&   state)
     : str_col_view(column)
     , fsst_encoder_p(fsst_helper::make_fsst(str_col_view)) {
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 
 	fsst_bytes.resize(str_col_view.stats.maximum_n_bytes_p_value * CFG::VEC_SZ * 2);
 

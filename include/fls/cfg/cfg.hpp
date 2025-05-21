@@ -24,6 +24,11 @@ public:
 	static constexpr uint64_t N_VEC_PER_RG   = 64;           //
 
 	// Rowgroup
+	struct Defaults {
+		static constexpr bool ENABLE_VERBOSE = false;
+	};
+
+	// Rowgroup
 	struct RowGroup {
 		static constexpr uint64_t N_VECTORS_PER_ROWGROUP = 64;
 		static constexpr uint64_t N_VALUES_PER_ROWGROUP  = 64 * 1024;

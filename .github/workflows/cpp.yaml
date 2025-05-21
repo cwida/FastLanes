@@ -1,5 +1,7 @@
-name: CI
-run-name: "${{ github.actor }} – ${{ github.event.head_commit.message }}"
+name: CPP
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Events
@@ -17,7 +19,6 @@ concurrency:
 # Global env (tweak once, use everywhere)
 env:
   CMAKE_GENERATOR: Ninja            # much faster than Makefiles
-  BUILD_THREADS: 12                 # tweak to fit runner vCPU count
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────────
@@ -27,6 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
       - name: Run format check
         run: make format-check
 
@@ -38,13 +44,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest , windows-latest ]
+        platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
     runs-on: ${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
@@ -65,6 +75,7 @@ jobs:
                 -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DCMAKE_C_COMPILER=clang \
+                -DFLS_ENABLE_CLANG_TIDY=ON \
                 -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build (clang-tidy runs automatically)
@@ -82,7 +93,9 @@ jobs:
   #
   #    steps:
   #      - uses: actions/checkout@v4
-  #
+  #      - name: Detect CPU count
+  #        shell: bash
+  #        run: make detect-cpu | tee -a "$GITHUB_ENV"
   #      - name: Cache IWYU build
   #        uses: actions/cache@v4
   #        with:
@@ -90,7 +103,6 @@ jobs:
   #          key: ${{ runner.os }}-iwyu-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', '**/*.cmake', '**/*.[ch]pp', '**/*.h') }}
   #          restore-keys: |
   #            ${{ runner.os }}-iwyu-${{ matrix.build_type }}-
-  #
   #      - name: Configure (IWYU)
   #        run: |
   #          cmake -S ${{ github.workspace }} \
@@ -99,7 +111,6 @@ jobs:
   #                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
   #                -DCMAKE_C_COMPILER=clang \
   #                -DCMAKE_CXX_COMPILER=clang++
-  #
   #      - name: Build (IWYU)
   #        run: cmake --build build_iwyu_${{ matrix.build_type }} -j $BUILD_THREADS
 
@@ -115,9 +126,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
-
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 5️⃣  Example build & run
@@ -128,7 +142,6 @@ jobs:
         platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Release ]
         cxx: [ clang++ ]
-
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -140,6 +153,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
 
@@ -150,17 +167,14 @@ jobs:
             -B "build_${{ matrix.build_type }}"
             -DFLS_BUILD_EXAMPLES=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DFLS_ENABLE_CLANG_TIDY=OFF
             -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
           )
-          
           # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
-          
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
@@ -180,23 +194,22 @@ jobs:
   test:
     strategy:
       matrix:
-        #        platform: [ ubuntu-latest, macos-latest, windows-latest ] // todo - enable  windows-latest
         platform: [ ubuntu-latest, macos-latest ]
         build_type: [ Release ]
-
     runs-on: ${{ matrix.platform }}
 
     defaults:
       run:
         shell: bash  # Use bash on all platforms to avoid PowerShell issues on Windows
 
-    env:
-      BUILD_THREADS: 12
-
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
         uses: ./.github/actions/generate-dataset
@@ -211,17 +224,14 @@ jobs:
             -B "test_build_${{ matrix.build_type }}"
             -DFLS_BUILD_TESTING=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DFLS_ENABLE_CLANG_TIDY=OFF
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER=clang++
           )
-
-          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN runtime mismatch
+          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
-
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build tests
@@ -230,3 +240,92 @@ jobs:
       - name: Run tests
         working-directory: "test_build_${{ matrix.build_type }}"
         run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # 7️⃣  Install job
+  # ──────────────────────────────────────────────────────────────────────────────
+  install:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      # Use the same LLVM toolchain as the other jobs
+      - name: Install LLVM toolchain
+        uses: ./.github/actions/install-llvm
+
+      - name: Configure + build + install
+        shell: bash
+        run: |
+          CMAKE_ARGS=(
+            -S "${{ github.workspace }}"
+            -B build
+            -G "${CMAKE_GENERATOR}"
+            -DCMAKE_C_COMPILER=clang
+            -DCMAKE_CXX_COMPILER=clang++
+            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_INSTALL_PREFIX=build/install
+          )
+          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+          fi
+          cmake "${CMAKE_ARGS[@]}"
+          cmake --build build --target install -j $BUILD_THREADS
+
+      - name: Verify installed header files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SOURCE_INCLUDE=include
+          INSTALL_INCLUDE=build/install/include
+
+          # 1) fail fast if the install tree isn't there
+          if [[ ! -d "$INSTALL_INCLUDE" ]]; then
+            echo "❌ Error: '$INSTALL_INCLUDE' directory not found"
+            exit 1
+          fi
+
+          # 2) show what *did* get installed
+          echo "✅ Found install include directory; installed headers:"
+          find "$INSTALL_INCLUDE" -type f -print
+
+          # 3) walk every .h/.hpp under your source include/, check its counterpart
+          missing=()
+          while IFS= read -r -d '' src; do
+            # strip leading "./"
+            rel="${src#./}"
+            if [[ ! -f "$INSTALL_INCLUDE/$rel" ]]; then
+              missing+=("$rel")
+            fi
+          done < <(
+            cd "$SOURCE_INCLUDE"
+            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0
+          )
+
+          # 4) report & fail if anything’s missing
+          if (( ${#missing[@]} > 0 )); then
+            echo "❌ Missing expected header(s):"
+            for hdr in "${missing[@]}"; do
+              echo "   • $hdr"
+            done
+            exit 1
+          fi
+
+          echo "✅ All expected headers are present."
+
+      - name: Upload C++ install tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlanes-cpp-install-${{ matrix.os }}
+          path: build/install

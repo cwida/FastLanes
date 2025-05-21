@@ -1,34 +1,11 @@
 #ifndef FLS_EXPRESSION_DATA_TYPE_HPP
 #define FLS_EXPRESSION_DATA_TYPE_HPP
 
+#include "fls/footer/datatype_generated.h"
 #include <cstdint>
 #include <string>
 
 namespace fastlanes {
-
-enum class DataType : uint8_t {
-	INVALID    = 0,
-	DOUBLE     = 1,
-	INT8       = 2,
-	INT16      = 3,
-	INT32      = 4,
-	INT64      = 5,
-	UINT8      = 6,
-	UINT16     = 7,
-	UINT32     = 8,
-	UINT64     = 9,
-	STR        = 10,
-	BOOLEAN    = 11,
-	DATE       = 12,
-	FLOAT      = 13,
-	BYTE_ARRAY = 14,
-	LIST       = 15,
-	STRUCT     = 16,
-	MAP        = 17,
-	FALLBACK   = 18,
-	FLS_STR    = 19,
-	DECIMAL    = 20,
-};
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ToSt :

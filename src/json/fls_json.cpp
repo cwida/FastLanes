@@ -3,10 +3,13 @@
 #include "fls/common/magic_enum.hpp"
 #include "fls/connection.hpp"
 #include "fls/expression/logical_expression.hpp"
-#include "fls/expression/new_rpn.hpp"
+#include "fls/expression/rpn.hpp"
+#include "fls/footer/column_descriptor.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
+#include "fls/json/json_unique_ptr.hpp" // <─ must appear before you call get_to(...)
+#include <fls/json/nlohmann/json.hpp>
 #include <sstream>
 
 namespace fastlanes {
@@ -245,7 +248,7 @@ constexpr const auto* COLUMN_DESCRIPTORS = "3  [REQUIRED], Column Descriptors";
 constexpr const auto* ROWGROUP_OFFSET    = "4, [REQUIRED], Rowgroup OFFSET";
 constexpr const auto* N_TUPLES           = "5, [REQUIRED], N TUPLES";
 
-void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
+void to_json(nlohmann::json& j, const RowgroupDescriptorT& rowgroup_descriptor) {
 	j = nlohmann::json {
 	    //
 	    {N_VEC, rowgroup_descriptor.m_n_vec},                           //
@@ -256,7 +259,7 @@ void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor) {
 
 	};
 }
-void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor) {
+void from_json(const nlohmann::json& j, RowgroupDescriptorT& rowgroup_descriptor) {
 	if (j.contains(COLUMN_DESCRIPTORS)) {
 		j.at(COLUMN_DESCRIPTORS).get_to(rowgroup_descriptor.m_column_descriptors);
 		j.at(N_VEC).get_to(rowgroup_descriptor.m_n_vec);
@@ -269,7 +272,7 @@ void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor)
 	}
 }
 /*--------------------------------------------------------------------------------------------------------------------*\
- * ColumnDescriptor
+ * ColumnDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* LOGICAL_TYPE_KEY      = "0, [REQUIRED], LOGICAL TYPE";
 constexpr const auto* LOGICAL_TYPE_STR_KEY  = "1, [OPTIONAL], LOGICAL TYPE STRING";
@@ -285,17 +288,36 @@ constexpr const auto* CHILDREN_KEY          = "C, [REQUIRED], CHILDREN";
 constexpr const auto* EXPR_SPACE_KEY        = "D, [REQUIRED], EXPR SPACE";
 constexpr const auto* EXPR_SPACE_STRING_KEY = "D, [REQUIRED], EXPR SPACE STRING";
 
-string to_string(const unordered_map<OperatorToken, n_t>& pairs) {
-	std::stringstream results;
-	results << "{";
-	for (const auto& [operator_token, size] : pairs) {
-		results << "[" << token_to_string(operator_token) << "," << size << "]";
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
+template <typename ExpressionResultT>
+std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pairs) {
+	std::ostringstream results;
+	results << '{';
+
+	bool first = true;
+	for (const auto& ptr : pairs) {
+		if (!ptr) {
+			continue;
+		}                                          // defensive: skip nulls
+		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
+
+		if (!first) {
+			results << ','; // comma-separate each element
+		}
+		first = false;
+
+		results << '[' << token_to_string(operator_token) << ',' << size << ']';
 	}
-	results << "}";
+
+	results << '}';
 	return results.str();
 }
 
-void to_json(nlohmann::json& j, const ColumnDescriptor& p) {
+void to_json(nlohmann::json& j, const ColumnDescriptorT& p) {
 	j = nlohmann::json {
 	    {IDX_KEY, p.idx},                                           // A
 	    {LOGICAL_TYPE_KEY, p.data_type},                            // 0
@@ -312,16 +334,19 @@ void to_json(nlohmann::json& j, const ColumnDescriptor& p) {
 	    {N_NULLS_KEY, p.n_null}                                     // D
 	};
 }
-void from_json(const nlohmann::json& j, ColumnDescriptor& p) {
+void from_json(const nlohmann::json& j, ColumnDescriptorT& p) {
+	p.encoding_rpn = std::make_unique<RPNT>();
+	p.max          = std::make_unique<BinaryValueT>();
+
 	if (j.contains(LOGICAL_TYPE_KEY)) {
 		j.at(SEGMENTS_KEY).get_to(p.segment_descriptors); //
-		j.at(RPN_KEY).get_to(p.encoding_rpn);             //
+		j.at(RPN_KEY).get_to(*p.encoding_rpn);            //
 		j.at(NAME_KEY).get_to(p.name);                    //
 		j.at(LOGICAL_TYPE_KEY).get_to(p.data_type);       //
 		j.at(COLUMN_SIZE_KEY).get_to(p.total_size);       //
 		j.at(COLUMN_OFFSET_KEY).get_to(p.column_offset);  //
 		j.at(IDX_KEY).get_to(p.idx);                      //
-		j.at(MAX_KEY).get_to(p.max);                      //
+		j.at(MAX_KEY).get_to(*p.max);                     //
 		j.at(CHILDREN_KEY).get_to(p.children);            //
 		j.at(EXPR_SPACE_KEY).get_to(p.expr_space);        //
 		j.at(N_NULLS_KEY).get_to(p.n_null);               //
@@ -354,10 +379,10 @@ void to_json(nlohmann::json& j, const RowgroupEncodingResult& p) {
 constexpr const auto* OPERATORS_KEY = "1, [REQUIRED], OPERATOR KEY";
 constexpr const auto* OPERANDS_KEY  = "2, [OPTIONAL], OPERAND KEY";
 
-void to_json(nlohmann::json& j, const NewRPN& p) {
+void to_json(nlohmann::json& j, const RPNT& p) {
 	j = nlohmann::json {{OPERATORS_KEY, p.operator_tokens}, {OPERANDS_KEY, p.operand_tokens}};
 }
-void from_json(const nlohmann::json& j, NewRPN& p) {
+void from_json(const nlohmann::json& j, RPNT& p) {
 	j.at(OPERATORS_KEY).get_to(p.operator_tokens); //
 	j.at(OPERANDS_KEY).get_to(p.operand_tokens);   //
 }
@@ -367,18 +392,18 @@ void from_json(const nlohmann::json& j, NewRPN& p) {
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* BINARY_DATA_KEY = "1, [REQUIRED], BINARY DATA";
 
-void to_json(nlohmann::json& j, const BinaryValue& p) {
+void to_json(nlohmann::json& j, const BinaryValueT& p) {
 	j = nlohmann::json {
 	    {BINARY_DATA_KEY, p.binary_data},
 	};
 }
 
-void from_json(const nlohmann::json& j, BinaryValue& p) {
+void from_json(const nlohmann::json& j, BinaryValueT& p) {
 	j.at(BINARY_DATA_KEY).get_to(p.binary_data); //
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
- * SegmentDescriptor
+ * SegmentDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
 constexpr const auto* ENTRY_POINT_OFFSET = "1, [REQUIRED], ENTRY POINT OFFSET";
 constexpr const auto* ENTRY_POINT_SIZE   = "2, [REQUIRED], ENTRY POINT SIZE";
@@ -386,7 +411,7 @@ constexpr const auto* DATA_OFFSET        = "3, [REQUIRED], DATA OFFSET";
 constexpr const auto* DATA_SIZE          = "4, [REQUIRED], DATA SIZE";
 constexpr const auto* ENTRY_POINT_TYPE   = "5, [REQUIRED], ENTRY_POINT_TYPE";
 
-void to_json(nlohmann::json& j, const SegmentDescriptor& p) {
+void to_json(nlohmann::json& j, const SegmentDescriptorT& p) {
 	j = nlohmann::json {
 	    {ENTRY_POINT_OFFSET, p.entrypoint_offset},
 	    {ENTRY_POINT_SIZE, p.entrypoint_size},
@@ -396,7 +421,7 @@ void to_json(nlohmann::json& j, const SegmentDescriptor& p) {
 	    //
 	};
 }
-void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
+void from_json(const nlohmann::json& j, SegmentDescriptorT& p) {
 	j.at(ENTRY_POINT_OFFSET).get_to(p.entrypoint_offset);
 	j.at(ENTRY_POINT_SIZE).get_to(p.entrypoint_size);
 	j.at(DATA_OFFSET).get_to(p.data_offset);
@@ -407,7 +432,7 @@ void from_json(const nlohmann::json& j, SegmentDescriptor& p) {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
-n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor) {
+n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor) {
 
 	const nlohmann::json table_descriptor_json      = table_descriptor;
 	const auto           table_descriptor_json_dump = table_descriptor_json.dump();
@@ -431,16 +456,33 @@ n_t JSON::write(const Connection& connection, const path& dir_path, TableDescrip
 constexpr const auto* ROWGROUP_DESCRIPTORS = "1  [REQUIRED], RowGroup Descriptors";
 constexpr const auto* TABLE_BINARY_SIZE    = "2  [REQUIRED], Table Binary Size";
 
-void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor) {
+void to_json(nlohmann::json& j, const TableDescriptorT& table_descriptor) {
 	j = nlohmann::json {
 	    //
 	    {ROWGROUP_DESCRIPTORS, table_descriptor.m_rowgroup_descriptors}, //
 	    {TABLE_BINARY_SIZE, table_descriptor.m_table_binary_size},       //
 	};
 }
-void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor) {
+void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 	j.at(ROWGROUP_DESCRIPTORS).get_to(table_descriptor.m_rowgroup_descriptors);
 	j.at(TABLE_BINARY_SIZE).get_to(table_descriptor.m_table_binary_size);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * ExpressionResult
+\*--------------------------------------------------------------------------------------------------------------------*/
+constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
+constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
+void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
+	                 j = nlohmann::json {
+        //
+        {OPERATOR_TOKEN, expression_result.operator_token}, //
+        {SIZE, expression_result.size},                     //
+    };
+}
+void from_json(const nlohmann::json& j, ExpressionResultT& expression_result) {
+	j.at(OPERATOR_TOKEN).get_to(expression_result.operator_token);
+	j.at(SIZE).get_to(expression_result.size);
 }
 
 } // namespace fastlanes

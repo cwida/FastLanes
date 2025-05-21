@@ -19,7 +19,7 @@ namespace fastlanes {
 template <typename PT>
 enc_slpatch_opr<PT>::enc_slpatch_opr(const PhysicalExpr& expr,
                                      const col_pt&       col,
-                                     ColumnDescriptor&   column_descriptor,
+                                     ColumnDescriptorT&  column_descriptor,
                                      InterpreterState&   state) {
 
 	visit(overloaded {
@@ -37,7 +37,7 @@ enc_slpatch_opr<PT>::enc_slpatch_opr(const PhysicalExpr& expr,
 	exceptions_position_segment = make_unique<Segment>();
 	exceptions_segment          = make_unique<Segment>();
 
-	auto& [operator_tokens, operand_tokens] = column_descriptor.encoding_rpn;
+	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 
 	operand_tokens.emplace_back(state.cur_operand++);
 	operand_tokens.emplace_back(state.cur_operand++);
@@ -103,11 +103,11 @@ dec_slpatch_opr<PT>::dec_slpatch_opr(PhysicalExpr&     physical_expr,
                                      const ColumnView& column_view,
                                      InterpreterState& state)
     : exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
     , exceptions_position_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
     , n_exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn.operand_tokens[state.cur_operand - 0])) {
+          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
 	state.cur_operand = state.cur_operand - 3;
 
 	visit(SLPatchExprVisitor {*this}, physical_expr.operators.back());

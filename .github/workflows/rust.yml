@@ -1,0 +1,94 @@
+name: Rust
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  push:
+  pull_request:
+    branches: [ "main", "dev" ]
+
+# cancel redundant runs for the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ──────────────────────────────────────────────────────────────
+  # 1️⃣  Format‐check
+  # ──────────────────────────────────────────────────────────────
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Check Rust formatting
+        working-directory: rust
+        run: cargo fmt -- --check
+
+  # ──────────────────────────────────────────────────────────────
+  # 3️⃣  Build & test (with Clang → libstdc++)
+  # ──────────────────────────────────────────────────────────────
+  build:
+    needs: [ fmt ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Detect CPU count
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/debug/deps
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Install C++ deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config \
+                                 libc++-dev libc++abi-dev
+
+      - name: Build & run Rust example
+        env:
+          CC: clang
+          CXX: clang++
+        run: make -j $BUILD_THREADS run-rust-example
+
+      - name: Run Rust tests
+        env:
+          CC: clang
+          CXX: clang++
+        run: |
+          cd rust
+          cargo test -- --test-threads $BUILD_THREADS
+
+      - name: Dry-run publish check
+        env:
+          CC: clang
+          CXX: clang++
+        run: make -j $BUILD_THREADS dry-run-rust
+
+  # ──────────────────────────────────────────────────────────────
+  # 4️⃣  (Optional) Publish docs or other post‐build steps…
+  # ──────────────────────────────────────────────────────────────
+  # deploy-docs:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     …

@@ -2,39 +2,40 @@
 #define FLS_JSON_FLS_JSON_HPP
 
 #include "fls/common/alias.hpp"
+#include "fls/json/nlohmann/json.hpp"
 #include "fls/std/filesystem.hpp"
-#include "nlohmann/json.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class RowgroupDescriptor;
-class ColumnDescriptor;
+struct RowgroupDescriptorT;
+struct ColumnDescriptorT;
 class RowgroupEncodingResult;
 class Connector;
 class LogicalExpr;
-class NewRPN;
+struct RPNT;
 struct Operand;
-class SegmentDescriptor;
-class BinaryValue;
+struct SegmentDescriptorT;
+struct BinaryValueT;
 class ExprSpace;
-class TableDescriptor;
+struct TableDescriptorT;
 class Connection;
+struct ExpressionResultT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
- * TableDescriptor
+ * TableDescriptorT
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const TableDescriptor& table_descriptor);
-void from_json(const nlohmann::json& j, TableDescriptor& table_descriptor);
+void to_json(nlohmann::json& j, const TableDescriptorT& table_descriptor);
+void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * RowgroupDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const RowgroupDescriptor& rowgroup_descriptor);
-void from_json(const nlohmann::json& j, RowgroupDescriptor& rowgroup_descriptor);
+void to_json(nlohmann::json& j, const RowgroupDescriptorT& rowgroup_descriptor);
+void from_json(const nlohmann::json& j, RowgroupDescriptorT& rowgroup_descriptor);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ColumnDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const ColumnDescriptor& p);
-void from_json(const nlohmann::json& j, ColumnDescriptor& p);
+void to_json(nlohmann::json& j, const ColumnDescriptorT& p);
+void from_json(const nlohmann::json& j, ColumnDescriptorT& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * LogicalExpr
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -43,14 +44,14 @@ void from_json(const nlohmann::json& j, LogicalExpr& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * NewRpn
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const NewRPN& p);
-void from_json(const nlohmann::json& j, NewRPN& p);
+void to_json(nlohmann::json& j, const RPNT& p);
+void from_json(const nlohmann::json& j, RPNT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * BinaryValue
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const BinaryValue& p);
-void from_json(const nlohmann::json& j, BinaryValue& p);
+void to_json(nlohmann::json& j, const BinaryValueT& p);
+void from_json(const nlohmann::json& j, BinaryValueT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ExprSpace
@@ -61,15 +62,21 @@ void from_json(const nlohmann::json& j, ExprSpace& p);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * SegmentDescriptor
 \*--------------------------------------------------------------------------------------------------------------------*/
-void to_json(nlohmann::json& j, const SegmentDescriptor& p);
-void from_json(const nlohmann::json& j, SegmentDescriptor& p);
+void to_json(nlohmann::json& j, const SegmentDescriptorT& p);
+void from_json(const nlohmann::json& j, SegmentDescriptorT& p);
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * ExpressionResult
+\*--------------------------------------------------------------------------------------------------------------------*/
+void to_json(nlohmann::json& j, const ExpressionResultT& p);
+void from_json(const nlohmann::json& j, ExpressionResultT& p);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
 class JSON {
 public:
-	static n_t write(const Connection& connection, const path& dir_path, TableDescriptor& table_descriptor);
+	static n_t write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor);
 };
 
 /// write the footer or profiling as json file

@@ -22,30 +22,30 @@
 
 namespace fastlanes {
 
-RowgroupReader::RowgroupReader(const path&               dir_path,
-                               const RowgroupDescriptor& rowgroup_descriptor,
-                               Connection&               connection)
+RowgroupReader::RowgroupReader(const path&                file_path,
+                               const RowgroupDescriptorT& rowgroup_descriptor,
+                               Connection&                connection)
     : m_connection(connection)
     , m_rowgroup_descriptor(rowgroup_descriptor) {
 
 	// read file
 	{
 		// allocate buffer
-		m_buf = make_unique<Buf>(m_rowgroup_descriptor.m_size);    // todo[memory_pool]
-		io io = make_unique<File>(dir_path / FASTLANES_FILE_NAME); // todo[IO]
+		m_buf = make_unique<Buf>(m_rowgroup_descriptor.m_size); // todo[memory_pool]
+		io io = make_unique<File>(file_path);                   // todo[IO]
 		IO::range_read(io, *m_buf, m_rowgroup_descriptor.m_offset, m_rowgroup_descriptor.m_size);
 		m_rowgroup_view = make_unique<RowgroupView>(m_buf->Span(), m_rowgroup_descriptor);
 	}
 
 	// init level 1 expression
 	{
-		m_expressions.reserve(m_rowgroup_descriptor.size());
-		for (n_t col_idx {0}; col_idx < m_rowgroup_descriptor.size(); ++col_idx) {
+		m_expressions.reserve(m_rowgroup_descriptor.m_column_descriptors.size());
+		for (n_t col_idx {0}; col_idx < m_rowgroup_descriptor.m_column_descriptors.size(); ++col_idx) {
 			auto& column_descriptor = m_rowgroup_descriptor.m_column_descriptors[col_idx];
 			auto& column_view       = (*m_rowgroup_view)[col_idx];
 
 			InterpreterState state;
-			auto             physical_expr = make_decoding_expression(column_descriptor, column_view, *this, state);
+			auto             physical_expr = make_decoding_expression(*column_descriptor, column_view, *this, state);
 			ExprExecutor::CountOperator(*physical_expr);
 			m_expressions.emplace_back(physical_expr);
 		}
@@ -53,7 +53,7 @@ RowgroupReader::RowgroupReader(const path&               dir_path,
 }
 
 vector<sp<PhysicalExpr>>& RowgroupReader::get_chunk(const n_t vec_idx) {
-	for (n_t col_idx {0}; col_idx < m_rowgroup_descriptor.size(); ++col_idx) {
+	for (n_t col_idx {0}; col_idx < m_rowgroup_descriptor.m_column_descriptors.size(); ++col_idx) {
 		auto& physical_expr = *m_expressions[col_idx];
 		ExprExecutor::smart_execute(physical_expr, vec_idx);
 	}
@@ -63,7 +63,7 @@ vector<sp<PhysicalExpr>>& RowgroupReader::get_chunk(const n_t vec_idx) {
 void RowgroupReader::reset() {
 }
 
-const RowgroupDescriptor& RowgroupReader::get_descriptor() const {
+const RowgroupDescriptorT& RowgroupReader::get_descriptor() const {
 	return m_rowgroup_descriptor;
 }
 
@@ -86,15 +86,6 @@ up<Rowgroup> RowgroupReader::materialize() {
 void RowgroupReader::to_csv(const path& dir_path) {
 	const auto& materialized_rowgroup = materialize();
 	CSV::to_csv(dir_path, *materialized_rowgroup);
-}
-
-vector<string> RowgroupReader::get_column_names() const {
-	return m_rowgroup_descriptor.GetColumnNames();
-}
-
-vector<DataType> RowgroupReader::get_data_types() const {
-
-	return m_rowgroup_descriptor.GetDataTypes();
 }
 
 } // namespace fastlanes
