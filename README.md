@@ -2,7 +2,6 @@
   <img src="assets/logo.svg" alt="FastLanes Logo" width="360" />
 </p>
 
-# FastLanes: A Next-Generation Columnar File Format
 
 FastLanes is like Parquet with **40% better compression** and **40× faster decoding**.
 
@@ -58,10 +57,34 @@ int main() {
 }
 ```
 
+### Rust
+
+Add FastLanes Rust bindings to your `Cargo.toml`:
+
+```cargo
+[dependencies]
+fls-rs = { path = "./rust" }
+```
+
+```rust
+use anyhow::Result;
+use fls_rs::connect;
+
+fn main() -> Result<()> {
+    let mut conn = connect();
+    conn.inline_footer()
+        .read_csv("data/csv_dir")
+        .to_fls("data.fls");
+
+    conn.read_fls("data.fls")
+        .to_csv("decoded.csv");
+    Ok(())
+}
+```
+
 ### Coming Soon
 
 * **CUDA** support for FastLanes CUDA reader
-* **Rust** bindings for seamless integration in Rust projects
 
 ---
 
