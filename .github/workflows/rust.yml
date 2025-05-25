@@ -1,4 +1,8 @@
+# GitHub Actions workflow: Rust + C++ (FastLanes)
+# Save as .github/workflows/rust.yml
+
 name: Rust
+
 run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
@@ -8,20 +12,18 @@ on:
   pull_request:
     branches: [ "main", "dev" ]
 
-# cancel redundant runs for the same branch/PR
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   # ──────────────────────────────────────────────────────────────
-  # 1️⃣  Format‐check
+  # 1️⃣  Format‑check
   # ──────────────────────────────────────────────────────────────
   fmt:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Detect CPU count
         run: make detect-cpu | tee -a "$GITHUB_ENV"
@@ -31,15 +33,15 @@ jobs:
         run: cargo fmt -- --check
 
   # ──────────────────────────────────────────────────────────────
-  # 3️⃣  Build & test (with Clang → libstdc++)
+  # 2️⃣  Build & test (with Clang → libstdc++)
   # ──────────────────────────────────────────────────────────────
   build:
     needs: [ fmt ]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
 
       - name: Detect CPU count
@@ -51,7 +53,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target/debug/deps
+            rust/target/debug/deps
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
@@ -78,14 +80,43 @@ jobs:
           cd rust
           cargo test -- --test-threads $BUILD_THREADS
 
-      - name: Dry-run publish check
+      - name: Dry‑run publish check
         env:
           CC: clang
           CXX: clang++
         run: make -j $BUILD_THREADS dry-run-rust
 
+      # ─────────────────────────────────────────────
+      # 🔍 Extra diagnostics for linking issues
+      # ─────────────────────────────────────────────
+      - name: Re‑build with verbose linker flags
+        if: ${{ failure() }}
+        working-directory: rust
+        env:
+          CC: clang
+          CXX: clang++
+          CARGO_TERM_COLOR: always
+        run: |
+          cargo clean
+          cargo build -vv           # prints every -L and -l flag
+
+      - name: Locate any fastlanes artefacts
+        if: ${{ failure() }}
+        run: |
+          echo 'Searching for fastlanes artefacts …'
+          find rust/target -name 'libfastlanes.*' -or -name '*fastlanes*' | head || true
+
+      - name: Upload fastlanes artefact (optional)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlanes-build-dir
+          path: |
+            rust/target/**/build
+            !**/*.o
+
   # ──────────────────────────────────────────────────────────────
-  # 4️⃣  (Optional) Publish docs or other post‐build steps…
+  # 3️⃣  (Optional) Deploy docs or other post‑build steps…
   # ──────────────────────────────────────────────────────────────
   # deploy-docs:
   #   needs: build

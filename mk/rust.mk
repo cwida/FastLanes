@@ -1,102 +1,124 @@
-# ─────────────────────────────────────────────────────────────
-# Build and install Rust bindings after C++ is installed
-# This file is auto-included by the root Makefile:
-#   no need to invoke with “-f mk/rust.mk”
-# Usage:
-#   make build-rust            # build Rust crate (release) after C++ install
-#   make install-rust          # install Rust crate after C++ install
-#   make run-rust-example      # build + run the “rust_example”
-#   make publish-rust          # publish Rust crate to crates.io
-#   make dry-run-rust          # dry run publish to test before actual upload
-#   make clean-rust            # clean only Rust build artifacts
-# ─────────────────────────────────────────────────────────────
-
+# ────────────────────────────────────────────────────────────────
+#  Rust bindings – build, install, publish
+#  (auto-included from the project-root Makefile)
+# ────────────────────────────────────────────────────────────────
 ifndef RUST_MK_INCLUDED
 RUST_MK_INCLUDED := yes
 
-# ─────────────────────────────────────────────────────────────
-# Common helpers & C++ rules
-# ─────────────────────────────────────────────────────────────
 include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/preamble.mk
-include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/cpp.mk
 
-# ─────────────────────────────────────────────────────────────
-# Compute paths relative to this file’s directory
-# ─────────────────────────────────────────────────────────────
+# ----------------------------------------------------------------
+# Paths
+# ----------------------------------------------------------------
 MK_DIR      := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR := $(abspath $(MK_DIR)/..)
-
-# ─────────────────────────────────────────────────────────────
-# Override crate root and install prefix
-# ─────────────────────────────────────────────────────────────
 CRATE_ROOT  := $(PROJECT_DIR)/rust
 PREFIX      := $(PROJECT_DIR)/build/install
+OUT_DIR     := $(CRATE_ROOT)/target          # Cargo’s build dir
+VENDOR_DIR  := $(CRATE_ROOT)/vendor/fastlanes
 
-# ─────────────────────────────────────────────────────────────
-# Configuration
-# ─────────────────────────────────────────────────────────────
-CARGO       ?= cargo
-C_ENV       := \
-  C_INCLUDE_PATH=$(PREFIX)/include \
-  LIBRARY_PATH=$(PREFIX)/lib \
-  CXXFLAGS=-I$(PREFIX)/include
+NUM_JOBS ?= $(shell sysctl -n hw.ncpu 2>/dev/null || echo 8)
 
-# ─────────────────────────────────────────────────────────────
-# Targets
-# ─────────────────────────────────────────────────────────────
-.PHONY: build-rust install-rust run-rust-example publish-rust dry-run-rust clean-rust clean
+CARGO ?= cargo
+C_ENV  := C_INCLUDE_PATH=$(PREFIX)/include \
+          LIBRARY_PATH=$(PREFIX)/lib \
+          CXXFLAGS=-I$(PREFIX)/include
 
-# Build Rust *after* C++ is installed
-build-rust: install-cpp
+# ----------------------------------------------------------------
+# Build / install / publish
+# ----------------------------------------------------------------
+.PHONY: build-rust install-rust publish-rust dry-run-rust \
+        clean-rust clean-vendor rust-format run-rust-example \
+        update-fastlanes-src
+
+build-rust:
 	@echo "Building Rust crate (release, $(NUM_JOBS) jobs)…"
-	CXXFLAGS="-I$(PREFIX)/include" \
-	C_INCLUDE_PATH="$(PREFIX)/include" \
-	LIBRARY_PATH="$(PREFIX)/lib" \
+	CMAKE_BUILD_PARALLEL_LEVEL=$(NUM_JOBS) \
 	$(CARGO) build --release \
 	  --manifest-path $(CRATE_ROOT)/Cargo.toml \
 	  --jobs $(NUM_JOBS)
 	@echo "Rust build complete."
 
-# Install Rust *after* C++ is installed
-install-rust: install-cpp
-	$(call echo_start,Installing Rust crate …)
+install-rust: build-rust
+	@echo "Installing Rust crate into $(PREFIX)…"
 	$(C_ENV) \
-	$(CARGO) install --path $(CRATE_ROOT) \
+	$(CARGO) install \
+	  --path $(CRATE_ROOT) \
 	  --root $(PREFIX) \
 	  --jobs $(NUM_JOBS)
-	$(call echo_done,Rust install complete.)
 
-# Publish Rust crate to crates.io
-publish-rust: install-cpp
-	$(call echo_start,Publishing Rust crate to crates.io…)
+# ── Publish helpers ─────────────────────────────────────────────
+publish-rust:
+	@echo "Publishing Rust crate to crates.io…"
 	$(C_ENV) \
 	RUSTFLAGS="-L$(PREFIX)/lib" \
 	$(CARGO) publish --manifest-path $(CRATE_ROOT)/Cargo.toml
-	$(call echo_done,Rust publish complete.)
 
-# Dry-run publish Rust crate to crates.io without uploading
-dry-run-rust: install-cpp
-	$(call echo_start,Performing dry run of publishing Rust crate…)
+dry-run-rust:
+	@echo "Dry-run publishing Rust crate…"
 	$(C_ENV) \
 	RUSTFLAGS="-L$(PREFIX)/lib" \
 	$(CARGO) publish --manifest-path $(CRATE_ROOT)/Cargo.toml --dry-run
-	$(call echo_done,Dry run complete.)
 
-# Build then run the “rust_example” in your crate
+# ----------------------------------------------------------------
+# Clean & misc
+# ----------------------------------------------------------------
+clean-vendor:
+	@echo "Removing vendored FastLanes sources …"
+	@rm -rf $(VENDOR_DIR)
+	@git rm -r --cached $(VENDOR_DIR) 2>/dev/null || true
+
+clean-rust: clean-vendor
+	@echo "Cleaning Rust build …"
+	$(CARGO) clean --manifest-path $(CRATE_ROOT)/Cargo.toml
+	@echo "Rust clean complete."
+
 run-rust-example: build-rust
 	@echo "Running Rust example ‘rust_example’…"
 	cd $(CRATE_ROOT) && \
+	CC="$(CC)" CXX="$(CXX)" \
 	C_INCLUDE_PATH="$(PREFIX)/include" \
 	LIBRARY_PATH="$(PREFIX)/lib" \
-	cargo run --example rust_example
+	cargo run --jobs $(NUM_JOBS) --example rust_example
 
-# Clean Rust only (no C++)
-clean-rust:
-	$(call echo_start,Cleaning Rust build…)
-	$(CARGO) clean --manifest-path $(CRATE_ROOT)/Cargo.toml
-	$(call echo_done,Rust clean complete.)
+rust-format:
+	@echo "Formatting Rust sources …"
+	$(CARGO) fmt --manifest-path $(CRATE_ROOT)/Cargo.toml
+	@echo "Rust formatting complete."
 
-# Top-level clean kills *both* C++ and Rust
-clean: clean-cpp clean-rust
+# ----------------------------------------------------------------
+# Vendored-source maintenance helper
+#   • Re-create rust/vendor/fastlanes from the current workspace
+#     while skipping build artefacts.
+# ----------------------------------------------------------------
+update-fastlanes-src:
+	@echo "▶ Refreshing vendored FastLanes sources from workspace …"
+
+	# 1) Start from a clean slate
+	@rm -rf $(VENDOR_DIR)
+	@mkdir -p $(VENDOR_DIR)
+
+	# 2) Copy the source folders & top-level CMakeLists.txt
+	rsync -a --delete \
+	    --exclude='.git' \
+	    --exclude='build' \
+	    --exclude='CMakeFiles' \
+	    --exclude='*.o' --exclude='*.obj' --exclude='*.d' \
+	    --exclude='*.a' --exclude='*.so' --exclude='*.dylib' --exclude='*.dll' \
+	    --exclude='Makefile' \
+	    --exclude='*cmake_install.cmake' --exclude='*CTestTestfile.cmake' \
+	    $(PROJECT_DIR)/CMakeLists.txt \
+	    $(PROJECT_DIR)/include \
+	    $(PROJECT_DIR)/src \
+	    $(VENDOR_DIR)/
+
+	@echo "▶ Staging refreshed vendored sources …"
+	@git add $(VENDOR_DIR)
+
+	# 3) Commit only if something actually changed
+	@git diff --cached --quiet || \
+	  git commit -m "Refresh vendored FastLanes sources from workspace" || true
+
+
 
 endif  # RUST_MK_INCLUDED

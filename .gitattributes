@@ -1,0 +1,19 @@
+# ── Keep docs, tests, ci‐scripts, etc. out of shipped archives ───────────────
+/docs/**          export-ignore
+/tests/**         export-ignore
+/benchmarks/**    export-ignore
+/examples/**      export-ignore
+/ci/**            export-ignore
+/scripts/**       export-ignore
+/.github/**       export-ignore
+
+# ── Ignore all your Makefiles, markdown, metadata files ────────────────────────
+Makefile          export-ignore
+mk/**             export-ignore
+*.mk              export-ignore
+
+# ── Don’t pile on your editor configs or git metadata ─────────────────────────
+.gitignore        export-ignore
+.gitattributes    export-ignore
+.vscode/**        export-ignore
+.idea/**          export-ignore

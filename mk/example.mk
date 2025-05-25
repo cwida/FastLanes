@@ -28,7 +28,16 @@ PREFIX       := $(PROJECT_DIR)/build/install
     run-cpp-example \
     run-python-example \
     run-cmake-example \
+    run-rust-example \
     clean-examples
+
+# ─────────────────────────────────────────────────────────────
+# Run the Rust example
+# ─────────────────────────────────────────────────────────────
+run-rust-example:
+	@echo "Running Rust example…"
+	cd $(EXAMPLES_DIR)/rust_example && \
+	cargo run --bin rust_example
 
 # ─────────────────────────────────────────────────────────────
 # Run the Python example (assumes the C++ lib is in PYTHONPATH)

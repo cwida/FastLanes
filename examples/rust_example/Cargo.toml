@@ -1,0 +1,14 @@
+# Cargo.toml
+
+[package]
+name = "rust_example"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+fls-rs = "0.1.3-alpha.7"
+
+[[bin]]
+name = "rust_example"
+path = "rs_example.rs"

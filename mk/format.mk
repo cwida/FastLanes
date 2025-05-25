@@ -2,7 +2,11 @@ IMAGE             := ghcr.io/azimafroozeh/clang-format-python/clang-format-pytho
 UBUNTU_IMAGE      := ubuntu:22.04
 DIRS              := examples include src benchmark test data/include python
 EXCLUDES          := --exclude include/fls/json/nlohmann \
-                     --exclude include/flatbuffers
+                     --exclude include/flatbuffers \
+                     --exclude src/primitives \
+                     --exclude examples/rust_example
+
+
 
 # shared docker‐run prefix
 DOCKER := docker run --rm -v "$$(pwd)":/app -w /app
@@ -30,13 +34,3 @@ format-check:
 	           $(FMT_CMD)"
 	$(call echo_done,Formatting check complete.)
 
-
-rust-format-check:
-	$(call echo_start,Checking Rust formatting in rust/…)
-	@cd ../rust && cargo fmt -- --check
-	$(call echo_done,Rust formatting check complete.)
-
-rust-format:
-	$(call echo_start,Formatting Rust code in rust/…)
-	@cd ../rust && cargo fmt
-	$(call echo_done,Rust formatting complete.)

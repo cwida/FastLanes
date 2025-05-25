@@ -1,0 +1,91 @@
+name: Examples
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  push:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  # ────────────────────────────────────────────────────────
+  # 1) CMake / FetchContent example
+  # ────────────────────────────────────────────────────────
+  fetch-content:
+    name: CMake / FetchContent example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Configure & build fetch_content_example
+        working-directory: examples/fetch_content_example
+        run: |
+          mkdir -p build && cd build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+            -DFASTLANES_TAG=${{ github.event.pull_request.head.sha || github.sha }}
+          cmake --build . --parallel
+
+      - name: Run C++ example
+        working-directory: examples/fetch_content_example/build
+        run: ./example
+
+  # ────────────────────────────────────────────────────────
+  # 2) Python example
+  # ────────────────────────────────────────────────────────
+  python:
+    name: Python example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install pyfastlanes
+        run: pip install pyfastlanes==0.1.3.post7
+
+      - name: Run Python example
+        working-directory: examples
+        run: python python_example.py
+
+  # ────────────────────────────────────────────────────────
+  # 3) Rust example
+  # ────────────────────────────────────────────────────────
+  rust:
+    name: Rust example
+    runs-on: ubuntu-latest
+    env:
+      CMAKE_INSTALL_MESSAGE: NEVER
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      # --------------------------- NEW ---------------------------
+      # libc++ and libc++abi provide the -lc++ & -lc++abi libraries
+      # that fls-rs’s build script links against.
+      - name: Install libc++ runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libc++-dev libc++abi-dev
+      # -----------------------------------------------------------
+
+      - name: Build Rust example
+        working-directory: examples/rust_example
+        run: cargo build --bin rust_example --verbose
+
+      - name: Run Rust example
+        working-directory: examples/rust_example
+        run: cargo run --bin rust_example --verbose

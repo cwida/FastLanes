@@ -2,6 +2,10 @@ use fls_rs::{connect, inline_footer, read_csv, read_fls, to_csv, to_fls};
 use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
+    // 0) Print the library version:
+    let version: String = fls_rs::get_version();
+    println!("fastlanes C++ bridge version: {}", version);
+
     // 1) CARGO_MANIFEST_DIR == ".../fastlanes/rust"
     let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
 

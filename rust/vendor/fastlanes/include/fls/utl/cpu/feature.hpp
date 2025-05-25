@@ -1,0 +1,162 @@
+#ifndef FLS_UTL_CPU_FEATURE_HPP
+#define FLS_UTL_CPU_FEATURE_HPP
+
+#include <cstdint>
+#include <string>
+#include <unordered_map>
+namespace fast_lanes {
+enum class CPUFeature : uint32_t {
+	FALLBACK = 0,
+	CPU_MASK = 0x1f000000,
+	X86      = 0x01000000,
+	ARM      = 0x04000000,
+	/* x86 CPU features are constructed as:
+	 *
+	 *   (X86 | (eax << 16) | (ret_reg << 8) | (bit_position)
+	 *
+	 * For example, SSE3 is determined by the fist bit in the ECX
+	 * register for a CPUID call with EAX=1, so we get:
+	 *
+	 *   X86 | (1 << 16) | (2 << 8) | (0) = 0x01010200
+	 *
+	 * We should have information for inputs of EAX=0-7 w/ ECX=0.
+	 */
+	X86_FPU    = 0x01010300,
+	X86_VME    = 0x01010301,
+	X86_DE     = 0x01010302,
+	X86_PSE    = 0x01010303,
+	X86_TSC    = 0x01010304,
+	X86_MSR    = 0x01010305,
+	X86_PAE    = 0x01010306,
+	X86_MCE    = 0x01010307,
+	X86_CX8    = 0x01010308,
+	X86_APIC   = 0x01010309,
+	X86_SEP    = 0x0101030b,
+	X86_MTRR   = 0x0101030c,
+	X86_PGE    = 0x0101030d,
+	X86_MCA    = 0x0101030e,
+	X86_CMOV   = 0x0101030f,
+	X86_PAT    = 0x01010310,
+	X86_PSE_36 = 0x01010311,
+	X86_PSN    = 0x01010312,
+	X86_CLFSH  = 0x01010313,
+	X86_DS     = 0x01010314,
+	X86_ACPI   = 0x01010316,
+	X86_MMX    = 0x01010317,
+	X86_FXSR   = 0x01010318,
+	X86_SSE    = 0x01010319,
+	X86_SSE2   = 0x0101031a,
+	X86_SS     = 0x0101031b,
+	X86_HTT    = 0x0101031c,
+	X86_TM     = 0x0101031d,
+	X86_IA64   = 0x0101031e,
+	X86_PBE    = 0x0101031f,
+
+	X86_SSE3         = 0x01010200,
+	X86_PCLMULQDQ    = 0x01010201,
+	X86_DTES64       = 0x01010202,
+	X86_MONITOR      = 0x01010203,
+	X86_DS_CPL       = 0x01010204,
+	X86_VMX          = 0x01010205,
+	X86_SMX          = 0x01010206,
+	X86_EST          = 0x01010207,
+	X86_TM2          = 0x01010208,
+	X86_SSSE3        = 0x01010209,
+	X86_CNXT_ID      = 0x0101020a,
+	X86_SDBG         = 0x0101020b,
+	X86_FMA          = 0x0101020c,
+	X86_CX16         = 0x0101020d,
+	X86_XTPR         = 0x0101020e,
+	X86_PDCM         = 0x0101020f,
+	X86_PCID         = 0x01010211,
+	X86_DCA          = 0x01010212,
+	X86_SSE4_1       = 0x01010213,
+	X86_SSE4_2       = 0x01010214,
+	X86_X2APIC       = 0x01010215,
+	X86_MOVBE        = 0x01010216,
+	X86_POPCNT       = 0x01010217,
+	X86_TSC_DEADLINE = 0x01010218,
+	X86_AES          = 0x01010219,
+	X86_XSAVE        = 0x0101021a,
+	X86_OSXSAVE      = 0x0101021b,
+	X86_AVX          = 0x0101021c,
+	X86_F16C         = 0x0101021d,
+	X86_RDRND        = 0x0101021e,
+	X86_HYPERVISOR   = 0x0101021f,
+
+	X86_FSGSBASE   = 0x01070100,
+	X86_TSC_ADJ    = 0x01070101,
+	X86_SGX        = 0x01070102,
+	X86_BMI1       = 0x01070103,
+	X86_HLE        = 0x01070104,
+	X86_AVX2       = 0x01070105,
+	X86_SMEP       = 0x01070107,
+	X86_BMI2       = 0x01070108,
+	X86_ERMS       = 0x01070109,
+	X86_INVPCID    = 0x0107010a,
+	X86_RTM        = 0x0107010b,
+	X86_PQM        = 0x0107010c,
+	X86_MPX        = 0x0107010e,
+	X86_PQE        = 0x0107010f,
+	X86_AVX512F    = 0x01070110,
+	X86_AVX512DQ   = 0x01070111,
+	X86_RDSEED     = 0x01070112,
+	X86_ADX        = 0x01070113,
+	X86_SMAP       = 0x01070114,
+	X86_AVX512IFMA = 0x01070115,
+	X86_PCOMMIT    = 0x01070116,
+	X86_CLFLUSHOPT = 0x01070117,
+	X86_CLWB       = 0x01070118,
+	X86_INTEL_PT   = 0x01070119,
+	X86_AVX512PF   = 0x0107011a,
+	X86_AVX512ER   = 0x0107011b,
+	X86_AVX512CD   = 0x0107011c,
+	X86_SHA        = 0x0107011d,
+	X86_AVX512BW   = 0x0107011e,
+	X86_AVX512VL   = 0x0107011f,
+
+	X86_PREFETCHWT1     = 0x01070200,
+	X86_AVX512VBMI      = 0x01070201,
+	X86_UMIP            = 0x01070202,
+	X86_PKU             = 0x01070203,
+	X86_OSPKE           = 0x01070204,
+	X86_AVX512VPOPCNTDQ = 0x0107020e,
+	X86_RDPID           = 0x01070215,
+	X86_SGX_LC          = 0x0107021e,
+
+	X86_AVX512_4VNNIW = 0x01070302,
+	X86_AVX512_4FMAPS = 0x01070303,
+
+	ARM_SWP       = ARM | 1,
+	ARM_HALF      = ARM | 2,
+	ARM_THUMB     = ARM | 3,
+	ARM_26BIT     = ARM | 4,
+	ARM_FAST_MULT = ARM | 5,
+	ARM_FPA       = ARM | 6,
+	ARM_VFP       = ARM | 7,
+	ARM_EDSP      = ARM | 8,
+	ARM_JAVA      = ARM | 9,
+	ARM_IWMMXT    = ARM | 10,
+	ARM_CRUNCH    = ARM | 11,
+	ARM_THUMBEE   = ARM | 12,
+	ARM_NEON      = ARM | 13,
+	ARM_VFPV3     = ARM | 14,
+	ARM_VFPV3D16  = ARM | 15,
+	ARM_TLS       = ARM | 16,
+	ARM_VFPV4     = ARM | 17,
+	ARM_IDIVA     = ARM | 18,
+	ARM_IDIVT     = ARM | 19,
+	ARM_VFPD32    = ARM | 20,
+	ARM_LPAE      = ARM | 21,
+	ARM_EVTSTRM   = ARM | 22,
+
+	ARM_AES   = ARM | 0x0100 | 1,
+	ARM_PMULL = ARM | 0x0100 | 2,
+	ARM_SHA1  = ARM | 0x0100 | 3,
+	ARM_SHA2  = ARM | 0x0100 | 4,
+	ARM_CRC32 = ARM | 0x0100 | 5
+};
+
+std::string CPUFeatureToString(CPUFeature feature);
+} // namespace fast_lanes
+#endif // FLS_UTL_CPU_FEATURE_HPP
