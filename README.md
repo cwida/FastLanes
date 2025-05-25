@@ -102,6 +102,11 @@ fn main() -> Result<()> {
     * [Read the paper](https://doi.org/10.1145/3662010.3663450)
     * [Source code](https://github.com/cwida/FastLanesGPU)
 
+* **Azim Afroozeh, Leonardo Kuffó & Peter Boncz**, “ALP: Adaptive Lossless Floating-Point Compression,” *SIGMOD ’24*, ACM SIGMOD, June 2024
+
+    * [Read the paper](https://doi.org/10.1145/3626717)
+    * [Source code](https://github.com/cwida/ALP)
+
 ---
 
 ## How to Cite
@@ -130,6 +135,17 @@ If you use FastLanes in your research or projects, please cite:
     year = {2024},
     organization = {ACM},
     doi = {10.1145/3662010.3663450}
+}
+
+@inproceedings{afroozeh2024alp,
+    author = {Afroozeh, Azim and Kuffó, Leonardo and Boncz, Peter},
+    title = {ALP: Adaptive Lossless Floating-Point Compression},
+    booktitle = {SIGMOD ’24: Proceedings of the 2024 ACM SIGMOD International Conference on Management of Data},
+    pages = {1--13},
+    month = jun,
+    year = {2024},
+    organization = {ACM},
+    doi = {10.1145/3626717}
 }
 ```
 
