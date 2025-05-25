@@ -1,11 +1,10 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="FastLanes Logo" width="180" />
+  <img src="assets/logo.svg" alt="FastLanes Logo" width="360" />
 </p>
 
 # FastLanes: A Next-Generation Columnar File Format
 
-FastLanes is like Parquet with **40% better compression** and **40× faster decoding**, making it the ideal choice for
-high-throughput analytics workloads.
+FastLanes is like Parquet with **40% better compression** and **40× faster decoding**.
 
 ---
 
@@ -25,7 +24,7 @@ conn.inline_footer().read_csv("path/to/csv_dir").to_fls("data.fls")
 # Read back and write to CSV
 reader = conn.read_fls("data.fls")
 reader.to_csv("decoded.csv")
-````
+```
 
 ### C++
 
@@ -33,14 +32,15 @@ Add FastLanes as a dependency via CMake:
 
 ```cmake
 include(FetchContent)
-
 FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG e2239ee6043f73722e7aa812a459f54a28552929  # release-1.11.0
+        fastlanes
+        GIT_REPOSITORY https://github.com/cwida/FastLanes.git
+        GIT_TAG dev
 )
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(fastlanes)
+
+add_executable(example example.cpp)
+target_link_libraries(example PRIVATE FastLanes)
 ```
 
 Example usage:
@@ -122,4 +122,3 @@ This project is released under the [MIT License](LICENSE).
 
 Come discuss FastLanes, share feedback, and help shape the future of data formats on Discord:
 [![Join Our Discord](https://img.shields.io/discord/1282716959099588651?label=Join%20Our%20Discord\&logo=discord\&color=7289da)](https://discord.gg/SpTHkCQ7uh)
-
