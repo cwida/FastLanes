@@ -66,7 +66,7 @@ public:
 class test {
 public:
 	// Define all the string_view constants for paths
-	static constexpr string_view test_0 {FSST_CMAKE_SOURCE_DIR "/data/test/data.csv"};
+	static constexpr string_view test_0 {FSST_CMAKE_SOURCE_DIR "/data/test/generated.csv"};
 
 	// Map of dataset names to their paths
 	static constexpr std::array<std::pair<string_view, string_view>, 1> NAME_TO_PATH_MAP = {{{"test_0", test_0}}};

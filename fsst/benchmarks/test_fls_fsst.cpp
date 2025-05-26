@@ -3,7 +3,7 @@
 #include "fls/cor/prm/fsst12/fsst12.h"
 #include "fls/primitive/fsst/fsst.hpp"
 #include "fls/primitive/fsst12/fsst12.hpp"
-#include "fls/printer/print.hpp"
+#include "fls/printer/az_printer.hpp"
 #include "fls/std/array.hpp"
 #include "gtest/gtest.h"
 #include <fstream>
@@ -18,6 +18,7 @@
 #pragma clang diagnostic ignored "-Wsign-conversion"
 #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #pragma clang diagnostic ignored "-Wshadow"
+#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"
 
 using namespace std;
 namespace fs = std::filesystem;

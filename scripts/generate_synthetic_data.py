@@ -341,6 +341,16 @@ def generate_alp_dbl_func(faker, row_id):
     return [row_id + 0.1]
 
 
+def generate_example_one(faker, row_id):
+    NAMES = ["Azim", "Amir", "Ali", "Omid"]
+
+    size_of_list = len(NAMES)
+
+    return [
+        NAMES[row_id % size_of_list],
+    ]
+
+
 # ---------------------------
 # CSV Generators
 # ---------------------------
@@ -643,6 +653,11 @@ def generate_subnormals():
     write_csv(file, lambda faker, row_id: [faker.subnormal_str()], ROW_GROUP_SIZE)
 
 
+def example_one():
+    file = Path.cwd() / '..' / 'fsst' / 'data' / 'test'
+    write_csv(file, generate_example_one, ROW_GROUP_SIZE)
+
+
 # ---------------------------
 # Main Generation Functions
 # ---------------------------
@@ -707,6 +722,10 @@ def mostly_null():
     null_table()
 
 
+def generate_fsst_test():
+    example_one()
+
+
 # ---------------------------
 # Main Function
 # ---------------------------
@@ -723,6 +742,7 @@ def main():
     generate_irregular_data()
     generate_any_value_count()
     generate_subnormals()
+    generate_fsst_test()
 
 
 if __name__ == "__main__":
