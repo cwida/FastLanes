@@ -6,6 +6,8 @@
 #include "fls/printer/az_printer.hpp"
 #include "fls/std/array.hpp"
 #include "gtest/gtest.h"
+#include <chrono>     // for std::chrono::steady_clock, duration, etc.
+#include <filesystem> // for std::filesystem
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -34,7 +36,9 @@ private:
 	vector<unsigned> offsets;
 
 public:
-	static string get_name() { return "FSST12"; }
+	static string get_name() {
+		return "FSST12";
+	}
 	FSST12CompressionRunner() = default;
 
 	/// Store the compressed corpus. Returns the compressed size
@@ -182,9 +186,12 @@ private:
 	vector<unsigned> offsets;
 
 public:
-	static string get_name() { return "FSST"; }
+	static string get_name() {
+		return "FSST";
+	}
 	FSSTCompressionRunner() = default;
-	FSSTCompressionRunner(unsigned /*blockSizeIgnored*/) {}
+	FSSTCompressionRunner(unsigned /*blockSizeIgnored*/) {
+	}
 
 	/// Store the compressed corpus. Returns the compressed size
 	uint64_t compressCorpus(
