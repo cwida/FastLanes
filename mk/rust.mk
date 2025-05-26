@@ -68,7 +68,7 @@ clean-vendor:
 	@rm -rf $(VENDOR_DIR)
 	@git rm -r --cached $(VENDOR_DIR) 2>/dev/null || true
 
-clean-rust: clean-vendor
+clean-rust:
 	@echo "Cleaning Rust build …"
 	$(CARGO) clean --manifest-path $(CRATE_ROOT)/Cargo.toml
 	@echo "Rust clean complete."

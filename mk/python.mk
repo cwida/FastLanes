@@ -108,7 +108,7 @@ rebuild_python_release: check_python_deps $(ACTIVATE)
 	  $(PYTHON) -m pip install -e $(PROJECT_ROOT) --no-build-isolation -v
 	$(call echo_done,PyFastLanes bindings rebuilt (Release).)
 
-clean_python:
+clean-python:
 	$(call echo_start, Cleaning Python artefacts…)
 	rm -rf $(PROJECT_ROOT)/skbuild-editable $(DIST_DIR) $(VENV)
 	find $(PROJECT_ROOT)/python/pyfastlanes -name '_pyfastlanes*.so' -delete
