@@ -27,11 +27,16 @@ jobs:
         working-directory: examples/fetch_content_example
         run: |
           mkdir -p build && cd build
+          
+          echo "FASTLANES repository: ${{ github.event.pull_request.head.repo.clone_url || github.repository }}"
+          echo "FASTLANES tag/commit: ${{ github.event.pull_request.head.sha || github.sha }}"
+          
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=clang \
             -DCMAKE_CXX_COMPILER=clang++ \
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+            -DFASTLANES_REPOSITORY=${{ github.event.pull_request.head.repo.clone_url || github.repository }} \
             -DFASTLANES_TAG=${{ github.event.pull_request.head.sha || github.sha }}
           cmake --build . --parallel
 

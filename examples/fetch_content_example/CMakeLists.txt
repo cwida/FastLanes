@@ -5,10 +5,15 @@ if (NOT DEFINED FASTLANES_TAG)
     message(FATAL_ERROR "You must define FASTLANES_TAG")
 endif ()
 
+if (NOT DEFINED FASTLANES_REPOSITORY)
+    set(FATAL_ERROR "You must define FASTLANES_REPOSITORY")
+endif ()
+
+
 include(FetchContent)
 FetchContent_Declare(
         fastlanes
-        GIT_REPOSITORY https://github.com/azimafroozeh/FastLanes.git
+        GIT_REPOSITORY ${FASTLANES_REPOSITORY}
         GIT_TAG ${FASTLANES_TAG}
 )
 FetchContent_MakeAvailable(fastlanes)
