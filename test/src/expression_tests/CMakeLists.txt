@@ -14,7 +14,13 @@ add_executable(test_alp alp_test.cpp)
 target_link_libraries(test_alp PUBLIC gtest_main gmock_main FastLanes)
 add_test(NAME test_alp COMMAND $<TARGET_FILE:test_alp>)
 
+add_executable(test_fsst_expr fsst_test.cpp)
+target_link_libraries(test_fsst_expr PUBLIC gtest_main gmock_main FastLanes)
+add_test(NAME test_fsst_expr COMMAND $<TARGET_FILE:test_fsst_expr>)
+
 fls_enable_sanitizers(test_frequency)
 fls_enable_sanitizers(test_rle)
 fls_enable_sanitizers(test_cross_rle)
 fls_enable_sanitizers(test_alp)
+fls_enable_sanitizers(test_fsst_expr)
+
