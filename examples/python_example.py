@@ -11,7 +11,7 @@ def main():
     print(f"FastLanes version: {pyfastlanes.get_version()}\n")
 
     # 2) Paths for the demo
-    csv_dir = "../data/generated/issues/issue_000"  # adjust to where your CSVs live
+    csv_dir = "../data/issues/issue_000"  # adjust to where your CSVs live
 
     if os.path.exists("data.fls"):
         os.remove("data.fls")

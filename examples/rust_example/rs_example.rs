@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
         .parent()
         .expect("rust/Cargo.toml must live one level down from repo root");
 
-    let csv_path = repo_root.join("../data/generated/issues/issue_000");
+    let csv_path = repo_root.join("../data/issues/issue_000");
     let fls_path = repo_root.join("written_by_rust.fls");
     let decoded_csv_path = repo_root.join("decoded_by_fastlanes_rs.csv");
 
