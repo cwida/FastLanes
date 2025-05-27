@@ -5,6 +5,7 @@ include mk/format.mk
 include mk/cpp.mk
 include mk/rust.mk
 include mk/data.mk       # uses $(ACTIVATE) and $(PIP)
+include mk/scripts.mk
 
 .PHONY: all clean
 all: build-cpp build-rust          # or whatever top-level build you need
