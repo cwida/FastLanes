@@ -5,7 +5,8 @@ add_executable(
         test_fc_bench.cpp
         issue.cpp
         issues.cpp
-        public_bi.cpp)
+        public_bi.cpp
+        nextiajd_test.cpp)
 
 target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes)
 gtest_discover_tests(dataset_tests DISCOVERY_TIMEOUT 60)
