@@ -1,8 +1,8 @@
-compression,version,name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value
+compression,version,table_name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,0,col1,INT32,27008,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.41,3.30
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,1,ID,INT32,102560,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.56,12.52
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,2,Case Number,FLS_STR,233229,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.56,28.47
-FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,3,Date,FLS_STR,415079,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.33,50.67
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,3,Date,FLS_STR,415080,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.33,50.67
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,4,Block,FLS_STR,346801,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.29,42.33
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,5,IUCR,FLS_STR,67251,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.03,8.21
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,6,Primary Type,FLS_STR,41863,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,5.11
@@ -18,7 +18,7 @@ FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,15,FBI Code,FLS_STR,41538,"{
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,16,X Coordinate,INT32,135310,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.06,16.52
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,17,Y Coordinate,INT32,138196,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.11,16.87
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,18,Year,INT16,2394,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.04,0.29
-FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,19,Updated On,FLS_STR,11412,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.17,1.39
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,19,Updated On,FLS_STR,11413,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.17,1.39
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,20,Latitude,DOUBLE,237952,"{[EXP_ALP_DBL][]}",3.63,29.05
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,21,Longitude,DOUBLE,237608,"{[EXP_ALP_DBL][]}",3.63,29.00
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,22,Location,FLS_STR,688945,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.51,84.10
@@ -41,7 +41,7 @@ FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,15,FBI Code,FLS_STR,41528,"{
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,16,X Coordinate,INT32,140032,"{[EXP_FFOR_I32][0, 1, 2]}",2.14,17.09
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,17,Y Coordinate,INT32,142370,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.17,17.38
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,18,Year,INT16,4411,"{[EXP_FREQUENCY_I16][0, 1, 2, 3]}",0.07,0.54
-FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,19,Updated On,FLS_STR,1804,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.22
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,19,Updated On,FLS_STR,1803,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.22
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,20,Latitude,DOUBLE,244126,"{[EXP_ALP_DBL][]}",3.73,29.80
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,21,Longitude,DOUBLE,244246,"{[EXP_ALP_DBL][]}",3.73,29.82
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,22,Location,FLS_STR,754603,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",11.51,92.11
@@ -67,11 +67,11 @@ FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,18,Year,INT16,5534,"{[EXP_DI
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,19,Updated On,FLS_STR,26726,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.41,3.26
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,20,Latitude,DOUBLE,243538,"{[EXP_ALP_DBL][]}",3.72,29.73
 FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,21,Longitude,DOUBLE,242734,"{[EXP_ALP_DBL][]}",3.70,29.63
-FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,22,Location,FLS_STR,684605,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.45,83.57
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,22,Location,FLS_STR,684606,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.45,83.57
 FastLanes,0.1.3-alpha.8,Consumer_Complaints,0,Date received,FLS_STR,105136,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.60,12.83
 FastLanes,0.1.3-alpha.8,Consumer_Complaints,1,Product,FLS_STR,33976,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.15
-FastLanes,0.1.3-alpha.8,Consumer_Complaints,2,Sub-product,FLS_STR,50017,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.76,6.11
-FastLanes,0.1.3-alpha.8,Consumer_Complaints,3,Issue,FLS_STR,61155,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.93,7.47
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,2,Sub-product,FLS_STR,50016,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.76,6.11
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,3,Issue,FLS_STR,61154,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.93,7.47
 FastLanes,0.1.3-alpha.8,Consumer_Complaints,4,Subissue,FLS_STR,65731,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.00,8.02
 FastLanes,0.1.3-alpha.8,Consumer_Complaints,5,Consumer complaint narrative,FLS_STR,6817029,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",104.02,832.16
 FastLanes,0.1.3-alpha.8,Consumer_Complaints,6,Company public response,FLS_STR,26551,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.41,3.24
@@ -99,7 +99,7 @@ FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,9,basic,INT8,12,"{[EXP_CROSS_RLE_
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,10,ccds_id,FLS_STR,14906,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.23,1.82
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,11,cds_end_NF,INT8,12,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,12,cds_start_NF,INT8,12,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.00
-FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,13,exon_id,FLS_STR,162463,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.48,19.83
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,13,exon_id,FLS_STR,162462,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.48,19.83
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,14,exon_number,INT8,44160,"{[EXP_FFOR_I08][0, 1, 2]}",0.67,5.39
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,15,exon_version,INT8,16629,"{[EXP_CROSS_RLE_I08][0, 1]}",0.25,2.03
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,16,gene_biotype,FLS_STR,19418,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.30,2.37
@@ -113,7 +113,7 @@ FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,23,protein_id,FLS_STR,52251,"{[EX
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,24,protein_version,INT8,7029,"{[EXP_CROSS_RLE_I08][0, 1]}",0.11,0.86
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,25,seleno,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,26,transcript_biotype,FLS_STR,34217,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.18
-FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,27,transcript_id,FLS_STR,98711,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.51,12.05
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,27,transcript_id,FLS_STR,98712,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.51,12.05
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,28,transcript_name,FLS_STR,45431,"{[EXP_FSST_DICT_STR_U16][27, 0, 1, 2]}",0.69,5.55
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,29,transcript_source,FLS_STR,16865,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
 FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,30,transcript_support_level,FLS_STR,28154,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.43,3.44
@@ -126,19 +126,19 @@ FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,4,engine_displacement,INT
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,5,engine_power,INT16,67658,"{[EXP_DICT_I16_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.03,8.26
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,6,body_type,FLS_STR,41,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,7,color_slug,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
-FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,8,stk_year,FLS_STR,17889,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.27,2.18
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,8,stk_year,FLS_STR,17888,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.27,2.18
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,9,transmission,FLS_STR,8619,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
-FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,10,door_count,FLS_STR,3898,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.06,0.48
-FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,11,seat_count,FLS_STR,4303,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.07,0.53
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,10,door_count,FLS_STR,3899,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.06,0.48
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,11,seat_count,FLS_STR,4304,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.07,0.53
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,12,fuel_type,FLS_STR,8629,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
-FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,13,date_created,FLS_STR,708530,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.81,86.49
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,13,date_created,FLS_STR,708529,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.81,86.49
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,14,date_last_seen,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,15,price_eur,DOUBLE,124562,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.90,15.21
 FastLanes,0.1.3-alpha.8,artists,0,mbid,FLS_STR,1360544,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",20.76,166.08
 FastLanes,0.1.3-alpha.8,artists,1,artist_mb,FLS_STR,527762,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.05,64.42
 FastLanes,0.1.3-alpha.8,artists,2,artist_lastfm,FLS_STR,516410,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.88,63.04
 FastLanes,0.1.3-alpha.8,artists,3,country_mb,FLS_STR,57586,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.88,7.03
-FastLanes,0.1.3-alpha.8,artists,4,country_lastfm,FLS_STR,147852,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.26,18.05
+FastLanes,0.1.3-alpha.8,artists,4,country_lastfm,FLS_STR,147851,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.26,18.05
 FastLanes,0.1.3-alpha.8,artists,5,tags_mb,FLS_STR,457603,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.98,55.86
 FastLanes,0.1.3-alpha.8,artists,6,tags_lastfm,FLS_STR,11179440,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",170.58,1364.68
 FastLanes,0.1.3-alpha.8,artists,7,listeners_lastfm,INT32,48128,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.73,5.88
@@ -147,7 +147,7 @@ FastLanes,0.1.3-alpha.8,artists,9,ambiguous_artist,FLS_STR,8623,"{[EXP_FSST_DICT
 FastLanes,0.1.3-alpha.8,az,0,LON,DOUBLE,171898,"{[EXP_ALP_DBL][]}",2.62,20.98
 FastLanes,0.1.3-alpha.8,az,1,LAT,DOUBLE,160750,"{[EXP_ALP_DBL][]}",2.45,19.62
 FastLanes,0.1.3-alpha.8,az,2,NUMBER,FLS_STR,155043,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.37,18.93
-FastLanes,0.1.3-alpha.8,az,3,STREET,FLS_STR,89285,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.36,10.90
+FastLanes,0.1.3-alpha.8,az,3,STREET,FLS_STR,89286,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.36,10.90
 FastLanes,0.1.3-alpha.8,az,4,UNIT,FLS_STR,105,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.3-alpha.8,az,5,CITY,FLS_STR,271,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
 FastLanes,0.1.3-alpha.8,az,6,DISTRICT,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -161,12 +161,12 @@ FastLanes,0.1.3-alpha.8,business_licences,2,LicenceNumber,FLS_STR,286754,"{[EXP_
 FastLanes,0.1.3-alpha.8,business_licences,3,LicenceRevisionNumber,INT32,10095,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.15,1.23
 FastLanes,0.1.3-alpha.8,business_licences,4,BusinessName,FLS_STR,907532,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",13.85,110.78
 FastLanes,0.1.3-alpha.8,business_licences,5,BusinessTradeName,FLS_STR,379088,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.78,46.28
-FastLanes,0.1.3-alpha.8,business_licences,6,Status,FLS_STR,20362,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.31,2.49
-FastLanes,0.1.3-alpha.8,business_licences,7,IssuedDate,FLS_STR,484036,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",7.39,59.09
+FastLanes,0.1.3-alpha.8,business_licences,6,Status,FLS_STR,20363,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.31,2.49
+FastLanes,0.1.3-alpha.8,business_licences,7,IssuedDate,FLS_STR,484037,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",7.39,59.09
 FastLanes,0.1.3-alpha.8,business_licences,8,ExpiredDate,FLS_STR,47633,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.73,5.81
 FastLanes,0.1.3-alpha.8,business_licences,9,BusinessType,FLS_STR,79571,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.21,9.71
-FastLanes,0.1.3-alpha.8,business_licences,10,BusinessSubType,FLS_STR,71569,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.74
-FastLanes,0.1.3-alpha.8,business_licences,11,Unit,FLS_STR,50151,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.77,6.12
+FastLanes,0.1.3-alpha.8,business_licences,10,BusinessSubType,FLS_STR,71570,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.74
+FastLanes,0.1.3-alpha.8,business_licences,11,Unit,FLS_STR,50150,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.77,6.12
 FastLanes,0.1.3-alpha.8,business_licences,12,UnitType,FLS_STR,14619,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.22,1.78
 FastLanes,0.1.3-alpha.8,business_licences,13,House,FLS_STR,92470,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.41,11.29
 FastLanes,0.1.3-alpha.8,business_licences,14,Street,FLS_STR,91768,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.40,11.20
@@ -178,12 +178,12 @@ FastLanes,0.1.3-alpha.8,business_licences,19,LocalArea,FLS_STR,41773,"{[EXP_FSST
 FastLanes,0.1.3-alpha.8,business_licences,20,NumberofEmployees,FLS_STR,56607,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.86,6.91
 FastLanes,0.1.3-alpha.8,business_licences,21,FeePaid,INT32,87286,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.33,10.66
 FastLanes,0.1.3-alpha.8,business_licences,22,ExtractDate,FLS_STR,24842,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.03
-FastLanes,0.1.3-alpha.8,business_licences,23,Geom,FLS_STR,267751,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",4.09,32.68
+FastLanes,0.1.3-alpha.8,business_licences,23,Geom,FLS_STR,267750,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",4.09,32.68
 FastLanes,0.1.3-alpha.8,comments,0,comment_id,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
 FastLanes,0.1.3-alpha.8,comments,1,post_id,INT16,8614,"{[EXP_CROSS_RLE_I16][0, 1]}",0.13,1.05
 FastLanes,0.1.3-alpha.8,comments,2,content,FLS_STR,8504920,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",129.77,1038.20
 FastLanes,0.1.3-alpha.8,comments,3,author,FLS_STR,348992,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.33,42.60
-FastLanes,0.1.3-alpha.8,comments,4,date,FLS_STR,69305,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.46
+FastLanes,0.1.3-alpha.8,comments,4,date,FLS_STR,69306,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.46
 FastLanes,0.1.3-alpha.8,comments,5,vote,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,econbiz,0,id,INT64,109696,"{[EXP_DELTA_I64][0, 1, 2, 3]}",1.67,13.39
 FastLanes,0.1.3-alpha.8,econbiz,1,title,FLS_STR,2354556,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",35.93,287.42
@@ -244,11 +244,11 @@ FastLanes,0.1.3-alpha.8,eo3,23,ASSET_AMT,INT64,204818,"{[EXP_FFOR_SLPATCH_I64][0
 FastLanes,0.1.3-alpha.8,eo3,24,INCOME_AMT,INT64,198030,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",3.02,24.17
 FastLanes,0.1.3-alpha.8,eo3,25,REVENUE_AMT,INT64,192818,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",2.94,23.54
 FastLanes,0.1.3-alpha.8,eo3,26,NTEE_CD,FLS_STR,93903,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.43,11.46
-FastLanes,0.1.3-alpha.8,eo3,27,SORT_NAME,FLS_STR,209002,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.19,25.51
+FastLanes,0.1.3-alpha.8,eo3,27,SORT_NAME,FLS_STR,209001,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.19,25.51
 FastLanes,0.1.3-alpha.8,examiner_date_text,0,publish_date,INT32,218,"{[EXP_CROSS_RLE_I32][0, 1]}",0.00,0.03
 FastLanes,0.1.3-alpha.8,examiner_date_text,1,headline_text,FLS_STR,2025829,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",30.91,247.29
 FastLanes,0.1.3-alpha.8,examiner_date_tokens,0,publish_date,INT32,218,"{[EXP_CROSS_RLE_I32][0, 1]}",0.00,0.03
-FastLanes,0.1.3-alpha.8,examiner_date_tokens,1,headline_tokens,FLS_STR,1802667,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",27.51,220.05
+FastLanes,0.1.3-alpha.8,examiner_date_tokens,1,headline_tokens,FLS_STR,1802668,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",27.51,220.05
 FastLanes,0.1.3-alpha.8,glassdoor_photos,0,id,INT32,59060,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",0.90,7.21
 FastLanes,0.1.3-alpha.8,glassdoor_photos,1,index,INT8,24968,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
 FastLanes,0.1.3-alpha.8,glassdoor_photos,2,photos_val_caption,FLS_STR,530459,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.09,64.75
@@ -267,7 +267,7 @@ FastLanes,0.1.3-alpha.8,otp,2,origin,FLS_STR,50052,"{[EXP_FSST_DICT_STR_FFOR_U08
 FastLanes,0.1.3-alpha.8,otp,3,next_station,FLS_STR,67962,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.04,8.30
 FastLanes,0.1.3-alpha.8,otp,4,date,FLS_STR,147,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.3-alpha.8,otp,5,status,FLS_STR,39144,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.60,4.78
-FastLanes,0.1.3-alpha.8,otp,6,timeStamp,FLS_STR,372096,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.68,45.42
+FastLanes,0.1.3-alpha.8,otp,6,timeStamp,FLS_STR,372095,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.68,45.42
 FastLanes,0.1.3-alpha.8,plays,0,catch,FLS_STR,137409,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.10,16.77
 FastLanes,0.1.3-alpha.8,plays,1,id,FLS_STR,57192,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.87,6.98
 FastLanes,0.1.3-alpha.8,plays,2,player,FLS_STR,488528,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.45,59.63
@@ -318,13 +318,13 @@ FastLanes,0.1.3-alpha.8,property_tax_report,6,BLOCK,FLS_STR,58083,"{[EXP_FSST_DE
 FastLanes,0.1.3-alpha.8,property_tax_report,7,PLAN,FLS_STR,174517,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.66,21.30
 FastLanes,0.1.3-alpha.8,property_tax_report,8,DISTRICT_LOT,FLS_STR,67492,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.03,8.24
 FastLanes,0.1.3-alpha.8,property_tax_report,9,LOT,FLS_STR,81784,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.25,9.98
-FastLanes,0.1.3-alpha.8,property_tax_report,10,FROM_CIVIC_NUMBER,FLS_STR,71543,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.73
+FastLanes,0.1.3-alpha.8,property_tax_report,10,FROM_CIVIC_NUMBER,FLS_STR,71542,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.73
 FastLanes,0.1.3-alpha.8,property_tax_report,11,TO_CIVIC_NUMBER,INT16,111724,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.70,13.64
 FastLanes,0.1.3-alpha.8,property_tax_report,12,STREET_NAME,FLS_STR,90845,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.39,11.09
 FastLanes,0.1.3-alpha.8,property_tax_report,13,PROPERTY_POSTAL_CODE,FLS_STR,194310,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.96,23.72
 FastLanes,0.1.3-alpha.8,property_tax_report,14,NARRATIVE_LEGAL_LINE3,FLS_STR,206018,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",3.14,25.15
 FastLanes,0.1.3-alpha.8,property_tax_report,15,NARRATIVE_LEGAL_LINE2,FLS_STR,457972,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.99,55.90
-FastLanes,0.1.3-alpha.8,property_tax_report,16,NARRATIVE_LEGAL_LINE1,FLS_STR,737054,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",11.25,89.97
+FastLanes,0.1.3-alpha.8,property_tax_report,16,NARRATIVE_LEGAL_LINE1,FLS_STR,737055,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",11.25,89.97
 FastLanes,0.1.3-alpha.8,property_tax_report,17,NARRATIVE_LEGAL_LINE4,FLS_STR,98834,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.51,12.06
 FastLanes,0.1.3-alpha.8,property_tax_report,18,NARRATIVE_LEGAL_LINE5,FLS_STR,85707,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.31,10.46
 FastLanes,0.1.3-alpha.8,property_tax_report,19,CURRENT_LAND_VALUE,INT32,131682,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.01,16.07
@@ -417,9 +417,9 @@ FastLanes,0.1.3-alpha.8,us_perm_visas,5,case_no,FLS_STR,394077,"{[EXP_FSST_DELTA
 FastLanes,0.1.3-alpha.8,us_perm_visas,6,case_number,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,us_perm_visas,7,case_received_date,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,us_perm_visas,8,case_status,FLS_STR,14562,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.22,1.78
-FastLanes,0.1.3-alpha.8,us_perm_visas,9,class_of_admission,FLS_STR,42078,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.14
+FastLanes,0.1.3-alpha.8,us_perm_visas,9,class_of_admission,FLS_STR,42079,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.14
 FastLanes,0.1.3-alpha.8,us_perm_visas,10,country_of_citizenship,FLS_STR,42174,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.15
-FastLanes,0.1.3-alpha.8,us_perm_visas,11,country_of_citzenship,FLS_STR,22213,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.34,2.71
+FastLanes,0.1.3-alpha.8,us_perm_visas,11,country_of_citzenship,FLS_STR,22212,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.34,2.71
 FastLanes,0.1.3-alpha.8,us_perm_visas,12,decision_date,FLS_STR,69981,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.07,8.54
 FastLanes,0.1.3-alpha.8,us_perm_visas,13,employer_address_1,FLS_STR,422590,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.45,51.59
 FastLanes,0.1.3-alpha.8,us_perm_visas,14,employer_address_2,FLS_STR,121381,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.85,14.82
@@ -430,7 +430,7 @@ FastLanes,0.1.3-alpha.8,us_perm_visas,18,employer_name,FLS_STR,461218,"{[EXP_FSS
 FastLanes,0.1.3-alpha.8,us_perm_visas,19,employer_num_employees,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,us_perm_visas,20,employer_phone,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,us_perm_visas,21,employer_phone_ext,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
-FastLanes,0.1.3-alpha.8,us_perm_visas,22,employer_postal_code,FLS_STR,165096,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.52,20.15
+FastLanes,0.1.3-alpha.8,us_perm_visas,22,employer_postal_code,FLS_STR,165095,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.52,20.15
 FastLanes,0.1.3-alpha.8,us_perm_visas,23,employer_state,FLS_STR,50692,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.77,6.19
 FastLanes,0.1.3-alpha.8,us_perm_visas,24,employer_yr_estab,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.3-alpha.8,us_perm_visas,25,foreign_worker_info_alt_edu_experience,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -560,13 +560,13 @@ FastLanes,0.1.3-alpha.8,us_perm_visas,148,wage_offer_from_9089,DOUBLE,69210,"{[E
 FastLanes,0.1.3-alpha.8,us_perm_visas,149,wage_offer_to_9089,DOUBLE,40642,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",0.62,4.96
 FastLanes,0.1.3-alpha.8,us_perm_visas,150,wage_offer_unit_of_pay_9089,FLS_STR,3262,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.40
 FastLanes,0.1.3-alpha.8,us_perm_visas,151,wage_offered_from_9089,FLS_STR,152756,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.33,18.65
-FastLanes,0.1.3-alpha.8,us_perm_visas,152,wage_offered_to_9089,FLS_STR,51718,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.79,6.31
+FastLanes,0.1.3-alpha.8,us_perm_visas,152,wage_offered_to_9089,FLS_STR,51717,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.79,6.31
 FastLanes,0.1.3-alpha.8,us_perm_visas,153,wage_offered_unit_of_pay_9089,FLS_STR,400,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.05
 FastLanes,0.1.3-alpha.8,wowah_data,0,char,INT32,104922,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.60,12.81
 FastLanes,0.1.3-alpha.8,wowah_data,1,level,INT8,40243,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.61,4.91
 FastLanes,0.1.3-alpha.8,wowah_data,2,race,FLS_STR,15776,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.24,1.93
 FastLanes,0.1.3-alpha.8,wowah_data,3,charclass,FLS_STR,33315,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.51,4.07
-FastLanes,0.1.3-alpha.8,wowah_data,4,zone,FLS_STR,59148,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.22
+FastLanes,0.1.3-alpha.8,wowah_data,4,zone,FLS_STR,59147,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.22
 FastLanes,0.1.3-alpha.8,wowah_data,5,guild,INT16,56795,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.87,6.93
 FastLanes,0.1.3-alpha.8,wowah_data,6,timestamp,FLS_STR,154790,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.36,18.90
 FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,0,VendorID,INT8,12384,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.19,1.51
