@@ -28,6 +28,11 @@ BenchmarkCase fc_bench_case {
     std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fc_bench/fastlanes.csv",
     std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/fc_bench/fastlanes_detailed.csv"};
 
+BenchmarkCase nextia_jd_case {
+    NextiaJD::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/nextia_jd/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/nextia_jd/fastlanes_detailed.csv"};
+
 void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	const std::string&    result_file_path          = benchmark_case.result_file_path;
 	const std::string     detailed_result_file_path = benchmark_case.detailed_result_file_path;
@@ -67,7 +72,8 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 			    // Generate a thread-specific directory path
 			    std::ostringstream thread_id_stream;
 			    thread_id_stream << std::this_thread::get_id();
-			    path thread_specific_fls_dir_path = fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str();
+			    path thread_specific_fls_dir_path =
+			        fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str() ;
 
 			    // Store the directory for cleanup (thread-safe)
 			    {
@@ -163,6 +169,6 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 }
 
 int main() {
-	run_compression_ratio_benchmark(fc_bench_case);
+	run_compression_ratio_benchmark(nextia_jd_case);
 	return EXIT_SUCCESS;
 }

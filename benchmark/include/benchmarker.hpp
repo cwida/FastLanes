@@ -36,9 +36,10 @@ public:
 		create_directories(thread_specific_fls_dir_path);
 
 		// Original rowgroup
+		const auto thread_specific_fls_file_path = thread_specific_fls_dir_path / "data.fls";
 		Connection con1;
 		con1.reset().read_csv(dir_path);
-		con1.to_fls(thread_specific_fls_dir_path);
+		con1.to_fls(thread_specific_fls_file_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
 	void Write(const string_view file_path, const path& thread_specific_fls_dir_path, const vector<idx_t>& idxs) const {
