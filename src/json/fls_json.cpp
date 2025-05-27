@@ -233,6 +233,7 @@ DataType TypeLookUp(const std::string& str) {
 	    // NextiaJD
 	    {"TIMESTAMP", DataType::FLS_STR},
 	    {"BOOLEAN", DataType::FLS_STR},
+	    {"DATE", DataType::FLS_STR},
 
 	};
 
@@ -307,7 +308,7 @@ std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pai
 	for (const auto& ptr : pairs) {
 		if (!ptr) {
 			continue;
-		} // defensive: skip nulls
+		}                                          // defensive: skip nulls
 		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
 
 		if (!first) {
@@ -479,7 +480,7 @@ void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
 constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
 void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
-    j = nlohmann::json {
+	                 j = nlohmann::json {
         //
         {OPERATOR_TOKEN, expression_result.operator_token}, //
         {SIZE, expression_result.size},                     //
