@@ -72,8 +72,7 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 			    // Generate a thread-specific directory path
 			    std::ostringstream thread_id_stream;
 			    thread_id_stream << std::this_thread::get_id();
-			    path thread_specific_fls_dir_path =
-			        fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str() ;
+			    path thread_specific_fls_dir_path = fastlanes_repo_data_path / "data" / "fls" / thread_id_stream.str();
 
 			    // Store the directory for cleanup (thread-safe)
 			    {
