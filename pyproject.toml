@@ -30,7 +30,6 @@ write_to = "python/pyfastlanes/_version.py"
 version_scheme = "no-guess-dev"
 
 [tool.setuptools.packages.find]
-# your Python package lives under the python/ folder
 where = ["python"]
 include = ["pyfastlanes*"]
 
@@ -38,7 +37,6 @@ include = ["pyfastlanes*"]
 build-dir = "skbuild-editable"
 editable.mode = "redirect"
 
-# CMake flags used for *every* build (editable, wheel, etc.)
 cmake.args = [
     "-DFLS_BUILD_PYTHON=ON",
     "-DFLS_ENABLE_VERBOSE_OUTPUT=ON"
@@ -48,13 +46,10 @@ metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
 
 
 sdist.include = [
-    # your main Python package
     "python/pyfastlanes/**",
-    # project metadata
     "README.md",
     "LICENSE",
     "pyproject.toml",
-    # your CMake top-level and any shipped modules you need
     "CMakeLists.txt",
     "cmake/**",
     "src/**",
