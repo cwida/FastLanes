@@ -3,8 +3,8 @@
 ###########################################################################
 #   target_link_libraries(example
 #       PUBLIC
-#           FastLanes::headers   # gets the include path
-#           FastLanes::core      # links against the main library if needed
+#           FastLanes::headers   # include path
+#           FastLanes::core      # links against FastLanes lib
 #   )
 ###########################################################################
 
@@ -22,7 +22,7 @@ target_include_directories(fls_headers
 add_library(FastLanes::headers ALIAS fls_headers)
 
 ###########################################################################
-# 2. Sub-directories that build the individual components
+# 2. Sub-directories that build individual components
 ###########################################################################
 add_subdirectory(alp)
 add_subdirectory(c_api)
@@ -53,10 +53,17 @@ add_subdirectory(wizard)
 ###########################################################################
 # 3. Core FastLanes library
 ###########################################################################
-add_library(FastLanes STATIC
-        connection.cpp
-        ${FASTLANES_OBJECT_FILES}
-)
+if (FLS_BUILD_SHARED_LIBS)
+    add_library(FastLanes SHARED
+            connection.cpp
+            ${FASTLANES_OBJECT_FILES}
+    )
+else ()
+    add_library(FastLanes STATIC
+            connection.cpp
+            ${FASTLANES_OBJECT_FILES}
+    )
+endif ()
 
 target_compile_features(FastLanes PUBLIC cxx_std_20)
 
@@ -67,6 +74,7 @@ target_link_libraries(FastLanes
 
 add_library(FastLanes::core ALIAS FastLanes)
 
+# Optional IWYU integration
 if (FLS_ENABLE_IWYU)
     set_property(TARGET FastLanes PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
@@ -76,20 +84,22 @@ endif ()
 ###########################################################################
 install(
         TARGETS FastLanes fls_headers
-        EXPORT FLSTargets                         # add the two libs to the export set
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # for shared libs (none here)
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # static libs (.a / .lib)
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # executables, if any
+        EXPORT FLSTargets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .a / import-libs
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .so / .dylib
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # Windows .dll / executables
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+# Export set for find_package(FLS)
 install(
         EXPORT FLSTargets
         FILE FLSTargets.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/FLS
         NAMESPACE FLS::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/FLS
 )
 
+# Export file to the build tree for downstream projects
 export(
         EXPORT FLSTargets
         FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
@@ -97,7 +107,7 @@ export(
 )
 
 ###########################################################################
-# headers installation
+# 5. Header-only tree
 ###########################################################################
 install(
         DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
