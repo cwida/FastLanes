@@ -39,6 +39,7 @@ include(CMakePrintHelpers)
 # https://stackoverflow.com/questions/56089330/cmake-creates-lots-of-targets-i-didnt-specify
 set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 include(CTest)
+include(GNUInstallDirs)
 
 # Checks : -------------------------------------------------------------------------------------------------------
 if (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
