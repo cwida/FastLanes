@@ -37,7 +37,7 @@ jobs:
         run: make format-check
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 2️⃣  Main build + clang-tidy (Linux + macOS)
+  # 2️⃣  Main build + clang-tidy (Linux + macOS + Windows)
   # ──────────────────────────────────────────────────────────────────────────────
   build:
     needs: check-format
@@ -77,6 +77,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                 -DFLS_ENABLE_CLANG_TIDY=ON \
                 -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }} \
+                -DFLS_ENABLE_INSTALL=OFF \
                 -DCMAKE_C_COMPILER=clang \
                 -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
@@ -173,6 +174,7 @@ jobs:
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
             -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DFLS_ENABLE_INSTALL=OFF
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
           )
@@ -233,6 +235,7 @@ jobs:
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DFLS_ENABLE_INSTALL=OFF
             -DCMAKE_C_COMPILER=clang
             -DCMAKE_CXX_COMPILER=clang++
           )
@@ -285,6 +288,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_INSTALL_PREFIX=build_${{ matrix.shared_lib }}/install
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DFLS_ENABLE_INSTALL=ON
           )
           # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
           if [[ "${{ runner.os }}" == "Windows" ]]; then
@@ -314,7 +318,6 @@ jobs:
           # 3) walk every .h/.hpp under your source include/, check its counterpart
           missing=()
           while IFS= read -r -d '' src; do
-            # strip leading "./"
             rel="${src#./}"
             if [[ ! -f "$INSTALL_INCLUDE/$rel" ]]; then
               missing+=("$rel")
