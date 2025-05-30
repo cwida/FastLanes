@@ -86,3 +86,27 @@ install(
         ARCHIVE DESTINATION lib      # static libs (.a)
         RUNTIME DESTINATION bin      # executables, if any
 )
+
+
+install(
+        EXPORT FLSTargets
+        FILE FLSTargets.cmake
+        DESTINATION lib/FLS
+        NAMESPACE FLS::
+)
+
+export(
+        EXPORT FLSTargets
+        FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
+        NAMESPACE FLS::
+)
+
+install(
+        DIRECTORY
+        ${CMAKE_SOURCE_DIR}/include/     # your "include/fls/…" tree
+        DESTINATION
+        include                           # will land under <prefix>/include/fls/…
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "*.hpp"
+)
