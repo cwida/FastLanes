@@ -287,7 +287,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          SOURCE_INCLUDE=include
+          SOURCE_INCLUDE=src/include
           INSTALL_INCLUDE=build/install/include
 
           # 1) fail fast if the install tree isn't there

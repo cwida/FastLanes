@@ -1,8 +1,8 @@
 IMAGE             := ghcr.io/azimafroozeh/clang-format-python/clang-format-python:14
 UBUNTU_IMAGE      := ubuntu:22.04
-DIRS              := examples include src benchmark test data/include python
-EXCLUDES          := --exclude include/fls/json/nlohmann \
-                     --exclude include/flatbuffers \
+DIRS              := examples src benchmark test data/include python
+EXCLUDES          := --exclude src/include/fls/json/nlohmann \
+                     --exclude src/include/flatbuffers \
                      --exclude src/primitives \
                      --exclude examples/rust_example
 
