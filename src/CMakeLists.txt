@@ -79,40 +79,43 @@ if (FLS_ENABLE_IWYU)
     set_property(TARGET FastLanes PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-###########################################################################
-# 4. Installation
-###########################################################################
-install(
-        TARGETS FastLanes fls_headers
-        EXPORT FLSTargets
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .a / import-libs
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .so / .dylib
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # Windows .dll / executables
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+if (FLS_ENABLE_INSTALL)
+    ###########################################################################
+    # 4. Installation
+    ###########################################################################
 
-# Export set for find_package(FLS)
-install(
-        EXPORT FLSTargets
-        FILE FLSTargets.cmake
-        NAMESPACE FLS::
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/FLS
-)
+    install(
+            TARGETS FastLanes fls_headers
+            EXPORT FLSTargets
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .a / import-libs
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # .so / .dylib
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # Windows .dll / executables
+            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
 
-# Export file to the build tree for downstream projects
-export(
-        EXPORT FLSTargets
-        FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
-        NAMESPACE FLS::
-)
+    # Export set for find_package(FLS)
+    install(
+            EXPORT FLSTargets
+            FILE FLSTargets.cmake
+            NAMESPACE FLS::
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/FLS
+    )
 
-###########################################################################
-# 5. Header-only tree
-###########################################################################
-install(
-        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        FILES_MATCHING
-        PATTERN "*.h"
-        PATTERN "*.hpp"
-)
+    # Export file to the build tree for downstream projects
+    export(
+            EXPORT FLSTargets
+            FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
+            NAMESPACE FLS::
+    )
+
+    ###########################################################################
+    # 5. Header-only tree
+    ###########################################################################
+    install(
+            DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.hpp"
+    )
+endif ()  # FLS_ENABLE_INSTALL
