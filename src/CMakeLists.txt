@@ -1,22 +1,7 @@
 #######################################################################
 # 1. Public‑header interface target
 #######################################################################
-# Anything that needs to include <fastlanes.h> or other public headers
-# simply links to this target (no actual link flags are added, only
-# the include path)
 add_library(fls_headers INTERFACE)
-
-# Build tree                     → FastLanes/include
-# When installed with CMake      → <install‑prefix>/include
-# The install path is picked up automatically by `install(EXPORT …)`.
-# --------------------------------------------------------------------
-# IMPORTANT: we declare this *before* we descend into the sub‑directories
-# so that every target created later can already link against it.
-# --------------------------------------------------------------------
-
-# NOTE: `${CMAKE_CURRENT_SOURCE_DIR}` here is …/src
-# so the public headers are expected in …/include next to the src folder.
-# Adjust the path if your layout is different.
 
 target_include_directories(fls_headers
         INTERFACE
@@ -68,19 +53,13 @@ add_library(FastLanes STATIC
 target_compile_features(FastLanes PUBLIC cxx_std_20)
 
 
-# Public usage requirements
-# ‑ Anyone linking to FastLanes gets include path *and* dependent libs
-# ‑ We link the header interface so *this* target can see its own headers
-# ‑ Add your other internal/external dependencies here (primitives, ALP …)
-
 target_link_libraries(FastLanes
         PUBLIC
-        FastLanes::headers   # <fastlanes.h> etc.
+        FastLanes::headers
 )
 
 add_library(FastLanes::core ALIAS FastLanes)
 
-# Optional Include‑What‑You‑Use support --------------------------------------------------------------
 if (FLS_ENABLE_IWYU)
     set_property(TARGET FastLanes PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
