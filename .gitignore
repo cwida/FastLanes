@@ -120,3 +120,9 @@ rustfmt.toml
 
 # Coverage reports
 coverage/
+
+# ─── build artifacts you never want committed or packed ───
+rust/target/
+skbuild-*/
+.idea/
+.venv/

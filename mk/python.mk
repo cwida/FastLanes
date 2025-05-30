@@ -65,7 +65,7 @@ $(ACTIVATE):
 
 PY_DEPS = \
   'cmake>=3.22' \
-  'scikit-build-core>=0.11,<0.12' \
+  'scikit-build-core>=0.11.3,<0.12' \
   'pybind11>=2.12,<2.13' \
   'setuptools_scm[toml]>=8,<9' \
   'pytest' \
