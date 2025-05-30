@@ -1,5 +1,5 @@
 #######################################################################
-# Usage in sub‑directories (example)
+# Usage in sub-directories (example)
 #######################################################################
 #   target_link_libraries(example
 #       PUBLIC
@@ -10,22 +10,21 @@
 #######################################################################
 
 #######################################################################
-# 1. Public‑header interface target
+# 1. Public-header interface target
 #######################################################################
 add_library(fls_headers INTERFACE)
 
 target_include_directories(fls_headers
         INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 add_library(FastLanes::headers ALIAS fls_headers)
 
 #######################################################################
-# 2. Sub‑directories that build the individual components
+# 2. Sub-directories that build the individual components
 #######################################################################
-
 add_subdirectory(alp)
 add_subdirectory(c_api)
 add_subdirectory(cfg)
@@ -55,14 +54,12 @@ add_subdirectory(wizard)
 #######################################################################
 # 3. Core FastLanes library
 #######################################################################
-
 add_library(FastLanes STATIC
         connection.cpp
         ${FASTLANES_OBJECT_FILES}
 )
 
 target_compile_features(FastLanes PUBLIC cxx_std_20)
-
 
 target_link_libraries(FastLanes
         PUBLIC
@@ -78,20 +75,19 @@ endif ()
 #######################################################################
 # 4. Installation
 #######################################################################
-
 install(
         TARGETS FastLanes fls_headers
-        EXPORT FLSTargets           # add the two libs to the export set
-        LIBRARY DESTINATION lib      # for shared libs (none in this snippet)
-        ARCHIVE DESTINATION lib      # static libs (.a)
-        RUNTIME DESTINATION bin      # executables, if any
+        EXPORT FLSTargets                         # add the two libs to the export set
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # for shared libs (none here)
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # static libs (.a / .lib)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # executables, if any
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
-
 
 install(
         EXPORT FLSTargets
         FILE FLSTargets.cmake
-        DESTINATION lib/FLS
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/FLS
         NAMESPACE FLS::
 )
 
@@ -101,11 +97,10 @@ export(
         NAMESPACE FLS::
 )
 
+# --- headers -----------------------------------------------------------------
 install(
-        DIRECTORY
-        ${CMAKE_SOURCE_DIR}/include/     # your "include/fls/…" tree
-        DESTINATION
-        include                           # will land under <prefix>/include/fls/…
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
         PATTERN "*.h"
         PATTERN "*.hpp"
