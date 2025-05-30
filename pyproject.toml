@@ -17,7 +17,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pyfastlanes"
-version = "0.1.3.post7"
+version = "0.1.4"
 description = "FastLanes File Format"
 readme = { file = "README.md", content-type = "text/markdown" }
 authors = [{ name = "Azim Afroozeh", email = "azim@cwi.nl" }]
@@ -46,25 +46,18 @@ cmake.args = [
 
 metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
 
-# ⚡️  Skip heavyweight or irrelevant paths when creating the sdist
-sdist.exclude = [
-    # CMake & scikit‑build output
-    "cmake-build-*",
-    "build",
-    "dist",
-    "skbuild-editable",
-    "examples",
-    "benchmark",
-    "data",
-    "scripts/generated_*",
-    "rust",
-    "mk",
-    # Local tooling / IDE
-    ".venv",
-    ".idea",
-    # Generic cruft
-    "**/__pycache__",
-    "*.so",
+
+sdist.include = [
+    # your main Python package
+    "python/pyfastlanes/**",
+    # project metadata
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+    # your CMake top-level and any shipped modules you need
+    "CMakeLists.txt",
+    "cmake/**",
+    "src/**",
 ]
 
 [tool.scikit-build.wheel]

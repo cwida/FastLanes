@@ -1,11 +1,22 @@
 #######################################################################
+# Usage in sub‑directories (example)
+#######################################################################
+#   target_link_libraries(example
+#       PUBLIC
+#           FastLanes::headers   # gets the include path
+#           FastLanes::core      # links against the main library if needed
+#   )
+# --------------------------------------------------------------------
+#######################################################################
+
+#######################################################################
 # 1. Public‑header interface target
 #######################################################################
 add_library(fls_headers INTERFACE)
 
 target_include_directories(fls_headers
         INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
@@ -75,17 +86,3 @@ install(
         ARCHIVE DESTINATION lib      # static libs (.a)
         RUNTIME DESTINATION bin      # executables, if any
 )
-
-#######################################################################
-# 5. Usage in sub‑directories (example)
-#######################################################################
-# ---- src/c_api/CMakeLists.txt ----
-#   add_library(fls_c_api STATIC c_api_connector.cpp)
-#   target_link_libraries(fls_c_api
-#       PUBLIC
-#           FastLanes::headers   # gets the include path
-#           FastLanes::core      # links against the main library if needed
-#   )
-# --------------------------------------------------------------------
-# Repeat the same pattern for other component libraries/executables.
-#######################################################################

@@ -47,7 +47,7 @@
 // clang-format off
 using namespace std;
 
-#include "fsst12.h" // the official FSST12 API -- also usable by C mortals
+#include "fsst12.h"
 
 /* workhorse type for string and buffer lengths: 64-bits on 64-bits platforms and 32-bits on 32-bits platforms */
 using ulong = unsigned long;
