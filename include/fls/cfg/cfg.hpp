@@ -44,7 +44,7 @@ public:
 		static constexpr uint64_t MAX_SIZE             = 4294967295; // max 32 bit unsigned integer
 		static constexpr uint64_t ADAPTIVE_TRY_C       = 3;          //
 		static constexpr double   ADAPTIVE_THRESHOLD   = 00.80;      //
-		static constexpr n_t      max_bytes_per_string = 13000;
+		static constexpr n_t      max_bytes_per_string = 15000;
 	};
 
 	/* Sampler Config. */
