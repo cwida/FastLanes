@@ -5,7 +5,6 @@ add_subdirectory(fsst)
 add_subdirectory(fsst12)
 add_subdirectory(predicate)
 add_subdirectory(rle)
-add_subdirectory(unffor)
 add_subdirectory(untraspose)
 
 

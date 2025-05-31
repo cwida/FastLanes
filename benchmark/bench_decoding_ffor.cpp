@@ -1,8 +1,8 @@
 #include "cycle_counter.hpp"
 #include "fallback_scalar_av_1024_uf1_unffor_helper.hpp"
 #include "fls/ffor.hpp"
+#include "fls/unffor.hpp"
 #include "fls_gen/pack/pack.hpp"
-#include "fls_gen/unffor/unffor.hpp"
 
 static benchmark::BenchmarkReporter::Run bench0_unpack_0bw_8ow_8crw_1uf(const uint8_t* packed8, uint8_t* unpacked8) {
 	int benchmark_number = 0;
@@ -21,7 +21,7 @@ static benchmark::BenchmarkReporter::Run bench0_unpack_0bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 0, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 0, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -46,7 +46,7 @@ static benchmark::BenchmarkReporter::Run bench1_unpack_1bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 1, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 1, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -71,7 +71,7 @@ static benchmark::BenchmarkReporter::Run bench2_unpack_2bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 2, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 2, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -96,7 +96,7 @@ static benchmark::BenchmarkReporter::Run bench3_unpack_3bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 3, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 3, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -121,7 +121,7 @@ static benchmark::BenchmarkReporter::Run bench4_unpack_4bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 4, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 4, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -146,7 +146,7 @@ static benchmark::BenchmarkReporter::Run bench5_unpack_5bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 5, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 5, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -171,7 +171,7 @@ static benchmark::BenchmarkReporter::Run bench6_unpack_6bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 6, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 6, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -196,7 +196,7 @@ static benchmark::BenchmarkReporter::Run bench7_unpack_7bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 7, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 7, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -221,7 +221,7 @@ static benchmark::BenchmarkReporter::Run bench8_unpack_8bw_8ow_8crw_1uf(const ui
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 8, base8);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed8, const_cast<uint8_t*>(unpacked8), 8, base8);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -247,7 +247,7 @@ static benchmark::BenchmarkReporter::Run bench9_unpack_0bw_16ow_16crw_1uf(const 
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 0, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 0, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -273,7 +273,7 @@ static benchmark::BenchmarkReporter::Run bench10_unpack_1bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 1, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 1, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -299,7 +299,7 @@ static benchmark::BenchmarkReporter::Run bench11_unpack_2bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 2, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 2, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -325,7 +325,7 @@ static benchmark::BenchmarkReporter::Run bench12_unpack_3bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 3, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 3, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -351,7 +351,7 @@ static benchmark::BenchmarkReporter::Run bench13_unpack_4bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 4, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 4, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -377,7 +377,7 @@ static benchmark::BenchmarkReporter::Run bench14_unpack_5bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 5, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 5, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -403,7 +403,7 @@ static benchmark::BenchmarkReporter::Run bench15_unpack_6bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 6, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 6, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -429,7 +429,7 @@ static benchmark::BenchmarkReporter::Run bench16_unpack_7bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 7, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 7, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -455,7 +455,7 @@ static benchmark::BenchmarkReporter::Run bench17_unpack_8bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 8, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 8, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -481,7 +481,7 @@ static benchmark::BenchmarkReporter::Run bench18_unpack_9bw_16ow_16crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 9, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 9, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -507,7 +507,7 @@ static benchmark::BenchmarkReporter::Run bench19_unpack_10bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 10, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 10, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -533,7 +533,7 @@ static benchmark::BenchmarkReporter::Run bench20_unpack_11bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 11, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 11, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -559,7 +559,7 @@ static benchmark::BenchmarkReporter::Run bench21_unpack_12bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 12, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 12, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -585,7 +585,7 @@ static benchmark::BenchmarkReporter::Run bench22_unpack_13bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 13, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 13, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -611,7 +611,7 @@ static benchmark::BenchmarkReporter::Run bench23_unpack_14bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 14, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 14, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -637,7 +637,7 @@ static benchmark::BenchmarkReporter::Run bench24_unpack_15bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 15, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 15, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -663,7 +663,7 @@ static benchmark::BenchmarkReporter::Run bench25_unpack_16bw_16ow_16crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 16, base16);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed16, const_cast<uint16_t*>(unpacked16), 16, base16);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -689,7 +689,7 @@ static benchmark::BenchmarkReporter::Run bench26_unpack_0bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 0, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 0, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -715,7 +715,7 @@ static benchmark::BenchmarkReporter::Run bench27_unpack_1bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 1, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 1, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -741,7 +741,7 @@ static benchmark::BenchmarkReporter::Run bench28_unpack_2bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 2, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 2, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -767,7 +767,7 @@ static benchmark::BenchmarkReporter::Run bench29_unpack_3bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 3, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 3, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -793,7 +793,7 @@ static benchmark::BenchmarkReporter::Run bench30_unpack_4bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 4, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 4, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -819,7 +819,7 @@ static benchmark::BenchmarkReporter::Run bench31_unpack_5bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 5, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 5, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -845,7 +845,7 @@ static benchmark::BenchmarkReporter::Run bench32_unpack_6bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 6, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 6, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -871,7 +871,7 @@ static benchmark::BenchmarkReporter::Run bench33_unpack_7bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 7, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 7, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -897,7 +897,7 @@ static benchmark::BenchmarkReporter::Run bench34_unpack_8bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 8, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 8, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -923,7 +923,7 @@ static benchmark::BenchmarkReporter::Run bench35_unpack_9bw_32ow_32crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 9, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 9, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -949,7 +949,7 @@ static benchmark::BenchmarkReporter::Run bench36_unpack_10bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 10, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 10, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -975,7 +975,7 @@ static benchmark::BenchmarkReporter::Run bench37_unpack_11bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 11, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 11, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1001,7 +1001,7 @@ static benchmark::BenchmarkReporter::Run bench38_unpack_12bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 12, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 12, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1027,7 +1027,7 @@ static benchmark::BenchmarkReporter::Run bench39_unpack_13bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 13, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 13, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1053,7 +1053,7 @@ static benchmark::BenchmarkReporter::Run bench40_unpack_14bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 14, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 14, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1079,7 +1079,7 @@ static benchmark::BenchmarkReporter::Run bench41_unpack_15bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 15, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 15, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1105,7 +1105,7 @@ static benchmark::BenchmarkReporter::Run bench42_unpack_16bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 16, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 16, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1131,7 +1131,7 @@ static benchmark::BenchmarkReporter::Run bench43_unpack_17bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 17, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 17, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1157,7 +1157,7 @@ static benchmark::BenchmarkReporter::Run bench44_unpack_18bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 18, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 18, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1183,7 +1183,7 @@ static benchmark::BenchmarkReporter::Run bench45_unpack_19bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 19, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 19, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1209,7 +1209,7 @@ static benchmark::BenchmarkReporter::Run bench46_unpack_20bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 20, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 20, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1235,7 +1235,7 @@ static benchmark::BenchmarkReporter::Run bench47_unpack_21bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 21, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 21, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1261,7 +1261,7 @@ static benchmark::BenchmarkReporter::Run bench48_unpack_22bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 22, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 22, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1287,7 +1287,7 @@ static benchmark::BenchmarkReporter::Run bench49_unpack_23bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 23, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 23, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1313,7 +1313,7 @@ static benchmark::BenchmarkReporter::Run bench50_unpack_24bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 24, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 24, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1339,7 +1339,7 @@ static benchmark::BenchmarkReporter::Run bench51_unpack_25bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 25, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 25, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1365,7 +1365,7 @@ static benchmark::BenchmarkReporter::Run bench52_unpack_26bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 26, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 26, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1391,7 +1391,7 @@ static benchmark::BenchmarkReporter::Run bench53_unpack_27bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 27, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 27, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1417,7 +1417,7 @@ static benchmark::BenchmarkReporter::Run bench54_unpack_28bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 28, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 28, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1443,7 +1443,7 @@ static benchmark::BenchmarkReporter::Run bench55_unpack_29bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 29, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 29, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1469,7 +1469,7 @@ static benchmark::BenchmarkReporter::Run bench56_unpack_30bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 30, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 30, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1495,7 +1495,7 @@ static benchmark::BenchmarkReporter::Run bench57_unpack_31bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 31, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 31, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1521,7 +1521,7 @@ static benchmark::BenchmarkReporter::Run bench58_unpack_32bw_32ow_32crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 32, base32);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed32, const_cast<uint32_t*>(unpacked32), 32, base32);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1547,7 +1547,7 @@ static benchmark::BenchmarkReporter::Run bench59_unpack_0bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 0, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 0, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1573,7 +1573,7 @@ static benchmark::BenchmarkReporter::Run bench60_unpack_1bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 1, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 1, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1599,7 +1599,7 @@ static benchmark::BenchmarkReporter::Run bench61_unpack_2bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 2, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 2, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1625,7 +1625,7 @@ static benchmark::BenchmarkReporter::Run bench62_unpack_3bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 3, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 3, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1651,7 +1651,7 @@ static benchmark::BenchmarkReporter::Run bench63_unpack_4bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 4, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 4, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1677,7 +1677,7 @@ static benchmark::BenchmarkReporter::Run bench64_unpack_5bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 5, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 5, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1703,7 +1703,7 @@ static benchmark::BenchmarkReporter::Run bench65_unpack_6bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 6, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 6, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1729,7 +1729,7 @@ static benchmark::BenchmarkReporter::Run bench66_unpack_7bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 7, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 7, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1755,7 +1755,7 @@ static benchmark::BenchmarkReporter::Run bench67_unpack_8bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 8, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 8, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1781,7 +1781,7 @@ static benchmark::BenchmarkReporter::Run bench68_unpack_9bw_64ow_64crw_1uf(const
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 9, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 9, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1807,7 +1807,7 @@ static benchmark::BenchmarkReporter::Run bench69_unpack_10bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 10, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 10, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1833,7 +1833,7 @@ static benchmark::BenchmarkReporter::Run bench70_unpack_11bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 11, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 11, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1859,7 +1859,7 @@ static benchmark::BenchmarkReporter::Run bench71_unpack_12bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 12, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 12, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1885,7 +1885,7 @@ static benchmark::BenchmarkReporter::Run bench72_unpack_13bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 13, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 13, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1911,7 +1911,7 @@ static benchmark::BenchmarkReporter::Run bench73_unpack_14bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 14, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 14, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1937,7 +1937,7 @@ static benchmark::BenchmarkReporter::Run bench74_unpack_15bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 15, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 15, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1963,7 +1963,7 @@ static benchmark::BenchmarkReporter::Run bench75_unpack_16bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 16, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 16, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -1989,7 +1989,7 @@ static benchmark::BenchmarkReporter::Run bench76_unpack_17bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 17, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 17, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2015,7 +2015,7 @@ static benchmark::BenchmarkReporter::Run bench77_unpack_18bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 18, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 18, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2041,7 +2041,7 @@ static benchmark::BenchmarkReporter::Run bench78_unpack_19bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 19, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 19, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2067,7 +2067,7 @@ static benchmark::BenchmarkReporter::Run bench79_unpack_20bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 20, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 20, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2093,7 +2093,7 @@ static benchmark::BenchmarkReporter::Run bench80_unpack_21bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 21, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 21, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2119,7 +2119,7 @@ static benchmark::BenchmarkReporter::Run bench81_unpack_22bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 22, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 22, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2145,7 +2145,7 @@ static benchmark::BenchmarkReporter::Run bench82_unpack_23bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 23, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 23, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2171,7 +2171,7 @@ static benchmark::BenchmarkReporter::Run bench83_unpack_24bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 24, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 24, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2197,7 +2197,7 @@ static benchmark::BenchmarkReporter::Run bench84_unpack_25bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 25, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 25, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2223,7 +2223,7 @@ static benchmark::BenchmarkReporter::Run bench85_unpack_26bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 26, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 26, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2249,7 +2249,7 @@ static benchmark::BenchmarkReporter::Run bench86_unpack_27bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 27, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 27, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2275,7 +2275,7 @@ static benchmark::BenchmarkReporter::Run bench87_unpack_28bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 28, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 28, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2301,7 +2301,7 @@ static benchmark::BenchmarkReporter::Run bench88_unpack_29bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 29, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 29, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2327,7 +2327,7 @@ static benchmark::BenchmarkReporter::Run bench89_unpack_30bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 30, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 30, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2353,7 +2353,7 @@ static benchmark::BenchmarkReporter::Run bench90_unpack_31bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 31, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 31, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2379,7 +2379,7 @@ static benchmark::BenchmarkReporter::Run bench91_unpack_32bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 32, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 32, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2405,7 +2405,7 @@ static benchmark::BenchmarkReporter::Run bench92_unpack_33bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 33, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 33, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2431,7 +2431,7 @@ static benchmark::BenchmarkReporter::Run bench93_unpack_34bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 34, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 34, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2457,7 +2457,7 @@ static benchmark::BenchmarkReporter::Run bench94_unpack_35bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 35, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 35, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2483,7 +2483,7 @@ static benchmark::BenchmarkReporter::Run bench95_unpack_36bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 36, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 36, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2509,7 +2509,7 @@ static benchmark::BenchmarkReporter::Run bench96_unpack_37bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 37, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 37, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2535,7 +2535,7 @@ static benchmark::BenchmarkReporter::Run bench97_unpack_38bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 38, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 38, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2561,7 +2561,7 @@ static benchmark::BenchmarkReporter::Run bench98_unpack_39bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 39, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 39, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2587,7 +2587,7 @@ static benchmark::BenchmarkReporter::Run bench99_unpack_40bw_64ow_64crw_1uf(cons
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 40, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 40, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2613,7 +2613,7 @@ static benchmark::BenchmarkReporter::Run bench100_unpack_41bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 41, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 41, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2639,7 +2639,7 @@ static benchmark::BenchmarkReporter::Run bench101_unpack_42bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 42, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 42, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2665,7 +2665,7 @@ static benchmark::BenchmarkReporter::Run bench102_unpack_43bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 43, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 43, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2691,7 +2691,7 @@ static benchmark::BenchmarkReporter::Run bench103_unpack_44bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 44, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 44, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2717,7 +2717,7 @@ static benchmark::BenchmarkReporter::Run bench104_unpack_45bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 45, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 45, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2743,7 +2743,7 @@ static benchmark::BenchmarkReporter::Run bench105_unpack_46bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 46, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 46, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2769,7 +2769,7 @@ static benchmark::BenchmarkReporter::Run bench106_unpack_47bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 47, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 47, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2795,7 +2795,7 @@ static benchmark::BenchmarkReporter::Run bench107_unpack_48bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 48, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 48, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2821,7 +2821,7 @@ static benchmark::BenchmarkReporter::Run bench108_unpack_49bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 49, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 49, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2847,7 +2847,7 @@ static benchmark::BenchmarkReporter::Run bench109_unpack_50bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 50, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 50, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2873,7 +2873,7 @@ static benchmark::BenchmarkReporter::Run bench110_unpack_51bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 51, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 51, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2899,7 +2899,7 @@ static benchmark::BenchmarkReporter::Run bench111_unpack_52bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 52, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 52, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2925,7 +2925,7 @@ static benchmark::BenchmarkReporter::Run bench112_unpack_53bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 53, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 53, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2951,7 +2951,7 @@ static benchmark::BenchmarkReporter::Run bench113_unpack_54bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 54, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 54, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -2977,7 +2977,7 @@ static benchmark::BenchmarkReporter::Run bench114_unpack_55bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 55, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 55, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3003,7 +3003,7 @@ static benchmark::BenchmarkReporter::Run bench115_unpack_56bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 56, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 56, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3029,7 +3029,7 @@ static benchmark::BenchmarkReporter::Run bench116_unpack_57bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 57, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 57, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3055,7 +3055,7 @@ static benchmark::BenchmarkReporter::Run bench117_unpack_58bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 58, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 58, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3081,7 +3081,7 @@ static benchmark::BenchmarkReporter::Run bench118_unpack_59bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 59, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 59, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3107,7 +3107,7 @@ static benchmark::BenchmarkReporter::Run bench119_unpack_60bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 60, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 60, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3133,7 +3133,7 @@ static benchmark::BenchmarkReporter::Run bench120_unpack_61bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 61, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 61, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3159,7 +3159,7 @@ static benchmark::BenchmarkReporter::Run bench121_unpack_62bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 62, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 62, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3185,7 +3185,7 @@ static benchmark::BenchmarkReporter::Run bench122_unpack_63bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 63, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 63, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
@@ -3211,7 +3211,7 @@ static benchmark::BenchmarkReporter::Run bench123_unpack_64bw_64ow_64crw_1uf(con
 
 	int64_t cycles = benchmark::cycleclock::Now();
 	for (uint64_t i = 0; i < iterations; ++i) {
-		generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 64, base64);
+		fastlanes::generated::unffor::fallback::scalar::unffor(packed64, const_cast<uint64_t*>(unpacked64), 64, base64);
 	}
 
 	cycles = benchmark::cycleclock::Now() - cycles;
