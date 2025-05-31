@@ -11,6 +11,7 @@
 #include "data/public_bi.hpp"
 #include "data/sdrbench.hpp"
 #include "data/test.hpp"
+#include "data/tpch.hpp"
 #include "data/wrong_schema.hpp"
 
 namespace fastlanes {
