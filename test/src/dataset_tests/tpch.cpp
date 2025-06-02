@@ -1,6 +1,6 @@
-#include "fls_tester.hpp"
-#include "data/tpch.hpp"  // Make sure this header defines Tpch::customer, Tpch::lineitem, etc.
+#include "data/tpch.hpp" // Make sure this header defines Tpch::customer, Tpch::lineitem, etc.
 #include "fastlanes.hpp"
+#include "fls_tester.hpp"
 
 namespace fastlanes {
 
