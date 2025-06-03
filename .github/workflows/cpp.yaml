@@ -188,6 +188,7 @@ jobs:
         run: cmake --build "build_${{ matrix.build_type }}_${{ matrix.shared_lib }}" --parallel
 
       - name: Run cpp_example
+        shell: bash
         run: |
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             ./build_${{ matrix.build_type }}_${{ matrix.shared_lib }}/examples/cpp_example.exe
