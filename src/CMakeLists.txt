@@ -47,6 +47,7 @@ add_subdirectory(reader)
 add_subdirectory(std)
 add_subdirectory(stt)
 add_subdirectory(table)
+add_subdirectory(types)
 add_subdirectory(utl)
 add_subdirectory(wizard)
 

@@ -3,6 +3,7 @@ add_executable(unit_test
         double_test.cpp
         json_test.cpp
         decimal_test.cpp
+        parse_integer_test.cpp
         sampling_layout_test.cpp
 )
 

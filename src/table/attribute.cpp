@@ -5,6 +5,7 @@
 #include "fls/common/string.hpp"
 #include "fls/detail/parse_fp.hpp"
 #include "fls/expression/data_type.hpp"
+#include "fls/types/integer.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cstring>
@@ -42,55 +43,40 @@ bool IsNull(const string& val_str) {
 template <typename PT>
 PT TypedCast(const std::string& val_str) {
 	try {
-		if constexpr (std::is_same_v<PT, u08_pt>) {
-			const auto value = stoul(val_str);
-			if (value > std::numeric_limits<u08_pt>::max())
-				throw std::out_of_range("Value exceeds u08_pt range");
-			return static_cast<u08_pt>(value);
-		} else if constexpr (std::is_same_v<PT, u16_pt>) {
-			const auto value = stoul(val_str);
-			if (value > std::numeric_limits<u16_pt>::max())
-				throw std::out_of_range("Value exceeds u16_pt range");
-			return static_cast<u16_pt>(value);
-		} else if constexpr (std::is_same_v<PT, u32_pt>) {
-			return static_cast<u32_pt>(std::stoul(val_str)); // stoul already checks range for uint32
-		} else if constexpr (std::is_same_v<PT, u64_pt>) {
-			return std::stoull(val_str); // stoull already checks range for uint64
-		} else if constexpr (std::is_same_v<PT, i08_pt>) {
-			const auto value = std::stoi(val_str);
-			if (value < std::numeric_limits<i08_pt>::min() || value > std::numeric_limits<i08_pt>::max())
-				throw std::out_of_range("Value exceeds i08_pt range");
-			return static_cast<i08_pt>(value);
-		} else if constexpr (std::is_same_v<PT, i16_pt>) {
-			const auto value = std::stoi(val_str);
-			if (value < std::numeric_limits<i16_pt>::min() || value > std::numeric_limits<i16_pt>::max())
-				throw std::out_of_range("Value exceeds i16_pt range");
-			return static_cast<i16_pt>(value);
-		} else if constexpr (std::is_same_v<PT, i32_pt>) {
-			return std::stoi(val_str); // stoi already checks range for int32
-		} else if constexpr (std::is_same_v<PT, i64_pt>) {
-			return std::stoll(val_str); // stoll already checks range for int64
-		} else if constexpr (std::is_same_v<PT, bol_pt>) {
-			if (val_str != "true" && val_str != "false")
-				throw std::invalid_argument("Invalid boolean value");
-			return val_str == "true";
+		// Unsigned integers
+		if constexpr (std::is_same_v<PT, u08_pt> || std::is_same_v<PT, u16_pt> || std::is_same_v<PT, u32_pt> ||
+		              std::is_same_v<PT, u64_pt>) {
+			return parse_integer<PT>(val_str);
 		}
-		/**/
+		// Signed integers
+		else if constexpr (std::is_same_v<PT, i08_pt> || std::is_same_v<PT, i16_pt> || std::is_same_v<PT, i32_pt> ||
+		                   std::is_same_v<PT, i64_pt>) {
+			return parse_integer<PT>(val_str);
+		}
+		// Boolean
+		else if constexpr (std::is_same_v<PT, bol_pt>) {
+			if (val_str == "true") {
+				return true;
+			} else if (val_str == "false") {
+				return false;
+			} else {
+				throw std::invalid_argument("Invalid boolean value");
+			}
+		}
+		// Floating point
 		else if constexpr (std::is_same_v<PT, flt_pt>) {
 			return detail::parse_fp<flt_pt>(val_str);
-		}
-		/**/
-		else if constexpr (std::is_same_v<PT, dbl_pt>) {
+		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
 			return detail::parse_fp<dbl_pt>(val_str);
 		}
-		//
+		// String
 		else if constexpr (std::is_same_v<PT, str_pt>) {
 			return val_str;
 		}
 	} catch (const std::exception& e) {
-		// Include the input value in the runtime error message
 		throw std::runtime_error(std::string("Error in TypedCast for input '") + val_str + "': " + e.what());
 	}
+
 	FLS_UNREACHABLE();
 }
 
