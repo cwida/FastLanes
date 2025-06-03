@@ -1,6 +1,7 @@
 #ifndef FLS_READER_TABLE_READER_HPP
 #define FLS_READER_TABLE_READER_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
@@ -12,7 +13,7 @@ class RowgroupReader;
 struct TableDescriptorT;
 class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
-class TableReader {
+class FLS_API TableReader {
 public:
 	explicit TableReader(const path& file_path, Connection& fls);
 
