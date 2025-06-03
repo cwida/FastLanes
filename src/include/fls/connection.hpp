@@ -1,6 +1,7 @@
 #ifndef FLS_CONNECTION_HPP
 #define FLS_CONNECTION_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp" // for up, idx_t
 #include "fls/common/status.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp" // for Footer
@@ -42,7 +43,7 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*\
  * FLS
 \*--------------------------------------------------------------------------------------------------------------------*/
-class Connection {
+class FLS_API Connection {
 public:
 	friend class column;
 	friend class equal;
@@ -121,7 +122,7 @@ constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.fbb"}
 constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
 
-up<Connection> connect();
+FLS_API up<Connection> connect();
 } // namespace fastlanes
 
 #endif
