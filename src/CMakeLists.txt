@@ -58,10 +58,18 @@ if (FLS_BUILD_SHARED_LIBS)
             connection.cpp
             ${FASTLANES_OBJECT_FILES}
     )
+    target_compile_definitions(FastLanes
+            PRIVATE
+            FLS_BUILD_DLL
+    )
 else ()
     add_library(FastLanes STATIC
             connection.cpp
             ${FASTLANES_OBJECT_FILES}
+    )
+    target_compile_definitions(FastLanes
+            PUBLIC
+            FLS_STATIC
     )
 endif ()
 
