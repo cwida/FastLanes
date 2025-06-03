@@ -11,6 +11,18 @@ add_library(fls_reader
         table_view.cpp
 )
 
+if (FLS_BUILD_SHARED_LIBS)
+    target_compile_definitions(fls_reader
+            PRIVATE
+            FLS_BUILD_DLL
+    )
+else ()
+    target_compile_definitions(fls_reader
+            PUBLIC
+            FLS_STATIC
+    )
+endif ()
+
 set(FASTLANES_OBJECT_FILES
         ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_reader>
         PARENT_SCOPE)
