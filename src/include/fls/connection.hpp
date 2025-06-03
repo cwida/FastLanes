@@ -107,6 +107,8 @@ public:
 	[[nodiscard]] fls_bool is_footer_inlined() const;
 	//
 	Connection& inline_footer();
+	//
+	string_view get_version() const;
 
 private:
 	void prepare_table() const;
@@ -123,6 +125,7 @@ constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
 
 FLS_API up<Connection> connect();
+
 } // namespace fastlanes
 
 #endif
