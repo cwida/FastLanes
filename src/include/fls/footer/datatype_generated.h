@@ -34,29 +34,29 @@ enum class DataType : uint8_t {
 	FALLBACK   = 18,
 	FLS_STR    = 19,
 	DECIMAL    = 20,
-	TIMESTAMP  = 21,
+	TIMESTAMP  = 21
 };
 
-inline const DataType (&EnumValuesDataType())[21] {
-	static const DataType values[] = {DataType::INVALID, DataType::DOUBLE, DataType::INT8,       DataType::INT16,
-	                                  DataType::INT32,   DataType::INT64,  DataType::UINT8,      DataType::UINT16,
-	                                  DataType::UINT32,  DataType::UINT64, DataType::STR,        DataType::BOOLEAN,
-	                                  DataType::DATE,    DataType::FLOAT,  DataType::BYTE_ARRAY, DataType::LIST,
-	                                  DataType::STRUCT,  DataType::MAP,    DataType::FALLBACK,   DataType::FLS_STR,
-	                                  DataType::DECIMAL};
+inline const DataType (&EnumValuesDataType())[22] {
+	static const DataType values[] = {DataType::INVALID, DataType::DOUBLE,   DataType::INT8,       DataType::INT16,
+	                                  DataType::INT32,   DataType::INT64,    DataType::UINT8,      DataType::UINT16,
+	                                  DataType::UINT32,  DataType::UINT64,   DataType::STR,        DataType::BOOLEAN,
+	                                  DataType::DATE,    DataType::FLOAT,    DataType::BYTE_ARRAY, DataType::LIST,
+	                                  DataType::STRUCT,  DataType::MAP,      DataType::FALLBACK,   DataType::FLS_STR,
+	                                  DataType::DECIMAL, DataType::TIMESTAMP};
 	return values;
 }
 
 inline const char* const* EnumNamesDataType() {
-	static const char* const names[22] = {"INVALID",  "DOUBLE",  "INT8",       "INT16",  "INT32",  "INT64",
-	                                      "UINT8",    "UINT16",  "UINT32",     "UINT64", "STR",    "BOOLEAN",
-	                                      "DATE",     "FLOAT",   "BYTE_ARRAY", "LIST",   "STRUCT", "MAP",
-	                                      "FALLBACK", "FLS_STR", "DECIMAL",    nullptr};
+	static const char* const names[23] = {"INVALID",  "DOUBLE",  "INT8",       "INT16",     "INT32",  "INT64",
+	                                      "UINT8",    "UINT16",  "UINT32",     "UINT64",    "STR",    "BOOLEAN",
+	                                      "DATE",     "FLOAT",   "BYTE_ARRAY", "LIST",      "STRUCT", "MAP",
+	                                      "FALLBACK", "FLS_STR", "DECIMAL",    "TIMESTAMP", nullptr};
 	return names;
 }
 
 inline const char* EnumNameDataType(DataType e) {
-	if (::flatbuffers::IsOutRange(e, DataType::INVALID, DataType::DECIMAL))
+	if (::flatbuffers::IsOutRange(e, DataType::INVALID, DataType::TIMESTAMP))
 		return "";
 	const size_t index = static_cast<size_t>(e);
 	return EnumNamesDataType()[index];

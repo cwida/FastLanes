@@ -1,4 +1,4 @@
-// timestamp_test.cpp
+// test/src/unit_tests/timestamp_test.cpp
 
 #include "fls/types/timestamp.hpp"
 #include <gtest/gtest.h>
@@ -62,11 +62,11 @@ TEST(ParseTimestamp_Valid_SpaceDelimiter, WithFraction) {
 }
 
 TEST(ParseTimestamp_Valid_SpaceDelimiter_TruncatedFraction, OneDigit) {
-	// "2020-01-01 00:00:00.1" ⇒ 100,000 µs
-	EXPECT_EQ(parse_timestamp("2020-01-01 00:00:00.1"), 1577836800'00000LL);
+	// "2020-01-01 00:00:00.1" ⇒ 1577836800 * 1_000_000 + 100_000 = 1577836800_100000
+	EXPECT_EQ(parse_timestamp("2020-01-01 00:00:00.1"), 1'577'836'800'100'000LL);
 }
 
-TEST(ParseTimestamp_Space_vs_T_RoundTripConsistency) {
+TEST(ParseTimestamp_Space_vs_T, RoundTripConsistency) {
 	// If two inputs differ only by ' ' vs. 'T', they should yield the same µs
 	const std::string t_form   = "2022-12-31T23:59:59";
 	const std::string s_form   = "2022-12-31 23:59:59";
