@@ -6,8 +6,8 @@
 
 namespace fastlanes {
 
-template <typename IntT>
-IntT parse_integer(const string& val_str);
+template <typename INTEGER_T>
+INTEGER_T parse_integer(const string& val_str);
 
 } // namespace fastlanes
 

@@ -45,7 +45,6 @@ DataType TypeLookUp(const std::string& str) {
 	    {"varchar(1)", DataType::FLS_STR}, // {"varchar(1)", DataType::FLS_STR},
 	    {"bigint", DataType::INT64},
 	    {"boolean", DataType::FLS_STR},
-	    {"date", DataType::FLS_STR},
 	    {"integer", DataType::INT32},
 	    {"smallint", DataType::INT16},
 	    {"decimal(1, 0)", DataType::DECIMAL},
@@ -233,10 +232,13 @@ DataType TypeLookUp(const std::string& str) {
 	    // NextiaJD
 	    {"TIMESTAMP", DataType::FLS_STR},
 	    {"BOOLEAN", DataType::FLS_STR},
-	    {"DATE", DataType::FLS_STR},
 
 	    // TPCH
 	    {"DECIMAL(15,2)", DataType::DECIMAL},
+
+	    // DATE
+	    {"DATE", DataType::DATE},
+	    {"date", DataType::DATE},
 
 	};
 

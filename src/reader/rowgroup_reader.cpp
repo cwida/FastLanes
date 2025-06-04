@@ -85,7 +85,7 @@ up<Rowgroup> RowgroupReader::materialize() {
 
 void RowgroupReader::to_csv(const path& dir_path) {
 	const auto& materialized_rowgroup = materialize();
-	CSV::to_csv(dir_path, *materialized_rowgroup);
+	CSV::to_csv(dir_path, *materialized_rowgroup, materialized_rowgroup->m_descriptor);
 }
 
 } // namespace fastlanes

@@ -12,7 +12,7 @@ namespace fastlanes {
 constexpr string_view DELIMINATOR = "|";
 constexpr string_view NEW_LINE    = "\n";
 
-void CSV::to_csv(const path& file_path, const Rowgroup& rowgroup) {
+void CSV::to_csv(const path& file_path, const Rowgroup& rowgroup, const RowgroupDescriptorT& rowgroup_descriptor) {
 	auto file = FileSystem::opend_app(file_path);
 
 	if (!file.is_open()) {
@@ -25,7 +25,7 @@ void CSV::to_csv(const path& file_path, const Rowgroup& rowgroup) {
 		for (n_t last_idx {n_col - 1}, col_idx {0}; col_idx < rowgroup.internal_rowgroup.size(); col_idx++) {
 			const auto& col = rowgroup.internal_rowgroup[col_idx];
 
-			string val = Attribute::ToStr(col, row_idx);
+			string val = Attribute::ToStr(col, row_idx, rowgroup_descriptor.m_column_descriptors[col_idx]->data_type);
 
 			file << val;
 			if (col_idx != last_idx) {

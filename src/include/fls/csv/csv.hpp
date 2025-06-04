@@ -6,6 +6,7 @@
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Rowgroup;
+struct RowgroupDescriptorT;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -13,7 +14,7 @@ class Rowgroup;
 \*--------------------------------------------------------------------------------------------------------------------*/
 class CSV {
 public:
-	static void to_csv(const path& path, const Rowgroup& rowgroup);
+	static void to_csv(const path& path, const Rowgroup& rowgroup, const RowgroupDescriptorT& rowgroup_descriptor);
 };
 
 } // namespace fastlanes

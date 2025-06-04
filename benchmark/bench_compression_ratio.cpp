@@ -166,6 +166,6 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 }
 
 int main() {
-	run_compression_ratio_benchmark(tpch_case);
+	run_compression_ratio_benchmark(public_bi_case);
 	return EXIT_SUCCESS;
 }

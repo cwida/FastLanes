@@ -1,6 +1,7 @@
 add_library(fls_types
         OBJECT
         #[[]]
+        date.cpp
         integer.cpp)
 
 set(FASTLANES_OBJECT_FILES

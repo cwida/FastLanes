@@ -9,6 +9,7 @@ namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 class TypedCol;
+enum class DataType : uint8_t;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Attribute {
 public:
@@ -16,7 +17,7 @@ public:
 
 public:
 	static void   Ingest(col_pt& typed_column, const string& val_str, const ColumnDescriptorT& column_descriptor);
-	static string ToStr(const col_pt& typed_column, n_t row_idx);
+	static string ToStr(const col_pt& typed_column, n_t row_idx, const DataType& data_type);
 };
 
 } // namespace fastlanes

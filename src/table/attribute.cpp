@@ -5,6 +5,7 @@
 #include "fls/common/string.hpp"
 #include "fls/detail/parse_fp.hpp"
 #include "fls/expression/data_type.hpp"
+#include "fls/types/date.hpp"
 #include "fls/types/integer.hpp"
 #include <algorithm>
 #include <charconv>
@@ -41,42 +42,49 @@ bool IsNull(const string& val_str) {
 }
 
 template <typename PT>
-PT TypedCast(const std::string& val_str) {
-	try {
-		// Unsigned integers
-		if constexpr (std::is_same_v<PT, u08_pt> || std::is_same_v<PT, u16_pt> || std::is_same_v<PT, u32_pt> ||
-		              std::is_same_v<PT, u64_pt>) {
-			return parse_integer<PT>(val_str);
+PT TypedCast(const std::string& val_str, const DataType& data_type) {
+	switch (data_type) {
+	case DataType::DATE: {
+		if constexpr (std::is_same_v<PT, i32_pt>) {
+			return parse_date(val_str);
 		}
-		// Signed integers
-		else if constexpr (std::is_same_v<PT, i08_pt> || std::is_same_v<PT, i16_pt> || std::is_same_v<PT, i32_pt> ||
-		                   std::is_same_v<PT, i64_pt>) {
-			return parse_integer<PT>(val_str);
-		}
-		// Boolean
-		else if constexpr (std::is_same_v<PT, bol_pt>) {
-			if (val_str == "true") {
-				return true;
-			} else if (val_str == "false") {
-				return false;
-			} else {
-				throw std::invalid_argument("Invalid boolean value");
+	} break;
+	default:
+		try {
+			// Unsigned integers
+			if constexpr (std::is_same_v<PT, u08_pt> || std::is_same_v<PT, u16_pt> || std::is_same_v<PT, u32_pt> ||
+			              std::is_same_v<PT, u64_pt>) {
+				return parse_integer<PT>(val_str);
 			}
+			// Signed integers
+			else if constexpr (std::is_same_v<PT, i08_pt> || std::is_same_v<PT, i16_pt> || std::is_same_v<PT, i32_pt> ||
+			                   std::is_same_v<PT, i64_pt>) {
+				return parse_integer<PT>(val_str);
+			}
+			// Boolean
+			else if constexpr (std::is_same_v<PT, bol_pt>) {
+				if (val_str == "true") {
+					return true;
+				} else if (val_str == "false") {
+					return false;
+				} else {
+					throw std::invalid_argument("Invalid boolean value");
+				}
+			}
+			// Floating point
+			else if constexpr (std::is_same_v<PT, flt_pt>) {
+				return detail::parse_fp<flt_pt>(val_str);
+			} else if constexpr (std::is_same_v<PT, dbl_pt>) {
+				return detail::parse_fp<dbl_pt>(val_str);
+			}
+			// String
+			else if constexpr (std::is_same_v<PT, str_pt>) {
+				return val_str;
+			}
+		} catch (const std::exception& e) {
+			throw std::runtime_error(std::string("Error in TypedCast for input '") + val_str + "': " + e.what());
 		}
-		// Floating point
-		else if constexpr (std::is_same_v<PT, flt_pt>) {
-			return detail::parse_fp<flt_pt>(val_str);
-		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
-			return detail::parse_fp<dbl_pt>(val_str);
-		}
-		// String
-		else if constexpr (std::is_same_v<PT, str_pt>) {
-			return val_str;
-		}
-	} catch (const std::exception& e) {
-		throw std::runtime_error(std::string("Error in TypedCast for input '") + val_str + "': " + e.what());
 	}
-
 	FLS_UNREACHABLE();
 }
 
@@ -125,16 +133,25 @@ PT TypedNull() {
 }
 
 template <typename PT>
-std::string TypedToStr(TypedCol<PT>& typed_column, n_t row_idx) {
-	if constexpr (std::is_arithmetic_v<PT>) {
-		if constexpr (std::is_floating_point_v<PT>) {
-			// Handle floating-point types with full precision
-			std::ostringstream oss;
-			oss << std::setprecision(std::numeric_limits<PT>::max_digits10) << typed_column.data[row_idx];
-			return oss.str();
-		} else {
-			// Handle integral types
-			return std::to_string(typed_column.data[row_idx]);
+std::string TypedToStr(TypedCol<PT>& typed_column, n_t row_idx, const DataType& data_type) {
+	switch (data_type) {
+	case DataType::DATE: {
+		if constexpr (std::is_arithmetic_v<PT>) {
+			return date_formatter(static_cast<int32_t>(typed_column.data[row_idx]));
+		}
+	}
+
+	default:
+		if constexpr (std::is_arithmetic_v<PT>) {
+			if constexpr (std::is_floating_point_v<PT>) {
+				// Handle floating-point types with full precision
+				std::ostringstream oss;
+				oss << std::setprecision(std::numeric_limits<PT>::max_digits10) << typed_column.data[row_idx];
+				return oss.str();
+			} else {
+				// Handle integral types
+				return std::to_string(typed_column.data[row_idx]);
+			}
 		}
 	}
 	FLS_UNREACHABLE();
@@ -174,7 +191,7 @@ void TypedIngest(TypedCol<PT>& typed_column, const string& val_str, const Column
 			typed_column.m_stats.last_seen_val = current_val;
 		}
 	} else if (!is_null) {
-		current_val                        = TypedCast<PT>(val_str);
+		current_val                        = TypedCast<PT>(val_str, column_descriptor.data_type);
 		typed_column.m_stats.last_seen_val = current_val;
 	} else {
 		current_val = typed_column.m_stats.last_seen_val;
@@ -393,22 +410,25 @@ void Attribute::Ingest(col_pt& column, const string& val_str, const ColumnDescri
 }
 
 struct rowgroup_visitor {
-	explicit rowgroup_visitor(string& res, n_t row_idx)
+	explicit rowgroup_visitor(string& res, n_t row_idx, const DataType& data_type)
 	    : value(res)
-	    , row_idx(row_idx) {};
-	string&   value;
-	const n_t row_idx;
+	    , row_idx(row_idx)
+	    , data_type(data_type) {};
+	string&        value;
+	const n_t      row_idx;
+	const DataType data_type;
 
 	template <typename PT>
 	void operator()(const up<TypedCol<PT>>& typed_col) {
-		value = TypedToStr(*typed_col, row_idx);
+		value = TypedToStr(*typed_col, row_idx, data_type);
 	}
 
 	void operator()(const up<Struct>& struct_col) {
 		for (n_t col_idx {0}; col_idx < struct_col->internal_rowgroup.size(); ++col_idx) {
 			string new_val;
 
-			std::visit(rowgroup_visitor {new_val, row_idx}, struct_col->internal_rowgroup[col_idx]);
+			// fix me
+			std::visit(rowgroup_visitor {new_val, row_idx, data_type}, struct_col->internal_rowgroup[col_idx]);
 
 			if (col_idx == FIRST_IDX) {
 				value = "{" + new_val;
@@ -429,9 +449,9 @@ struct rowgroup_visitor {
 	}
 };
 
-string Attribute::ToStr(const col_pt& physical_column, n_t row_idx) {
+string Attribute::ToStr(const col_pt& typed_column, n_t row_idx, const DataType& data_type) {
 	string res;
-	visit(rowgroup_visitor {res, row_idx}, physical_column);
+	visit(rowgroup_visitor {res, row_idx, data_type}, typed_column);
 
 	return res;
 }

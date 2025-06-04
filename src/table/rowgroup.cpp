@@ -62,6 +62,8 @@ col_pt init_logial_columns(const ColumnDescriptorT& col_descriptor) {
 		return make_unique<str_col_t>();
 	case DataType::FLS_STR:
 		return make_unique<FLSStrColumn>();
+	case DataType::DATE:
+		return make_unique<col_i32>();
 	default:
 		FLS_UNREACHABLE();
 	}

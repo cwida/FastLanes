@@ -1,6 +1,9 @@
 #include "fls/types/integer.hpp"
-#include <cctype>  // for std::isdigit
+#include "fls/std/string.hpp"
+#include <cctype> // for std::isdigit
+#include <cstdint>
 #include <cstdlib> // for std::stoull / std::stoll
+#include <stdexcept>
 
 namespace fastlanes {
 
@@ -16,21 +19,20 @@ INTEGER_T parse_integer(const string& val_str) {
 	// Unsigned integer path
 	if constexpr (std::is_unsigned_v<INTEGER_T>) {
 		// Every character must be '0'..'9'; no whitespace or signs allowed
-		for (char c : val_str) {
+		for (const char c : val_str) {
 			if (!std::isdigit(static_cast<unsigned char>(c))) {
 				throw std::invalid_argument("Invalid character in unsigned integer");
 			}
 		}
-		// Convert to unsigned long long, then range-check
-		unsigned long long v = 0;
+		uint64_t v = 0;
 		try {
 			v = std::stoull(val_str);
 		} catch (const std::invalid_argument&) {
 			throw; // shouldn't reach here, since we've already validated digits
 		} catch (const std::out_of_range&) {
-			throw; // too large even for unsigned long long
+			throw; // too large even for uint64_t
 		}
-		if (v > static_cast<unsigned long long>(std::numeric_limits<INTEGER_T>::max())) {
+		if (v > static_cast<uint64_t>(std::numeric_limits<INTEGER_T>::max())) {
 			throw std::out_of_range("Value exceeds range of unsigned type");
 		}
 		return static_cast<INTEGER_T>(v);

@@ -492,8 +492,8 @@ def fls_date():
     schema_rg = {
         "columns": [
             {
-                "name": "COLUMN_0 : DATE",
-                "type": "FLS_DATE"
+                "name": "SYNTHETIC_DATA_DATE",
+                "type": "DATE"
             }
         ]
     }
