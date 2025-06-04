@@ -4,6 +4,7 @@ add_executable(unit_test
         json_test.cpp
         decimal_test.cpp
         parse_integer_test.cpp
+        parse_timestamp_test.cpp
         sampling_layout_test.cpp
 )
 
