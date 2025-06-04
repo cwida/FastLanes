@@ -97,7 +97,6 @@ DataType TypeLookUp(const std::string& str) {
 	    {"decimal(9, 6)", DataType::DECIMAL},
 	    {"double", DataType::DOUBLE},
 	    {"time", DataType::FLS_STR},
-	    {"timestamp", DataType::FLS_STR},
 	    {"varchar(10)", DataType::FLS_STR},
 	    {"varchar(100)", DataType::FLS_STR},
 	    {"varchar(102)", DataType::FLS_STR},
@@ -230,7 +229,6 @@ DataType TypeLookUp(const std::string& str) {
 	    {"varchar(99)", DataType::FLS_STR},
 
 	    // NextiaJD
-	    {"TIMESTAMP", DataType::FLS_STR},
 	    {"BOOLEAN", DataType::FLS_STR},
 
 	    // TPCH
@@ -239,6 +237,9 @@ DataType TypeLookUp(const std::string& str) {
 	    // DATE
 	    {"DATE", DataType::DATE},
 	    {"date", DataType::DATE},
+	    // TIMESTAMP
+	    {"TIMESTAMP", DataType::TIMESTAMP},
+	    {"timestamp", DataType::TIMESTAMP},
 
 	};
 
@@ -313,7 +314,7 @@ std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pai
 	for (const auto& ptr : pairs) {
 		if (!ptr) {
 			continue;
-		}                                          // defensive: skip nulls
+		} // defensive: skip nulls
 		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
 
 		if (!first) {
@@ -485,7 +486,7 @@ void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
 constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
 void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
-	                 j = nlohmann::json {
+    j = nlohmann::json {
         //
         {OPERATOR_TOKEN, expression_result.operator_token}, //
         {SIZE, expression_result.size},                     //

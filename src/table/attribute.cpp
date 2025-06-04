@@ -7,6 +7,7 @@
 #include "fls/expression/data_type.hpp"
 #include "fls/types/date.hpp"
 #include "fls/types/integer.hpp"
+#include "fls/types/timestamp.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cstring>
@@ -47,6 +48,11 @@ PT TypedCast(const std::string& val_str, const DataType& data_type) {
 	case DataType::DATE: {
 		if constexpr (std::is_same_v<PT, i32_pt>) {
 			return parse_date(val_str);
+		}
+	}
+	case DataType::TIMESTAMP: {
+		if constexpr (std::is_same_v<PT, i64_pt>) {
+			return parse_timestamp(val_str);
 		}
 	} break;
 	default:

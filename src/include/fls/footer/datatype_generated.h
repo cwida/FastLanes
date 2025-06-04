@@ -33,7 +33,8 @@ enum class DataType : uint8_t {
 	MAP        = 17,
 	FALLBACK   = 18,
 	FLS_STR    = 19,
-	DECIMAL    = 20
+	DECIMAL    = 20,
+	TIMESTAMP  = 21,
 };
 
 inline const DataType (&EnumValuesDataType())[21] {

@@ -43,14 +43,47 @@ TEST(ParseTimestamp_RoundTrip, FormatterInverse) {
 }
 
 // ──────────────────────────────────────────────────────────────
+// parse_timestamp: Valid cases with space delimiter
+// ──────────────────────────────────────────────────────────────
+TEST(ParseTimestamp_Valid_SpaceDelimiter, NoFraction) {
+	// "2013-09-01 19:10:00" should parse and format back with 'T'
+	const std::string input     = "2013-09-01 19:10:00";
+	int64_t           micros    = parse_timestamp(input);
+	std::string       formatted = timestamp_formatter(micros);
+	EXPECT_EQ(formatted, "2013-09-01T19:10:00");
+}
+
+TEST(ParseTimestamp_Valid_SpaceDelimiter, WithFraction) {
+	// "2013-09-01 19:10:00.000000" should parse and format back with 'T'
+	const std::string input     = "2013-09-01 19:10:00.000000";
+	int64_t           micros    = parse_timestamp(input);
+	std::string       formatted = timestamp_formatter(micros);
+	EXPECT_EQ(formatted, "2013-09-01T19:10:00");
+}
+
+TEST(ParseTimestamp_Valid_SpaceDelimiter_TruncatedFraction, OneDigit) {
+	// "2020-01-01 00:00:00.1" ⇒ 100,000 µs
+	EXPECT_EQ(parse_timestamp("2020-01-01 00:00:00.1"), 1577836800'00000LL);
+}
+
+TEST(ParseTimestamp_Space_vs_T_RoundTripConsistency) {
+	// If two inputs differ only by ' ' vs. 'T', they should yield the same µs
+	const std::string t_form   = "2022-12-31T23:59:59";
+	const std::string s_form   = "2022-12-31 23:59:59";
+	int64_t           t_micros = parse_timestamp(t_form);
+	int64_t           s_micros = parse_timestamp(s_form);
+	EXPECT_EQ(t_micros, s_micros);
+}
+
+// ──────────────────────────────────────────────────────────────
 // parse_timestamp: Invalid-format cases
 // ──────────────────────────────────────────────────────────────
 TEST(ParseTimestamp_InvalidFormat, TooShort) {
 	EXPECT_THROW(parse_timestamp("2025-06-04T13:45"), std::invalid_argument);
 }
 
-TEST(ParseTimestamp_InvalidFormat, MissingT) {
-	EXPECT_THROW(parse_timestamp("2025-06-04 13:45:30"), std::invalid_argument);
+TEST(ParseTimestamp_InvalidFormat, MissingTandSpace) {
+	EXPECT_THROW(parse_timestamp("2025-06-04X13:45:30"), std::invalid_argument);
 }
 
 TEST(ParseTimestamp_InvalidFormat, BadSeparators) {
@@ -76,7 +109,7 @@ TEST(ParseTimestamp_OutOfRange, YearTooLarge) {
 }
 
 TEST(ParseTimestamp_OutOfRange, YearTooNegative) {
-	// A year far before epoch leading to underflow
+	// Leading space causes invalid_argument
 	EXPECT_THROW(parse_timestamp(" -300000-01-01T00:00:00"), std::invalid_argument);
 }
 
@@ -95,10 +128,19 @@ TEST(TimestampFormatter_Valid_WithFraction, MicrosecondPrecision) {
 
 TEST(TimestampFormatter_RoundTrip, ParserInverse) {
 	// Convert a known microsecond count, then parse back
-	const int64_t micros = 1'678'034'730'123'456LL; // roughly 2023-04-01T12:34:90.123456
+	const int64_t micros = 1'678'034'730'123'456LL; // arbitrary timestamp
 	std::string   str    = timestamp_formatter(micros);
 	int64_t       parsed = parse_timestamp(str);
 	EXPECT_EQ(parsed, micros);
+}
+
+// ──────────────────────────────────────────────────────────────
+// timestamp_formatter: Valid formatting for space‐parsed inputs
+// ──────────────────────────────────────────────────────────────
+TEST(TimestampFormatter_FromSpaceParsed, NoFraction) {
+	// If parse_timestamp accepts a space delimiter, formatter always uses 'T'
+	int64_t micros = parse_timestamp("2015-07-20 12:34:56");
+	EXPECT_EQ(timestamp_formatter(micros), "2015-07-20T12:34:56");
 }
 
 } // namespace fastlanes

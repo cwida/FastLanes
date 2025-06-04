@@ -12,13 +12,13 @@
 namespace fastlanes {
 
 // ───────────────────────── constants ──────────────────────────
-constexpr int64_t kMicrosPerSecond = 1'000'000;
-constexpr int64_t kMicrosPerMinute = 60LL * kMicrosPerSecond;
-constexpr int64_t kMicrosPerHour   = 60LL * kMicrosPerMinute;
-constexpr int64_t kMicrosPerDay    = 24LL * kMicrosPerHour;
+constexpr int64_t K_MICROS_PER_SECOND = 1'000'000;
+constexpr int64_t K_MICROS_PER_MINUTE = 60LL * K_MICROS_PER_SECOND;
+constexpr int64_t K_MICROS_PER_HOUR   = 60LL * K_MICROS_PER_MINUTE;
+constexpr int64_t K_MICROS_PER_DAY    = 24LL * K_MICROS_PER_HOUR;
 
 // ⌊INT64_MAX / 86 400 000 000⌋  ≈ 106 751 991
-constexpr int64_t kMaxAbsDays = std::numeric_limits<int64_t>::max() / kMicrosPerDay;
+constexpr int64_t K_MAX_ABS_DAYS = std::numeric_limits<int64_t>::max() / K_MICROS_PER_DAY;
 
 constexpr int      kEpochYear  = 1970;
 constexpr unsigned kEpochMonth = 1;
@@ -50,21 +50,21 @@ static int64_t civil_to_days(int y, unsigned m, unsigned d) {
 
 // ─────────────────────── parse_timestamp ──────────────────────
 int64_t parse_timestamp(std::string_view ts) {
-	// split YYYY-MM-DD
+	// 1) split YYYY-MM-DD
 	const std::size_t p1 = ts.find('-');
 	const std::size_t p2 = (p1 == std::string_view::npos) ? std::string_view::npos : ts.find('-', p1 + 1);
 	if (p1 == std::string_view::npos || p2 == std::string_view::npos)
-		throw std::invalid_argument("Expected YYYY-MM-DDThh:mm:ss");
+		throw std::invalid_argument("Expected YYYY-MM-DDThh:mm:ss or YYYY-MM-DD hh:mm:ss");
 
 	const auto year_str  = ts.substr(0, p1);
 	const auto month_str = ts.substr(p1 + 1, 2);
 	const auto day_str   = ts.substr(p2 + 1, 2);
 
-	const std::size_t posT = p2 + 3; // after DD
-	if (posT >= ts.size() || ts[posT] != 'T')
-		throw std::invalid_argument("Expected 'T' after date");
+	const std::size_t posT = p2 + 3; // position of 'T' or ' ' after “YYYY-MM-DD”
+	if (posT >= ts.size() || (ts[posT] != 'T' && ts[posT] != ' '))
+		throw std::invalid_argument("Expected 'T' or ' ' after date");
 
-	// ensure hh:mm:ss present
+	// 2) ensure hh:mm:ss follows
 	if (ts.size() < posT + 9 || ts[posT + 3] != ':' || ts[posT + 6] != ':')
 		throw std::invalid_argument("Expected hh:mm:ss");
 
@@ -72,7 +72,7 @@ int64_t parse_timestamp(std::string_view ts) {
 	const auto minute_str = ts.substr(posT + 4, 2);
 	const auto second_str = ts.substr(posT + 7, 2);
 
-	// numeric conversion
+	// 3) numeric conversion & validation (unchanged) …
 	const int      year   = to_int<int>(year_str, "year");
 	const unsigned month  = to_int<unsigned>(month_str, "month");
 	const unsigned day    = to_int<unsigned>(day_str, "day");
@@ -91,9 +91,9 @@ int64_t parse_timestamp(std::string_view ts) {
 	if (!(0 <= second && second <= 59))
 		throw std::invalid_argument("Second out of range");
 
-	// fractional microseconds
+	// 4) fractional microseconds (unchanged) …
 	std::chrono::microseconds frac_us {0};
-	const std::size_t         posFrac = posT + 9; // after hh:mm:ss
+	const std::size_t         posFrac = posT + 9; // just after “hh:mm:ss”
 	if (posFrac < ts.size()) {
 		if (ts[posFrac] != '.')
 			throw std::invalid_argument("Expected '.' before fraction");
@@ -102,21 +102,20 @@ int64_t parse_timestamp(std::string_view ts) {
 			throw std::invalid_argument("Fraction must have 1-6 digits");
 		int64_t val = to_int<int64_t>(frac, "fractional seconds");
 		for (std::size_t pad = 6 - frac.size(); pad; --pad)
-			val *= 10; // right-pad
+			val *= 10; // right-pad to microseconds
 		frac_us = std::chrono::microseconds {val};
 	}
 
-	// days from epoch
+	// 5) days from epoch (unchanged) …
 	const int64_t days_from_epoch = civil_to_days(year, month, day) - civil_to_days(kEpochYear, kEpochMonth, kEpochDay);
-
-	if (std::llabs(days_from_epoch) > kMaxAbsDays)
+	if (std::llabs(days_from_epoch) > K_MAX_ABS_DAYS)
 		throw std::out_of_range("Timestamp out of int64 range");
 
-	// accumulate in 128-bit, clamp to 64
-	__int128 total_us = static_cast<__int128>(days_from_epoch) * kMicrosPerDay +
-	                    static_cast<__int128>(hour) * kMicrosPerHour +
-	                    static_cast<__int128>(minute) * kMicrosPerMinute +
-	                    static_cast<__int128>(second) * kMicrosPerSecond + static_cast<__int128>(frac_us.count());
+	// 6) accumulate in 128-bit, clamp to 64-bit (unchanged) …
+	__int128 total_us = static_cast<__int128>(days_from_epoch) * K_MICROS_PER_DAY +
+	                    static_cast<__int128>(hour) * K_MICROS_PER_HOUR +
+	                    static_cast<__int128>(minute) * K_MICROS_PER_MINUTE +
+	                    static_cast<__int128>(second) * K_MICROS_PER_SECOND + static_cast<__int128>(frac_us.count());
 
 	if (total_us > std::numeric_limits<int64_t>::max() || total_us < std::numeric_limits<int64_t>::min())
 		throw std::out_of_range("Timestamp out of int64 range");
@@ -127,10 +126,10 @@ int64_t parse_timestamp(std::string_view ts) {
 // ───────────────────── timestamp_formatter ────────────────────
 std::string timestamp_formatter(int64_t micros_since_epoch) {
 	// split into days + remainder
-	int64_t days = micros_since_epoch / kMicrosPerDay;
-	int64_t rem  = micros_since_epoch % kMicrosPerDay;
+	int64_t days = micros_since_epoch / K_MICROS_PER_DAY;
+	int64_t rem  = micros_since_epoch % K_MICROS_PER_DAY;
 	if (rem < 0) {
-		rem += kMicrosPerDay;
+		rem += K_MICROS_PER_DAY;
 		--days;
 	}
 
@@ -155,12 +154,12 @@ std::string timestamp_formatter(int64_t micros_since_epoch) {
 	Y_int = static_cast<int>(Y_calc);
 
 	// time-of-day
-	const int hour = static_cast<int>(rem / kMicrosPerHour);
-	rem %= kMicrosPerHour;
-	const int minute = static_cast<int>(rem / kMicrosPerMinute);
-	rem %= kMicrosPerMinute;
-	const int second = static_cast<int>(rem / kMicrosPerSecond);
-	const int micro  = static_cast<int>(rem % kMicrosPerSecond);
+	const int hour = static_cast<int>(rem / K_MICROS_PER_HOUR);
+	rem %= K_MICROS_PER_HOUR;
+	const int minute = static_cast<int>(rem / K_MICROS_PER_MINUTE);
+	rem %= K_MICROS_PER_MINUTE;
+	const int second = static_cast<int>(rem / K_MICROS_PER_SECOND);
+	const int micro  = static_cast<int>(rem % K_MICROS_PER_SECOND);
 
 	std::string out = std::format("{:04d}-{:02d}-{:02d}T{:02d}:{:02d}:{:02d}",
 	                              Y_int,
