@@ -3,6 +3,7 @@
 #include <cctype> // for std::isdigit
 #include <cstdint>
 #include <cstdlib> // for std::stoull / std::stoll
+#include <limits>
 #include <stdexcept>
 
 namespace fastlanes {
