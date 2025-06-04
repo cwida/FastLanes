@@ -23,6 +23,8 @@ public:
 	static constexpr string_view SINGLE_COLUMN_IRREGULAR_I64 {FLS_CMAKE_SOURCE_DIR
 	                                                          "/data/generated/single_columns/irregular_i64"};
 	static constexpr string_view SINGLE_COLUMN_DATE {FLS_CMAKE_SOURCE_DIR "/data/generated/single_columns/fls_date"};
+	static constexpr string_view SINGLE_COLUMN_TIMESTAMP {FLS_CMAKE_SOURCE_DIR
+	                                                      "/data/generated/single_columns/fls_timestamp"};
 
 	//
 	static constexpr string_view EQUALITY_I64PT {FLS_CMAKE_SOURCE_DIR "/data/generated/equality/fls_i64"};

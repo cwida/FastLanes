@@ -41,6 +41,12 @@ TEST_F(FastLanesReaderTester, SINGLE_COLUMN_DECIMAL) {
 TEST_F(FastLanesReaderTester, SINGLE_COLUMN_FLOAT) {
 	TestCorrectness(GENERATED::SINGLE_COLUMN_FLOAT);
 }
+TEST_F(FastLanesReaderTester, SINGLE_COLUMN_DATE) {
+	TestCorrectness(GENERATED::SINGLE_COLUMN_DATE);
+}
+TEST_F(FastLanesReaderTester, SINGLE_COLUMN_TIMESTAMP) {
+	TestCorrectness(GENERATED::SINGLE_COLUMN_TIMESTAMP);
+}
 
 // All Constants
 TEST_F(FastLanesReaderTester, ALL_CONSTANT) {
