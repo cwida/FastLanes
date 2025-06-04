@@ -1,9 +1,12 @@
+# scripts/generate_helpers/main_generators.py
+
 import json
 import random
 import csv
 from faker import Faker
 from faker.providers import BaseProvider
 from pathlib import Path
+from datetime import date
 
 faker = Faker()
 
@@ -15,10 +18,10 @@ VEC_SIZE = 1024
 ROW_GROUP_SIZE = 64 * VEC_SIZE
 
 # ---------------------------
-# DATE generator import
+# DATE & TIMESTAMP generator imports
 # ---------------------------
 from generator_helpers.date_generator import generate_date
-
+from generator_helpers.timestamp_generator import generate_timestamp
 
 # ---------------------------
 # Helper Functions
@@ -507,8 +510,57 @@ def fls_date():
     schema_ov = {
         "columns": [
             {
-                "name": "COLUMN_0 : DATE",
-                "type": "FLS_DATE"
+                "name": "SYNTHETIC_DATA_DATE",
+                "type": "DATE"
+            }
+        ]
+    }
+    (dir_onevec / 'schema.json').write_text(json.dumps(schema_ov, indent=2))
+
+
+# ----------------------------------------------------------------------
+# 3) Wrap generate_timestamp() to match other “generate_fls_*” signatures
+# ----------------------------------------------------------------------
+def generate_fls_timestamp(_faker, row_id):
+    """Generates a list containing a single TIMESTAMP value as 'YYYY-MM-DDThh:mm:ss.ffffff'."""
+    return generate_timestamp(_faker, row_id)
+
+
+# ----------------------------------------------------------------------
+# 4) Writer for the TIMESTAMP column (with schema.json)
+# ----------------------------------------------------------------------
+def fls_timestamp():
+    """
+    Write a single-column CSV of TIMESTAMP values ("YYYY-MM-DDThh:mm:ss.ffffff").
+    Creates two outputs, each with a schema.json alongside generated.csv:
+      - data/generated/single_columns/fls_timestamp/generated.csv   (ROW_GROUP_SIZE rows)
+      - data/generated/one_vector/fls_timestamp/generated.csv       (VEC_SIZE rows)
+    """
+    # Directory for the “rowgroup” version
+    dir_rowgroup = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_timestamp'
+    write_csv(dir_rowgroup, generate_fls_timestamp, ROW_GROUP_SIZE)
+
+    # Write schema.json in the same folder
+    schema_rg = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_TIMESTAMP",
+                "type": "TIMESTAMP"
+            }
+        ]
+    }
+    (dir_rowgroup / 'schema.json').write_text(json.dumps(schema_rg, indent=2))
+
+    # Directory for the “one_vector” (VEC_SIZE rows) version
+    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_timestamp'
+    write_csv(dir_onevec, generate_fls_timestamp, VEC_SIZE)
+
+    # Write schema.json in that folder as well
+    schema_ov = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_TIMESTAMP",
+                "type": "TIMESTAMP"
             }
         ]
     }
@@ -594,7 +646,6 @@ def generate_subnormals():
 # ---------------------------
 # Main Generation Functions
 # ---------------------------
-
 def generate_nested_data():
     struct()
 
@@ -609,6 +660,7 @@ def generate_single_column():
     generate_fls_decimal()
     generate_float()
     fls_date()
+    fls_timestamp()
 
 
 def generate_irregular_data():
@@ -658,7 +710,6 @@ def mostly_null():
 # ---------------------------
 # Main Function
 # ---------------------------
-
 def main():
     all_constant()
     equality()
