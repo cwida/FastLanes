@@ -1,14 +1,17 @@
 # root Makefile
-include mk/preamble.mk   # echo helpers first
-include mk/python.mk     # defines $(ACTIVATE) $(PYTHON) $(PIP) …
+include mk/preamble.mk
+include mk/python.mk
 include mk/format.mk
 include mk/cpp.mk
 include mk/rust.mk
-include mk/data.mk       # uses $(ACTIVATE) and $(PIP)
+include mk/data.mk
 include mk/scripts.mk
 
-.PHONY: all clean
-all: build-cpp build-rust          # or whatever top-level build you need
+.PHONY: all clean clang-format format-check rust-format-check format
+
+all: build-cpp build-rust
 
 clean:
 	$(MAKE) clean-cpp clean-rust clean-python
+
+format: clang-format
