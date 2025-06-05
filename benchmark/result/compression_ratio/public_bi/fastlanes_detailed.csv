@@ -1,7 +1,7 @@
 compression,version,table_name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value
 FastLanes,0.1.4,Arade,0,F1,FLS_STR,17602,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.27,2.15
 FastLanes,0.1.4,Arade,1,F2,FLS_STR,58266,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.11
-FastLanes,0.1.4,Arade,2,F3,FLS_STR,37712,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.58,4.60
+FastLanes,0.1.4,Arade,2,F3,INT64,13312,"{[EXP_CROSS_RLE_I64][0, 1]}",0.20,1.62
 FastLanes,0.1.4,Arade,3,F4,INT32,197504,"{[EXP_FFOR_I32][0, 1, 2]}",3.01,24.11
 FastLanes,0.1.4,Arade,4,F5,INT32,190848,"{[EXP_FFOR_I32][0, 1, 2]}",2.91,23.30
 FastLanes,0.1.4,Arade,5,F6,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -33,14 +33,14 @@ FastLanes,0.1.4,CMSprovider,7,HCPCS_DRUG_INDICATOR,FLS_STR,0,"{[EXP_CONSTANT_STR
 FastLanes,0.1.4,CMSprovider,8,LINE_SRVC_CNT,DOUBLE,89232,"{[EXP_ALP_DBL][]}",1.36,10.89
 FastLanes,0.1.4,CMSprovider,9,MEDICARE_PARTICIPATION_INDICATOR,FLS_STR,120,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,CMSprovider,10,NPI,INT32,148878,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",2.27,18.17
-FastLanes,0.1.4,CMSprovider,11,NPPES_CREDENTIALS,FLS_STR,65486,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.00,7.99
+FastLanes,0.1.4,CMSprovider,11,NPPES_CREDENTIALS,FLS_STR,65485,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.00,7.99
 FastLanes,0.1.4,CMSprovider,12,NPPES_ENTITY_CODE,FLS_STR,30,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
 FastLanes,0.1.4,CMSprovider,13,NPPES_PROVIDER_CITY,FLS_STR,101232,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.54,12.36
 FastLanes,0.1.4,CMSprovider,14,NPPES_PROVIDER_COUNTRY,FLS_STR,103,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,CMSprovider,15,NPPES_PROVIDER_GENDER,FLS_STR,66,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,CMSprovider,16,NPPES_PROVIDER_STATE,FLS_STR,1806,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.22
 FastLanes,0.1.4,CMSprovider,17,NPPES_PROVIDER_STREET1,FLS_STR,197483,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.01,24.11
-FastLanes,0.1.4,CMSprovider,18,NPPES_PROVIDER_STREET2,FLS_STR,117078,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.79,14.29
+FastLanes,0.1.4,CMSprovider,18,NPPES_PROVIDER_STREET2,FLS_STR,117077,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.79,14.29
 FastLanes,0.1.4,CMSprovider,19,NPPES_PROVIDER_ZIP,INT32,125702,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.92,15.34
 FastLanes,0.1.4,CMSprovider,20,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,CMSprovider,21,PLACE_OF_SERVICE,FLS_STR,156,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
@@ -81,7 +81,7 @@ FastLanes,0.1.4,CityMaxCapita,29,Username 1,FLS_STR,440423,"{[EXP_FSST_DICT_STR_
 FastLanes,0.1.4,CityMaxCapita,30,Username,FLS_STR,528489,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.06,64.51
 FastLanes,0.1.4,CommonGovernment,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,CommonGovernment,1,a_aid_acontid_agencyid,FLS_STR,12594,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.38,3.07
-FastLanes,0.1.4,CommonGovernment,2,a_aid_acontid_piid,FLS_STR,226233,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.90,55.23
+FastLanes,0.1.4,CommonGovernment,2,a_aid_acontid_piid,FLS_STR,226232,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.90,55.23
 FastLanes,0.1.4,CommonGovernment,3,ag_name,FLS_STR,14544,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.44,3.55
 FastLanes,0.1.4,CommonGovernment,4,agency_code,INT32,149,"{[EXP_DICT_I32_U08][3, 0]}",0.00,0.04
 FastLanes,0.1.4,CommonGovernment,5,ase_rowid,INT32,94176,"{[EXP_FFOR_I32][0, 1, 2]}",2.87,22.99
@@ -91,9 +91,9 @@ FastLanes,0.1.4,CommonGovernment,8,award_type_key,INT8,6,"{[EXP_DICT_I08_U08][6,
 FastLanes,0.1.4,CommonGovernment,9,baseandalloptionsvalue,DOUBLE,136520,"{[EXP_ALP_DBL][]}",4.17,33.33
 FastLanes,0.1.4,CommonGovernment,10,baseandexercisedoptionsvalue,DOUBLE,140264,"{[EXP_ALP_DBL][]}",4.28,34.24
 FastLanes,0.1.4,CommonGovernment,11,bureau_code,FLS_STR,9906,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.30,2.42
-FastLanes,0.1.4,CommonGovernment,12,bureau_name,FLS_STR,26978,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.59
+FastLanes,0.1.4,CommonGovernment,12,bureau_name,FLS_STR,26976,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.59
 FastLanes,0.1.4,CommonGovernment,13,cd_contactiontype,FLS_STR,0,"{[EXP_EQUAL][7]}",0.00,0.00
-FastLanes,0.1.4,CommonGovernment,14,co_name,FLS_STR,66287,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.02,16.18
+FastLanes,0.1.4,CommonGovernment,14,co_name,FLS_STR,66288,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.02,16.18
 FastLanes,0.1.4,CommonGovernment,15,co_state,FLS_STR,23109,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.71,5.64
 FastLanes,0.1.4,CommonGovernment,16,code,INT32,14739,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.45,3.60
 FastLanes,0.1.4,CommonGovernment,17,contract_num,FLS_STR,232815,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.10,56.84
@@ -114,12 +114,12 @@ FastLanes,0.1.4,CommonGovernment,31,gwacs,DOUBLE,38,"{[EXP_CROSS_RLE_DBL][0, 1]}
 FastLanes,0.1.4,CommonGovernment,32,level1_category,FLS_STR,1125,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.27
 FastLanes,0.1.4,CommonGovernment,33,level2_category,FLS_STR,16645,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.51,4.06
 FastLanes,0.1.4,CommonGovernment,34,naics_code,FLS_STR,38331,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.17,9.36
-FastLanes,0.1.4,CommonGovernment,35,naics_name,FLS_STR,45162,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.38,11.03
+FastLanes,0.1.4,CommonGovernment,35,naics_name,FLS_STR,45161,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.38,11.03
 FastLanes,0.1.4,CommonGovernment,36,nongsadollar,DOUBLE,118530,"{[EXP_ALP_DBL][]}",3.62,28.94
 FastLanes,0.1.4,CommonGovernment,37,obligatedamount,DOUBLE,138586,"{[EXP_ALP_DBL][]}",4.23,33.83
 FastLanes,0.1.4,CommonGovernment,38,obligatedamount_1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,CommonGovernment,39,pbsdollar,DOUBLE,18968,"{[EXP_RLE_DBL_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7]}",0.58,4.63
-FastLanes,0.1.4,CommonGovernment,40,primary_contract_piid,FLS_STR,343218,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",10.47,83.79
+FastLanes,0.1.4,CommonGovernment,40,primary_contract_piid,FLS_STR,343217,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",10.47,83.79
 FastLanes,0.1.4,CommonGovernment,41,prod_or_serv_code,FLS_STR,37152,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.13,9.07
 FastLanes,0.1.4,CommonGovernment,42,prod_or_serv_code_desc,FLS_STR,44026,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.34,10.75
 FastLanes,0.1.4,CommonGovernment,43,psc_code,FLS_STR,0,"{[EXP_EQUAL][41]}",0.00,0.00
@@ -132,7 +132,7 @@ FastLanes,0.1.4,CommonGovernment,49,short_name,FLS_STR,366,"{[EXP_FSST_DICT_STR_
 FastLanes,0.1.4,CommonGovernment,50,signeddate,FLS_STR,1448,"{[EXP_FSST_DICT_STR_U08][18, 0, 1, 2]}",0.04,0.35
 FastLanes,0.1.4,CommonGovernment,51,vend_contoffbussizedeterm,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,CommonGovernment,52,vend_dunsnumber,INT32,70846,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.16,17.30
-FastLanes,0.1.4,CommonGovernment,53,vend_vendorname,FLS_STR,222766,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.80,54.39
+FastLanes,0.1.4,CommonGovernment,53,vend_vendorname,FLS_STR,222767,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.80,54.39
 FastLanes,0.1.4,CommonGovernment,54,whocanuse,FLS_STR,8571,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.09
 FastLanes,0.1.4,CommonGovernment,55,year,INT32,18,"{[EXP_CROSS_RLE_I32][0, 1]}",0.00,0.00
 FastLanes,0.1.4,Corporations,0,Id1,INT32,154120,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.35,18.81
@@ -143,7 +143,7 @@ FastLanes,0.1.4,Corporations,4,city,FLS_STR,505,"{[EXP_CROSS_RLE_STR][0, 1, 2]}"
 FastLanes,0.1.4,Corporations,5,continent,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Corporations,6,country,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Corporations,7,crunchbase_account,FLS_STR,7339,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.11,0.90
-FastLanes,0.1.4,Corporations,8,facebook_account,FLS_STR,129405,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.97,15.80
+FastLanes,0.1.4,Corporations,8,facebook_account,FLS_STR,129406,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.97,15.80
 FastLanes,0.1.4,Corporations,9,financing_stage,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Corporations,10,founding_date,FLS_STR,51,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,Corporations,11,id,INT32,159754,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.44,19.50
@@ -166,7 +166,7 @@ FastLanes,0.1.4,Eixo,0,Calculation_838513981443702785,FLS_STR,97794,"{[EXP_FSST_
 FastLanes,0.1.4,Eixo,1,Calculation_838513981462429699,FLS_STR,530539,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.10,64.76
 FastLanes,0.1.4,Eixo,2,Codigo Diploma/Certificado,FLS_STR,67105,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.02,8.19
 FastLanes,0.1.4,Eixo,3,Cor da Pele,FLS_STR,3448,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.05,0.42
-FastLanes,0.1.4,Eixo,4,Data Diploma/Certificado,FLS_STR,87357,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.33,10.66
+FastLanes,0.1.4,Eixo,4,Data Diploma/Certificado,INT64,53620,"{[EXP_CROSS_RLE_I64][0, 1]}",0.82,6.55
 FastLanes,0.1.4,Eixo,5,Data Pré-Matricula,INT16,1900,"{[EXP_CROSS_RLE_I16][0, 1]}",0.03,0.23
 FastLanes,0.1.4,Eixo,6,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Eixo,7,ch_catalogo_guia,FLS_STR,17089,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.09
@@ -214,7 +214,7 @@ FastLanes,0.1.4,Eixo,48,no_sistema_ensino,FLS_STR,9472,"{[EXP_FSST_DICT_STR_FFOR
 FastLanes,0.1.4,Eixo,49,no_subdependencia_admin,FLS_STR,6634,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.10,0.81
 FastLanes,0.1.4,Eixo,50,nome aluno,FLS_STR,729922,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",11.14,89.10
 FastLanes,0.1.4,Eixo,51,nome da sit matricula (situacao detalhada),FLS_STR,29981,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.46,3.66
-FastLanes,0.1.4,Eixo,52,nome_curso_catalogo_guia,FLS_STR,58568,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.15
+FastLanes,0.1.4,Eixo,52,nome_curso_catalogo_guia,FLS_STR,58567,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.15
 FastLanes,0.1.4,Eixo,53,nome_da_ue,FLS_STR,91709,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.40,11.19
 FastLanes,0.1.4,Eixo,54,nome_da_uer,FLS_STR,16913,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.06
 FastLanes,0.1.4,Eixo,55,nome_do_curso,FLS_STR,73296,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.12,8.95
@@ -249,10 +249,10 @@ FastLanes,0.1.4,Euro2016,3,latitude,FLS_STR,29212,"{[EXP_FSST_DICT_STR_FFOR_SLPA
 FastLanes,0.1.4,Euro2016,4,longitude,FLS_STR,1836,"{[EXP_FSST_DICT_STR_U08][3, 0, 1, 2]}",0.03,0.22
 FastLanes,0.1.4,Euro2016,5,polarity,FLS_STR,16844,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
 FastLanes,0.1.4,Euro2016,6,polarity_confidence,INT64,409602,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",6.25,50.00
-FastLanes,0.1.4,Euro2016,7,subjectivity,FLS_STR,8635,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.4,Euro2016,7,subjectivity,FLS_STR,8634,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
 FastLanes,0.1.4,Euro2016,8,subjectivity_confidence,INT64,402432,"{[EXP_FFOR_I64][0, 1, 2]}",6.14,49.12
 FastLanes,0.1.4,Euro2016,9,tweet,FLS_STR,3884877,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",59.28,474.23
-FastLanes,0.1.4,Euro2016,10,tweeted_at,FLS_STR,449543,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.86,54.88
+FastLanes,0.1.4,Euro2016,10,tweeted_at,INT64,243968,"{[EXP_DELTA_I64][0, 1, 2, 3]}",3.72,29.78
 FastLanes,0.1.4,Food,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Food,1,activity_sec,INT32,114370,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.75,13.96
 FastLanes,0.1.4,Food,2,application,FLS_STR,103966,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.59,12.69
@@ -268,7 +268,7 @@ FastLanes,0.1.4,Generico,5,Circulacion,FLS_STR,0,"{[EXP_EQUAL][3]}",0.00,0.00
 FastLanes,0.1.4,Generico,6,Codigo,INT32,53378,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.63,13.03
 FastLanes,0.1.4,Generico,7,Cols,INT8,1794,"{[EXP_CROSS_RLE_I08][0, 1]}",0.05,0.44
 FastLanes,0.1.4,Generico,8,Concatenar 1,FLS_STR,76512,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.33,18.68
-FastLanes,0.1.4,Generico,9,Concatenar 2,FLS_STR,85548,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.61,20.89
+FastLanes,0.1.4,Generico,9,Concatenar 2,FLS_STR,85547,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.61,20.89
 FastLanes,0.1.4,Generico,10,Corte,INT8,18420,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.56,4.50
 FastLanes,0.1.4,Generico,11,De_Npags,INT8,18785,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.57,4.59
 FastLanes,0.1.4,Generico,12,Dia_Semana,INT8,172,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.04
@@ -282,7 +282,7 @@ FastLanes,0.1.4,Generico,19,Holding,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Generico,20,Hora_Pagina,INT32,50402,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.54,12.31
 FastLanes,0.1.4,Generico,21,InversionQ,DOUBLE,45746,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.40,11.17
 FastLanes,0.1.4,Generico,22,InversionUS,DOUBLE,58330,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.78,14.24
-FastLanes,0.1.4,Generico,23,Marca,FLS_STR,47023,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.44,11.48
+FastLanes,0.1.4,Generico,23,Marca,FLS_STR,47029,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.44,11.48
 FastLanes,0.1.4,Generico,24,Medio,FLS_STR,5273,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.16,1.29
 FastLanes,0.1.4,Generico,25,Mes,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Generico,26,NumAnuncios,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
@@ -311,10 +311,10 @@ FastLanes,0.1.4,HashTags,5,interaction#author#link,FLS_STR,598794,"{[EXP_FSST_DI
 FastLanes,0.1.4,HashTags,6,interaction#author#name,FLS_STR,493128,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.52,60.20
 FastLanes,0.1.4,HashTags,7,interaction#author#username,FLS_STR,489155,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.46,59.71
 FastLanes,0.1.4,HashTags,8,interaction#content,FLS_STR,2920604,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",44.56,356.52
-FastLanes,0.1.4,HashTags,9,interaction#created_at,FLS_STR,441639,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.74,53.91
+FastLanes,0.1.4,HashTags,9,interaction#created_at,FLS_STR,441640,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.74,53.91
 FastLanes,0.1.4,HashTags,10,interaction#geo#latitude,INT64,28957,"{[EXP_FREQUENCY_I64][0, 1, 2, 3]}",0.44,3.53
 FastLanes,0.1.4,HashTags,11,interaction#geo#longitude,INT64,28957,"{[EXP_FREQUENCY_I64][0, 1, 2, 3]}",0.44,3.53
-FastLanes,0.1.4,HashTags,12,interaction#hashtags,FLS_STR,370441,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.65,45.22
+FastLanes,0.1.4,HashTags,12,interaction#hashtags,FLS_STR,370442,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.65,45.22
 FastLanes,0.1.4,HashTags,13,interaction#id,FLS_STR,992064,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",15.14,121.10
 FastLanes,0.1.4,HashTags,14,interaction#link,FLS_STR,1425505,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",21.75,174.01
 FastLanes,0.1.4,HashTags,15,interaction#mention_ids,FLS_STR,134890,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.06,16.47
@@ -331,7 +331,7 @@ FastLanes,0.1.4,HashTags,25,twitter#geo#latitude,INT64,0,"{[EXP_EQUAL][10]}",0.0
 FastLanes,0.1.4,HashTags,26,twitter#geo#longitude,INT64,0,"{[EXP_EQUAL][11]}",0.00,0.00
 FastLanes,0.1.4,HashTags,27,twitter#hashtags,FLS_STR,0,"{[EXP_EQUAL][12]}",0.00,0.00
 FastLanes,0.1.4,HashTags,28,twitter#id,DOUBLE,398016,"{[EXP_ALP_DBL][]}",6.07,48.59
-FastLanes,0.1.4,HashTags,29,twitter#in_reply_to_screen_name,FLS_STR,91952,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.40,11.22
+FastLanes,0.1.4,HashTags,29,twitter#in_reply_to_screen_name,FLS_STR,91951,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.40,11.22
 FastLanes,0.1.4,HashTags,30,twitter#in_reply_to_status_id,DOUBLE,62128,"{[EXP_CROSS_RLE_DBL][0, 1]}",0.95,7.58
 FastLanes,0.1.4,HashTags,31,twitter#in_reply_to_user_id,INT64,78136,"{[EXP_CROSS_RLE_I64][0, 1]}",1.19,9.54
 FastLanes,0.1.4,HashTags,32,twitter#lang,FLS_STR,9028,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.14,1.10
@@ -345,11 +345,11 @@ FastLanes,0.1.4,HashTags,39,twitter#place#full_name,FLS_STR,21041,"{[EXP_FSST_DI
 FastLanes,0.1.4,HashTags,40,twitter#place#id,FLS_STR,13397,"{[EXP_FSST_DICT_STR_U16][39, 0, 1, 2]}",0.20,1.64
 FastLanes,0.1.4,HashTags,41,twitter#place#name,FLS_STR,36872,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.56,4.50
 FastLanes,0.1.4,HashTags,42,twitter#place#place_type,FLS_STR,192,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
-FastLanes,0.1.4,HashTags,43,twitter#place#url,FLS_STR,20089,"{[EXP_FSST_DICT_STR_U16][39, 0, 1, 2]}",0.31,2.45
+FastLanes,0.1.4,HashTags,43,twitter#place#url,FLS_STR,20090,"{[EXP_FSST_DICT_STR_U16][39, 0, 1, 2]}",0.31,2.45
 FastLanes,0.1.4,HashTags,44,twitter#possibly_sensitive,FLS_STR,39,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
-FastLanes,0.1.4,HashTags,45,twitter#source,FLS_STR,65110,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.99,7.95
+FastLanes,0.1.4,HashTags,45,twitter#source,FLS_STR,65111,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.99,7.95
 FastLanes,0.1.4,HashTags,46,twitter#text,FLS_STR,0,"{[EXP_EQUAL][8]}",0.00,0.00
-FastLanes,0.1.4,HashTags,47,twitter#user#created_at,FLS_STR,535748,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.17,65.40
+FastLanes,0.1.4,HashTags,47,twitter#user#created_at,FLS_STR,535747,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.17,65.40
 FastLanes,0.1.4,HashTags,48,twitter#user#description,FLS_STR,1505425,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",22.97,183.77
 FastLanes,0.1.4,HashTags,49,twitter#user#favourites_count,INT32,119536,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.82,14.59
 FastLanes,0.1.4,HashTags,50,twitter#user#followers_count,INT32,113030,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.72,13.80
@@ -401,12 +401,12 @@ FastLanes,0.1.4,HashTags,95,Contains: AgentsofSHIELD (copy),INT8,863,"{[EXP_FREQ
 FastLanes,0.1.4,HashTags,96,Contains: AFV (copy),INT8,3168,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.05,0.39
 FastLanes,0.1.4,HashTags,97,Contains: AFV (copy 2),INT8,2101,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.03,0.26
 FastLanes,0.1.4,HashTags,98,Contains: ABC2020 (copy),INT8,438,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.05
-FastLanes,0.1.4,HashTags,99,Calculation_6610227171140491,FLS_STR,410650,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.27,50.13
+FastLanes,0.1.4,HashTags,99,Calculation_6610227171140491,INT64,299136,"{[EXP_FFOR_I64][0, 1, 2]}",4.56,36.52
 FastLanes,0.1.4,HashTags,100,Contains: TheMiddle (copy),INT8,2658,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.04,0.32
 FastLanes,0.1.4,Hatred,0,City,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Hatred,1,Client,FLS_STR,31774,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.48,3.88
 FastLanes,0.1.4,Hatred,2,Created Date,DOUBLE,339606,"{[EXP_ALP_DBL][]}",5.18,41.46
-FastLanes,0.1.4,Hatred,3,F26,FLS_STR,69420,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.47
+FastLanes,0.1.4,Hatred,3,F26,FLS_STR,69419,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.47
 FastLanes,0.1.4,Hatred,4,F27,FLS_STR,77455,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.18,9.45
 FastLanes,0.1.4,Hatred,5,F28,FLS_STR,317991,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.85,38.82
 FastLanes,0.1.4,Hatred,6,FF Ratio,DOUBLE,68082,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.04,8.31
@@ -416,7 +416,7 @@ FastLanes,0.1.4,Hatred,9,Following,INT32,113146,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2
 FastLanes,0.1.4,Hatred,10,Gender,FLS_STR,174,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,Hatred,11,Influencer?,INT8,8579,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.13,1.05
 FastLanes,0.1.4,Hatred,12,Joined,INT64,369664,"{[EXP_FFOR_I64][0, 1, 2]}",5.64,45.12
-FastLanes,0.1.4,Hatred,13,Keyword,FLS_STR,59052,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.21
+FastLanes,0.1.4,Hatred,13,Keyword,FLS_STR,59053,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.21
 FastLanes,0.1.4,Hatred,14,LPF,INT32,117446,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.79,14.34
 FastLanes,0.1.4,Hatred,15,Language,FLS_STR,796,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.10
 FastLanes,0.1.4,Hatred,16,Lat,INT64,213520,"{[EXP_RLE_I64_U16][0, 1, 2, 3, 4]}",3.26,26.06
@@ -437,7 +437,7 @@ FastLanes,0.1.4,Hatred,30,profile desc,FLS_STR,1688946,"{[EXP_FSST12_DICT_STR_FF
 FastLanes,0.1.4,IGlocations1,0,CENSUS2010POP,INT32,141698,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.16,17.30
 FastLanes,0.1.4,IGlocations1,1,CONCIT,INT32,2853,"{[EXP_DICT_I32_FFOR_U08][0, 1, 2, 3]}",0.04,0.35
 FastLanes,0.1.4,IGlocations1,2,COUSUB,INT32,104960,"{[EXP_FFOR_I32][0, 1, 2]}",1.60,12.81
-FastLanes,0.1.4,IGlocations1,3,City,FLS_STR,387385,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.91,47.29
+FastLanes,0.1.4,IGlocations1,3,City,FLS_STR,387386,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.91,47.29
 FastLanes,0.1.4,IGlocations1,4,County Code,INT16,18094,"{[EXP_CROSS_RLE_I16][0, 1]}",0.28,2.21
 FastLanes,0.1.4,IGlocations1,5,ESTIMATESBASE2010,INT32,141704,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.16,17.30
 FastLanes,0.1.4,IGlocations1,6,FUNCSTAT,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -492,7 +492,7 @@ FastLanes,0.1.4,MLB,36,league,FLS_STR,4637,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.07
 FastLanes,0.1.4,MLB,37,parentteam,FLS_STR,41596,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.08
 FastLanes,0.1.4,MLB,38,pwRC.,INT16,84182,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.28,10.28
 FastLanes,0.1.4,MLB,39,stand,FLS_STR,21,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
-FastLanes,0.1.4,MLB,40,teamname,FLS_STR,65256,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.00,7.97
+FastLanes,0.1.4,MLB,40,teamname,FLS_STR,65249,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.00,7.96
 FastLanes,0.1.4,MLB,41,wOBA,INT16,85072,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.30,10.38
 FastLanes,0.1.4,MLB,42,wRAA,INT16,69028,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.05,8.43
 FastLanes,0.1.4,MLB,43,wRC.,INT16,83926,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.28,10.24
@@ -501,7 +501,7 @@ FastLanes,0.1.4,MLB,45,year,INT16,164,"{[EXP_CROSS_RLE_I16][0, 1]}",0.00,0.02
 FastLanes,0.1.4,MLB,46,Calculation_40532458112880653,INT64,102398,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.56,12.50
 FastLanes,0.1.4,MLB,47,Calculation_40532458117070874,INT64,70994,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.08,8.67
 FastLanes,0.1.4,MedPayment1,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
-FastLanes,0.1.4,MedPayment1,1,average_Medicare_allowed_amt,DOUBLE,369844,"{[EXP_ALP_DBL][]}",5.64,45.15
+FastLanes,0.1.4,MedPayment1,1,average_Medicare_allowed_amt,DOUBLE,373404,"{[EXP_ALP_DBL][]}",5.70,45.58
 FastLanes,0.1.4,MedPayment1,2,average_Medicare_payment_amt,DOUBLE,369216,"{[EXP_ALP_DBL][]}",5.63,45.07
 FastLanes,0.1.4,MedPayment1,3,average_submitted_chrg_amt,DOUBLE,372528,"{[EXP_ALP_DBL][]}",5.68,45.47
 FastLanes,0.1.4,MedPayment1,4,bene_day_srvc_cnt,INT32,98200,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.50,11.99
@@ -513,11 +513,11 @@ FastLanes,0.1.4,MedPayment1,9,medicare_participation_indicator,FLS_STR,102,"{[EX
 FastLanes,0.1.4,MedPayment1,10,npi,INT32,138918,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.12,16.96
 FastLanes,0.1.4,MedPayment1,11,nppes_credentials,FLS_STR,9087,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.14,1.11
 FastLanes,0.1.4,MedPayment1,12,nppes_entity_code,FLS_STR,102,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
-FastLanes,0.1.4,MedPayment1,13,nppes_provider_city,FLS_STR,136820,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.09,16.70
+FastLanes,0.1.4,MedPayment1,13,nppes_provider_city,FLS_STR,136819,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.09,16.70
 FastLanes,0.1.4,MedPayment1,14,nppes_provider_country,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,MedPayment1,15,nppes_provider_first_name,FLS_STR,17025,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.26,2.08
 FastLanes,0.1.4,MedPayment1,16,nppes_provider_gender,FLS_STR,33,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
-FastLanes,0.1.4,MedPayment1,17,nppes_provider_last_org_name,FLS_STR,264986,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.04,32.35
+FastLanes,0.1.4,MedPayment1,17,nppes_provider_last_org_name,FLS_STR,264985,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.04,32.35
 FastLanes,0.1.4,MedPayment1,18,nppes_provider_mi,FLS_STR,755,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.09
 FastLanes,0.1.4,MedPayment1,19,nppes_provider_state,FLS_STR,10536,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.29
 FastLanes,0.1.4,MedPayment1,20,nppes_provider_street1,FLS_STR,236459,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.61,28.86
@@ -526,7 +526,7 @@ FastLanes,0.1.4,MedPayment1,22,nppes_provider_zip,INT32,136946,"{[EXP_DICT_I32_F
 FastLanes,0.1.4,MedPayment1,23,place_of_service,FLS_STR,138,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,MedPayment1,24,provider_type,FLS_STR,49476,"{[EXP_RLE_STR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.75,6.04
 FastLanes,0.1.4,MedPayment1,25,stdev_Medicare_allowed_amt,DOUBLE,355568,"{[EXP_ALP_DBL][]}",5.43,43.40
-FastLanes,0.1.4,MedPayment1,26,stdev_Medicare_payment_amt,DOUBLE,360940,"{[EXP_ALP_DBL][]}",5.51,44.06
+FastLanes,0.1.4,MedPayment1,26,stdev_Medicare_payment_amt,DOUBLE,369626,"{[EXP_ALP_DBL][]}",5.64,45.12
 FastLanes,0.1.4,MedPayment1,27,stdev_submitted_chrg_amt,DOUBLE,314925,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",4.81,38.44
 FastLanes,0.1.4,Medicare1,0,BENE_COUNT,INT16,67240,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.03,8.21
 FastLanes,0.1.4,Medicare1,1,BENE_COUNT_GE65,INT16,62576,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.95,7.64
@@ -572,7 +572,7 @@ FastLanes,0.1.4,Motos,14,Duracion,INT16,55004,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 
 FastLanes,0.1.4,Motos,15,Est,FLS_STR,1264,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.15
 FastLanes,0.1.4,Motos,16,FECHA,INT16,374,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.05
 FastLanes,0.1.4,Motos,17,Franja,FLS_STR,2077,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.25
-FastLanes,0.1.4,Motos,18,Genero,FLS_STR,30839,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.47,3.76
+FastLanes,0.1.4,Motos,18,Genero,FLS_STR,30838,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.47,3.76
 FastLanes,0.1.4,Motos,19,Holding,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Motos,20,Hora_Pagina,INT32,96194,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.47,11.74
 FastLanes,0.1.4,Motos,21,InversionQ,DOUBLE,93626,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.43,11.43
@@ -585,27 +585,27 @@ FastLanes,0.1.4,Motos,27,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,
 FastLanes,0.1.4,Motos,28,Plgs,INT8,6954,"{[EXP_CROSS_RLE_I08][0, 1]}",0.11,0.85
 FastLanes,0.1.4,Motos,29,Posicion_Edicion,INT8,37761,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.58,4.61
 FastLanes,0.1.4,Motos,30,PrimeraLinea,FLS_STR,193542,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.95,23.63
-FastLanes,0.1.4,Motos,31,Producto,FLS_STR,105811,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.61,12.92
+FastLanes,0.1.4,Motos,31,Producto,FLS_STR,105810,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.61,12.92
 FastLanes,0.1.4,Motos,32,SEMANA,INT8,117,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.01
 FastLanes,0.1.4,Motos,33,Sector,FLS_STR,34301,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.19
 FastLanes,0.1.4,Motos,34,Soporte,FLS_STR,84879,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.30,10.36
 FastLanes,0.1.4,Motos,35,Subsector,FLS_STR,52047,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.79,6.35
 FastLanes,0.1.4,Motos,36,Unidad,FLS_STR,249,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
 FastLanes,0.1.4,Motos,37,VER ANUNCIO,FLS_STR,0,"{[EXP_EQUAL][8]}",0.00,0.00
-FastLanes,0.1.4,Motos,38,Vehiculo,FLS_STR,42391,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.65,5.17
+FastLanes,0.1.4,Motos,38,Vehiculo,FLS_STR,42392,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.65,5.17
 FastLanes,0.1.4,Motos,39,extencion,FLS_STR,687,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.08
 FastLanes,0.1.4,Motos,40,medio2,FLS_STR,52,"{[EXP_FSST_DICT_STR_U08][24, 0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,Motos,41,www1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Motos,42,www2,FLS_STR,383,"{[EXP_FSST_DICT_STR_U08][24, 0, 1, 2]}",0.01,0.05
 FastLanes,0.1.4,Motos,43,Anunciante (grupo),FLS_STR,5701,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.09,0.70
 FastLanes,0.1.4,MulheresMil,0,Calculation_838513981443702785,FLS_STR,97923,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.49,11.95
-FastLanes,0.1.4,MulheresMil,1,Calculation_838513981462429699,FLS_STR,530334,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.09,64.74
-FastLanes,0.1.4,MulheresMil,2,Codigo Diploma/Certificado,FLS_STR,64934,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.99,7.93
+FastLanes,0.1.4,MulheresMil,1,Calculation_838513981462429699,FLS_STR,530335,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.09,64.74
+FastLanes,0.1.4,MulheresMil,2,Codigo Diploma/Certificado,FLS_STR,64933,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.99,7.93
 FastLanes,0.1.4,MulheresMil,3,Cor da Pele,FLS_STR,3405,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.05,0.42
-FastLanes,0.1.4,MulheresMil,4,Data Diploma/Certificado,FLS_STR,85283,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.30,10.41
+FastLanes,0.1.4,MulheresMil,4,Data Diploma/Certificado,INT64,52327,"{[EXP_FREQUENCY_I64][0, 1, 2, 3]}",0.80,6.39
 FastLanes,0.1.4,MulheresMil,5,Data Pré-Matricula,INT16,1936,"{[EXP_CROSS_RLE_I16][0, 1]}",0.03,0.24
 FastLanes,0.1.4,MulheresMil,6,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
-FastLanes,0.1.4,MulheresMil,7,ch_catalogo_guia,FLS_STR,17035,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.08
+FastLanes,0.1.4,MulheresMil,7,ch_catalogo_guia,FLS_STR,17036,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.08
 FastLanes,0.1.4,MulheresMil,8,ch_da_oferta,INT16,54002,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.82,6.59
 FastLanes,0.1.4,MulheresMil,9,ch_max_financiavel,INT16,21,"{[EXP_DICT_I16_U08][7, 0]}",0.00,0.00
 FastLanes,0.1.4,MulheresMil,10,ch_maxima_permitida,INT16,15956,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.24,1.95
@@ -617,7 +617,7 @@ FastLanes,0.1.4,MulheresMil,15,cod_ibge_da_ue,INT32,73550,"{[EXP_DICT_I32_FFOR_U
 FastLanes,0.1.4,MulheresMil,16,cod_ibge_do_local_da_oferta,INT32,74922,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.14,9.15
 FastLanes,0.1.4,MulheresMil,17,codigo_da_oferta,INT32,10434,"{[EXP_DICT_I32_U16][0, 0]}",0.16,1.27
 FastLanes,0.1.4,MulheresMil,18,codigo_do_curso,INT32,69362,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.06,8.47
-FastLanes,0.1.4,MulheresMil,19,comunidade_quilombola,FLS_STR,359,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.01,0.04
+FastLanes,0.1.4,MulheresMil,19,comunidade_quilombola,FLS_STR,360,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.01,0.04
 FastLanes,0.1.4,MulheresMil,20,cpf aluno,FLS_STR,373773,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.70,45.63
 FastLanes,0.1.4,MulheresMil,21,data de confirmacao,INT16,477,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.06
 FastLanes,0.1.4,MulheresMil,22,data de nascimento aluno,INT16,115492,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.76,14.10
@@ -626,10 +626,10 @@ FastLanes,0.1.4,MulheresMil,24,data_de_conclusao,FLS_STR,14729,"{[EXP_FSST_DICT_
 FastLanes,0.1.4,MulheresMil,25,data_de_inicio,INT16,922,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.11
 FastLanes,0.1.4,MulheresMil,26,data_de_previsaode_termino,INT16,16840,"{[EXP_CROSS_RLE_I16][0, 1]}",0.26,2.06
 FastLanes,0.1.4,MulheresMil,27,desempregado,FLS_STR,151,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
-FastLanes,0.1.4,MulheresMil,28,ds_email,FLS_STR,669525,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",10.22,81.73
-FastLanes,0.1.4,MulheresMil,29,ds_identificador_turma,FLS_STR,130163,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.99,15.89
+FastLanes,0.1.4,MulheresMil,28,ds_email,FLS_STR,669526,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",10.22,81.73
+FastLanes,0.1.4,MulheresMil,29,ds_identificador_turma,FLS_STR,130162,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.99,15.89
 FastLanes,0.1.4,MulheresMil,30,ds_tipo_beneficiario,FLS_STR,1078,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.13
-FastLanes,0.1.4,MulheresMil,31,dt_cadastro,FLS_STR,113289,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.73,13.83
+FastLanes,0.1.4,MulheresMil,31,dt_cadastro,FLS_STR,113288,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.73,13.83
 FastLanes,0.1.4,MulheresMil,32,ead,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,MulheresMil,33,edicao_catalogo_guia,FLS_STR,414,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.05
 FastLanes,0.1.4,MulheresMil,34,edital,FLS_STR,75,"{[EXP_FSST_DICT_STR_U08][19, 0, 1, 2]}",0.00,0.01
@@ -639,8 +639,8 @@ FastLanes,0.1.4,MulheresMil,37,escolaridade do aluno,FLS_STR,2227,"{[EXP_FSST_DI
 FastLanes,0.1.4,MulheresMil,38,escolaridade_catalogo_guia,FLS_STR,1456,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.18
 FastLanes,0.1.4,MulheresMil,39,forma_ingresso,FLS_STR,2421,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.30
 FastLanes,0.1.4,MulheresMil,40,instituicao,FLS_STR,21702,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.33,2.65
-FastLanes,0.1.4,MulheresMil,41,mantenedora,FLS_STR,48464,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.74,5.92
-FastLanes,0.1.4,MulheresMil,42,municipio_da_ue,FLS_STR,76100,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.16,9.29
+FastLanes,0.1.4,MulheresMil,41,mantenedora,FLS_STR,48465,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.74,5.92
+FastLanes,0.1.4,MulheresMil,42,municipio_da_ue,FLS_STR,76110,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.16,9.29
 FastLanes,0.1.4,MulheresMil,43,municipio_do_local_da_oferta,FLS_STR,78706,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.20,9.61
 FastLanes,0.1.4,MulheresMil,44,no_dependencia_admin,FLS_STR,15216,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.23,1.86
 FastLanes,0.1.4,MulheresMil,45,no_modalidade,FLS_STR,217,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
@@ -653,10 +653,10 @@ FastLanes,0.1.4,MulheresMil,51,nome da sit matricula (situacao detalhada),FLS_ST
 FastLanes,0.1.4,MulheresMil,52,nome_curso_catalogo_guia,FLS_STR,58665,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.16
 FastLanes,0.1.4,MulheresMil,53,nome_da_ue,FLS_STR,91006,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.39,11.11
 FastLanes,0.1.4,MulheresMil,54,nome_da_uer,FLS_STR,18033,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.28,2.20
-FastLanes,0.1.4,MulheresMil,55,nome_do_curso,FLS_STR,73176,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.12,8.93
+FastLanes,0.1.4,MulheresMil,55,nome_do_curso,FLS_STR,73177,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.12,8.93
 FastLanes,0.1.4,MulheresMil,56,nu_telefone,FLS_STR,285537,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.36,34.86
 FastLanes,0.1.4,MulheresMil,57,nu_telefone_celular,FLS_STR,1718,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.21
-FastLanes,0.1.4,MulheresMil,58,oferta_cadastro_online,FLS_STR,2089,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.03,0.26
+FastLanes,0.1.4,MulheresMil,58,oferta_cadastro_online,FLS_STR,2088,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.03,0.25
 FastLanes,0.1.4,MulheresMil,59,pcd,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,MulheresMil,60,populacao_campo,FLS_STR,0,"{[EXP_EQUAL][19]}",0.00,0.00
 FastLanes,0.1.4,MulheresMil,61,povo_indigena,FLS_STR,0,"{[EXP_EQUAL][19]}",0.00,0.00
@@ -678,7 +678,7 @@ FastLanes,0.1.4,MulheresMil,76,uf_do_local_da_oferta,FLS_STR,39369,"{[EXP_FSST_D
 FastLanes,0.1.4,MulheresMil,77,unidade_demandante,FLS_STR,3104,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.05,0.38
 FastLanes,0.1.4,MulheresMil,78,vagas,INT16,48639,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.74,5.94
 FastLanes,0.1.4,MulheresMil,79,valor_hora_aula_proposto,FLS_STR,50544,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.77,6.17
-FastLanes,0.1.4,MulheresMil,80,Calculation_838513978982854656,FLS_STR,56656,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.86,6.92
+FastLanes,0.1.4,MulheresMil,80,Calculation_838513978982854656,FLS_STR,56657,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.86,6.92
 FastLanes,0.1.4,NYC,0,Address Type,FLS_STR,153,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,NYC,1,Agency Name,FLS_STR,65419,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.00,7.99
 FastLanes,0.1.4,NYC,2,Agency,FLS_STR,1751,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.21
@@ -687,14 +687,14 @@ FastLanes,0.1.4,NYC,4,Bridge Highway Direction,FLS_STR,0,"{[EXP_CONSTANT_STR][]}
 FastLanes,0.1.4,NYC,5,Bridge Highway Name,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,NYC,6,Bridge Highway Segment,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,NYC,7,City,FLS_STR,10218,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.25
-FastLanes,0.1.4,NYC,8,Closed Date,FLS_STR,579598,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.84,70.75
+FastLanes,0.1.4,NYC,8,Closed Date,INT64,395520,"{[EXP_FFOR_I64][0, 1, 2]}",6.04,48.28
 FastLanes,0.1.4,NYC,9,Community Board,FLS_STR,25919,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.40,3.16
 FastLanes,0.1.4,NYC,10,Complaint Type,FLS_STR,28291,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.43,3.45
-FastLanes,0.1.4,NYC,11,Created Date,FLS_STR,616557,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",9.41,75.26
+FastLanes,0.1.4,NYC,11,Created Date,INT64,393472,"{[EXP_FFOR_I64][0, 1, 2]}",6.00,48.03
 FastLanes,0.1.4,NYC,12,Cross Street 1,FLS_STR,79284,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.21,9.68
 FastLanes,0.1.4,NYC,13,Cross Street 2,FLS_STR,75081,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.15,9.17
 FastLanes,0.1.4,NYC,14,Descriptor,FLS_STR,58306,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.12
-FastLanes,0.1.4,NYC,15,Due Date,FLS_STR,556550,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.49,67.94
+FastLanes,0.1.4,NYC,15,Due Date,INT64,381568,"{[EXP_FFOR_I64][0, 1, 2]}",5.82,46.58
 FastLanes,0.1.4,NYC,16,Facility Type,FLS_STR,233,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
 FastLanes,0.1.4,NYC,17,Ferry Direction,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,NYC,18,Ferry Terminal Name,FLS_STR,13835,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.21,1.69
@@ -711,12 +711,12 @@ FastLanes,0.1.4,NYC,28,Longitude,INT64,19378,"{[EXP_DICT_I64_U16][25, 0]}",0.30,
 FastLanes,0.1.4,NYC,29,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,NYC,30,Park Borough,FLS_STR,0,"{[EXP_EQUAL][3]}",0.00,0.00
 FastLanes,0.1.4,NYC,31,Park Facility Name,FLS_STR,153629,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.34,18.75
-FastLanes,0.1.4,NYC,32,Resolution Action Updated Date,FLS_STR,549440,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.38,67.07
+FastLanes,0.1.4,NYC,32,Resolution Action Updated Date,INT64,393472,"{[EXP_FFOR_I64][0, 1, 2]}",6.00,48.03
 FastLanes,0.1.4,NYC,33,Resolution Description,FLS_STR,53232,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.81,6.50
 FastLanes,0.1.4,NYC,34,Road Ramp,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,NYC,35,School Address,FLS_STR,139268,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.13,17.00
 FastLanes,0.1.4,NYC,36,School City,FLS_STR,9127,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.14,1.11
-FastLanes,0.1.4,NYC,37,School Code,FLS_STR,44880,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.68,5.48
+FastLanes,0.1.4,NYC,37,School Code,FLS_STR,44879,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.68,5.48
 FastLanes,0.1.4,NYC,38,School Name,FLS_STR,0,"{[EXP_EQUAL][31]}",0.00,0.00
 FastLanes,0.1.4,NYC,39,School Not Found,FLS_STR,42,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,NYC,40,School Number,FLS_STR,94551,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.44,11.54
@@ -773,13 +773,13 @@ FastLanes,0.1.4,Physicians,7,hcpcs_description,FLS_STR,102196,"{[EXP_FSST_DICT_S
 FastLanes,0.1.4,Physicians,8,line_srvc_cnt,DOUBLE,131690,"{[EXP_ALP_DBL][]}",2.01,16.08
 FastLanes,0.1.4,Physicians,9,medicare_participation_indicator,FLS_STR,84,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,Physicians,10,npi,INT32,137686,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.10,16.81
-FastLanes,0.1.4,Physicians,11,nppes_credentials,FLS_STR,9088,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.14,1.11
+FastLanes,0.1.4,Physicians,11,nppes_credentials,FLS_STR,9087,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.14,1.11
 FastLanes,0.1.4,Physicians,12,nppes_entity_code,FLS_STR,84,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,Physicians,13,nppes_provider_city,FLS_STR,137076,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.09,16.73
 FastLanes,0.1.4,Physicians,14,nppes_provider_country,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
 FastLanes,0.1.4,Physicians,15,nppes_provider_first_name,FLS_STR,17025,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.26,2.08
 FastLanes,0.1.4,Physicians,16,nppes_provider_gender,FLS_STR,33,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
-FastLanes,0.1.4,Physicians,17,nppes_provider_last_org_name,FLS_STR,260227,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.97,31.77
+FastLanes,0.1.4,Physicians,17,nppes_provider_last_org_name,FLS_STR,260224,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.97,31.77
 FastLanes,0.1.4,Physicians,18,nppes_provider_mi,FLS_STR,755,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.09
 FastLanes,0.1.4,Physicians,19,nppes_provider_state,FLS_STR,10516,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.28
 FastLanes,0.1.4,Physicians,20,nppes_provider_street1,FLS_STR,237870,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.63,29.04
@@ -788,8 +788,8 @@ FastLanes,0.1.4,Physicians,22,nppes_provider_zip,INT32,136398,"{[EXP_DICT_I32_FF
 FastLanes,0.1.4,Physicians,23,place_of_service,FLS_STR,120,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,Physicians,24,provider_type,FLS_STR,49515,"{[EXP_RLE_STR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.76,6.04
 FastLanes,0.1.4,Physicians,25,stdev_Medicare_allowed_amt,DOUBLE,355708,"{[EXP_ALP_DBL][]}",5.43,43.42
-FastLanes,0.1.4,Physicians,26,stdev_Medicare_payment_amt,DOUBLE,361688,"{[EXP_ALP_DBL][]}",5.52,44.15
-FastLanes,0.1.4,Physicians,27,stdev_submitted_chrg_amt,DOUBLE,316725,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",4.83,38.66
+FastLanes,0.1.4,Physicians,26,stdev_Medicare_payment_amt,DOUBLE,369444,"{[EXP_ALP_DBL][]}",5.64,45.10
+FastLanes,0.1.4,Physicians,27,stdev_submitted_chrg_amt,DOUBLE,312154,"{[EXP_ALP_DBL][]}",4.76,38.10
 FastLanes,0.1.4,Provider,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Provider,1,average_Medicare_allowed_amt,DOUBLE,373268,"{[EXP_ALP_DBL][]}",5.70,45.56
 FastLanes,0.1.4,Provider,2,average_Medicare_payment_amt,DOUBLE,372774,"{[EXP_ALP_DBL][]}",5.69,45.50
@@ -801,9 +801,9 @@ FastLanes,0.1.4,Provider,7,hcpcs_description,FLS_STR,105083,"{[EXP_FSST_DICT_STR
 FastLanes,0.1.4,Provider,8,line_srvc_cnt,INT32,109470,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.67,13.36
 FastLanes,0.1.4,Provider,9,medicare_participation_indicator,FLS_STR,123,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,Provider,10,npi,INT32,135958,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.07,16.60
-FastLanes,0.1.4,Provider,11,nppes_credentials,FLS_STR,8850,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.14,1.08
+FastLanes,0.1.4,Provider,11,nppes_credentials,FLS_STR,8849,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.14,1.08
 FastLanes,0.1.4,Provider,12,nppes_entity_code,FLS_STR,114,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
-FastLanes,0.1.4,Provider,13,nppes_provider_city,FLS_STR,134361,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.05,16.40
+FastLanes,0.1.4,Provider,13,nppes_provider_city,FLS_STR,134380,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.05,16.40
 FastLanes,0.1.4,Provider,14,nppes_provider_country,FLS_STR,25,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
 FastLanes,0.1.4,Provider,15,nppes_provider_first_name,FLS_STR,18047,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.28,2.20
 FastLanes,0.1.4,Provider,16,nppes_provider_gender,FLS_STR,33,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
@@ -814,14 +814,14 @@ FastLanes,0.1.4,Provider,20,nppes_provider_street1,FLS_STR,234043,"{[EXP_FSST_DI
 FastLanes,0.1.4,Provider,21,nppes_provider_street2,FLS_STR,92093,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.41,11.24
 FastLanes,0.1.4,Provider,22,nppes_provider_zip,INT32,134410,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",2.05,16.41
 FastLanes,0.1.4,Provider,23,place_of_service,FLS_STR,168,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
-FastLanes,0.1.4,Provider,24,provider_type,FLS_STR,38783,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.59,4.73
+FastLanes,0.1.4,Provider,24,provider_type,FLS_STR,38784,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.59,4.73
 FastLanes,0.1.4,Provider,25,stdev_Medicare_allowed_amt,DOUBLE,361288,"{[EXP_ALP_DBL][]}",5.51,44.10
 FastLanes,0.1.4,Provider,26,stdev_Medicare_payment_amt,DOUBLE,361718,"{[EXP_ALP_DBL][]}",5.52,44.16
 FastLanes,0.1.4,Provider,27,stdev_submitted_chrg_amt,DOUBLE,316265,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",4.83,38.61
 FastLanes,0.1.4,RealEstate1,0,Address 1,FLS_STR,158915,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.42,19.40
 FastLanes,0.1.4,RealEstate1,1,Address 2,FLS_STR,34647,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.53,4.23
 FastLanes,0.1.4,RealEstate1,2,County,FLS_STR,59135,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.22
-FastLanes,0.1.4,RealEstate1,3,Date of Transfer,FLS_STR,2692,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.33
+FastLanes,0.1.4,RealEstate1,3,Date of Transfer,INT64,952,"{[EXP_CROSS_RLE_I64][0, 1]}",0.01,0.12
 FastLanes,0.1.4,RealEstate1,4,District,FLS_STR,78676,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.20,9.60
 FastLanes,0.1.4,RealEstate1,5,Duration,FLS_STR,1634,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.20
 FastLanes,0.1.4,RealEstate1,6,Latitude,INT32,189056,"{[EXP_FFOR_I32][0, 1, 2]}",2.88,23.08
@@ -831,19 +831,19 @@ FastLanes,0.1.4,RealEstate1,9,New Build?,FLS_STR,1580,"{[EXP_CROSS_RLE_STR][0, 1
 FastLanes,0.1.4,RealEstate1,10,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,RealEstate1,11,Postcode District,FLS_STR,108213,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.65,13.21
 FastLanes,0.1.4,RealEstate1,12,Postcode Region,FLS_STR,67076,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.02,8.19
-FastLanes,0.1.4,RealEstate1,13,Postcode Sector,FLS_STR,156857,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.39,19.15
+FastLanes,0.1.4,RealEstate1,13,Postcode Sector,FLS_STR,156856,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.39,19.15
 FastLanes,0.1.4,RealEstate1,14,Postcode,FLS_STR,329683,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.03,40.24
 FastLanes,0.1.4,RealEstate1,15,Price,INT32,108678,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.66,13.27
 FastLanes,0.1.4,RealEstate1,16,Property Type,FLS_STR,11361,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.17,1.39
-FastLanes,0.1.4,RealEstate1,17,Street,FLS_STR,380966,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.81,46.50
-FastLanes,0.1.4,RealEstate1,18,Town/City,FLS_STR,93946,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.43,11.47
+FastLanes,0.1.4,RealEstate1,17,Street,FLS_STR,380965,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.81,46.50
+FastLanes,0.1.4,RealEstate1,18,Town/City,FLS_STR,93945,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.43,11.47
 FastLanes,0.1.4,RealEstate1,19,Transaction ID,FLS_STR,1494203,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",22.80,182.40
 FastLanes,0.1.4,RealEstate1,20,Month,INT8,42,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.01
 FastLanes,0.1.4,RealEstate1,21,Calculation_7270508194941839,INT8,0,"{[EXP_EQUAL][20]}",0.00,0.00
 FastLanes,0.1.4,RealEstate1,22,Calculation_5960512115909696,FLS_STR,9492,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.14,1.16
-FastLanes,0.1.4,RealEstate1,23,Calculation_5480628224156393,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.4,RealEstate1,23,Calculation_5480628224156393,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,RealEstate1,24,Calculation_2630509165701334,DOUBLE,129010,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.97,15.75
-FastLanes,0.1.4,RealEstate1,25,Calculation_0390512122057182,FLS_STR,8263,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.01
+FastLanes,0.1.4,RealEstate1,25,Calculation_0390512122057182,FLS_STR,8262,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.01
 FastLanes,0.1.4,RealEstate1,26,Year,INT16,0,"{[EXP_CONSTANT_I16][]}",0.00,0.00
 FastLanes,0.1.4,RealEstate1,27,average monthly price per km2 (copy),DOUBLE,17,"{[EXP_DICT_DBL_U08][25, 0]}",0.00,0.00
 FastLanes,0.1.4,Redfin1,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
@@ -909,7 +909,7 @@ FastLanes,0.1.4,Rentabilidad,15,Calculation_1880818214638259,DOUBLE,271416,"{[EX
 FastLanes,0.1.4,Rentabilidad,16,Calle,FLS_STR,569994,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.70,69.58
 FastLanes,0.1.4,Rentabilidad,17,Canal de Ventas,INT8,9929,"{[EXP_CROSS_RLE_I08][0, 1]}",0.15,1.21
 FastLanes,0.1.4,Rentabilidad,18,Ciudad UO,FLS_STR,22119,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.34,2.70
-FastLanes,0.1.4,Rentabilidad,19,Descripción de Canal,FLS_STR,32169,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.49,3.93
+FastLanes,0.1.4,Rentabilidad,19,Descripción de Canal,FLS_STR,32168,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.49,3.93
 FastLanes,0.1.4,Rentabilidad,20,Deudor NCB,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Rentabilidad,21,Deudor,INT32,197376,"{[EXP_FFOR_I32][0, 1, 2]}",3.01,24.09
 FastLanes,0.1.4,Rentabilidad,22,Dias de Visita CO,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -1079,7 +1079,7 @@ FastLanes,0.1.4,SalariesFrance,32,HOMMES,DOUBLE,378472,"{[EXP_RLE_DBL_U16][0, 1,
 FastLanes,0.1.4,SalariesFrance,33,INTERIM_NM1,DOUBLE,193965,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",2.96,23.68
 FastLanes,0.1.4,SalariesFrance,34,INTERIM_NP1,DOUBLE,198865,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",3.03,24.28
 FastLanes,0.1.4,SalariesFrance,35,LIBDOM1,FLS_STR,2307,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.28
-FastLanes,0.1.4,SalariesFrance,36,LIBDOM2,FLS_STR,45306,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.69,5.53
+FastLanes,0.1.4,SalariesFrance,36,LIBDOM2,FLS_STR,45305,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.69,5.53
 FastLanes,0.1.4,SalariesFrance,37,LIBELLES_ROME_BONNE_FORMATION,FLS_STR,68194,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.04,8.32
 FastLanes,0.1.4,SalariesFrance,38,LIBROME_MINUSCULE,FLS_STR,8462,"{[EXP_FSST_DICT_STR_U16][37, 0, 1, 2]}",0.13,1.03
 FastLanes,0.1.4,SalariesFrance,39,Latitude,INT64,255556,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",3.90,31.20
@@ -1092,7 +1092,7 @@ FastLanes,0.1.4,SalariesFrance,45,REG_LIB,FLS_STR,3086,"{[EXP_CROSS_RLE_STR][0, 
 FastLanes,0.1.4,SalariesFrance,46,RENSEIGNE,FLS_STR,147,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,SalariesFrance,47,REPERE1 (copie),INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,SalariesFrance,48,ROME,FLS_STR,2835,"{[EXP_FSST_DICT_STR_U16][37, 0, 1, 2]}",0.04,0.35
-FastLanes,0.1.4,SalariesFrance,49,ROME_LIB,FLS_STR,8175,"{[EXP_FSST_DICT_STR_U16][37, 0, 1, 2]}",0.12,1.00
+FastLanes,0.1.4,SalariesFrance,49,ROME_LIB,FLS_STR,8174,"{[EXP_FSST_DICT_STR_U16][37, 0, 1, 2]}",0.12,1.00
 FastLanes,0.1.4,SalariesFrance,50,SALAIRE_BRUT,DOUBLE,175596,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.68,21.44
 FastLanes,0.1.4,SalariesFrance,51,SALAIRE_VF,DOUBLE,142354,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",2.17,17.38
 FastLanes,0.1.4,SalariesFrance,52,TK_SIRET,INT16,32292,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.49,3.94
@@ -1126,7 +1126,7 @@ FastLanes,0.1.4,TableroSistemaPenal,22,REGIÓN,FLS_STR,462,"{[EXP_FSST_DICT_STR_
 FastLanes,0.1.4,TableroSistemaPenal,23,RPA,FLS_STR,55,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,TableroSistemaPenal,24,TIPO,FLS_STR,180,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,TableroSistemaPenal,25,TIP_TRIB,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
-FastLanes,0.1.4,TableroSistemaPenal,26,TRIBUNAL,FLS_STR,1661,"{[EXP_FSST_DICT_STR_U08][11, 0, 1, 2]}",0.03,0.20
+FastLanes,0.1.4,TableroSistemaPenal,26,TRIBUNAL,FLS_STR,1662,"{[EXP_FSST_DICT_STR_U08][11, 0, 1, 2]}",0.03,0.20
 FastLanes,0.1.4,Taxpayer,0,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Taxpayer,1,average_Medicare_allowed_amt,DOUBLE,370878,"{[EXP_ALP_DBL][]}",5.66,45.27
 FastLanes,0.1.4,Taxpayer,2,average_Medicare_payment_amt,DOUBLE,371872,"{[EXP_ALP_DBL][]}",5.67,45.39
@@ -1148,14 +1148,14 @@ FastLanes,0.1.4,Taxpayer,17,nppes_provider_last_org_name,FLS_STR,263783,"{[EXP_F
 FastLanes,0.1.4,Taxpayer,18,nppes_provider_mi,FLS_STR,755,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.09
 FastLanes,0.1.4,Taxpayer,19,nppes_provider_state,FLS_STR,10558,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.29
 FastLanes,0.1.4,Taxpayer,20,nppes_provider_street1,FLS_STR,237693,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.63,29.02
-FastLanes,0.1.4,Taxpayer,21,nppes_provider_street2,FLS_STR,91979,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.40,11.23
+FastLanes,0.1.4,Taxpayer,21,nppes_provider_street2,FLS_STR,91980,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.40,11.23
 FastLanes,0.1.4,Taxpayer,22,nppes_provider_zip,INT32,137054,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",2.09,16.73
 FastLanes,0.1.4,Taxpayer,23,place_of_service,FLS_STR,168,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
 FastLanes,0.1.4,Taxpayer,24,provider_type,FLS_STR,35320,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.54,4.31
 FastLanes,0.1.4,Taxpayer,25,stdev_Medicare_allowed_amt,DOUBLE,359946,"{[EXP_ALP_DBL][]}",5.49,43.94
 FastLanes,0.1.4,Taxpayer,26,stdev_Medicare_payment_amt,DOUBLE,361196,"{[EXP_ALP_DBL][]}",5.51,44.09
 FastLanes,0.1.4,Taxpayer,27,stdev_submitted_chrg_amt,DOUBLE,314485,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",4.80,38.39
-FastLanes,0.1.4,Telco,0,ACTIVATION_DATE,FLS_STR,110571,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.69,13.50
+FastLanes,0.1.4,Telco,0,ACTIVATION_DATE,INT64,105114,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",1.60,12.83
 FastLanes,0.1.4,Telco,1,ARPU_P1,INT32,217000,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",3.31,26.49
 FastLanes,0.1.4,Telco,2,ARPU_P2,INT32,213656,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",3.26,26.08
 FastLanes,0.1.4,Telco,3,ARPU_P3,INT32,213966,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",3.26,26.12
@@ -1224,8 +1224,8 @@ FastLanes,0.1.4,Telco,65,INCOMING_TOTAL_CALLS_P3,INT16,76528,"{[EXP_FFOR_SLPATCH
 FastLanes,0.1.4,Telco,66,INCOMING_TOTAL_CALLS_P4,INT16,72424,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.11,8.84
 FastLanes,0.1.4,Telco,67,INCOMING_TOTAL_CALLS_P6,INT16,95880,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.46,11.70
 FastLanes,0.1.4,Telco,68,LAST_RCHRG_AMT,DOUBLE,59514,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",0.91,7.26
-FastLanes,0.1.4,Telco,69,LST_ACTVTY_DT,FLS_STR,2726,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.33
-FastLanes,0.1.4,Telco,70,LST_RCHRG_DATE,FLS_STR,74959,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.14,9.15
+FastLanes,0.1.4,Telco,69,LST_ACTVTY_DT,INT64,964,"{[EXP_CROSS_RLE_I64][0, 1]}",0.01,0.12
+FastLanes,0.1.4,Telco,70,LST_RCHRG_DATE,INT64,55800,"{[EXP_RLE_I64_U16][0, 1, 2, 3, 4]}",0.85,6.81
 FastLanes,0.1.4,Telco,71,MSISDN,INT64,238592,"{[EXP_FFOR_I64][0, 1, 2]}",3.64,29.12
 FastLanes,0.1.4,Telco,72,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Telco,73,OFFNET_CALLS_P1,INT16,77156,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.18,9.42
@@ -1259,7 +1259,7 @@ FastLanes,0.1.4,Telco,100,ONNET_REV_P3,INT32,120056,"{[EXP_FFOR_SLPATCH_I32][0, 
 FastLanes,0.1.4,Telco,101,ONNET_REV_P4,INT32,109674,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.67,13.39
 FastLanes,0.1.4,Telco,102,ONNET_REV_P6,INT32,24986,"{[EXP_DICT_I32_U16][99, 0]}",0.38,3.05
 FastLanes,0.1.4,Telco,103,PACKAGE_NAME,FLS_STR,34219,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.18
-FastLanes,0.1.4,Telco,104,RCHRG_AMT_EXP_DATE,FLS_STR,81348,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.24,9.93
+FastLanes,0.1.4,Telco,104,RCHRG_AMT_EXP_DATE,INT64,83680,"{[EXP_RLE_I64_U16][0, 1, 2, 3, 4]}",1.28,10.21
 FastLanes,0.1.4,Telco,105,RECHRG_INC_MIN_USED_P1,DOUBLE,237236,"{[EXP_ALP_DBL][]}",3.62,28.96
 FastLanes,0.1.4,Telco,106,RECHRG_INC_MIN_USED_P2,DOUBLE,235734,"{[EXP_ALP_DBL][]}",3.60,28.78
 FastLanes,0.1.4,Telco,107,RECHRG_INC_MIN_USED_P3,INT32,209114,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",3.19,25.53
@@ -1344,16 +1344,16 @@ FastLanes,0.1.4,TrainsUK1,4,Engineering Allowance (mins),INT8,12543,"{[EXP_FREQU
 FastLanes,0.1.4,TrainsUK1,5,Headcode,FLS_STR,89670,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.37,10.95
 FastLanes,0.1.4,TrainsUK1,6,Median Lateness,INT16,48551,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.74,5.93
 FastLanes,0.1.4,TrainsUK1,7,Operator Name,FLS_STR,41789,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,5.10
-FastLanes,0.1.4,TrainsUK1,8,Operator,FLS_STR,41509,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.4,TrainsUK1,8,Operator,FLS_STR,41510,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
 FastLanes,0.1.4,TrainsUK1,9,Pathing Allowance (mins),INT16,23605,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.36,2.88
 FastLanes,0.1.4,TrainsUK1,10,Performance Allowance (mins),INT8,3639,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.06,0.44
 FastLanes,0.1.4,TrainsUK1,11,Planned Dest Location Full Name,FLS_STR,73466,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.12,8.97
-FastLanes,0.1.4,TrainsUK1,12,Planned Origin Location Full Name,FLS_STR,71254,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.70
+FastLanes,0.1.4,TrainsUK1,12,Planned Origin Location Full Name,FLS_STR,71255,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.70
 FastLanes,0.1.4,TrainsUK1,13,Punctuality Threshold,INT16,8581,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.13,1.05
 FastLanes,0.1.4,TrainsUK1,14,RT%,INT64,149490,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",2.28,18.25
 FastLanes,0.1.4,TrainsUK1,15,Ranking,INT16,56012,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.85,6.84
 FastLanes,0.1.4,TrainsUK1,16,Section Start Location Full Name,FLS_STR,108021,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.65,13.19
-FastLanes,0.1.4,TrainsUK1,17,Section Start Location Name,FLS_STR,127162,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.94,15.52
+FastLanes,0.1.4,TrainsUK1,17,Section Start Location Name,FLS_STR,127157,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.94,15.52
 FastLanes,0.1.4,TrainsUK1,18,Time-to-10%,INT64,100422,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.53,12.26
 FastLanes,0.1.4,TrainsUK1,19,Time-to-2%,INT64,136906,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",2.09,16.71
 FastLanes,0.1.4,TrainsUK1,20,Time-to-5%,INT64,118138,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.80,14.42
@@ -1363,27 +1363,27 @@ FastLanes,0.1.4,TrainsUK1,23,v_Headcode Description,FLS_STR,137990,"{[EXP_FSST_D
 FastLanes,0.1.4,TrainsUK1,24,v_Section_WTT_Time,FLS_STR,1782,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.22
 FastLanes,0.1.4,TrainsUK1,25,v_WTT and Section Name and Timing Event,FLS_STR,356197,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.44,43.48
 FastLanes,0.1.4,TrainsUK1,26,Calculation_2480421151322357,FLS_STR,25011,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.05
-FastLanes,0.1.4,TrainsUK1,27,Calculation_0430624152715434,FLS_STR,100105,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.53,12.22
+FastLanes,0.1.4,TrainsUK1,27,Calculation_0430624152715434,FLS_STR,100106,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.53,12.22
 FastLanes,0.1.4,TrainsUK2,0,Actual Total Distance Miles,INT32,97774,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.49,11.94
-FastLanes,0.1.4,TrainsUK2,1,Date,FLS_STR,1024,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.12
+FastLanes,0.1.4,TrainsUK2,1,Date,INT64,362,"{[EXP_CROSS_RLE_I64][0, 1]}",0.01,0.04
 FastLanes,0.1.4,TrainsUK2,2,Financial Year & Period,FLS_STR,72,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
 FastLanes,0.1.4,TrainsUK2,3,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,TrainsUK2,4,Operator,FLS_STR,41539,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
-FastLanes,0.1.4,TrainsUK2,5,Planned Dest Actual Datetime,FLS_STR,135620,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.07,16.56
-FastLanes,0.1.4,TrainsUK2,6,Planned Dest GBTT Datetime,FLS_STR,136424,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.08,16.65
-FastLanes,0.1.4,TrainsUK2,7,Planned Dest Stanox Description,FLS_STR,81827,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.25,9.99
+FastLanes,0.1.4,TrainsUK2,5,Planned Dest Actual Datetime,INT64,126946,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.94,15.50
+FastLanes,0.1.4,TrainsUK2,6,Planned Dest GBTT Datetime,INT64,127114,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.94,15.52
+FastLanes,0.1.4,TrainsUK2,7,Planned Dest Stanox Description,FLS_STR,81820,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.25,9.99
 FastLanes,0.1.4,TrainsUK2,8,Planned Dest Stanox,INT32,77866,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.19,9.51
-FastLanes,0.1.4,TrainsUK2,9,Planned Dest WTT Datetime,FLS_STR,160432,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.45,19.58
+FastLanes,0.1.4,TrainsUK2,9,Planned Dest WTT Datetime,INT64,147322,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",2.25,17.98
 FastLanes,0.1.4,TrainsUK2,10,Planned Orig Stanox Description,FLS_STR,84231,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.29,10.28
 FastLanes,0.1.4,TrainsUK2,11,Planned Orig Stanox,INT32,80006,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.22,9.77
-FastLanes,0.1.4,TrainsUK2,12,Planned Origin Actual Datetime,FLS_STR,107364,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.64,13.11
-FastLanes,0.1.4,TrainsUK2,13,Planned Origin GBTT Datetime,FLS_STR,93768,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.43,11.45
-FastLanes,0.1.4,TrainsUK2,14,Planned Origin WTT Datetime,FLS_STR,105039,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.60,12.82
+FastLanes,0.1.4,TrainsUK2,12,Planned Origin Actual Datetime,INT64,99174,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.51,12.11
+FastLanes,0.1.4,TrainsUK2,13,Planned Origin GBTT Datetime,INT64,49444,"{[EXP_CROSS_RLE_I64][0, 1]}",0.75,6.04
+FastLanes,0.1.4,TrainsUK2,14,Planned Origin WTT Datetime,INT64,85376,"{[EXP_RLE_I64_U16][0, 1, 2, 3, 4]}",1.30,10.42
 FastLanes,0.1.4,TrainsUK2,15,Planned Total Distance Miles,INT32,97146,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.48,11.86
 FastLanes,0.1.4,TrainsUK2,16,Service Group Code,FLS_STR,58596,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.15
-FastLanes,0.1.4,TrainsUK2,17,Service Group Description,FLS_STR,2082,"{[EXP_FSST_DICT_STR_U08][16, 0, 1, 2]}",0.03,0.25
+FastLanes,0.1.4,TrainsUK2,17,Service Group Description,FLS_STR,2081,"{[EXP_FSST_DICT_STR_U08][16, 0, 1, 2]}",0.03,0.25
 FastLanes,0.1.4,TrainsUK2,18,TSC,INT32,75974,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.16,9.27
-FastLanes,0.1.4,TrainsUK2,19,Train ID,FLS_STR,388243,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.92,47.39
+FastLanes,0.1.4,TrainsUK2,19,Train ID,FLS_STR,388244,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.92,47.39
 FastLanes,0.1.4,TrainsUK2,20,v_CaSL Flag,INT8,5541,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.08,0.68
 FastLanes,0.1.4,TrainsUK2,21,v_Dest Lateness (GBTT),INT16,45546,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.69,5.56
 FastLanes,0.1.4,TrainsUK2,22,v_Dest Lateness (WTT),INT16,52635,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.80,6.43
@@ -1400,7 +1400,7 @@ FastLanes,0.1.4,TrainsUK2,32,Calculation_4220604162631191,FLS_STR,155765,"{[EXP_
 FastLanes,0.1.4,TrainsUK2,33,Calculation_5580608170646388,FLS_STR,0,"{[EXP_EQUAL][30]}",0.00,0.00
 FastLanes,0.1.4,TrainsUK2,34,Calculation_6080608165132814,FLS_STR,135594,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.07,16.55
 FastLanes,0.1.4,TrainsUK2,35,Calculation_9230610113105724,INT8,8579,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.13,1.05
-FastLanes,0.1.4,TrainsUK2,36,Date (group),FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.4,TrainsUK2,36,Date (group),INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,USCensus,0,ACCESS,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,USCensus,1,ACR,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,USCensus,2,ADJHSG,INT32,0,"{[EXP_CONSTANT_I32][]}",0.00,0.00
@@ -1924,7 +1924,7 @@ FastLanes,0.1.4,Uberlandia,0,Calculation_838513981443702785,FLS_STR,98455,"{[EXP
 FastLanes,0.1.4,Uberlandia,1,Calculation_838513981462429699,FLS_STR,530749,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.10,64.79
 FastLanes,0.1.4,Uberlandia,2,Codigo Diploma/Certificado,FLS_STR,63399,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.97,7.74
 FastLanes,0.1.4,Uberlandia,3,Cor da Pele,FLS_STR,2100,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.26
-FastLanes,0.1.4,Uberlandia,4,Data Diploma/Certificado,FLS_STR,82840,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.26,10.11
+FastLanes,0.1.4,Uberlandia,4,Data Diploma/Certificado,INT64,50447,"{[EXP_FREQUENCY_I64][0, 1, 2, 3]}",0.77,6.16
 FastLanes,0.1.4,Uberlandia,5,Data Pré-Matricula,INT16,1924,"{[EXP_CROSS_RLE_I16][0, 1]}",0.03,0.23
 FastLanes,0.1.4,Uberlandia,6,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,Uberlandia,7,ch_catalogo_guia,INT16,16736,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.26,2.04
@@ -1939,8 +1939,8 @@ FastLanes,0.1.4,Uberlandia,15,cod_ibge_da_ue,INT32,82148,"{[EXP_RLE_I32_U16][0, 
 FastLanes,0.1.4,Uberlandia,16,cod_ibge_do_local_da_oferta,INT32,82272,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",1.26,10.04
 FastLanes,0.1.4,Uberlandia,17,codigo_da_oferta,INT32,10142,"{[EXP_DICT_I32_U16][0, 0]}",0.15,1.24
 FastLanes,0.1.4,Uberlandia,18,codigo_do_curso,INT32,69482,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.06,8.48
-FastLanes,0.1.4,Uberlandia,19,comunidade_quilombola,FLS_STR,360,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.01,0.04
-FastLanes,0.1.4,Uberlandia,20,cpf aluno,FLS_STR,373231,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.70,45.56
+FastLanes,0.1.4,Uberlandia,19,comunidade_quilombola,FLS_STR,359,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.01,0.04
+FastLanes,0.1.4,Uberlandia,20,cpf aluno,FLS_STR,373232,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.70,45.56
 FastLanes,0.1.4,Uberlandia,21,data de confirmacao,INT16,477,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.06
 FastLanes,0.1.4,Uberlandia,22,data de nascimento aluno,INT16,115304,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.76,14.08
 FastLanes,0.1.4,Uberlandia,23,data_da_publicacao,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
@@ -1948,7 +1948,7 @@ FastLanes,0.1.4,Uberlandia,24,data_de_conclusao,FLS_STR,10264,"{[EXP_CROSS_RLE_S
 FastLanes,0.1.4,Uberlandia,25,data_de_inicio,INT16,904,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.11
 FastLanes,0.1.4,Uberlandia,26,data_de_previsaode_termino,INT16,16894,"{[EXP_CROSS_RLE_I16][0, 1]}",0.26,2.06
 FastLanes,0.1.4,Uberlandia,27,desempregado,FLS_STR,151,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
-FastLanes,0.1.4,Uberlandia,28,ds_email,FLS_STR,666882,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.18,81.41
+FastLanes,0.1.4,Uberlandia,28,ds_email,FLS_STR,666883,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.18,81.41
 FastLanes,0.1.4,Uberlandia,29,ds_identificador_turma,FLS_STR,130414,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.99,15.92
 FastLanes,0.1.4,Uberlandia,30,ds_tipo_beneficiario,FLS_STR,1078,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.13
 FastLanes,0.1.4,Uberlandia,31,dt_cadastro,FLS_STR,115602,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.76,14.11
@@ -1962,7 +1962,7 @@ FastLanes,0.1.4,Uberlandia,38,escolaridade_catalogo_guia,FLS_STR,1496,"{[EXP_CRO
 FastLanes,0.1.4,Uberlandia,39,forma_ingresso,FLS_STR,2389,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.29
 FastLanes,0.1.4,Uberlandia,40,instituicao,FLS_STR,21795,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.33,2.66
 FastLanes,0.1.4,Uberlandia,41,mantenedora,FLS_STR,48276,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.74,5.89
-FastLanes,0.1.4,Uberlandia,42,municipio_da_ue,FLS_STR,75743,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.16,9.25
+FastLanes,0.1.4,Uberlandia,42,municipio_da_ue,FLS_STR,75738,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.16,9.25
 FastLanes,0.1.4,Uberlandia,43,municipio_do_local_da_oferta,FLS_STR,78213,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.19,9.55
 FastLanes,0.1.4,Uberlandia,44,no_dependencia_admin,FLS_STR,15570,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.24,1.90
 FastLanes,0.1.4,Uberlandia,45,no_modalidade,FLS_STR,217,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
@@ -1975,8 +1975,8 @@ FastLanes,0.1.4,Uberlandia,51,nome da sit matricula (situacao detalhada),FLS_STR
 FastLanes,0.1.4,Uberlandia,52,nome_curso_catalogo_guia,FLS_STR,58432,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.13
 FastLanes,0.1.4,Uberlandia,53,nome_da_ue,FLS_STR,92374,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.41,11.28
 FastLanes,0.1.4,Uberlandia,54,nome_da_uer,FLS_STR,17969,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.27,2.19
-FastLanes,0.1.4,Uberlandia,55,nome_do_curso,FLS_STR,73286,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.12,8.95
-FastLanes,0.1.4,Uberlandia,56,nu_telefone,FLS_STR,285671,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.36,34.87
+FastLanes,0.1.4,Uberlandia,55,nome_do_curso,FLS_STR,73285,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.12,8.95
+FastLanes,0.1.4,Uberlandia,56,nu_telefone,FLS_STR,285670,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.36,34.87
 FastLanes,0.1.4,Uberlandia,57,nu_telefone_celular,FLS_STR,1718,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.21
 FastLanes,0.1.4,Uberlandia,58,oferta_cadastro_online,FLS_STR,2217,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.03,0.27
 FastLanes,0.1.4,Uberlandia,59,pcd,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -1990,7 +1990,7 @@ FastLanes,0.1.4,Uberlandia,66,st_extemporaneo_turma,FLS_STR,266,"{[EXP_CROSS_RLE
 FastLanes,0.1.4,Uberlandia,67,st_financiavel,FLS_STR,37,"{[EXP_FSST_DICT_STR_U08][58, 0, 1, 2]}",0.00,0.00
 FastLanes,0.1.4,Uberlandia,68,subtipo_curso,FLS_STR,1943,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.24
 FastLanes,0.1.4,Uberlandia,69,tipo_da_oferta,FLS_STR,3548,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.43
-FastLanes,0.1.4,Uberlandia,70,tipo_do_local_da_oferta,FLS_STR,1955,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.24
+FastLanes,0.1.4,Uberlandia,70,tipo_do_local_da_oferta,FLS_STR,1956,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.24
 FastLanes,0.1.4,Uberlandia,71,total_conf_freq_aluno,FLS_STR,40312,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.62,4.92
 FastLanes,0.1.4,Uberlandia,72,total_freq_aluno,INT8,39973,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.61,4.88
 FastLanes,0.1.4,Uberlandia,73,transferencia_renda,FLS_STR,1112,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.14
@@ -2242,13 +2242,13 @@ FastLanes,0.1.4,Wins,237,tLJKY,FLS_STR,103684,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_
 FastLanes,0.1.4,Wins,238,tLRACETEXT,FLS_STR,109433,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.67,13.36
 FastLanes,0.1.4,Wins,239,tLTRIP,FLS_STR,621086,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",9.48,75.82
 FastLanes,0.1.4,Wins,240,tLTRK,FLS_STR,58212,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.89,7.11
-FastLanes,0.1.4,Wins,241,tLTRN,FLS_STR,170698,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.60,20.84
+FastLanes,0.1.4,Wins,241,tLTRN,FLS_STR,170697,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.60,20.84
 FastLanes,0.1.4,Wins,242,tOWNER,FLS_STR,327496,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",5.00,39.98
 FastLanes,0.1.4,Wins,243,tPGM,INT8,34198,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.52,4.17
 FastLanes,0.1.4,Wins,244,tPOST,FLS_STR,80761,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.23,9.86
 FastLanes,0.1.4,Wins,245,tTPG,FLS_STR,33719,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.51,4.12
 FastLanes,0.1.4,Wins,246,tTRK,FLS_STR,48675,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.74,5.94
-FastLanes,0.1.4,Wins,247,tTRN,FLS_STR,170823,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.61,20.85
+FastLanes,0.1.4,Wins,247,tTRN,FLS_STR,170824,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.61,20.85
 FastLanes,0.1.4,Wins,248,tWK1,FLS_STR,50881,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.78,6.21
 FastLanes,0.1.4,Wins,249,tWK2,FLS_STR,50961,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.78,6.22
 FastLanes,0.1.4,Wins,250,tWK3,FLS_STR,48674,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.74,5.94
@@ -2259,10 +2259,10 @@ FastLanes,0.1.4,Wins,254,xPL,INT8,12,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.00
 FastLanes,0.1.4,Wins,255,xSHO,INT16,57621,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.88,7.03
 FastLanes,0.1.4,Wins,256,xWIN,INT16,35939,"{[EXP_FREQUENCY_I16][0, 1, 2, 3]}",0.55,4.39
 FastLanes,0.1.4,YaleLanguages,0,BEGIN_PUB_DATE,FLS_STR,67793,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.03,8.28
-FastLanes,0.1.4,YaleLanguages,1,BIB_FORMAT,FLS_STR,19239,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.29,2.35
+FastLanes,0.1.4,YaleLanguages,1,BIB_FORMAT,FLS_STR,19240,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.29,2.35
 FastLanes,0.1.4,YaleLanguages,2,BIB_ID,INT32,191872,"{[EXP_FFOR_I32][0, 1, 2]}",2.93,23.42
 FastLanes,0.1.4,YaleLanguages,3,CALL_NO_TYPE,FLS_STR,8743,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.07
-FastLanes,0.1.4,YaleLanguages,4,CHARGE_DATE,FLS_STR,124881,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.91,15.24
+FastLanes,0.1.4,YaleLanguages,4,CHARGE_DATE,INT64,117962,"{[EXP_DICT_I64_FFOR_U16][0, 1, 2, 3]}",1.80,14.40
 FastLanes,0.1.4,YaleLanguages,5,CLASS_BROAD,FLS_STR,38480,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.59,4.70
 FastLanes,0.1.4,YaleLanguages,6,CLASS_GROUP,FLS_STR,16864,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
 FastLanes,0.1.4,YaleLanguages,7,CLASS_LETTER,FLS_STR,66758,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.02,8.15
@@ -2270,7 +2270,7 @@ FastLanes,0.1.4,YaleLanguages,8,CLASS_NARROW,FLS_STR,69412,"{[EXP_FSST_DICT_STR_
 FastLanes,0.1.4,YaleLanguages,9,DATE,FLS_STR,0,"{[EXP_EQUAL][0]}",0.00,0.00
 FastLanes,0.1.4,YaleLanguages,10,DATE_RANGE_CENTURY,FLS_STR,10816,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.17,1.32
 FastLanes,0.1.4,YaleLanguages,11,DATE_RANGE_DECADE,FLS_STR,40208,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.61,4.91
-FastLanes,0.1.4,YaleLanguages,12,DISCHARGE_DATE,FLS_STR,17392,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.27,2.12
+FastLanes,0.1.4,YaleLanguages,12,DISCHARGE_DATE,INT64,6148,"{[EXP_CROSS_RLE_I64][0, 1]}",0.09,0.75
 FastLanes,0.1.4,YaleLanguages,13,ID,INT16,65936,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",1.01,8.05
 FastLanes,0.1.4,YaleLanguages,14,ID1,INT16,642,"{[EXP_DICT_I16_U16][0, 0]}",0.01,0.08
 FastLanes,0.1.4,YaleLanguages,15,LANGUAGE,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
@@ -2279,7 +2279,7 @@ FastLanes,0.1.4,YaleLanguages,17,LC_NARROW,FLS_STR,66953,"{[EXP_FSST_DICT_STR_FF
 FastLanes,0.1.4,YaleLanguages,18,MFHD_ID,INT32,191890,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.93,23.42
 FastLanes,0.1.4,YaleLanguages,19,Number of Records,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
 FastLanes,0.1.4,YaleLanguages,20,PATRON_GROUP_CODE,FLS_STR,39299,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.60,4.80
-FastLanes,0.1.4,YaleLanguages,21,PATRON_GROUP_DISPLAY,FLS_STR,662,"{[EXP_FSST_DICT_STR_U08][20, 0, 1, 2]}",0.01,0.08
+FastLanes,0.1.4,YaleLanguages,21,PATRON_GROUP_DISPLAY,FLS_STR,663,"{[EXP_FSST_DICT_STR_U08][20, 0, 1, 2]}",0.01,0.08
 FastLanes,0.1.4,YaleLanguages,22,PATRON_GROUP_ID,INT8,35,"{[EXP_DICT_I08_U08][20, 0]}",0.00,0.00
 FastLanes,0.1.4,YaleLanguages,23,PATRON_GROUP_ID1,INT8,0,"{[EXP_EQUAL][22]}",0.00,0.00
 FastLanes,0.1.4,YaleLanguages,24,PATRON_GROUP_NAME,FLS_STR,702,"{[EXP_FSST_DICT_STR_U08][20, 0, 1, 2]}",0.01,0.09
