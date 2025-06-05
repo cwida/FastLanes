@@ -91,8 +91,12 @@ int64_t parse_timestamp(std::string_view ts) {
 				while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
 					++end;
 				}
+				// if next char is digit, fractional too long
+				if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end]))) {
+					throw std::invalid_argument("Fraction must have 1-6 digits");
+				}
 				std::size_t len = end - start;
-				if (len == 0 || len > 6) {
+				if (len == 0) {
 					throw std::invalid_argument("Fraction must have 1-6 digits");
 				}
 				auto    frac_str = ts.substr(start, len);
@@ -179,8 +183,12 @@ int64_t parse_timestamp(std::string_view ts) {
 		while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
 			++end;
 		}
+		// if next char is digit, fractional too long
+		if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end]))) {
+			throw std::invalid_argument("Fraction must have 1-6 digits");
+		}
 		std::size_t len = end - start;
-		if (len == 0 || len > 6) {
+		if (len == 0) {
 			throw std::invalid_argument("Fraction must have 1-6 digits");
 		}
 		auto    frac_str = ts.substr(start, len);
@@ -260,7 +268,7 @@ std::string timestamp_formatter(int64_t micros_since_epoch) {
 	const unsigned M        = static_cast<unsigned>(m_signed);
 	const unsigned D        = doy - (153 * mp + 2) / 5 + 1; // 1-31
 
-	// year adjustment: add 1 if month Jan/Feb (M <= 2)
+	// year adjustment: add 1 if month Jan/Feb (M ≤ 2)
 	int     Y_int;
 	int64_t Y_calc = y_full + (M <= 2 ? 1 : 0);
 	if (Y_calc > std::numeric_limits<int>::max() || Y_calc < std::numeric_limits<int>::min())
