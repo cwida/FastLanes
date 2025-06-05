@@ -1,4 +1,4 @@
-// test/src/unit_tests/timestamp_with_offset_test.cpp
+// test/src/unit_tests/parse_timestamp_with_offset_test.cpp
 
 #include "fls/types/timestamp.hpp"
 #include <gtest/gtest.h>

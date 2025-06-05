@@ -5,7 +5,8 @@ add_executable(unit_test
         decimal_test.cpp
         parse_integer_test.cpp
         parse_timestamp_test.cpp
-        timestamp_with_offset_test.cpp
+        parse_timestamp_12hour_test.cpp
+        parse_timestamp_with_offset_test.cpp
         sampling_layout_test.cpp
 )
 
