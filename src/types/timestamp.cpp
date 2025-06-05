@@ -1,5 +1,6 @@
 // src/types/timestamp.cpp
 #include "fls/types/timestamp.hpp"
+#include <cctype>
 #include <charconv>
 #include <chrono>
 #include <cmath> // std::llabs
@@ -85,13 +86,22 @@ int64_t parse_timestamp(std::string_view ts) {
 		std::size_t               posFrac = 17; // index after "MM/DD/YY hh:mm:ss"
 		if (posFrac < ts.size()) {
 			if (ts[posFrac] == '.') {
-				auto frac_part = ts.substr(posFrac + 1);
-				if (frac_part.empty() || frac_part.size() > 6)
+				std::size_t start = posFrac + 1;
+				std::size_t end   = start;
+				while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
+					++end;
+				}
+				std::size_t len = end - start;
+				if (len == 0 || len > 6) {
 					throw std::invalid_argument("Fraction must have 1-6 digits");
-				int64_t val = to_int<int64_t>(frac_part, "fractional seconds");
-				for (std::size_t pad = 6 - frac_part.size(); pad; --pad)
+				}
+				auto    frac_str = ts.substr(start, len);
+				int64_t val      = to_int<int64_t>(frac_str, "fractional seconds");
+				for (std::size_t pad = 6 - len; pad; --pad) {
 					val *= 10;
+				}
 				frac_us = std::chrono::microseconds {val};
+				posFrac = end;
 			} else {
 				throw std::invalid_argument("Expected '.' before fraction");
 			}
@@ -164,14 +174,22 @@ int64_t parse_timestamp(std::string_view ts) {
 	std::chrono::microseconds frac_us {0};
 	std::size_t               posFrac = posT + 9; // just after “hh:mm:ss”
 	if (posFrac < ts.size() && ts[posFrac] == '.') {
-		auto frac_part = ts.substr(posFrac + 1);
-		if (frac_part.empty() || frac_part.size() > 6)
+		std::size_t start = posFrac + 1;
+		std::size_t end   = start;
+		while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
+			++end;
+		}
+		std::size_t len = end - start;
+		if (len == 0 || len > 6) {
 			throw std::invalid_argument("Fraction must have 1-6 digits");
-		int64_t val = to_int<int64_t>(frac_part, "fractional seconds");
-		for (std::size_t pad = 6 - frac_part.size(); pad; --pad)
-			val *= 10; // right-pad to microseconds
+		}
+		auto    frac_str = ts.substr(start, len);
+		int64_t val      = to_int<int64_t>(frac_str, "fractional seconds");
+		for (std::size_t pad = 6 - len; pad; --pad) {
+			val *= 10;
+		}
 		frac_us = std::chrono::microseconds {val};
-		posFrac += 1 + frac_part.size(); // advance past '.' and digits
+		posFrac = end;
 	}
 
 	// 5) optional timezone offset [+/-HH:MM]
@@ -179,9 +197,13 @@ int64_t parse_timestamp(std::string_view ts) {
 	int offset_h = 0, offset_m = 0;
 	if (posFrac < ts.size() && (ts[posFrac] == '+' || ts[posFrac] == '-')) {
 		offset_sign = (ts[posFrac] == '+') ? +1 : -1;
-		// expect HH:MM after sign
-		if (posFrac + 6 > ts.size() || ts[posFrac + 3] != ':')
+		// expect exactly 6 chars: hh:mm
+		if (posFrac + 6 > ts.size() || !std::isdigit(static_cast<unsigned char>(ts[posFrac + 1])) ||
+		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 2])) || ts[posFrac + 3] != ':' ||
+		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 4])) ||
+		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 5]))) {
 			throw std::invalid_argument("Invalid timezone offset format");
+		}
 		auto off_hour_str = ts.substr(posFrac + 1, 2);
 		auto off_min_str  = ts.substr(posFrac + 4, 2);
 		offset_h          = to_int<int>(off_hour_str, "tz hour");
