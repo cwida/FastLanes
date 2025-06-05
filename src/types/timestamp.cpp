@@ -3,7 +3,7 @@
 #include <cctype>
 #include <charconv>
 #include <chrono>
-#include <cmath> // std::llabs
+#include <cmath>
 #include <cstdint>
 #include <format>
 #include <limits>
@@ -18,7 +18,7 @@ constexpr int64_t K_MICROS_PER_MINUTE = 60LL * K_MICROS_PER_SECOND;
 constexpr int64_t K_MICROS_PER_HOUR   = 60LL * K_MICROS_PER_MINUTE;
 constexpr int64_t K_MICROS_PER_DAY    = 24LL * K_MICROS_PER_HOUR;
 
-// ⌊INT64_MAX / 86 400 000 000⌋  ≈ 106 751 991
+// Hard guard: ⌊INT64_MAX / 86 400 000 000⌋
 constexpr int64_t K_MAX_ABS_DAYS = std::numeric_limits<int64_t>::max() / K_MICROS_PER_DAY;
 
 constexpr int      kEpochYear  = 1970;
@@ -27,7 +27,7 @@ constexpr unsigned kEpochDay   = 1;
 
 // ───────────────────────── helpers ────────────────────────────
 template <typename INT>
-[[nodiscard]] static INT to_int(std::string_view s, const char* field) {
+[[nodiscard]] INT to_int(std::string_view s, const char* field) {
 	INT v {};
 	auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), v);
 	if (ec != std::errc {} || ptr != s.data() + s.size())
@@ -35,265 +35,218 @@ template <typename INT>
 	return v;
 }
 
-// Days from 1970-01-01 using Howard Hinnant algorithm
+// Howard Hinnant civil-to-days
 static int64_t civil_to_days(int y, unsigned m, unsigned d) {
 	if (m <= 2) {
 		--y;
 		m += 12;
 	}
-	const int64_t     era               = y / 400;
-	const int64_t     yoe               = static_cast<int64_t>(y) - era * 400;   // [0,399]
-	const int64_t     doy               = (153 * (m - 3) + 2) / 5 + d - 1;       // [0,365]
-	const int64_t     doe               = yoe * 365 + yoe / 4 - yoe / 100 + doy; // [0,146096]
-	constexpr int64_t days_0000_to_1970 = 719468;                                // 0000-03-01 → 1970-01-01
-	return era * 146097 + doe - days_0000_to_1970;
+	const int64_t     era            = y / 400;
+	const int64_t     yoe            = static_cast<int64_t>(y) - era * 400;   // [0,399]
+	const int64_t     doy            = (153 * (m - 3) + 2) / 5 + d - 1;       // [0,365]
+	const int64_t     doe            = yoe * 365 + yoe / 4 - yoe / 100 + doy; // [0,146096]
+	constexpr int64_t DAYS_0000_1970 = 719468;
+	return era * 146097 + doe - DAYS_0000_1970;
+}
+
+// Guard helper
+static void guard_days_range(int y, unsigned m, unsigned d) {
+	int64_t diff = civil_to_days(y, m, d) - civil_to_days(kEpochYear, kEpochMonth, kEpochDay);
+	if (std::llabs(diff) > K_MAX_ABS_DAYS)
+		throw std::out_of_range("Timestamp out of int64 range");
 }
 
 // ─────────────────────── parse_timestamp ──────────────────────
 int64_t parse_timestamp(std::string_view ts) {
-	// ── support "MM/DD/YY hh:mm:ss[.ffffff]" (two-digit year → 2000+YY) ──
+	// ── branch A “MM/DD/YY hh:mm:ss[.ffffff][±HH[:MM]]” ────────
 	if (ts.size() >= 17 && ts[2] == '/' && ts[5] == '/' && ts[8] == ' ' && ts[11] == ':' && ts[14] == ':') {
-		// parse month, day, two-digit year
-		auto month_str = ts.substr(0, 2);
-		auto day_str   = ts.substr(3, 2);
-		auto year2_str = ts.substr(6, 2);
-		int  mon       = to_int<int>(month_str, "month");
-		int  day       = to_int<int>(day_str, "day");
-		int  yr2       = to_int<int>(year2_str, "year");
-		int  year      = 2000 + yr2;
+		int mon    = to_int<int>(ts.substr(0, 2), "month");
+		int day    = to_int<int>(ts.substr(3, 2), "day");
+		int year   = 2000 + to_int<int>(ts.substr(6, 2), "year");
+		int hour   = to_int<int>(ts.substr(9, 2), "hour");
+		int minute = to_int<int>(ts.substr(12, 2), "minute");
+		int second = to_int<int>(ts.substr(15, 2), "second");
 
-		// parse hh:mm:ss
-		auto hour_str   = ts.substr(9, 2);
-		auto minute_str = ts.substr(12, 2);
-		auto second_str = ts.substr(15, 2);
-		int  hour       = to_int<int>(hour_str, "hour");
-		int  minute     = to_int<int>(minute_str, "minute");
-		int  second     = to_int<int>(second_str, "second");
+		if (!(1 <= mon && mon <= 12) || !(1 <= day && day <= 31) || !(0 <= hour && hour <= 23) ||
+		    !(0 <= minute && minute <= 59) || !(0 <= second && second <= 59))
+			throw std::invalid_argument("Date-time component out of range");
 
-		if (!(1 <= mon && mon <= 12))
-			throw std::invalid_argument("Month out of range");
-		if (!(1 <= day && day <= 31))
-			throw std::invalid_argument("Day out of range");
-		if (!(0 <= hour && hour <= 23))
-			throw std::invalid_argument("Hour out of range");
-		if (!(0 <= minute && minute <= 59))
-			throw std::invalid_argument("Minute out of range");
-		if (!(0 <= second && second <= 59))
-			throw std::invalid_argument("Second out of range");
+		guard_days_range(year, static_cast<unsigned>(mon), static_cast<unsigned>(day));
 
-		// fractional microseconds (optional)
-		std::chrono::microseconds frac_us {0};
-		std::size_t               posFrac = 17; // index after "MM/DD/YY hh:mm:ss"
-		if (posFrac < ts.size()) {
-			if (ts[posFrac] == '.') {
-				std::size_t start = posFrac + 1;
-				std::size_t end   = start;
-				while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
-					++end;
-				}
-				// if next char is digit, fractional too long
-				if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end]))) {
-					throw std::invalid_argument("Fraction must have 1-6 digits");
-				}
-				std::size_t len = end - start;
-				if (len == 0) {
-					throw std::invalid_argument("Fraction must have 1-6 digits");
-				}
-				auto    frac_str = ts.substr(start, len);
-				int64_t val      = to_int<int64_t>(frac_str, "fractional seconds");
-				for (std::size_t pad = 6 - len; pad; --pad) {
-					val *= 10;
-				}
-				frac_us = std::chrono::microseconds {val};
-				posFrac = end;
-			} else {
-				throw std::invalid_argument("Expected '.' before fraction");
-			}
+		// fraction
+		std::chrono::microseconds frac {0};
+		std::size_t               idx = 17;
+		if (idx < ts.size() && ts[idx] == '.') {
+			std::size_t start = ++idx, end = start;
+			while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6)
+				++end;
+			if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])))
+				throw std::invalid_argument("Fraction must have 1-6 digits");
+			if (start == end)
+				throw std::invalid_argument("Fraction must have 1-6 digits");
+			int64_t v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
+			for (std::size_t pad = 6 - (end - start); pad; --pad)
+				v *= 10;
+			frac = std::chrono::microseconds {v};
+			idx  = end;
 		}
 
-		// build chrono date
-		const std::chrono::year           y {year};
-		const std::chrono::month          m {static_cast<unsigned>(mon)};
-		const std::chrono::day            d {static_cast<unsigned>(day)};
-		const std::chrono::year_month_day ymd {y / m / d};
-		if (!ymd.ok())
-			throw std::invalid_argument("Date out of range in timestamp");
-		auto date_days = std::chrono::sys_days {ymd};
+		// offset
+		int sign = 0, off_h = 0, off_m = 0;
+		if (idx < ts.size() && (ts[idx] == '+' || ts[idx] == '-')) {
+			sign = ts[idx++] == '+' ? +1 : -1;
+			if (idx + 1 >= ts.size() || !std::isdigit(static_cast<unsigned char>(ts[idx])) ||
+			    !std::isdigit(static_cast<unsigned char>(ts[idx + 1])))
+				throw std::invalid_argument("Invalid timezone offset format");
+			off_h = (ts[idx] - '0') * 10 + (ts[idx + 1] - '0');
+			if (!(0 <= off_h && off_h <= 23))
+				throw std::invalid_argument("TZ hour out of range");
+			idx += 2;
 
-		// compute microseconds difference
-		auto td = date_days + std::chrono::hours {hour} + std::chrono::minutes {minute} +
-		          std::chrono::seconds {second} + frac_us -
-		          std::chrono::sys_days {std::chrono::year {kEpochYear} / std::chrono::month {kEpochMonth} /
-		                                 std::chrono::day {kEpochDay}};
+			if (idx == ts.size()) {
+				// +HH
+			} else if (ts[idx] == ':' && idx + 2 < ts.size() && std::isdigit(static_cast<unsigned char>(ts[idx + 1])) &&
+			           std::isdigit(static_cast<unsigned char>(ts[idx + 2]))) {
+				off_m = (ts[idx + 1] - '0') * 10 + (ts[idx + 2] - '0');
+				if (!(0 <= off_m && off_m <= 59))
+					throw std::invalid_argument("TZ minute out of range");
+				idx += 3;
+				if (idx != ts.size())
+					throw std::invalid_argument("Invalid trailing characters in offset");
+			} else {
+				throw std::invalid_argument("Invalid timezone offset format");
+			}
+		} else if (idx != ts.size()) {
+			throw std::invalid_argument("Unexpected trailing characters");
+		}
 
-		int64_t count = td.count();
-		if (td < std::chrono::microseconds {std::numeric_limits<int64_t>::min()} ||
-		    td > std::chrono::microseconds {std::numeric_limits<int64_t>::max()})
-			throw std::out_of_range("Timestamp out of int64 range");
-		return count;
+		// chrono
+		auto epoch = std::chrono::sys_days {std::chrono::year {kEpochYear} / std::chrono::month {kEpochMonth} /
+		                                    std::chrono::day {kEpochDay}};
+		std::chrono::year_month_day ymd {std::chrono::year {year} / std::chrono::month {static_cast<unsigned>(mon)} /
+		                                 std::chrono::day {static_cast<unsigned>(day)}};
+		auto tp = std::chrono::sys_days {ymd} + std::chrono::hours {hour} + std::chrono::minutes {minute} +
+		          std::chrono::seconds {second} + frac - std::chrono::hours {sign * off_h} -
+		          std::chrono::minutes {sign * off_m};
+
+		return std::chrono::duration_cast<std::chrono::microseconds>(tp - epoch).count();
 	}
 
-	// 1) split YYYY-MM-DD
+	// ── branch B “YYYY-MM-DD[T| ]hh:mm:ss[.ffffff][±HH[:MM]]” ──────────
 	const std::size_t p1 = ts.find('-');
 	const std::size_t p2 = (p1 == std::string_view::npos) ? std::string_view::npos : ts.find('-', p1 + 1);
 	if (p1 == std::string_view::npos || p2 == std::string_view::npos)
-		throw std::invalid_argument("Expected YYYY-MM-DDThh:mm:ss or YYYY-MM-DD hh:mm:ss");
+		throw std::invalid_argument("Expected YYYY-MM-DDThh:mm:ss");
 
-	const auto year_str  = ts.substr(0, p1);
-	const auto month_str = ts.substr(p1 + 1, 2);
-	const auto day_str   = ts.substr(p2 + 1, 2);
+	int      year  = to_int<int>(ts.substr(0, p1), "year");
+	unsigned month = to_int<unsigned>(ts.substr(p1 + 1, 2), "month");
+	unsigned day   = to_int<unsigned>(ts.substr(p2 + 1, 2), "day");
 
-	const std::size_t posT = p2 + 3; // position of 'T' or ' ' after “YYYY-MM-DD”
+	std::size_t posT = p2 + 3;
 	if (posT >= ts.size() || (ts[posT] != 'T' && ts[posT] != ' '))
 		throw std::invalid_argument("Expected 'T' or ' ' after date");
-
-	// 2) ensure hh:mm:ss follows
 	if (ts.size() < posT + 9 || ts[posT + 3] != ':' || ts[posT + 6] != ':')
 		throw std::invalid_argument("Expected hh:mm:ss");
 
-	const auto hour_str   = ts.substr(posT + 1, 2);
-	const auto minute_str = ts.substr(posT + 4, 2);
-	const auto second_str = ts.substr(posT + 7, 2);
+	int hour   = to_int<int>(ts.substr(posT + 1, 2), "hour");
+	int minute = to_int<int>(ts.substr(posT + 4, 2), "minute");
+	int second = to_int<int>(ts.substr(posT + 7, 2), "second");
 
-	// 3) numeric conversion & validation
-	const int      year   = to_int<int>(year_str, "year");
-	const unsigned month  = to_int<unsigned>(month_str, "month");
-	const unsigned day    = to_int<unsigned>(day_str, "day");
-	const int      hour   = to_int<int>(hour_str, "hour");
-	const int      minute = to_int<int>(minute_str, "minute");
-	const int      second = to_int<int>(second_str, "second");
+	if (!(1 <= month && month <= 12) || !(1 <= day && day <= 31) || !(0 <= hour && hour <= 23) ||
+	    !(0 <= minute && minute <= 59) || !(0 <= second && second <= 59))
+		throw std::invalid_argument("Date-time component out of range");
 
-	if (!(1 <= month && month <= 12))
-		throw std::invalid_argument("Month out of range");
-	if (!(1 <= day && day <= 31))
-		throw std::invalid_argument("Day out of range");
-	if (!(0 <= hour && hour <= 23))
-		throw std::invalid_argument("Hour out of range");
-	if (!(0 <= minute && minute <= 59))
-		throw std::invalid_argument("Minute out of range");
-	if (!(0 <= second && second <= 59))
-		throw std::invalid_argument("Second out of range");
+	guard_days_range(year, month, day);
 
-	// 4) fractional microseconds (optional)
-	std::chrono::microseconds frac_us {0};
-	std::size_t               posFrac = posT + 9; // just after “hh:mm:ss”
-	if (posFrac < ts.size() && ts[posFrac] == '.') {
-		std::size_t start = posFrac + 1;
-		std::size_t end   = start;
-		while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6) {
+	// fraction
+	std::size_t               idx = posT + 9;
+	std::chrono::microseconds frac {0};
+	if (idx < ts.size() && ts[idx] == '.') {
+		std::size_t start = ++idx, end = start;
+		while (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])) && (end - start) < 6)
 			++end;
-		}
-		// if next char is digit, fractional too long
-		if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end]))) {
+		if (end < ts.size() && std::isdigit(static_cast<unsigned char>(ts[end])))
 			throw std::invalid_argument("Fraction must have 1-6 digits");
-		}
-		std::size_t len = end - start;
-		if (len == 0) {
+		if (start == end)
 			throw std::invalid_argument("Fraction must have 1-6 digits");
-		}
-		auto    frac_str = ts.substr(start, len);
-		int64_t val      = to_int<int64_t>(frac_str, "fractional seconds");
-		for (std::size_t pad = 6 - len; pad; --pad) {
-			val *= 10;
-		}
-		frac_us = std::chrono::microseconds {val};
-		posFrac = end;
+		int64_t v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
+		for (std::size_t pad = 6 - (end - start); pad; --pad)
+			v *= 10;
+		frac = std::chrono::microseconds {v};
+		idx  = end;
 	}
 
-	// 5) optional timezone offset [+/-HH:MM]
-	int offset_sign = 0;
-	int offset_h = 0, offset_m = 0;
-	if (posFrac < ts.size() && (ts[posFrac] == '+' || ts[posFrac] == '-')) {
-		offset_sign = (ts[posFrac] == '+') ? +1 : -1;
-		// expect exactly 6 chars: hh:mm
-		if (posFrac + 6 > ts.size() || !std::isdigit(static_cast<unsigned char>(ts[posFrac + 1])) ||
-		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 2])) || ts[posFrac + 3] != ':' ||
-		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 4])) ||
-		    !std::isdigit(static_cast<unsigned char>(ts[posFrac + 5]))) {
+	// offset
+	int sign = 0, off_h = 0, off_m = 0;
+	if (idx < ts.size() && (ts[idx] == '+' || ts[idx] == '-')) {
+		sign = ts[idx++] == '+' ? +1 : -1;
+		if (idx + 1 >= ts.size() || !std::isdigit(static_cast<unsigned char>(ts[idx])) ||
+		    !std::isdigit(static_cast<unsigned char>(ts[idx + 1])))
+			throw std::invalid_argument("Invalid timezone offset format");
+		off_h = (ts[idx] - '0') * 10 + (ts[idx + 1] - '0');
+		if (!(0 <= off_h && off_h <= 23))
+			throw std::invalid_argument("TZ hour out of range");
+		idx += 2;
+		if (idx == ts.size()) {
+			// +HH
+		} else if (ts[idx] == ':' && idx + 2 < ts.size() && std::isdigit(static_cast<unsigned char>(ts[idx + 1])) &&
+		           std::isdigit(static_cast<unsigned char>(ts[idx + 2]))) {
+			off_m = (ts[idx + 1] - '0') * 10 + (ts[idx + 2] - '0');
+			if (!(0 <= off_m && off_m <= 59))
+				throw std::invalid_argument("TZ minute out of range");
+			idx += 3;
+			if (idx != ts.size())
+				throw std::invalid_argument("Invalid trailing characters in offset");
+		} else {
 			throw std::invalid_argument("Invalid timezone offset format");
 		}
-		auto off_hour_str = ts.substr(posFrac + 1, 2);
-		auto off_min_str  = ts.substr(posFrac + 4, 2);
-		offset_h          = to_int<int>(off_hour_str, "tz hour");
-		offset_m          = to_int<int>(off_min_str, "tz minute");
-		if (!(0 <= offset_h && offset_h <= 23))
-			throw std::invalid_argument("TZ hour out of range");
-		if (!(0 <= offset_m && offset_m <= 59))
-			throw std::invalid_argument("TZ minute out of range");
+	} else if (idx != ts.size()) {
+		throw std::invalid_argument("Unexpected trailing characters");
 	}
 
-	// 6) days from epoch
-	const int64_t days_from_epoch = civil_to_days(year, month, day) - civil_to_days(kEpochYear, kEpochMonth, kEpochDay);
-	if (std::llabs(days_from_epoch) > K_MAX_ABS_DAYS)
-		throw std::out_of_range("Timestamp out of int64 range");
+	// chrono
+	std::chrono::year_month_day ymd {std::chrono::year {year} / std::chrono::month {month} / std::chrono::day {day}};
+	auto epoch = std::chrono::sys_days {std::chrono::year {kEpochYear} / std::chrono::month {kEpochMonth} /
+	                                    std::chrono::day {kEpochDay}};
+	auto tp    = std::chrono::sys_days {ymd} + std::chrono::hours {hour} + std::chrono::minutes {minute} +
+	          std::chrono::seconds {second} + frac - std::chrono::hours {sign * off_h} -
+	          std::chrono::minutes {sign * off_m};
 
-	// 7) accumulate in 128-bit, clamp to 64-bit
-	__int128 total_us = static_cast<__int128>(days_from_epoch) * K_MICROS_PER_DAY +
-	                    static_cast<__int128>(hour) * K_MICROS_PER_HOUR +
-	                    static_cast<__int128>(minute) * K_MICROS_PER_MINUTE +
-	                    static_cast<__int128>(second) * K_MICROS_PER_SECOND + static_cast<__int128>(frac_us.count());
-
-	// apply timezone adjustment (to UTC): if offset_sign = +1, local = UTC+offset → subtract
-	if (offset_sign != 0) {
-		int64_t tz_us = static_cast<int64_t>(offset_h) * 3600'000'000LL + static_cast<int64_t>(offset_m) * 60'000'000LL;
-		total_us -= static_cast<__int128>(offset_sign) * tz_us;
-	}
-
-	if (total_us > std::numeric_limits<int64_t>::max() || total_us < std::numeric_limits<int64_t>::min())
-		throw std::out_of_range("Timestamp out of int64 range");
-
-	return static_cast<int64_t>(total_us);
+	return std::chrono::duration_cast<std::chrono::microseconds>(tp - epoch).count();
 }
 
 // ───────────────────── timestamp_formatter ────────────────────
-std::string timestamp_formatter(int64_t micros_since_epoch) {
-	// split into days + remainder
-	int64_t days = micros_since_epoch / K_MICROS_PER_DAY;
-	int64_t rem  = micros_since_epoch % K_MICROS_PER_DAY;
+std::string timestamp_formatter(int64_t micros) {
+	int64_t days = micros / K_MICROS_PER_DAY;
+	int64_t rem  = micros % K_MICROS_PER_DAY;
 	if (rem < 0) {
 		rem += K_MICROS_PER_DAY;
 		--days;
 	}
 
-	// convert back to Y-M-D (inverse of civil_to_days)
-	int64_t        z      = days + civil_to_days(kEpochYear, kEpochMonth, kEpochDay) + 719468; // to 0000-03-01 origin
-	const int64_t  era    = (z >= 0 ? z : z - 146096) / 146097;
-	const unsigned doe    = static_cast<unsigned>(z - era * 146097);               // [0,146096]
-	const unsigned yoe    = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365; // [0,399]
-	const int64_t  y_full = yoe + era * 400;
-	const unsigned doy    = doe - (365 * yoe + yoe / 4 - yoe / 100); // [0,365]
-	const unsigned mp     = (5 * doy + 2) / 153;                     // [0,11]
+	int64_t  z      = days + civil_to_days(kEpochYear, kEpochMonth, kEpochDay) + 719468;
+	int64_t  era    = (z >= 0 ? z : z - 146096) / 146097;
+	unsigned doe    = static_cast<unsigned>(z - era * 146097);
+	unsigned yoe    = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+	int64_t  y_full = yoe + era * 400;
+	unsigned doy    = doe - (365 * yoe + yoe / 4 - yoe / 100);
+	unsigned mp     = (5 * doy + 2) / 153;
 
-	const int      m_signed = static_cast<int>(mp) + (mp < 10 ? 3 : -9); // 1-12
-	const unsigned M        = static_cast<unsigned>(m_signed);
-	const unsigned D        = doy - (153 * mp + 2) / 5 + 1; // 1-31
+	int      m_s   = static_cast<int>(mp) + (mp < 10 ? 3 : -9); // 1-12
+	unsigned month = static_cast<unsigned>(m_s);
+	unsigned day   = doy - (153 * mp + 2) / 5 + 1;
+	int      year  = static_cast<int>(y_full + (month <= 2 ? 1 : 0));
 
-	// year adjustment: add 1 if month Jan/Feb (M ≤ 2)
-	int     Y_int;
-	int64_t Y_calc = y_full + (M <= 2 ? 1 : 0);
-	if (Y_calc > std::numeric_limits<int>::max() || Y_calc < std::numeric_limits<int>::min())
-		throw std::runtime_error("Year out of int range");
-	Y_int = static_cast<int>(Y_calc);
-
-	// time-of-day
-	const int hour = static_cast<int>(rem / K_MICROS_PER_HOUR);
+	int hour = static_cast<int>(rem / K_MICROS_PER_HOUR);
 	rem %= K_MICROS_PER_HOUR;
-	const int minute = static_cast<int>(rem / K_MICROS_PER_MINUTE);
+	int minute = static_cast<int>(rem / K_MICROS_PER_MINUTE);
 	rem %= K_MICROS_PER_MINUTE;
-	const int second = static_cast<int>(rem / K_MICROS_PER_SECOND);
-	const int micro  = static_cast<int>(rem % K_MICROS_PER_SECOND);
+	int second = static_cast<int>(rem / K_MICROS_PER_SECOND);
+	int micro  = static_cast<int>(rem % K_MICROS_PER_SECOND);
 
-	std::string out = std::format("{:04d}-{:02d}-{:02d}T{:02d}:{:02d}:{:02d}",
-	                              Y_int,
-	                              static_cast<int>(M),
-	                              static_cast<int>(D),
-	                              hour,
-	                              minute,
-	                              second);
-
-	if (micro != 0)
+	std::string out = std::format("{:04d}-{:02d}-{:02d}T{:02d}:{:02d}:{:02d}", year, month, day, hour, minute, second);
+	if (micro)
 		out += std::format(".{:06d}", micro);
-
 	return out;
 }
 
