@@ -50,7 +50,7 @@ static int64_t civil_to_days(int y, unsigned m, unsigned d) {
 
 // ─────────────────────── parse_timestamp ──────────────────────
 int64_t parse_timestamp(std::string_view ts) {
-	// ── support "MM/DD/YY hh:mm:ss[.ffffff]"  two-digit year (assume 2000+YY) ──
+	// ── support "MM/DD/YY hh:mm:ss[.ffffff]" (two-digit year → 2000+YY) ──
 	if (ts.size() >= 17 && ts[2] == '/' && ts[5] == '/' && ts[8] == ' ' && ts[11] == ':' && ts[14] == ':') {
 		// parse month, day, two-digit year
 		auto month_str = ts.substr(0, 2);
@@ -84,15 +84,17 @@ int64_t parse_timestamp(std::string_view ts) {
 		std::chrono::microseconds frac_us {0};
 		std::size_t               posFrac = 17; // index after "MM/DD/YY hh:mm:ss"
 		if (posFrac < ts.size()) {
-			if (ts[posFrac] != '.')
+			if (ts[posFrac] == '.') {
+				auto frac_part = ts.substr(posFrac + 1);
+				if (frac_part.empty() || frac_part.size() > 6)
+					throw std::invalid_argument("Fraction must have 1-6 digits");
+				int64_t val = to_int<int64_t>(frac_part, "fractional seconds");
+				for (std::size_t pad = 6 - frac_part.size(); pad; --pad)
+					val *= 10;
+				frac_us = std::chrono::microseconds {val};
+			} else {
 				throw std::invalid_argument("Expected '.' before fraction");
-			auto frac_part = ts.substr(posFrac + 1);
-			if (frac_part.empty() || frac_part.size() > 6)
-				throw std::invalid_argument("Fraction must have 1-6 digits");
-			int64_t val = to_int<int64_t>(frac_part, "fractional seconds");
-			for (std::size_t pad = 6 - frac_part.size(); pad; --pad)
-				val *= 10;
-			frac_us = std::chrono::microseconds {val};
+			}
 		}
 
 		// build chrono date
@@ -110,7 +112,6 @@ int64_t parse_timestamp(std::string_view ts) {
 		          std::chrono::sys_days {std::chrono::year {kEpochYear} / std::chrono::month {kEpochMonth} /
 		                                 std::chrono::day {kEpochDay}};
 
-		// 'td' is a std::chrono::microseconds duration
 		int64_t count = td.count();
 		if (td < std::chrono::microseconds {std::numeric_limits<int64_t>::min()} ||
 		    td > std::chrono::microseconds {std::numeric_limits<int64_t>::max()})
@@ -161,29 +162,52 @@ int64_t parse_timestamp(std::string_view ts) {
 
 	// 4) fractional microseconds (optional)
 	std::chrono::microseconds frac_us {0};
-	const std::size_t         posFrac = posT + 9; // just after “hh:mm:ss”
-	if (posFrac < ts.size()) {
-		if (ts[posFrac] != '.')
-			throw std::invalid_argument("Expected '.' before fraction");
-		const auto frac = ts.substr(posFrac + 1);
-		if (frac.empty() || frac.size() > 6)
+	std::size_t               posFrac = posT + 9; // just after “hh:mm:ss”
+	if (posFrac < ts.size() && ts[posFrac] == '.') {
+		auto frac_part = ts.substr(posFrac + 1);
+		if (frac_part.empty() || frac_part.size() > 6)
 			throw std::invalid_argument("Fraction must have 1-6 digits");
-		int64_t val = to_int<int64_t>(frac, "fractional seconds");
-		for (std::size_t pad = 6 - frac.size(); pad; --pad)
+		int64_t val = to_int<int64_t>(frac_part, "fractional seconds");
+		for (std::size_t pad = 6 - frac_part.size(); pad; --pad)
 			val *= 10; // right-pad to microseconds
 		frac_us = std::chrono::microseconds {val};
+		posFrac += 1 + frac_part.size(); // advance past '.' and digits
 	}
 
-	// 5) days from epoch
+	// 5) optional timezone offset [+/-HH:MM]
+	int offset_sign = 0;
+	int offset_h = 0, offset_m = 0;
+	if (posFrac < ts.size() && (ts[posFrac] == '+' || ts[posFrac] == '-')) {
+		offset_sign = (ts[posFrac] == '+') ? +1 : -1;
+		// expect HH:MM after sign
+		if (posFrac + 6 > ts.size() || ts[posFrac + 3] != ':')
+			throw std::invalid_argument("Invalid timezone offset format");
+		auto off_hour_str = ts.substr(posFrac + 1, 2);
+		auto off_min_str  = ts.substr(posFrac + 4, 2);
+		offset_h          = to_int<int>(off_hour_str, "tz hour");
+		offset_m          = to_int<int>(off_min_str, "tz minute");
+		if (!(0 <= offset_h && offset_h <= 23))
+			throw std::invalid_argument("TZ hour out of range");
+		if (!(0 <= offset_m && offset_m <= 59))
+			throw std::invalid_argument("TZ minute out of range");
+	}
+
+	// 6) days from epoch
 	const int64_t days_from_epoch = civil_to_days(year, month, day) - civil_to_days(kEpochYear, kEpochMonth, kEpochDay);
 	if (std::llabs(days_from_epoch) > K_MAX_ABS_DAYS)
 		throw std::out_of_range("Timestamp out of int64 range");
 
-	// 6) accumulate in 128-bit, clamp to 64-bit
+	// 7) accumulate in 128-bit, clamp to 64-bit
 	__int128 total_us = static_cast<__int128>(days_from_epoch) * K_MICROS_PER_DAY +
 	                    static_cast<__int128>(hour) * K_MICROS_PER_HOUR +
 	                    static_cast<__int128>(minute) * K_MICROS_PER_MINUTE +
 	                    static_cast<__int128>(second) * K_MICROS_PER_SECOND + static_cast<__int128>(frac_us.count());
+
+	// apply timezone adjustment (to UTC): if offset_sign = +1, local = UTC+offset → subtract
+	if (offset_sign != 0) {
+		int64_t tz_us = static_cast<int64_t>(offset_h) * 3600'000'000LL + static_cast<int64_t>(offset_m) * 60'000'000LL;
+		total_us -= static_cast<__int128>(offset_sign) * tz_us;
+	}
 
 	if (total_us > std::numeric_limits<int64_t>::max() || total_us < std::numeric_limits<int64_t>::min())
 		throw std::out_of_range("Timestamp out of int64 range");
@@ -214,7 +238,7 @@ std::string timestamp_formatter(int64_t micros_since_epoch) {
 	const unsigned M        = static_cast<unsigned>(m_signed);
 	const unsigned D        = doy - (153 * mp + 2) / 5 + 1; // 1-31
 
-	// year adjustment: add 1 if month Jan/Feb (M<=2)
+	// year adjustment: add 1 if month Jan/Feb (M <= 2)
 	int     Y_int;
 	int64_t Y_calc = y_full + (M <= 2 ? 1 : 0);
 	if (Y_calc > std::numeric_limits<int>::max() || Y_calc < std::numeric_limits<int>::min())
@@ -239,6 +263,7 @@ std::string timestamp_formatter(int64_t micros_since_epoch) {
 
 	if (micro != 0)
 		out += std::format(".{:06d}", micro);
+
 	return out;
 }
 
