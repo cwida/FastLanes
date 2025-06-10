@@ -1,0 +1,1024 @@
+The FastLanes Compression Layout: Decoding >100 Billion Integers per Second with Scalar Code Azim Afroozeh CWI The Netherlands azim@cwi.
+nl Peter Boncz CWI The Netherlands boncz@cwi.
+nl ABSTRACT The open-source FastLanes project aims to improve big data formats such as Parquet ORC and columnar database formats in multiple ways.
+In this paper we significantly accelerate decoding of all common Light-Weight Compression (LWC) schemes: DICT FOR DELTA and RLE through better data-parallelism.
+We do so by re-designing the compression layout using two main ideas: (i) generalizing the value interleaving technique in the basic operation of bit-(un)packing by targeting a virtual 1024-bits SIMD register (ii) reordering the tuples in all columns of a table in the same Unified Transposed Layout that puts tuple chunks in a common ł04261537ž order (explained in the paper) allowing for maximum independent work for all possible basic SIMD lane widths: 8 16 32 and 64 bits.
+We address the software development maintenance and futureproofness challenges of increasing hardware diversity by defining a virtual 1024-bits instruction set that consists of simple operators supported by all SIMD dialects and also importantly by scalar code.
+The interleaved and tuple-reordered layout actually makes scalar decoding faster extracting more data-parallelism from today’s wide-issue CPUs.
+Importantly the scalar version can be fully auto-vectorized by modern compilers eliminating technical debt in software caused by platform-specific SIMD intrinsics.
+Micro-benchmarks on Intel AMD Apple and AWS CPUs show that FastLanes accelerates decoding by factors (decoding >40 values per CPU cycle).
+FastLanes can make queries faster as compressing the data reduces bandwidth needs while decoding is almost free.
+PVLDB Reference Format: Azim Afroozeh and Peter Boncz.
+The FastLanes Compression Layout: Decoding >100 Billion Integers per Second with Scalar Code.
+3598587 PVLDB Artifact Availability: The source code data and/or other artifacts have been made available at https://github.
+1 INTRODUCTION Analytical data systems routinely employ columnar storage.
+This allows queries to skip columns that they do not need saving network disk and memory bandwidth.
+Further columnar storage tends to be more compact than row storage thanks to compression.
+This work is licensed under the Creative Commons BY-NC-ND 4.
+0/ to view a copy of this license.
+For any use beyond those covered by this license obtain permission by emailing info@vldb.
+Publication rights licensed to the VLDB Endowment.
+Proceedings of the VLDB Endowment Vol.
+3598587 Vectorized execution is a broadly adopted design for query execution where computational work in query expressions is performed on chunks of e.
+ 1024 values called łvectorsž by an expression interpreter that invokes pre-compiled functions that perform simple actions in loops over these vectors (arrays) thus amortizing function call overhead over 1024 tuples and allowing compilers to optimize these functions using techniques like loop-pipelining code motion and auto-vectorization: generation of SIMD instructions [5].
+Vectorized decoding carries over these efficient properties when applied to decoding compressed data.
+We focus on FOR DICT DELTA and RLE (resp.
+the Frame Of Reference [9] Dictionary Delta and Run Length encodings).
+Also when a vectorized table scan decompresses a vector (compact) compressed data in RAM gets decompressed into an uncompressed vector which is a small array of 1024 values that fits the CPU L1/L2 caches and is immediately processed by the query pipeline so it typically does not spill to RAM.
+As such decompression happens between RAM and CPU reducing memory network and disk bandwidth consumption [39].
+Parquet [1] also uses columnar encodings albeit using a scheme that always applies DICT and represents the dictionary codes in variable-sized runs using bit-packing or RLE.
+Such variablesized adaptivity hinders fast vectorized decoding [3] and the noninterleaved bit-packing and classic RLE it uses do not expose the opportunities for data-parallelism introduced by our techniques.
+We think scans in next-gen database systems should not decompress columns eagerly to their SQL type which often is a wide integer (e.
+ a decimal stored in 64-bits) but rather to the smallest type that makes the values processable by query operators.
+Modern systems like Procella [6] Velox [20] and DuckDB [25] support compressed vectors where data is both randomly accessible yet still partially compressed: e.
+ a FOR-vector or a DICT-vector where 1024 values are represented as uint8[1024] accompanied by one uint64 base (FOR) resp.
+Such tight representations unlock optimizations (e.
+ SIMD) for operators higher in a pipeline and reduce the size of data structures lessening (cache) memory pressure.
+It also causes best case scan decoding performance where one decompresses a vector to its smallest possible lane-width to become the common case.
+FastLanes is a project initiated at CWI intended as a foundation for next-generation big data formats.
+It introduces a new layout for compressed columnar data that increases the opportunities for dataparallel decoding improving performance by factors.
+It does so in a way that works across the heterogeneous and evolving Instruction Set Architectures (ISAs) landscape is future-proof and minimizes technical debt by relying on scalar-only code.
+1 Challenges and Contributions In the FastLanes project we are re-designing columnar storage to expose more independence in data decoding to make future query engines better at exploiting data-parallelism present in modern hardware.
+We contribute solutions to six challenges in Table 1: Many SIMD widths.
+In the course of 25 years SIMD ISAs have widened by a factor 8.
+Rather than taking the current widest SIMD ISA and proposing a data layout optimized for it we preempt further widening of SIMD registers and propose a layout optimized for a virtual 1024-bits register FLMM1024 that gets the best performance out of any existing ISA and even from scalar code.
+At the lowest level of bits this means FastLanes applies an interleaved bit-packed layout to 1024 bits which distributes all logically subsequent e.
+ 3-bit values round-robin over 128 separate 8-bit lanes.
+On the implementation level it leads to vectorized decoding functions that deliver a vector of 1024 tuples at-a-time in sometimes as little as 17 CPU cycles (an astonishing 70 values per CPU core cycle).
+In order to deal with concurrently existing generations of x86 SIMD hardware as well as ARM where AWS Graviton1-3 and Apple M1-2 support 128-bits NEON and Graviton3 also supports SVE and other ISAs for POWER and RISC-V we define a simple instruction set1 on FLMM1024 that is easily supported by the common denominator of all SIMD instruction sets.
+While it is out of scope in this paper we think FLMM1024 instructions on the FastLanes layout can also map efficiently to GPUs and other future data-parallel hardware (such as TPUs).
+Decoding RLE has an intrinsic controldependency as it needs a loop for emitting repeated values but SIMD does not support control-instructions.
+DELTA decoding has an intrinsic data-dependency between subsequent values which in SIMD are located in adjacent lanes yet instructions with lanedependencies are much slower.
+"We tackle the latter problem by reordering the column using a technique we call ""transposing"" such that all lanes handle completely independent DELTA sequences."
+We then remap RLE to a combination of DELTA and DICT encoding that leverages this very efficient DELTA decoding kernel.
+Previous work [15 16 21 22 27 29 31 37] studied data encodings in isolation but here we also look at the system context i.
+When the optimal layout depends on a specific lane-width (8 16 32 64 bits) this is problematic in that context.
+In table formats different columns will store different value distributions which get bit-packed using different bit-widths and get decoded into types that fit different lane-widths.
+Our idea of transposing also runs into problems in this regard.
+Naively applied it would lead to different column reorderings inside the same table.
+Therefore we invented a very specific reordering of 1024 tuples that suits all possible lanewidths.
+This we call the Unified Transposed Layout.
+The gist of this reordering is to organize 1024 values in eight 8x16 transposed blocks and to put these eight blocks in the order ł04261537ž.
+We will explain why this order works well with any column-width.
+1The idea is similar to [32] but as SIMD width interacts with data layout we design for a concrete 1024-bits width.
+Rather than trying to cover all ISAs in intrinsics our simple FLMM1024 instruction set has a scalar implementation that gets auto-vectorized.
+Challenge FastLanes Solution target a virtual FastLanes FLMM1024 SIMD register many SIMD widths FLMM1024 uses simple operators present in all ISAs heterogenous ISAs decoding dependencies reorder (transpose) columns to break dependencies 1 layout per lane-width same Unified Transposed Layout forall lane-widths keeping code portable no intrinsics: use scalar code & auto-vectorization vectorized execution & fused unpacking+decoding LOAD/STORE-bound Keeping code portable.
+The simple design of the FLMM1024 Fastlanes 1024-bits instruction set allows to implement it in scalar code that uses uint64 registers and operations.
+This portability also allows low-end CPUs that do not support any SIMD and that may even have 32-bits registers and memory addressing (but where compilers emulate 64-bits arithmetic) to also run FastLanes rather efficiently to their standard.
+On 64-bits CPUs scalar FastLanes code achieves SIMD-like acceleration when handling small lane-widths (i.
+8-bits gets 8x faster using 64-bits scalar).
+We find it remarkable that SIMD-friendly ideas like interleaving and transposing accelerate our scalar code rather than slow it down.
+Last but not least modern compilers can auto-vectorize our scalar code-path without loss of performance avoiding the need for SIMD intrinsics thus reducing technical debt and further making FastLanes future-proof.
+We propose to use FastLanes decoding in vectorized execution where the compressed data is read from RAM and gets decoded into 1024-value arrays which are then processed from the CPU caches by the query pipeline.
+This reduces memory traffic by the compression ratio (often 2-3x).
+Further most CPU time will be spent on the operators in the query pipeline so scans run at much lower than the maximum decoding speed further reducing bandwidth pressure.
+Sequential scans will trigger memory hardware prefetching so good throughput can be reached.
+All this reduces the probability to be LOAD bound.
+However as FastLanes decoding is much faster than previous LWC schemes and can achieve astonishing speeds the decoding functions can become STORE bound even when storing just into L1 cache.
+We show that fusing our bit-unpacking kernels with the decoding kernels for FOR/DELTA/RLE/DICT benefits performance as this saves an intermediate STORE+LOAD.
+2 Outline The remainder of the paper is organized as follows.
+In Section 2 we explain these contributions in more detail helped by a series of figures in visual language.
+First we explain 1024-bits interleaved bit-unpacking.
+The Unified Transposed Layout of FastLanes is motivated and explained around DELTA decoding.
+We further discuss efficient decoding of RLE exploiting this foundation.
+We follow-up in Section 3 with an evaluation of decompression performance of FastLanes bit-unpacking and DELTA and RLE decoding on all major hardware platforms.
+We also perform an end-to-end query execution benchmark based on Tectorwise [12] showing that using FastLanes decoding instead of just an uncompressed in-memory array scan can make a query faster.
+In Section 4 we discuss related work covering the main differences between FastLanes and the state-ofthe-art using both explanatory figures and micro-benchmarks.
+We conclude the paper and discuss future work in Section 5.
+2133 S: Number of SI MD l anes i n a 1024 bi t SI MD r egi s t er = 1024/ T Lane 127 383 255 0 S1 127 767 639 1 511 383 1023 1 895 767.
+Lane 1 Lane 0 257 129 0 S1 1 256 128 0 S1 0 641 513 1 385 257 640 512 1 384 256 897 1 769 641 896 1 768 640 Figure 1: The 1024-bit interleaved layout.
+𝐵 = 3 adjacent FLMM1024 words (red boxes shown top-down) store 1024 values.
+Black bars indicate bit-packed values with their logical positions in the column: logically subsequent 𝑊 = 3-bit encoded values are round-robin spread into 𝑆 = 128 lanes of 𝑇 = 8-bits.
+In the first word only the first two bits (yellowpink) of the value at position 256 fit so it is continued in the second word (blue bit).
+The value at position 640 is also split.
+VAL POS VAL POS VAL C1 An i nt eger wi t h a v al ue VAL at pos i t i on POS A bas e cont ai ni ng an i nt eger wi t h a v al ue VAL at pos i t i on POS - - - 1 VAL 0 A SI MD r egi s t er wi t h C SI MD l anes A SI MD l ane wi t h a v al ue VAL at l ane 0 An unt i l i z ed SI MD Lane Shows a br ok en dat adependenc y POS POS +VAL Shows a dat adependenc y at pos i t i on POS wi t hi n a dat adependenc y c hai n A bi t - pac k ed v al ue at pos i t i on POS wi t h 3bi t bi t - pat t er n Shows an add oper at i on wi t h a val ue VAL Figure 2: Legenda for our visual explanations.
+2 FASTLANES In order to explain the FastLanes compressed data layout we make extensive use of drawings in the visual language introduced in Figure 2.
+We now explain the main FastLanes features in detail.
+1 Many SIMD widths Over the past three decades SIMD register widths in x86 CPUs have doubled three times from MMX (64-bits) to SSE1-4 (128-bits 1999) AVX/AVX2 (256-bits 2008) and AVX512 (512-bits 2015).
+A next doubling is not imminent but we do see GPUs - and Apple CPUs - adopting a 1024-bit cache-line which facilitates such a move.
+Existing SIMD decoding algorithms and their data layouts typically target a specific register width.
+Consider the 4-way interleaved layout [16] which distributes bit-packed tuples among 4 SIMD lanes.
+This layout avoids expensive cross-lane PERMUTE or BITSHUFFLE instructions needed if bits would be packed consecutively.
+While being efficient for unpacking four 32-bits values CPUs on 128-bit SIMD registers this layout does not have enough parallelism for 256-bits or 512-bits registers.
+In response the 8-way and 16-way interleaved formats were proposed [10] which are all different.
+To preempt changing data formats when some ISA starts to support a wider SIMD register FastLanes targets a still-not-existent register width concretely 1024-bits.
+2 One should note that as long 2We could have picked 2048 or 4096 as well we chose to be conservative as the layout chunk-size grows with it: a chunk of 1024 𝑊 (bit-width) encoded values fit in exactly as ś expensive ś lane-crossing operations are avoided it is trivial to support data layouts designed for a wider register without performance penalty on a thinner SIMD register just by using multiple identical thinner instructions working on adjacent data.
+The reverse is not true: supporting thin layouts on wide registers typically leads to lack of parallel work and unused lanes or expensive compensating actions such as PERMUTE and BITSHUFFLE.
+To maximize decoding performance we use the smallest lane-width that fits that i.
+8-bits (𝑇 =8) and therefore we have 128 (𝑆=1024/𝑇 =128) lanes in our FLMM1024 word.
+"Note that bit-packing is a building block that is used in all encodings and can optionally be combined with an exception-handling technique (such as ""Patching"" [39]) to handle - in this case ś infrequently occurring values that do not fit 3 bits."
+2 Heterogeneous ISAs When new SIMD ISAs are introduced we often see two kinds of asymmetries: (i) new operators that did not exist in a thinner ISA are introduced or (ii) a wider register is introduced but not all operators existing on thinner registers are (initially) supported on the wider register.
+Data layouts that depend on these operators are then problematic to support efficiently on all plausibly in-use hardware platforms certainly for data systems that are distributed as binaries (pre-compiled).
+Recently ISA heterogeneity has significantly increased as ARM CPUs have become popular both on servers (AWS Graviton23) and with end-users such as data scientists (Apple M12) which bring their own subsets of NEON as well as SVE.
+In order to support heterogeneous ISAs FastLanes only uses simple operators such as load/store left/right-shift and/or/xor addition and set instructions supported for all lane-widths T ∈ {8 16 32 64} as shown in Listing 1.
+This instruction set can be trivially mapped to intrinsics in all previously mentioned thinner ISAs just by using multiple identical instructions on independent 𝑊 FLMM1024 registers.
+Larger chunk-sizes lead to worse compression ratios since the bit-width for bit-packing depends on the value-domain of a chunk (an exception mechanism to remove outliers can help to contain this problem).
+They also lead to an increased minimum vector-size i.
+access granularity imposed to the scan subsystem.
+2134 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 FLMM1024* // A pointer to 1024−bit word memory.
+FLMM1024 // A variable of size 1024−bit // Load 1024−bits from memory address ADR FLMM1024 LOAD<T>(FLMM1024* ADR) // Store 1024−bits from REG into memory address ADR void STORE<T>(FLMM1024* ADR FLMM1024 REG) // forall T−bit lanes i in REG return (i & MASK) << N FLMM1024 AND_LSHIFT<T>(FLMM1024 REG uint<T> MASK uint8 N) // forall T−bit lanes i in REG return (i & (MASK << N)) >> N FLMM1024 AND_RSHIFT<T>(FLMM1024 REG uint<T> MASK uint8 N) // forall T−bit lanes (ab) in (AB) return (a & b) FLMM1024 AND<T>(FLMM1024 A FLMM1024 B) // forall T−bit lanes (ab) in (AB) return (a  b) FLMM1024 OR<T>(FLMM1024 A FLMM1024 B) // forall T−bit lanes (ab) in (AB) return (a ^ b) FLMM1024 XOR<T>(FLMM1024 A FLMM1024 B) // forall T−bit lanes (ab) in (AB) return (a + b) FLMM1024 ADD<T>(FLMM1024 A FLMM1024 B) // forall T−bit lanes return VAL.
+FLMM1024 SET<T>(uint<T> VAL) Listing 1: FastLanes simple SIMD instruction set with FLMM1024 1024-bits registers and T-bits lanes T ∈ {8 16 32 64}.
+It can be trivially mapped onto any existing SIMD ISA as well as onto scalar code using uint64: ISAs with thinner registers just use multiple identical instructions on multiple registers and adjacent memory to reach 1024-bit width.
+registers or adjacent memory locations to reach the 1024-bit width of our virtual FLMM1024 register.
+The extreme example of this is our Scalar_T64 code-path which relies on 64-bits integers (uint64): struct { uint64 val[16] } FLMM1024 // 16*uint64 = FLMM1024 FLMM1024 AND<8>(FLMM1024 A FLMM1024 B) { FLMM1024 R for(int i=0 i<16 i++) R.
+val[i] return R } As a detail we note that we combined the shift instructions with AND functionality.
+In bit-packing these two operations are typically followed by each other anyway so in those cases the combined instruction is a shorthand.
+Another reason to introduce this shorthand is our Scalar_T64 code-path that manipulates uint64 values.
+As shown above we can support for instance eight 8-bits lanes using instructions on uint64.
+However shift instructions on uint64 could transport bits from one lane into another something that is guaranteed not to happen in SIMD instructions.
+But by performing the AND before shifting in such a way that bits that would cross a lane are masked out this problem can be prevented by manipulating the (constant) mask value at no additional cost.
+3 Listing 2 shows the implementation for unpacking 3-bit (𝑊 =3) codes into 8-bit (𝑇 =8) integers.
+Rather than writing such code by hand we generate it statically for all 1 ≤ 𝑊 ≤ 64 𝑇 ∈{8163264} 3Note that cross-lane bit-spilling is also a risk in the ADD operator.
+However as SIMD ISAs do not support overflow detection usage of SIMD ISAs for summations already requires the use of overflow prevention techniques in order to ensure correctness.
+Hence for ADD we can assume that overflow does not happen.
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 uint<8> MASK1 = (1<<1)−1 MASK2 = (1<<2)−1 MASK3 = (1<<3)−1 FLMM1024 r1 r0 r0 = LOAD<8>(in+0) r1 = AND_RSHIFT<8>(r00MASK3) STORE<8>(out+0r1) r1 = AND_RSHIFT<8>(r03MASK3) STORE<8>(out+1r1) r1 = AND_RSHIFT<8>(r06MASK2) r0 = LOAD<8>(in+1) STORE(out+2OR<8>(r1 AND_LSHIFT<8>(r02MASK1))) r1 = AND_RSHIFT<8>(r01MASK3) STORE<8>(out+3r1) r1 = AND_RSHIFT<8>(r04MASK3) STORE<8>(out+4r1) r1 = AND_RSHIFT<8>(r07MASK1) r0 = LOAD<8>(in+2) STORE(out+5OR<8>(r1 AND_LSHIFT<8>(r01MASK2))) r1 = AND_RSHIFT<8>(r02MASK3) STORE<8>(out+6r1) r1 = AND_RSHIFT<8>(r05MASK3) STORE<8>(out+7r1) Listing 2: Interleaved bit-unpacking kernel in FLMM1024 SIMD for 𝑇 =8 and 𝑊 =3.
+We use code-generation to create such implementations for all combinations of 𝑇 and 𝑊 (𝑊 <𝑇 ).
+r 0 = LOAD<8>( i n+0) 383 255 S1 127.
+STORE<8>( out +0 r 1) 256 0 128 S1 1 1 0 0 127.
+129 128 STORE<8>( out +1 r 1) 257.
+129 128 r 1 = AND_RSHI FT<8>( r 0 6 MASK2) r 0 = LOAD<8>( i n+1) 383.
+257 256 STORE<8>( out +3 r 1) 0 1 0 0 1 3 2 383.
+257 256 Figure 3: Lines 3-8 of Listing 2 in action: ten FLMM1024 instructions bit-unpack the first 384 3-bits codes into 8-bit integers.
+The investment in interleaving of bits leads to perfectly sequential unpacked integers using few simple instructions.
+where 𝑊 <𝑇 (116 pre-compiled functions that each deliver a vector of 1024 values).
+On this unpack kernel Intel AVX512 CPUs get to the astonishing speed of 70 values per cycle = 140 billion values per second on one 2GHz core.
+Given 3-bits per value this requires 52GB/s - close to RAM bandwidth limit.
+In reality however a query pipeline spends at least a few cycles per value in its operators so the pipeline runs 100x slower but with this unpacking speed the decompressing scan is practically free.
+2135 14 12 10 8 6 4 2 1 1 0 7 6 2 15 14 13 12 11 10 4 9 3 8 6 7 5 6 0 5 7 4 3 3 1 2 5 1 25 0 0 0 0 15 13 11 9 7 5 3 1 (a) Default DELTA layout with data dependencies on arrows.
++1 +7 +2 +3 +5 +7 +1 25 0 +0 76 75 74 74 67 61 59 55 52 46 41 41 34 31 30 25 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 +1 +0 +6 +4 +6 +0 +3 +5 (b) The process of decoding DELTA-encoded data (green arrows).
+74 12 0 0 6 2 2 1 1 0 15 14 13 12 11 10 55 8 0 0 8 2 4 9 2 6 7 5 6 0 5 41 4 0 0 4 25 0 0 0 0 2 3 3 1 2 5 1 3 1 3 1 3 1 3 1 (c) Example DELTA layout with multiple bases.
+2 2 2 2 1 6 15 11 6 7 3 3 1 2 14 10 5 6 1 2 0 13 4 9 0 5 5 1 3 3 3 3 (d) Transposed data layout.
+74 55 41 25 12 0 0 12 8 0 0 8 4 0 0 4 0 0 0 0 1 1 1 1 74 55 41 25 3 2 1 0 2 0 1 3 6 2 6 1 3 0 1 3 2 2 5 1 1 0 0 3 4 2 0 1 5 0 0 3 0 2 0 1 0 0 3 1 (e) SIMD-friendly DELTA decoding on the transposed layout.
+N: Number of t upl es i n a v ec t or  N=1024 1023.
+2 1 0 T: Bi t Wi dt h of a phy s i c al t y pe T = { 8 16 32 64} T( S1).
+3T1 2T1 T1 S: Number of SI MD l anes i n a 1024 bi t SI MD r egi s t er = 1024/ T (f) Transposed Layout: value order depends on widths S & T 2.
+3 Dealing with Sequential Data Dependencies Dependencies between subsequent values are SIMD-unfriendly since adjacent values end up in adjacent lanes.
+The additions needed for DELTA decoding are lane-crossing operators: suppose the values in in Figure 4b are 32-bits then adding the values at position 0 and position 1 correspond to different lanes (if e.
+ positions 0-3 were loaded in a 128-bit SIMD register).
+In these figures the yellow boxes indicate base values.
+These bases provide entry-points to start DELTA decoding.
+In FastLanes we allow to start decoding with a granularity of 1024 tuples.
+Base values would be found in the header of a compressed columnar block.
+But rather than having one base per vector Figure 4c shows the idea of having four bases.
+This allows to start decoding at positions 048 and 12.
+It still does not solve the lane-crossing problem though.
+The order for the first 16 values here is 0 4 8 12 1 5 9 13 2 6 10 14 3 7 11 15.
+We call this re-ordering a transposition because the idea is to cut up the value column in SIMD register-sized chunks and put these chunks vertically under each other as shown in Figure 4f.
+In case of our 1024-bits FLMM1024 register this means that this matrix has exactly 𝑇 rows and 𝑆 columns where 𝑇 is the value (=lane) bit-width and 𝑆 is the amount of such values in a register.
+We argue that changing the tuple order is not problematic in the database scan context.
+Relational algebra is set-based and query operator semantics typically do not depend on order so if the tuples arrive perturbed from insertion order they can usually be processed in whatever order they arrive.
+Even if the order matters for the query result or operator semantics the original order could be restored or encoded in a selection vector.
+While the presence of a selection vector can slow down operations it can often be avoided: vectorized query executors typically have an optimization where simple arithmetic operators (that cannot raise errors) will ignore (identical) selection vectors on all parameters if many tuples are still in play executing the operation on all values at much lower per-value cost thanks to full sequential access (and SIMD).
+2 2 2 2 4812 0 0000 15 143711 04812159132610 (a) Reordering from Figure 4d used on a half-width column 3 3 3 3 1 1 1 1 2 7 6 45 3 2 1 0 0 7 6 45 3 2 1 0 7 6 45 3 2 1 0 7 6 45 3 2 1 0 7 6 45 3 2 1 0 (b) We need 8 independent operations here but this layout only offers 4.
+This leads to unused SIMD lanes while decoding.
+3 1 Figure 4: The Transposed Data Layout.
+Idea: reorder column values to make data dependencies SIMD-friendly.
+2136 2 2 2 2 12 0 8 0 4 0 0 0 14 2610 4812 0 0000 0000 7 6 45 3 2 1 0 0 15 11 7 3 13 9 5 1 14 10 6 2 12 8 4 0 15 14159133711 048122610 7 456 3 2 1 0 7 6 45 3 2 1 0 1 1 1 1 3 3 11111111 1 3 (a) This reordering is also SIMD-friendly for the wide type but.
+6 7 7 2 3 3 4 5 5 0 1 Uni f y 4 5 6 7 0 1 2 3 Uni f y Uni f y 1 6 2 4 0 1 2 3 4 5 6 7 0 1016.
+71 7 16 (d) From the 64-bits transposed layout with 8x1 tiles of 8x16 values (upper right) we unify to 4x2 tiles for 32-bits types then to 2x4 for 16-bits and 1x8 for 8-bits in 04261537 tile order.
+The final value order is 064.
+1023 (top-to-bottom repeated right-to-left) T=64 7 T=32 7 3 3 5 7 2 5 1 6 2 6 1 2 5 Bas e Vec t or 0 4 0 4 3 1 6 2 4 0 1 Bas e Vec t or 0 Bas e Vec t or 0 6 2 4 0 T=16 7 3 5 1 1 T=8 Bas e Vec t or 0 7 3 5 1 6 2 4 0 (e) The 04261537 tile order is SIMD-friendly for all lane-widths.
+Note: the numbered blue-red boxes here are abbreviations for a 8x16 tile and imply 8 SIMD ADD operations each during DELTA decoding.
+This layout benefits all encodings with dependencies (i.
+3 Figure 6: Unified Transposed Layout: (a)-(c) idea of order unification (d) how our unified approach arrives at the 04261537 order (blue) of 8x16 tiles (green) and the final value order (green) (e) how it provides data-parallelism for all possible lane-widths.
+Notably FastLanes does not only store each sequence of 1024 tuples permuted in this reordering but the individual columns are usually also encoded with some LWC scheme (DELTA FOR DICT RLE) which involves bit-packing using 1024-bit interleaving (Figure 1).
+So the eventual bit-sequences stored are humanly hard to grasp.
+However decoding the values requires only regular and astonishingly fast calculations that are completely data-parallel.
+4 The Unified Transposed Layout In our Transposed Layout the order of the tuples depends on𝑇.
+This creates a problem for database scans: relational tables consist of multiple columns and different columns will have different widths.
+However when we reorder tuples we should use the same order for all columns because a scan needs to create a consistent stream of tuples.
+4 Figure 5 shows that when we apply the reordering from Figure 4d to a data type of half the width there is not enough independent work for the thinner type.
+In our example the wide data-type was 32-bits such that 4 values fit a 128-bits SIMD register.
+So when putting a column of 16-bits integers in that order we see that we only can take advantage of four lanes instead of 8.
+In this case the problem can be solved by just using a different ordering shown in Figure 6a-c that works well with columns of both widths.
+Our Unified Transposed Layout provides a generic solution to this problem for all lane-widths.
+The basic building block are transposed tiles of 8x16 values.
+We have eight such tiles for each vector of 1024 tuples.
+For the widest 64-bits type each row in the tile is one FLMM1024 register making it a suitable format to process one tile-at-a-time: for DELTA decoding the 8 rows are processed using 8 FLMM1024 ADD<64>.
+In case of 32-bits values however one row occupies half a register so we need to group two independently processable tiles together in one register.
+This is done by taking the lower half of tiles 0-7 and placing them to the left arriving at 4 rows of 2 tiles.
+This process repeats for 16-bits and 8-bits arriving at a single row of 8 tiles in the 04261357 ordering (blue).
+The complete value ordering for all 1024 tuples is shown in green.
+One can ask if 04261357 is the only ordering (starting at 0) that is suitable for DELTA decoding.
+We want to start at 0 because for 64-bits values we compute on data from one tile at-a-time starting at tile 0 and for 64-bits data the header thus holds bases for tile 0 only (see Figure 6a-b with base values in yellow).
+Beyond starting at 0 the second desirable property is that for processing tiles in SIMD operations we need the subsequent operations to touch directly subsequent tile numbers in the same SIMD lane position.
+Considering 16-bits values where four tiles fit the SIMD register width and given that 0 is first we see that 1 must be in fourth position (as it must be subsequent in 0xxx→1xxx).
+In fact the only way to get subsequent numbers in the two halves of the ordering is to have all even numbers first and the odd numbers later.
+Now considering 32-bits data types where data from two tiles is processed at-a-time the ordering should start with 04.
+Because if we would start with 02 then after 02→13 the next SIMD operation should be on 24 but tile 2 was already processed.
+The other even choice 06 runs out of work as after 06→17 there is no tile 8.
+As the first pair is 04 the third pair must be 15 and this fixes the second pair to 26 and the final pair to 37 so we arrive at 04261537 as the only ordering with the desired properties.
+For 16-bits types the processing order is: bases → 0426 → 1537.
+For 32-bits it is: bases → 04 → 15 → 26 → 37.
+For 64-bits: bases → 0 → 1 →.
+4Even if a query processor would be able to work with column vectors that each have a different value order e.
+ by accompanying each with their own selection vector that restores order this would likely carry performance penalties due to the indirect memory access needed and reduce the applicability of our format to systems that could do this.
+Therefore we enforce the ability to retrieve all column data in the same order.
+Value sequences get Run Length Encoded in classic RLE as (valuelength) tuples.
+Decoding requires two nested loops: one that iterates over the tuples and inside one that iterates over length while writing out the value-s.
+A loop is by definition scalar and the inner loop will suffer from branch mispredictions on short lengths.
+The best SIMD acceleration so far for RLE works when run-lengths are large such that the uncompressed run is very significantly larger than the SIMD register.
+In this case one can set all lanes of a SIMD register to the constant value and reduce the amount of STORE instructions by the amount of lanes [7].
+We propose a new scheme called Fastlanes-RLE that maps RLE to DELTA and supports storage reordered in the Unified Transposed Layout.
+It targets systems like Velox [20] and DuckDB [25] that prefer to represent decoded RLE as compact in-flight Dictionary vectors rather than full/eager decompressed vectors.
+The twist here is that the Dictionary is the Run Value vector from RLE and hence may contain duplicates.
+The Index Vector monotonically increases by one whenever a new run starts.
+FastLanes-RLE uses 16-bit indexes for vectors with many short runs and 8-bits otherwise.
+These Index Vectors are DELTA encoded using only 1-bit per value.
+Base storage in the 8-bit case can use 3-bit bit-packing adding.
+375 bits of storage per value making the compression ratio better than classic RLE up to average run-lengths of 12.
+For longer average run-lengths we should use 0-bit DELTA encoding that memsets the Index Vector to 0 and where the 1-s are inserted by an exception mechanism (we will cover such mechanisms in follow-up work).
+B B 15 14 C 13 C 12 C 11 C 10 B 9 B 8 B 7 A 6 A 5 A 4 B 3 C 2 B 1 A 0 Run Val ues Run Lengt hs A 3 2 3 A 2 4 2 A 1 3 1 A 0 7 0 (a) A decompressed vector and its classic RLE representation as two vectors: Run Values and Run Lengths.
+Run Val ues 3 3 2 2 2 2 1 1 1 0 15 14 13 12 11 10 9 8 7 6 I ndex Vec t or 0 1 0 0 0 1 15 14 13 12 11 10 0 9 0 8 1 7 0 6 0 5 0 5 0 4 0 4 B 3 0 3 0 3 C 2 0 2 0 2 B 1 0 1 0 1 A 0 0 0 0 0 0 0 (b) FastLanes-RLE and how its Index Vector is DELTA encoded.
+Del t a Enc oded Vec t or 2 2 2 2 1 0 15 11 1 7 0 3 1 1 14 10 0 6 0 2 0 13 0 9 0 5 0 1 3 3 3 3 2 12 0 0 12 1 8 0 0 8 0 4 0 0 4 0 0 0 0 0 1 1 1 1 (c) FastLanes-RLE reorders the Index Vector in Unified Transposed Layout: compatible with other columns and enabling fast decoding.
+2138 T = 8 T = 8 T = 16 T = 32 T = 64 1 2 Scalar T64 Scalar SIMD Auto-vectorized M1 0 5 0 1 0 5 0 5 10 15 0 5 10 15 20 25 30 0 5 0 1 0 5 0 5 10 15 0 5 10 15 20 25 30 5 0 1 0 5 0 5 10 15 0 5 10 15 20 25 30 0 3 0 5 0 1 0 5 0 5 10 15 0 5 10 15 20 25 30 0 5 0 1 0 5 0 5 10 15 0 5 10 15 20 25 30 0 0 0 0 0 10 20 30 40 50 Graviton2 60 10 20 30 40 50 Graviton3 60 10 20 30 40 50 Ice Lake 60 10 20 30 40 50 Zen3 60 10 20 30 40 50 Zen4 60 e l p u t r e p s e l c y C 2 1 0 2 1 0 2 1 0 2 1 0 2 1 0 2 1 0 e l c y c r e p s e l p u T 50 25 0 50 25 0 50 25 0 50 25 0 50 25 0 50 25 0 8 0 8 0 0 8 0 32 BitWidth(W) Figure 8: Bit-unpacking performance of the 1024-bit interleaved layout.
+(1) Scalar_T64 uses 64-bit scalar registers as quasi-SIMD and beats naive Scalar up to 8x.
+(2) clang++ auto-vectorizes Scalar perfectly matching performance of explicit SIMD intrinsics.
+(3) Decoding can reach 70 tuples/cycle (𝑇 =8 𝑊 =1).
+Except in the leftmost box here (tuples/cycle) lower is better in all Figures (cycles/tuple).
+16 24 16 32 24 40 48 16 56 64 8 0 8 3 EVALUATION The C++ FastLanes library is released under a MIT license in open source and will be put in github.
+We now experimentally evaluate the following questions: (Q1) What is the absolute speed of the proposed FastLanes 1024bit interleaved bit-unpacking? (Q2) Does decoding performance scale with SIMD width and how does it vary between the platforms listed in Table 2? (Q3) Can scalar code profit from 1024-bits interleaving and the Unified Transposed Layout? (Q4) What is the performance of the scalar implementation and how well does compiler auto-vectorization compare with the use of explicit SIMD intrinsics? (Q5) How does the proposed Unified Transposed Layout influence decoding performance specifically for LWC schemes with sequential dependencies such as DELTA? (Q6) What effect on end-to-end query performance could the adoption of FastLanes have? We also investigate the performance benefits of potentially fusing the implementations of bit-unpacking and decoding kernels.
+Note that in Section 4 we present additional micro-benchmarks while comparing FastLanes with related work.
+1 Micro-benchmarks We implemented bit-unpacking and decoding into𝑇 = {8 16 32 64} result columns in 4 different ways: Scalar Scalar_T64 SIMD and Auto-vectorized.
+The Scalar code unpacks/decodes one uint𝑇 value at-a-time.
+The Scalar_T64 implementation treats a uint64 variable as a quasi-SIMD register consisting of 64/𝑇 lanes of 𝑇 -bits.
+We used clang++ for our experiments.
+To make sure that our scalar code is not auto-vectorized we explicitly disabled the autovectorizer for the Scalar and Scalar_T implementations by using: -O3 -mno-sse -fno-slp-vectorize -fno-vectorize.
+6 GHz AVX2 (256-bits) EPYC 7R13 Ryzen9 7950X 4.
+5 GHz AVX512 NEON (128-bits) Apple M1 3.
+2 GHz NEON (128-bits) Neoverse-N1 2.
+5 GHz NEON (128-bits) modified 2.
+6 GHz SVE (variable) Neoverse-V1 The SIMD implementations use explicit SIMD intrinsics.
+Note that for ARM64 all SIMD implementations are based on NEON instructions.
+This is because our experiments on Graviton3 showed that SVE [30] is slower than NEON.
+Finally the Auto-vectorized implementation is the Scalar implementation with the difference that auto-vectorization is not disabled.
+These micro-benchmarks aim to characterize pure CPU cost and decompress a single vector 30M times hence all data is L1 resident.
+We report CPU cycles per value (lower is better!) but for 𝑇 =8 bitunpacking also the reverse: values per cycle (cycles per value there get close to 0 and hard to discern).
+These measures make the results more meaningful to compare across platforms than elapsed time as our hardware comes from different frequency classes (hi/mid/low end consumer vs.
+We disabled CPU turbo scaling features where present to make clock normalization stable.
+But only the interleaved layout provides the opportunity of decoding multiple lanes in parallel seized by Scalar_T64 making it 8x faster than Scalar on 8-bits values.
+As for (Q1) Figure 8 shows the high speed of FastLanes decoding: thanks to SIMD it significantly outperforms Scalar across all platforms: 40x-70x for 8-bits to 3x-4x for 64-bits types.
+Regarding (Q2): we do see that Gravitons 2139 e l p u t r e p s e l c y C 3 2 1 0 T = 8 T = 16 T = 32 Scalar Horizontal Scalar Interleaved Scalar T64 Interleaved T = 64 8x 4x 2x 0 8 0 8 16 0 8 16 24 32 0 8 16 24 32 40 48 56 64 BitWidth(W) Figure 9: horizontal vs.
+Scalar bit-unpacking performance with 1024-bits interleaving is equal to the naive horizontal layout (red=blue).
+The bit-interleaving approach allows Scalar_T64 (green) to get up to 8x faster (Ice Lake).
+Graviton2 Graviton3 Ice Lake Zen3 Zen4 M1 Scalar T64 Scalar SIMD Auto-vectorized 2.
+0 e l p u t r e p s e l c y C 8 32 16 64 BitWidth(W) Figure 10: FastLanes DELTA decoding for all bit-widths & platforms: very high performance for Auto-vectorized.
+Also Scalar_T64 profits from data-parallelism in the Unified Transposed Layout whereas Scalar cannot and can be >40x slower than SIMD.
+32 64 64 16 32 64 16 32 16 32 64 16 32 64 16 8 8 8 8 8 T = 8 T = 16 T = 32 Fused bit-unpack+FOR T = 64 e l p u t r e p s e l c y C 0.
+0 0 0 8 8 0 BitWidth(W) Figure 11: Fusing 1024-bits interleaved bit-unpacking with decoding (FOR) improves performance (Ice Lake).
+56 16 16 24 32 16 24 32 40 48 8 0 8 64 have weaker SIMD which especially shows for 64-bits types.
+Apple M1 also has just 128-bit NEON but clearly has more instruction level paralellism (ILP).
+Wider SIMD does not always equate more performance: despite supporting AVX512 Zen4 is not faster than Zen3.
+This is expected if the CPU executes one AVX512 instruction using two AVX2 (256-bits) units.
+The absence of dependencies and the opportunities for data-parallelism that FastLanes code exposes make it profit from total CPU execution capability which is the product of ILP and register width.
+Point (2) means that when incorporating FastLanes in future systems we recommend just using the Scalar code paths in fact for the kernels described in this paper just the Scalar_64 code is enough.
+This result significantly enhances the future-proofness of FastLanes.
+We performed experiments for (Q5) regarding DELTA decoding for all six hardware platforms.
+In terms of scalar performance M1 tops Ice Lake clock-for-clock.
+Remarkably Graviton and Zen3 are slower in scalar additions on 8and 16-bits 2140 numbers than on 32and 64-bits.
+The Gravitons again show weak SIMD.
+Performance can again be very high like >40 tuples per cycle on the faster platforms for 8-bits DELTA.
+Most DELTA decoding will be on the larger datatypes (32- 64-bits) but FastLanes-RLE (evaluated later) uses very fast on 1-bit decoding in a 16-bits lane.
+As bit-unpacking and FastLanes decoding use dependency-free instructions column contents do not influence performance at all.
+Only the bit-width matters hence we evaluate all bit-widths.
+The 116 bit-unpacking kernels we generate for all bit-packing widths 𝑊 and unpacked typewidths 𝑇 ≤ 𝑊 could possibly be fused with the decoding kernel for DELTA FOR DICT and FastLanes-RLE in a single kernels that do both unpacking and decoding.
+The benefit of fusing is that the STORE instructions that bit-unpacking ends with and the LOAD instructions that decoding starts with are saved.
+In case of decoding into compressed vectors fusing is not needed for DICT and FOR (decoding is just bit-unpacking in that case ś therefore we do not micro-benchmark these schemes separately).
+For decoding DELTA into a compressed FOR vector we can use fusing what is then needed is to keep MinMax stats per vector and subtract Min from the bases before decoding.
+5Regarding (ordered) DELTA columns we finally argue that subsequent query performance after decompression is not likely to be affected even if the tuple order is left transposed since the permutation caused by transposing is within a 1024-vector only and hence localized such that any column order is largely preserved.
+1200 1000 800 600 400 200 0 ) s m ( e m i t n u R Fastlanes Compressed Scalar Compressed Uncompressed 1T 2T 4T 8T 7x 4x 0 8 16 24 32 BitWidth(W) Figure 12: SELECT SUM(COL) FROM TAB runtime for various COL bitwidths and threads (T) on Ice Lake.
+The crossover point where decompressing scans (plots) outperform plain array scans (horizontal lines) moves from a minimal compression ratio of 4x (≈8bits) with Scalar decoding to just 25% compression (≈24bits) with FastLanes.
+Note that with higher thread counts the crossover point (thick stripes) moves right a bit as RAM bandwidth gets scarcer.
+FastLanes can then improve end-toend performance up to 7x vs.
+2 End-to-End Query Performance We also ran a complete query pipeline by integrating FastLanes in the experimental Tectorwise [12] vectorized query processor.
+We created a table TAB with a single column COL that has 10 ∗ 228 uint32 integer values (10GB) and benchmarked the query SELECT SUM(COL) FROM TAB on our IceLake platform.
+We run this unmodified Tectorwise query that reads COL from an uint32 array and two modified versions (FastLanes and Scalar) that scan a compressed COL ś which gets bit-packed in 𝑊 bits per value.
+In all cases the data is RAMresident.
+As for (Q6) we thus see that reading from FastLanes typically makes a query faster despite the decompression because the query needs less RAM-bandwidth.
+Parallel execution increases the RAM bottleneck: with 8 threads we see up to 7x end-to-end performance improvement vs.
+FastLanes shifts the crossover point where queries get faster from data with a >4x compression ratio (Scalar) to almost any data.
+4 RELATED WORK For more than two decades researchers have been trying to use SIMD instructions to improve the performance of database systems [14 38].
+Much of this effort has been made on SIMDizing the compression and decompression of data [15 16 21 22 27 29 31 37].
+Surveys of these SIMDized compression schemes are [3 7].
+propose to bit-pack 128 integers sequentially using the same bit-width [39].
+propose a SIMDized bitunpacking for the horizontal layout [35].
+In addition to the horizontal layout Schlegel et al.
+propose the k-way vertical layout [27] where each of the 𝑘 consecutive bit-packed values are distributed among consecutive memory words.
+This vertical idea is also called interleaved layout and we use that terminology in this paper.
+0 e l p u t r e p s e l c y C AVX512 AVX2 SSE 4-Way 1024-bit Interleaved 2x 4x 0 8 16 24 32 BitWidth(W) 0 8 16 24 32 Figure 13: Bit-unpacking using the 4-way layout vs.
+1024bit interleaved layout where 𝑇 = 32 (Ice Lake).
+The 4-way layout cannot take advantage of wide SIMD registers with a performance penalty of 2x resp.
+distribution allows to have bit-packed values in different SIMD lanes and avoids the extra PERMUTE instruction required in the horizontal layout.
+use the 4-way vertical layout (k=4) to SIMDize the bit-unpacking for 32-bit integers on CPUs with SSE registers [16].
+use 8-way and 16-way vertical layouts for AVX2 and AVX512 registers [10].
+However these layouts do not cover all challenges that have been discussed earlier in Table 1: these layouts are tied to a specific SIMD-width they do not address the problem of sequential data dependencies in LWCs that work on the decoded data (such as DELTA) and do not address the issue of different data type widths in relation to that.
+On the other hand the interleaved layout becomes respectively 2x and 4x faster on AVX2 and AVX512.
+This confirms that the 4-way layout cannot take advantage of wider registers while the 1024-bit interleaved layout can.
+In addition to the bit-packed layouts that focus on decompression speed there are other bit-packed layouts that focus more on the filter scan.
+BitWeaving [18] and ByteSlice [8] are two examples of such layouts.
+BitWeaving proposes two novel bit-packed data layouts: HBP and VBP.
+These layouts allow using all the bit-parallelism of a SIMD register during the filter scan.
+HBP is more focused on supporting efficient lookup operations while VBP provides a faster filter scan.
+ByteSlice tries to achieve both fast lookup and fast filter scan by applying all the BitWeaving techniques in the byte-by-byte manner instead of bit-by-bit.
+However neither BitWeaving nor BitSlice provides a fast and efficient way to actually decompress data.
+propose a SIMDized bit-unpacking for the VBP layout [24].
+However the reported performance of this layout is roughly 30x slower than our 1024-bit interleaved layout.
+DELTA coding is an LWC that encodes a sequence of integers by replacing each integer with its difference to its preceding integer [19].
+DELTA is typically used on top of bit-packing to reduce the number of bits required to represent values.
+While improving the compression ratio DELTA decoding becomes a bottleneck in combination with bit-unpacking.
+Three approaches have been proposed to dataparallelize DELTA decoding: vertical computation [36] horizontal computation [11] [17] and the SIMDized tree computation [36].
+Vertical computation is based on the SIMD SCATTER/GATHER instructions 2141 Table 3: Summary of all proposed approaches for SIMD DELTA decoding.
+Decompression Cost is the number of ADD instructions required to decode 𝑆 values while the Compression Overhead is the number of extra bits required.
+Approach Decompression Compression Shortcoming Cost 𝑆 Scalar [19] Four Cursor [3] 𝑆 Vertical [36] 2 Horizontal [11] log 𝑆 2 Tree [36] 1 D4 [16] DM [16] 2 Unified Trans1 posed Layout Overhead 0 4·𝑇 𝑁 0 0 0 log 𝑆 log (𝑆+𝑆−1+···+1) 1024 𝑆 Data dependent Data dependent Random access Not efficient Random access Compression ratio Compression ratio - 𝑆 2 2 2 2 1 6 15 11 6 7 3 3 0 13 4 9 0 5 5 1 1 2 14 10 5 6 1 2 74 55 41 25 12 0 0 12 8 0 0 8 4 0 0 4 0 0 0 0 1 1 1 1 3 3 3 3 (a) Unified Transposed Layout.
+The vector can be bit-packed using 3 bits per value as the maximum delta is 6.
+2 2 2 2 9 14 15 19 16 15 18 14 18 15 11 16 15 14 13 12 11 10 9 8 7 6 5 4 3 3 3 3 34 31 30 25 3 0 0 3 2 0 0 2 1 0 0 1 0 0 0 0 1 1 1 1 (b) D4 data layout.
+The maximum delta is now 19.
+Therefore 5 bits are required to bit-pack each value.
+2 9 8 7 7 15 9 15 14 13 12 11 10 7 9 3 8 18 12 7 6 7 5 7 4 3 6 2 5 1 9 3 1 25 0 0 0 0 (c) DM data layout.
+The maximum delta is now 18.
+Therefore 5 bits are required to bit-pack each value.
+Unfortunately these instructions are costly and do not make decoding faster [36].
+Horizontal computation reduces the complexity of DELTA decoding from 𝑂 (𝑛) to 𝑙𝑜𝑔(𝑛).
+This is achieved by using the SIMD SHIFT instructions.
+However these instructions do not exist in all ISAs and it is costly to simulate them.
+Finally the tree approach is based on Guy et al.
+’s work [4] and also relies on SCATTER/GATHER instructions [36].
+The SIMD implementation of horizontal computation can be considered state-of-the-art [36].
+This implementation depends on 2142 Scalar Four Cursor SSE Horizontal AVX512 horizontal Uniﬁed Transposed Layout e l p u t r e p s e l c y C 3.
+0 8 16 32 64 BitWidth(W) Figure 15: DELTA decoding on the Unified Transposed layout is 3x-40x faster than the alternatives (Ice Lake).
+Note the AVX512 horizontal computation falls back to scalar for 𝑇 = 8 and 𝑇 = 16 as it requires the _mm512_alignr_epi instruction.
+the SHIFT instruction that shifts bits together arbitrarily times to the right.
+However this instruction only exists for SSE registers.
+propose to extend this implementation to AVX-512 by simulating the SHIFT instruction with two SET and ALIGNR instructions [36].
+This implementation needs 12 instructions for every 16 integers.
+Compared to FastLanes we can see that this SIMDization does not address all the challenges mentioned earlier.
+Second these implementations are not designed to support all SIMD ISAs.
+Rather than SIMDizing the decoding part of the naive DELTA layout several studies have focused on changing the data layout of DELTA.
+[16] has proposed two approaches: DM and D4.
+The key idea behind these two approaches is to keep deltas between adjacent batches of values instead of adjacent values.
+As shown in Figure 14b D4 subtracts the values batch-wise while DM (Figure 14c) subtracts the last value of the previous batch with the next batch.
+Although D4 provides more data parallelization the problem here is that the DELTAs are bigger because they are the difference between more distant values.
+In D4 the differences are 4x bigger which reduces the compression factor typically by log2(4) hence a factor 2.
+Unfortunately to support ever wider SIMD registers ever larger batches are necessary increasing this overhead.
+Another layout proposed to mitigate the issue of data dependency is the four cursors layout [3].
+The key idea is to keep more base values so we can decode more values in parallel without dependencies.
+This layout was already shown in Figure 4c.
+Note that although we cannot use SIMD instructions to decode these four values simultaneously it allows a wide-issue scalar CPU to achieve better ILP by working on four cursors inside one same scalar loop.
+The performance of the horizontal methods is inconsistent as important SIMD instructions are not available for all registerand lane-width combinations.
+The Unified Transposed layout is by far fastest.
+It does increase the amount of base values per vector: from 1 to 𝑆 (the amount of lanes 1024/𝑇 ).
+The bit-packed vector with deltas takes 𝑊 *1024 and each base 𝑊 bits so the overhead is 1 bit per value.
+But bases are ascending so one could DELTA-encode all bases of consecutive vectors in a row-group header.
+As each vector has 𝑇 values per lane and the sum of 𝑇 𝑊 -bit values needs 𝑊 +log(𝑇 ) bits a DELTA-encoded base can be stored in 𝑊 +log(𝑇 )+1 bits where the +1 is because these bases also need (uncompressed) bases.
+As 1024 main values need 1024/T bases DELTA-encoding bases reduces SIMDized RLE Scalar FastLanes-RLE e l p u t r e p s e l c y C 2.
+0 0 50 200 Average number of runs in a vector of 1024 values 150 100 250 Figure 16: RLE decoding: Scalar vs SIMDized vs FastLanesRLE (Ice Lake).
+FastLanes-RLE is much faster except whith run lengths >333 i.
+at avg 3 runs in a 1024-value vector.
+base-overhead from 1 to (𝐵+log(𝑇 )+1)/𝑇 bits per value.
+For example for the 𝑇 =64-bit data type and DELTAs that fit 𝑊 =7 bits the extra cost is:((7+log(64)+1)/64)=0.
+So that turns 𝑊 =7 bits per value into 7.
+21 bits per value (3% overhead).
+RLE has been shown to be useful in column-oriented databases [2].
+Compared to other LWCs RLE is fundamentally different: While other LWCs represent the original data as a sequence of small integers RLE reduces the number of values required to represent the original data.
+This makes it very challenging to data-parallelize RLE as we are dealing with a variable number of values.
+Nonetheless there were several attempts to SIMDize RLE.
+The encoding part of RLE has been SIMDized in [15 21 31].
+For the decoding part of RLE Damme et al.
+propose a new implementation that could be considered the state-of-the-art [7].
+We discussed this scheme when we introduced FastLanes-RLE and call it SIMDized RLE here.
+more than 3 runs in the 1024-value vectors we test on).
+This is because of two reasons.
+First the SIMDized RLE and Scalar suffer from branch miss predictions.
+This happens in case of storing a new run as there is a need to take another path to load the new value and the branch happens more frequently as there are more runs.
+Second the SIMDized RLE approach does not profit from the full width of a SIMD register.
+This is because the next STORE instruction may overwrite most of the values stored by the previous STORE instruction.
+When introducing FastLanes-RLE we already mentioned its compression ratio is better for runs with an average length ≤12 (in Figure 16 for more than 80 runs in a vector) but starts suffering for longer runs as its Run Lengths require 1.
+375 bits per value (𝑊 =1 + (1+log(16)+1)/16 for bases since FastLanes-RLE relies on 𝑊 =1 𝑇 =16 FastLanes-DELTA).
+However RLE compression ratio typically does not depend so much on Run Lengths as on Run Values certainly if these are strings.
+Also our future work on cascading encodings (i.
+compressing Run Values and DELTA-bases) and exception handling schemes will improve the compression ratio of FastLanes-RLE by moving to 0-bit DELTA storage with the 1-bits as exceptions for vectors with long runs.
+5 CONCLUSION AND FUTURE WORK Current database systems only profit to a limited extent from what SIMD could bring [23 24 38].
+With stalling progress in CPU frequency and core counts this is still an opportunity for performance gains.
+In our vision one needs to start by redesigning the basis ś data storage ś to seize this opportunity.
+This is why FastLanes proposes a new data layout that creates opportunities for independent work on data-parallel hardware.
+Besides SIMD we remark 2143 that other popular data-parallel hardware includes GPUs and TPUs and that we are in an age of further hardware innovation.
+"The gist of FastLanes is that this age needs a data format that takes away sequential decoding dependencies and that is why its key idea is to reorder tuples in the special ""04261357"" 8x16 tiling order."
+FastLanes can express all common LWC decoding methods in simple operations on a virtual (and future-proof) 1024-bits register that can efficiently map to existing SIMD instruction sets as shown by our experiments on Intel AMD Apple and AWS hardware.
+Rather than looking at value decoding in isolation we look at it from a database systems context where decompression is part of a pipeline that should be in balance with hardware resource limits and where a column is not decoded fully in isolation but incrementally (vector-at-a-time) as the source of a query pipeline that processes the data further and where the scan decodes multiple different columns.
+And where decoding infrastructure is part of a (vectorized) software subsystem [13] where code portability in an ever more heterogeneous hardware environment is of paramount importance to limit development effort and technical debt.
+FastLanes also has a scalar code-path and the data-paralellism on compact data-types that it exposes even accelerates scalar decoding in comparison with naive bit-packed sequentially stored data.
+A key result is that modern compilers can completely auto-vectorize this scalar code-path with no performance penalty compared to explicit SIMD intrinsics.
+The performance benefits of FastLanes start by providing much faster decompression: our bit-unpacking followed by FOR and DELTA decompression improve over naive sequential bit-packed layouts by often an order of magnitude (or more).
+We showed that RAM-resident queries can get even faster on FastLanes-compressed data when compared with direct in-memory array scans.
+Our proposed kernels such as FastLanes-RLE are not targeting full/eager decompression but rather partial decompression into compressed vector representations.
+Such vector representations that represent vectors of data in tight arrays that fit in a lane-width that is much smaller than the fully decompressed value unlock opportunities for relational operators higher up in the pipeline to exploit compressed execution [2 6 20 25 33 34].
+Research could establish whether the data-parallelism that FastLanes creates makes it also suitable to efficiently scan and process data on widely-parallel hardware such as TPUs and GPUs [28].
+In FastLanes we aim not only to improve the speed of LWC decoding but also the compression ratio.
+We are researching the idea of cascading LWCs [26] where compression methods are stacked on top of each other and combined with various exception handling schemes with the ultimate goal of making general-purpose compression methods such as zstd Snappy and (even) LZ4 less necessary in big data formats as their decoding speeds are orders of magnitude slower than FastLanes and holding back performance.
+We leave an evaluation in a complete system on end-to-end benchmarks for future work.
+We intend to integrate FastLanes in a complete open source future-proof big data file format.
+Cascading compression implies that each logical column chunk gets stored in potentially multiple recursively compressed physical sub-columnchunks and this involves making and evaluating many design decisions in row-group data-chunk and meta-data organization.
+Abadi Samuel Madden and Miguel Ferreira.
+Integrating compression and execution in column-oriented database systems.
+In Proceedings of the ACM SIGMOD Surajit Chaudhuri Vagelis Hristidis and Neoklis Polyzotis (Eds.
+Towards a New File Format for Big Data: SIMD-Friendly https://homepages.
+Boncz Marcin Zukowski and Niels Nes.
+[6] Biswapesh Chattopadhyay Priyam Dutta Weiran Liu Ott Tinn Andrew McCormick Aniket Mokashi Paul Harvey Hector Gonzalez David Lomax Sagar Mittal Roee Aharon Ebenstein Nikita Mikhaylin Hung ching Lee Xiaoyan Zhao Guanzhong Xu Luis Antonio Perez Farhad Shahmohammadi Tran Bui Neil McKay Vera Lychagina and Brett Elliott.
+Procella: Unifying serving and analytical data at YouTube.
+[7] Patrick Damme Dirk Habich Juliana Hildebrandt and Wolfgang Lehner.
+Lightweight Data Compression Algorithms: An Experimental Survey (Experiments and Analyses).
+[8] Ziqiang Feng Eric Lo Ben Kao and Wenjian Xu.
+ByteSlice: Pushing the Envelop of Main Memory Data Processing with a New Storage Layout.
+In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data Melbourne Victoria Australia May 31 - June 4 2015 Timos K.
+Jonathan Goldstein Raghu Ramakrishnan and Uri Shaft.
+In Proceedings of the Fourteenth International Conference on Data Engineering Orlando Florida USA February 23-27 1998 Susan Darling Urban and Elisa Bertino (Eds.
+[9] [10] Dirk Habich Patrick Damme Annett Ungethüm and Wolfgang Lehner.
+Make Larger Vector Register Sizes New Challenges? Lessons Learned from the Area of Vectorized Lightweight Compression Algorithms.
+In Proceedings of the Workshop on Testing Database Systems (Houston TX USA) (DBTest’18).
+Association for Computing Machinery New York NY USA Article 8 6 pages.
+ACM 29 12 (dec 1986) 1170ś1183.
+[12] Timo Kersten Viktor Leis Alfons Kemper Thomas Neumann Andrew Pavlo and Peter A.
+Everything You Always Wanted to Know About Compiled and Vectorized Queries But Were Afraid to Ask.
+[13] Harald Lang Tobias Mühlbauer Florian Funke Peter A.
+Boncz Thomas Neumann and Alfons Kemper.
+Data Blocks: Hybrid OLTP and OLAP on Compressed Storage Using Both Vectorization and Compilation.
+In Proceedings of the 2016 International Conference on Management of Data (San Francisco California USA) (SIGMOD ’16).
+Association for Computing Machinery New York NY USA 311ś326.
+[14] Harald Lang Linnea Passing Andreas Kipf Peter Boncz Thomas Neumann and Alfons Kemper.
+Make the most out of your SIMD investments: counter control flow divergence in compiled query pipelines.
+The VLDB Journal 29 2 (01 May 2020) 757ś774.
+[15] Florian Lemaitre Arthur Hennequin and Lionel Lacassagne.
+How to Speed Connected Component Labeling up with SIMD RLE Algorithms.
+In Proceedings of the 2020 Sixth Workshop on Programming Models for SIMD/Vector Processing (San Diego CA USA) (WPMVP’20).
+Association for Computing Machinery New York NY USA Article 2 8 pages.
+[16] Daniel Lemire and Leonid Boytsov.
+Decoding billions of integers per second through vectorization.
+Software: Practice and Experience 45 (01 2015).
+[17] Daniel Lemire Leonid Boytsov and Nathan Kurz.
+SIMD Compression and the Intersection of Sorted Integers.
+[18] Yinan Li and Jignesh Patel.
+BitWeaving: Fast scans for main memory data processing.
+Proceedings of the ACM SIGMOD International Conference on Management of Data 289ś300.
+[19] Wee Keong Ng and Chinya V.
+Block-Oriented Compression Techniques for Large Statistical Databases.
+[20] Pedro Pedreira Orri Erling Maria Basmanova Kevin Wilfong Laith S.
+Sakka Krishna Pai Wei He and Biswapesh Chattopadhyay.
+Velox: Meta’s Unified [21] [22] Execution Engine.
+Johannes Pietrzyk Annett Ungethüm Dirk Habich and Wolfgang Lehner.
+Beyond Straightforward Vectorization of Lightweight Data Compression Algorithms for Larger Vector Sizes.
+Jeff Plaisance Nathan Kurz and Daniel Lemire.
+[23] Orestis Polychroniou Arun Raghavan and Kenneth A.
+Rethinking SIMD Vectorization for In-Memory Databases.
+[24] Orestis Polychroniou and Kenneth A.
+Efficient Lightweight Compression Alongside Fast Scans.
+In Proceedings of the 11th International Workshop on Data Management on New Hardware (Melbourne VIC Australia) (DaMoN’15).
+Association for Computing Machinery New York NY USA Article 9 6 pages.
+[25] Mark Raasveldt and Hannes Mühleisen.
+Data Management for Data Science - Towards Embedded Analytics.
+In 10th Conference on Innovative Data Systems Research CIDR 2020 Amsterdam The Netherlands January 12-15 2020 Online Proceedings.
+org [26] Vijayshankar Raman and Garret Swart.
+How to Wring a Table Dry: Entropy Compression of Relations and Querying of Compressed Relations.
+In Proceedings of the 32nd International Conference on Very Large Data Bases (Seoul Korea) (VLDB ’06).
+[27] Benjamin Schlegel Rainer Gemulla and Wolfgang Lehner.
+Fast integer compression using SIMD instructions.
+Yogatama Xiangyao Yu and Samuel Madden.
+Tile-Based Lightweight Integer Compression in GPU.
+In Proceedings of the 2022 International Conference on Management of Data (Philadelphia PA USA) (SIGMOD ’22).
+Association for Computing Machinery New York NY USA 1390ś1403.
+In Proceedings of the 20th ACM International Conference on Information and Knowledge Management (Glasgow Scotland UK) (CIKM ’11).
+Association for Computing Machinery New York NY USA 317ś326.
+[30] Nigel Stephens Stuart Biles Matthias Boettcher Jacob Eapen Mbou Eyole Giacomo Gabrielli Matt Horsnell Grigorios Magklis Alejandro Martinez Nathanaël Prémillieu Alastair Reid Alejandro Rico and Paul Walker.
+[31] Annett Ungethüm Johannes Pietrzyk Patrick Damme Dirk Habich and Wolfgang Lehner.
+Conflict Detection-Based Run-Length Encoding - AVX-512 CD Instruction Set in Action.
+[32] Annett Ungethüm Johannes Pietrzyk Patrick Damme Alexander Krause Dirk Habich Wolfgang Lehner and Erich Focht.
+Hardware-Oblivious SIMD Parallelism for In-Memory Column-Stores.
+In 10th Conference on Innovative Data Systems Research CIDR 2020 Amsterdam The Netherlands January 12-15 2020 Online Proceedings.
+[33] Richard Michael Grantham Wesley and Pawel Terlecki.
+Leveraging Compression in the Tableau Data Engine.
+In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird Utah USA) (SIGMOD ’14).
+Association for Computing Machinery New York NY USA 563ś573.
+[34] Till Westmann Donald Kossmann Sven Helmer and Guido Moerkotte.
+The Implementation and Performance of Compressed Databases.
+[35] Thomas Willhalm Nicolae Popovici Yazan Boshmaf Hasso Plattner Alexander Zeier and Jan Schaffner.
+SIMD-Scan: Ultra Fast in-Memory Table Scan Using on-Chip Vector Processing Units.
+[36] Wangda Zhang Yanbin Wang and Kenneth Ross.
+[37] Wayne Zhao Xudong Zhang Daniel Lemire Dongdong Shan Jian-yun Nie Hongfei Yan and Ji-Rong Wen.
+A General SIMD-Based Approach to Accelerating Compression Algorithms.
+ACM Transactions on Information Systems 33 (02 2015).
+Implementing Database Operations Using SIMD Instructions.
+In Proceedings of the 2002 ACM SIGMOD International Conference on Management of Data (Madison Wisconsin) (SIGMOD ’02).
+Association for Computing Machinery New York NY USA 145ś156.
+[38] [39] Marcin Zukowski Sándor Héman Niels Nes and Peter A.
+In Proceedings of the 22nd International Conference on Data Engineering ICDE 2006 3-8 April 2006 Atlanta GA USA Ling Liu Andreas Reuter Kyu-Young Whang and Jianjun Zhang (Eds.
+ALP: Adaptive Lossless floating-Point Compression Azim Afroozeh CWI Amsterdam The Netherlands Leonardo Kuffó CWI Amsterdam The Netherlands Peter Boncz CWI Amsterdam The Netherlands ABSTRACT IEEE 754 doubles do not exactly represent most real values introducing rounding errors in computations and [de]serialization to text.
+These rounding errors inhibit the use of existing lightweight compression schemes such as Delta and Frame Of Reference (FOR) but recently new schemes were proposed: Gorilla Chimp128 PseudoDecimals (PDE) Elf and Patas.
+However their compression ratios are not better than those of general-purpose compressors such as Zstd while [de]compression is much slower than Delta and FOR.
+We propose and evaluate ALP that significantly improves these previous schemes in both speed and compression ratio (Figure 1).
+We created ALP after carefully studying the datasets used to evaluate the previous schemes.
+To obtain speed ALP is designed to fit vectorized execution.
+This turned out to be key for also improving the compression ratio as we found in-vector commonalities to create compression opportunities.
+ALP is an adaptive scheme that uses a strongly enhanced version of PseudoDecimals [31] to losslessly encode doubles as integers if they originated as decimals and otherwise uses vectorized compression of the doubles’ front bits.
+Its high speeds stem from our implementation in scalar code that auto-vectorizes using building blocks provided by our FastLanes library [6] and an efficient two-stage compression algorithm that first samples row-groups and then vectors.
+KEYWORDS lossless compression floating point compression lightweight compression vectorized execution columnar storage big data formats ACM Reference Format: Azim Afroozeh Leonardo Kuffó and Peter Boncz.
+In Proceedings of The 2024 International Conference on Management of Data (SIGMOD ’24).
+ACM New York NY USA 14 pages.
+XXXXXXX 1 INTRODUCTION Data analytics pipelines manipulate floating-point numbers (64-bit doubles) more frequently than classical enterprise database workloads which typically rely on fixed-point decimals (systems often store these as 64-bit integers).
+Floating-point data is also a natural fit in scientific and sensor data and can have a temporal component yielding time series.
+Analytical data systems and big data formats have adopted columnar compressed storage [4 12 37 41 50 51] where the compression in storage is either provided by general-purpose or SIGMOD ’24 June 09–15 2024 Santiago Chile © 2024 Association for Computing Machinery.
+This is the author’s version of the work.
+It is posted here for your personal use.
+The definitive Version of Record was published in Proceedings of The 2024 International Conference on Management of Data (SIGMOD ’24) https: //doi.
+ALP is 1-2 orders of magnitude faster in [de]compression than all competing schemes while providing an excellent compression ratio.
+The only one to achieve a compression ratio similar to ALP is Zstd but it is slow and block-based (one cannot skip through compressed data).
+Elf is inferior to Zstd on all performance metrics.
+The evaluation framework is presented in Section 4.
+"Lightweight methods also called ""encodings"" exploit knowledge of the type and domain of a column."
+Examples are Frame Of Reference (FOR) Delta- Dictionary- and Run Length Encoding (RLE) [20 44 46].
+The first two are used on high-cardinality columns and encode values as the addition of a small integer with some fixed base value (FOR) or the previous value (Delta).
+These encodings also bit-pack the small integers into just the necessary bits.
+However with IEEE 754 doubles [1] additions introduce rounding errors making Delta and FOR unusable for raw floating-point data.
+General-purpose methods used in big data formats are gzip Zstd Snappy and LZ4 [13 14 26].
+LZ4 and snappy trade more compression ratio for speed gzip the other way round with Zstd in the middle.
+The drawback of general-purpose methods is that they tend to be slower than lightweight encodings in [de]compression also they force decompression of large blocks for reading anything preventing a scan from pushing down filters that could skip compressed data.
+Recently though a flurry of new floating-point encodings were proposed: Gorilla [38] Chimp and Chimp128 [29] PseudoDecimals (PDE) [31] Patas [24] and Elf [28].
+A common idea in these is to use the XOR operator with a previous value in a stream of data as combining two floating-point values at the bit-pattern level using XOR provides somewhat similar functionality to additions without the problem of rounding errors.
+Chimp does an XOR with the immediate previous value whereas Chimp128 XORs with one value that may be 128 places earlier in the stream – at the cost of storing a 7-bit offset to that value.
+After the XOR most bits are 0 and the Chimp variants only store the bit sequence that is non-zero.
+Patas introduced in DuckDB compression [24] is a version of Chimp128 that stores non-zero byte-sequences rather than bit-sequences.
+Whereas 10−310−210−1Compression S eedas Tu les er CPU Cycle (Log Scale)10−210−1100101Decom ression S eedas Tu les er CPU Cycle (Log Scale)1.
+0xALPPDEELFZstdPatasChim 128Chim Gorilla SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz Patas trades compression ratio for faster decompression Elf [28] does the opposite: it uses a mathematical formula to zero more XOR bits and improve the compression ratio at the cost of lower [de]compression speed.
+PDE is very different as it does not rely on XOR: it observes that many values that get stored as floatingpoint were originally a decimal value and it endeavours to find that original decimal value and compress that.
+While these floating-point encodings avoid the need to always decompress largish blocks as required by general-purpose compression and thereby allow for predicate push-down in big data formats [8] their [de]compression speed (as well as compression ratio) is not much higher than that of general-purpose schemes [28] in other words these encodings are not quite lightweight.
+We introduce ALP a lightweight floating-point encoding that is vectorized [7]: it encodes and decodes arrays of 1024 values.
+It is implemented in dependency-free scalar code that C++ compilers can auto-vectorize such that ALP benefits from the high SIMD performance of modern CPUs [27 39].
+In addition ALP achieves much higher compression ratios than the other encodings thanks to the fact that vectorized compression does not work value-at-atime but can take advantage of commonalities among all values in one vector.
+Its vectorized design also allows ALP to be adaptive without introducing space overhead: information to base adaptive decisions on is stored once per vector rather than per value and thus amortized.
+ Chimp[128] has four decoding modes) needs control instructions (if-then-else) for every value and can run into CPU branch mispredictions ALP’s pervector adaptivity only needs control-instructions once per vector but vector [de]compression itself has very few dataor control dependencies leading to higher speeds.
+Our main contributions are: • a study of the datasets that were used to motivate and evaluate the previous floating-point encodings leading to the new insights (e.
+ many floating-point values actually were originally generated as a decimal).
+• the design of ALP an adaptive scheme that either encodes a vector of values as compressed decimals or compresses only the front-part of the doubles that holds the sign exponent and highest bits of the fraction part of the double.
+• an efficient two-level sampling scheme (happening respectively per row-group and per vector) to efficiently find the best method during compression.
+• an open-source implementation of ALP in C++ that uses vectorized lightweight compression that can cascade (e.
+g use Dictionary-compression but then also compress the dictionary and the code columns with Delta RLE FOR – such as provided by [6 15 31]).
+• an evaluation versus the other encodings on the datasets that were used when these were proposed showing that ALP is faster and compresses better (as summarized in Figure 1).
+2 DATASETS ANALYSIS Compression methods achieve their best performance when they are capable of exploiting properties of the data.
+However the same methods could fail to achieve any compression if the data lacks these exploitable properties.
+In this section we analyze a number of floating-point datasets aiming to uncover properties relevant to compression performance.
+Furthermore we are interested in analyzing these datasets from the point of view of vectorized query processing since big data format readers and scan subsystems of database systems by now standardize on this methodology [25 41]: they deliver vector-sized chunks of data and use decompression kernels that decompress one vector (e.
+We start by explaining in detail the IEEE 754 doubles representation in subsection 2.
+Then we introduce the analyzed datasets in subsections 2.
+4 we analyze the data similarities at the vector level.
+5 we revisit decimalbased encoding approaches and perform further analysis of these methods from a vectorized point of view.
+6 we elaborate on the compression opportunities we found.
+1 IEEE 754 Doubles Representation IEEE 754 [1] represents 64-bit doubles in 3 segments of bits (Figure 2): 1 bit for sign (0 for positive 1 for negative) 11 bits for an exponent 𝑒 (represents an unsigned integer from 0 to 2047) and 52 bits for the fraction (represents a summation of inverse powers of two also known as mantissa or significand) – which together represent 𝑏52−𝑖 2−𝑖 (cid:17) a real number defined as: (−1)𝑠𝑖𝑔𝑛 × 2𝑒 −1023 ×.
+This definition allows for up to 17 significant decimal places of precision.
+However it introduces errors in arithmetic (e.
+addition multiplication) and limitations on the integer part of numbers which we will discuss later on in this section.
+The same standard also defines 32-bit floats (8 bits for exponent and 23 for mantissa).
+1 + (cid:205)52 𝑖=1 (cid:16) Figure 2: IEEE 754 doubles bitwise representation.
+2 Datasets Table 1 presents an overview of the 30 datasets that we analyzed in detail in order to design ALP: 18 of these datasets were previously analyzed and evaluated to develop Elf [28] and Chimp [29] the other 12 were used to evaluate PDE [31].
+We consider these 30 datasets to be relevant because they capture a variety of distributions and because they played a role in the analysis design and evaluation of competing floating-point encodings.
+Identifying new properties we gained important clues guiding the design of ALP.
+Finally by using these datasets we are able to perform a fair comparison between these methods and our new ALP compression.
+3 Dataset Semantics The first 13 datasets presented in Table 1 contain time series data.
+On these datasets each double value 𝑣𝑖+1 is recorded further in time than value 𝑣𝑖.
+The next 17 datasets are more representative of doubles stored in classical database workloads 12 of these non-time series datasets are part of the Public BI Benchmark [2] a collection of the biggest Tableau Public workbooks [49].
+Note that all datasets are user-contributed data (non-synthetic).
+The datasets have significant variety in their semantics.
+As presented in Table 1 14 datasets contain doubles that represent monetary values (i.
+ Exchange rates public funds product prices stocks ALP: Adaptive Lossless floating-Point Compression SIGMOD ’24 June 09–15 2024 Santiago Chile Table 1: Floating-Point Datasets Source Semantics Name ↓ N° of Values s e i r e s e m T i s e i r e s i e m T n o N Barometric Pressure (kPa) Air-Pressure[33] Basel-temp1 Temperature (C°) Basel-wind1 Wind Speed (Km/h) Bird-migration2 Coordinates (lat lon) Bitcoin-price2 Exchange Rate (BTC-USD) City-Temp3 Temperature (F°) Dew-Point-Temp[36] Temperature (C°) Temperature (C°) IR-bio-temp[35] Dust content in air (mg/m3) PM10-dust[34] Stocks-DE4 Monetary (Stocks) Stocks-UK4 Monetary (Stocks) Stocks-USA4 Monetary (Stocks) Angle Degree (0°-360°) Wind-dir[32] Arade/45 Energy Blockchain-tr6 Monetary (BTC) CMS/15 Monetary Avg.
+(USD) CMS/95 Discrete Count Food-prices7 Monetary (USD) Gov/105 Monetary (USD) Gov/265 Monetary (USD) Gov/305 Monetary (USD) Gov/315 Monetary (USD) Gov/405 Monetary (USD) Medicare/15 Monetary Avg.
+(USD) Medicare/95 Discrete Count NYC/295 Coordinates (lon) POI-lat8 Coordinates (lat in radians) POI-lon8 Coordinates (lon in radians) SD-bench9 Storage Capacity (GB) NEON meteoblue meteoblue InfluxDB InfluxDB Udayton NEON NEON NEON INFORE INFORE INFORE NEON PBI Bench.
+Kaggle Kaggle Kaggle 137721453 123480 123480 17964 2686 2905887 5413914 380817839 221568 43565658 59305326 282076179 198898762 9888775 231031 18575752 18575752 18575752 2050638 141123827 141123827 141123827 141123827 141123827 9287876 9287876 17446346 424205 424205 8927 and crypto-currencies).
+4 of them represent coordinates (i.
+ latitude and longitude) 2 contain discrete counts stored as doubles and 1 contains computer storage capacities.
+Finally the other 10 datasets contain a variety of scientific measures (i.
+ temperature pressure concentration speed degrees and energy).
+Some datasets share a common prefix in their name followed by a number.
+This number represents the index of the analyzed column in a dataset.
+4 Data Similarity The underlying temporal property of time series data has been shown to result in similar values stored close-by [29 38].
+We can analyze similarity of doubles from two different points of view: (i) their bitwise representation (IEEE 754 [1]) and (ii) their humanreadable representation.
+From a bitwise point of view two double floating-point values are considered similar if their sign exponent and fraction parts are similar.
+We define a vector as 1024 consecutive values [7].
+In most of the datasets the exponent deviation is small particularly in time series data.
+These small deviations are reflected by the number of leading 0-bits resulting from XORing the doubles with their previous value.
+When similar doubles are XORed the result typically has a high number of leading1https://www.
+com/datasets/alanjo/ssd-and-hdd-benchmarks and trailing-zero bits [10 38 45].
+However in Table 2:C14 and C15 we see that the average number of leading and trailing zeros bits after XORing is comparable between time series and non-time series data.
+Hence this similarity of values stored close-by is also present on non-time series data which is also reflected by the fact that Chimp and Chimp128 do really well on this data [29].
+Regardless of semantics leading and trailing zero bits go down with lower percentages of duplicates (Table 2:C6 non-unique values) and higher decimal precision (Table 2:C2).
+For instance in both datasets in which decimal precision reaches 20 digits (i.
+ POI-lat and POI-lon) the leading and trailing 0-bit average of XORed values is the lowest.
+From a human perspective two doubles are similar if their orders of magnitude (exponent) and their visible decimal precision are similar.
+On our time series datasets the standard deviation of the magnitudes (Table 2:C8) is relatively small (e.
+In contrast on non-time series data this measure is elevated for some datasets (e.
+ Food-Prices Gov/40 CMS/9) though never extremely high when compared to the average magnitude (Table 2:C7).
+Decimal precision varies between datasets (Table 2:C2 and C3).
+For instance datasets that contain geographic coordinates such as POI-lat and POI-lon can vary between 0 and 20 decimals of precision.
+On the other hand datasets such as Medicare/9 SD-bench and CityTemp contain values with just 1 decimal of precision.
+Despite these differences inside a dataset the deviation of this property is usually small from a vector perspective (Table 2:C5).
+In fact for 25 out of 30 datasets the decimal precision deviation inside vectors is smaller than 1.
+That means that most of the values inside a vector share the same decimal precision.
+Decimal-based encoding approaches such as PDE exploit these human-readable similarities of doubles by trying to represent them as integers [31].
+The more similar the decimal precision and the orders of magnitude of doubles inside a block of values the better compression ratio can be achieved.
+5 Representing Doubles as Integers Representing double-precision floating-point values as integers is non-trivial.
+Take for instance the number 𝒏 = 8.
+At first glance to encode 𝒏 as an integer we could be tempted to move the decimal point 𝒆 spaces to the right until there are no decimals left (i.
+The latter can be achieved with the following procedure: 𝑃𝑒𝑛𝑐 = 𝑟𝑜𝑢𝑛𝑑 (𝑛 × 10𝑒 ).
+Since one of the multiplication operands of 𝑃𝑒𝑛𝑐 is a double we need to round the result to obtain an integer.
+Then we could conclude that we have reduced our doubleprecision floating-point number into a 32-bit integer 𝒅 = 80605 (i.
+ the result of 𝑃𝑒𝑛𝑐 ) and another 32-bit integer representing the number of spaces 𝒆 we moved the decimal point (i.
+Hence from the encoded integer 𝒅 result of 𝑃𝑒𝑛𝑐  and the number of spaces 𝒆 we moved the decimal point we should be able to recover the original double by performing the following procedure: 𝑃𝑑𝑒𝑐 = 𝑑 × 10−𝑠.
+Executing this in a programming language will visually yield on screen the original number 8.
+However the exact bitwise representation of the original double has been lost in the process.
+The correctness of the procedures fails to hold due to our number 8.
+0605 not being a real double [19].
+The real representation of SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz Table 2: Detailed metrics computed on the Datasets Decimal Precision Max  Min  Avg.
+Values per Vector Non-Unique %  Avg.
+IEEE 754 Exponent per Vector Avg.
+Success of 𝑃𝑒𝑛𝑐 and 𝑃𝑒𝑛𝑐 using one exponent 𝑒 per: Value  Dataset  Vector Previous Value XOR 0’s Bits Front  Trail.
+0 Name ↓ C1 Air-Pressure Basel-temp Basel-wind Bird-migration Bitcoin-price City-Temp Dew-Point-Temp IR-bio-temp PM10-dust Stocks-DE Stocks-UK Stocks-USA Wind-dir TS AVG.
+Arade/4 Blockchain-tr CMS/1 CMS/25 CMS/9 Food-prices Gov/10 Gov/26 Gov/30 Gov/31 Gov/40 Medicare/1 Medicare/9 NYC/29 POI-lat POI-lon SD-bench NON-TS AVG.
+0605 as a double based on the IEEE 754 definition is: 8.
+To achieve lossless compression this has to be the exact result of our procedure 𝑃𝑑𝑒𝑐.
+However in our example 𝑃𝑑𝑒𝑐 yields 8.
+This is a consequence of the error introduced in the multiplication by the inverse factor of 10 in 𝑃𝑑𝑒𝑐.
+The latter turns out to be a double that does not have an exact decimal representation either.
+0001 but more something like 0.
+This error is introduced in the multiplication and reflected in the end result of the procedure 𝑃𝑑𝑒𝑐.
+The 𝑃𝑒𝑛𝑐 procedure does not suffer this problem since 10𝑒 has an exact double representation for 𝒆 ≤ 21.
+But always using the visible precision of the doubles as the exponent 𝒆 (e.
+0001 the visible precision is 4 for 1.
+4297546 the visible precision is 7).
+5% of the values successfully encoded and decoded on average for all the datasets.
+However in some datasets the success probability gets as low as 61.
+We found the success of the procedures 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐 to encode and decode the exact original doubles to depend on two factors: (i) the real precision of the exponent 𝒆 and (ii) the visible precision of the double 𝒏.
+High exponents work for all values.
+It is evident that higher exponents 𝒆 such as 14 and 16 are predominant with an average of 95% successfully encoded values in all of the datasets and up to a rate of 99.
+9% in datasets such as SD-bench Stocks-UK Medicare/9 Gov/31 and PM10-dust.
+The effectiveness of higher exponents stems from the fact that the more we increase the exponent 𝒆 the closer we can get to obtaining the real double with the procedures.
+This is due to higher exponents 𝒆 resulting in a more precise inverse factor of 10 on 𝑃𝑑𝑒𝑐.
+For instance 10−14 represented as a double is equal to 1.
+As a consequence the result of 𝑃𝑑𝑒𝑐 is more accurate.
+Furthermore higher exponents are powerful because they are able to cover a wider range of decimal precision.
+Moreover as shown in Table 2:C13 when optimizing to use a different exponent 𝒆 per vector we reach an average of 97.
+2% of successfully encoded values in all the datasets.
+Based on these results we question whether a different exponent 𝒆 for each value is needed – which is what PDE does.
+However by using higher exponents 𝒆 the integers resulting from the procedure 𝑃𝑒𝑛𝑐 become big (i.
+These high exponents that lead to big integers are not used by PDE since they lead to a worse compression ratio than leaving the data uncompressed (because storing a 64-bit integer plus an exponent takes more space than a 64-bit double).
+Note that the doubles in datasets such as NYC/29 POI-lat and POI-lon are only representable as big integers.
+ALP: Adaptive Lossless floating-Point Compression SIGMOD ’24 June 09–15 2024 Santiago Chile The 52-bit limit for integers.
+Exponent 𝒆 = 14 is the most successful in most of the datasets to represent doubles as integers using 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐.
+This is due to the difference between the exact value and the real value of 10−14 being too small to have an effect in 𝑃𝑑𝑒𝑐 result.
+However there are two datasets in which even higher exponents 𝒆 are needed (i.
+ POI-lat POI-lon) because the visible precision of the double values inside those datasets on average exceeds 14 (Table 2:C4).
+As we explain subsequently when the order of magnitude of a double 𝒏 plus its visible decimal precision reaches 16 𝑃𝑒𝑛𝑐 is prone to fail due to a limitation of the IEEE 754 doubles.
+The multiplication inside 𝑃𝑒𝑛𝑐 yields a double due to having a double operand.
+Hence before rounding our resulting integer 𝒅 is a double.
+However there is a known limitation to the accuracy of the integer part of a double.
+Only the integers ranging from −253 to 253 can be exactly represented in the integer part of a double number.
+Going beyond this threshold is problematic.
+Between 253 and 254 only even integer numbers can be represented as doubles.
+Similarly between 254 and 255 only multiples of 4 can exist.
+Furthermore doubles stop having a decimal part after 253.
+Hence if a double multiplication yields a double higher than 253 results will be automatically rounded to the nearest existing double number.
+The latter happens in 𝑃𝑒𝑛𝑐 when the order of magnitude of the double plus the visible decimal precision reaches 16.
+Hence representing a number as an integer could be impossible in these cases using 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐.
+This is why POI-lat and POI-lon achieve a relatively low successful encoding rate of 76.
+Also this is why we stated earlier that 10𝑒 only has an exact double representation for 𝒆 ≤ 21.
+6 Unexploited Opportunities All recently proposed competing floating-point encoding already exploit some of the properties discussed in the previous subsections.
+However there is room for substantial improvement both in terms of compression ratio and [de]compression speed.
+5 we demonstrated that it is possible to achieve near 100% success rate of our procedures 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐 by using only one exponent 𝒆 for every vector.
+The current state-of-the-art Decimal-based approach PDE [31] embeds the exponent 𝒆 in every value.
+Hence by exploiting this opportunity compression ratio could be improved.
+Cutting trailing 0s with an extra multiplication.
+5 we demonstrated that high exponents 𝒆 achieve the highest success rate on our procedures 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐 to store doubles as integers.
+However we also mentioned that using exponents such as 14 results in 64-bit integers being encoded.
+Despite this we believe that using a unique exponent 𝒆 per vector opens the opportunity to encode big integers without instantly falling behind in compression ratio against uncompressed values.
+High exponents 𝒆 in combination with low-precision decimals datasets (e.
+ SD-bench City-Temp Stocks-UK) result in 64-bit integers that contain tails of repeated trailing 0-digits (e.
+3 and 𝒆 = 14 yields 𝑃𝑒𝑛𝑐 = 3730000000000000 𝒏 ≈ 100.
+8333 and 𝒆 = 14 yields 𝑃𝑒𝑛𝑐 = 10083330000000000).
+These tails of repeated 0-digits will have the same length in datasets with low magnitude variance and low decimal precision variance (e.
+Cutting these tails with an extra multiplication with an inverse factor of 10 namely 𝒇  results in a smaller integer that can be used to recover the 64-bit integer with the inverse operation (i.
+ a multiplication with a factor 𝒇 of 10).
+Hence we can redefine 𝑃𝑒𝑛𝑐 and 𝑃𝑑𝑒𝑐 as follows: 𝐴𝐿𝑃𝑒𝑛𝑐 = 𝑟𝑜𝑢𝑛𝑑 (𝑛 × 10 𝑒 × 10−𝑓 ) 𝐴𝐿𝑃𝑑𝑒𝑐 = 𝑑 × 10 𝑓 × 10−𝑒 (1) (2) Based on the analysis done in subsection 2.
+5 one might fear that this new multiplication with another inverse factor of 10 in 𝐴𝐿𝑃𝑒𝑛𝑐 could result in new rounding errors.
+However the error introduced by these inverse factors of 10 turns out to pose no problems.
+To illustrate with 𝒏 ≈ 8.
+0605 𝒆 = 14 and 𝒇 = 10 𝐴𝐿𝑃𝑒𝑛𝑐 and 𝐴𝐿𝑃𝑑𝑒𝑐 will execute as follows: 𝐴𝐿𝑃𝑒𝑛𝑐 = 𝑟𝑜𝑢𝑛𝑑 ( 8.
+06049999999999933209 In the third step of 𝐴𝐿𝑃𝑒𝑛𝑐  the error introduced by 10−10 is negligible for the resulting integer 𝒅.
+Using this reducing factor 𝒇 in the procedures is a way of taking advantage of the high coverage and success rates or large exponents without having to encode big integers 𝒅.
+Note that this example is the same 𝒏 we used at the beginning of subsection 2.
+5 which could not be encoded by simply using 𝒆 = 4.
+Until now we have ignored the process of finding the exponent 𝒆 for our decimal-based encoding procedures 𝐴𝐿𝑃𝑒𝑛𝑐 and 𝐴𝐿𝑃𝑑𝑒𝑐.
+The current state-of-art on decimal-based encoding (i.
+ PDE) performs a brute-force search for each value in a dataset in order to find the exponent 𝒆.
+For our 𝐴𝐿𝑃 procedures an additional nested brute-force search needs to be performed in order to find the best combination of exponent 𝒆 and factor 𝒇.
+We define the best combination as the one in which 𝐴𝐿𝑃𝑒𝑛𝑐 yields the smallest integer 𝒅 with which 𝐴𝐿𝑃𝑑𝑒𝑐 succeeds in recovering the original double 𝒏.
+This translates into a search space of 253 possible exponent 𝒆 and factor 𝒇 combinations (given that 𝒇 ≤ 𝒆 and 0 ≥ 𝒆 ≤ 21).
+However we have already discussed that most values inside a vector can be encoded by using one single exponent.
+Furthermore we have also mentioned that vectors exhibit a low variance in their decimal precision and in their magnitudes.
+Hence our intuition was that the search space for the combination of exponent 𝒆 and factor 𝒇 can be greatly reduced and that it should be done on a per-vector basis.
+In order to confirm this we computed the best combination for each vector in each dataset.
+For this experiment the search was performed on all the possible search space of 253 combinations for every vector.
+For some datasets such as Basel-wind Bird-migration City-Temp Wind-dir and IR-bio-temp the entire search space is just one combination.
+SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 Figure 3: Analysis of the best combinations of exponent 𝒆 and factor 𝒇 for each vector of 1024 values.
+For most datasets the best combination for any vector is found among a set of just 5 different combinations.
+For some datasets a single combination is always the best one.
+When the magnitude plus decimal precision exceeds 16 it is often impossible to encode a double as an integer with our procedure 𝐴𝐿𝑃𝑒𝑛𝑐.
+On such data decimal-based encoding would have to deal with integers bit-packed to more than 52 bits (and similarly Chimp variants would have to deal with trailing bitstrings of more than 52 bits).
+A basic observation is that such data is not very compressible in the first place (64-bit data takes at least 52 bits) but nevertheless compression may still be worthwhile.
+We believe that the approach of a decimal-based encoding is not appropriate for such compression-unfriendly data and thus when encountering such data our approach could adaptively switch to a different encoding strategy that exploits regularities in the front-bits in a vectorized manner.
+In Table 2:C10 even on these datasets (i.
+ POI-lat POI-lon) we see that the exponent of the bitwise representation of a double exhibits a low variance.
+Data with low variance can be compressed with lightweight integer encodings such as RLE and Dictionary – all building blocks provided by our FastLanes compression library [6].
+Furthermore based on the analysis of leading 0-bits from XOR-ing with the previous value (Table 2:C14) on some of these datasets we should not limit this idea to just the exponent because the highest bits of the mantissa often are regular (if the data stems from a particular value range).
+3 ALP ALP is an adaptive lossless encoding designed to compress doubleprecision floating-point data.
+ALP takes advantage of the opportunities discussed in subsection 2.
+Compression and decompression are built upon the 𝐴𝐿𝑃𝑒𝑛𝑐 and 𝐴𝐿𝑃𝑑𝑒𝑐 procedures described in section 2.
+Furthermore ALP is able to adapt its encoding/decoding scheme if it encounters high precision doubles by taking advantage of the similarity in the front-bits uncovered in section 2.
+In the following subsections we describe the key design aspects of ALP and how it implements adaptivity.
+} // Adaptive search of exponent e and factor f in a vector int e f = ALP::ADAPTIVE_SAMPLING(input_vec BEST_COMBINATIONS) encoded_vec exc_vec exc_pos_vec = ALP::ENCODE([]() { for (i = 0 i < VECTOR_SIZE ++i){ // Encode the vector double n = input_vec[i] int64 d = fast_double_round(n * F10[e] * i_F10[f]) // 𝐴𝐿𝑃𝑒𝑛𝑐 encoded_vec[i] = d decoded_vec[i] = d * F10[f] * i_F10[e] // 𝐴𝐿𝑃𝑑𝑒𝑐 } int exc_count = 0 for (i = 0 i < VECTOR_SIZE ++i) { // Find Exceptions bool neq = (decoded_vec[i] != input_vec[i]) exc_pos_vec[exc_count] = i exc_count += neq // predicated comparison } int64 first_encoded = FIND_FIRST_ENCODED(exc_pos_vec) for (i = 0 i < exc_count ++i){ // Fetch Exceptions encoded_vec[exc_pos_vec[i]] = first_encoded exc_vec[exc_pos_vec[i]] = input_vec[i] } }) FFOR(encoded_vec) 3.
+1 Compression ALP compression is built upon the 𝐴𝐿𝑃𝑒𝑛𝑐 procedure (Formula 1).
+ALP tries to encode all doubles 𝒏 inside a vector 𝒗 with the same exponent 𝒆 and factor 𝒇.
+Inside the encoding ALP must verify that the procedures 𝐴𝐿𝑃𝑒𝑛𝑐 and 𝐴𝐿𝑃𝑑𝑒𝑐 yield the original double 𝑛.
+If the original double 𝒏 cannot be recovered we treat the double as an exception.
+ALP introduces the use of one exponent 𝒆 and factor 𝒇 for all doubles inside the same vector.
+Note that PDE needs to store one exponent per value – taking more space.
+Based on our empirical investigation in order for this approach to be successful we need to be able to use high exponents 𝒆.
+Hence ALP does not limit the encoded integers to int32 representations but int64.
+Furthermore ALP incorporates the new idea of the factor 𝒇 for reducing the trailing 0-digits explored in subsection 2.
+After multiplying with the factor the resulting integer is small again and is then bit-packed compactly using the same number of bits for all values inside the same vector.
+The exponent factor and bit-width parameters do not use much space as these parameters are stored only once per vector (1024 doubles).
+The fact that all three parameters are the same per-vector also means that the [de]compression work is regular and thus has no control-instructions inside the loops making them suitable for auto-vectorization.
+The round operation is not supported in SIMD instruction sets.
+However ALP replaces the round function with a procedure (i.
+fast_double_round) that takes advantage of the limitation of doubles to store exact integers of up to 52 bits discussed earlier.
+An algorithmic trick resulting from this limitation is that one can round a double by adding and subtracting the following number: 𝑠𝑤𝑒𝑒𝑡𝑛 = 251 + 252.
+"In other words we take the doubles to the range in which they are not allowed to have a decimal part (between 252 and 253) and are ""automatically"" rounded."
+For instance to round a double 𝑛 fast_double_round will go as follows: 𝑛𝑟𝑜𝑢𝑛𝑑𝑒𝑑 = 𝑐𝑎𝑠𝑡 < 𝑖𝑛𝑡64 > (𝑛 + 𝑠𝑤𝑒𝑒𝑡𝑛 − 𝑠𝑤𝑒𝑒𝑡𝑛).
+This procedure is SIMD-friendly since it only consists of one addition and one subtraction operations supported by SIMD.
+This rounding trick is also implemented in the Lua programming language.
+The use of fast_double_round can be seen in Algorithm 1: Line 10.
+050100Air-PressureBasel-tempBasel-windBird-migrationBitcoin-priceCity-TempDew-Point-TempIR-bio-tempPM10-dustStocks-DEStocks-UKStocks-USAWind-dirArade/4Blockchain-trDataset050100CMS/1CMS/25CMS/9Food-pricesGov/10Gov/26Gov/30Gov/31Gov/40Medicare/1Medicare/9NYC/29POI-latPOI-lonSD-bench1st2nd3rd4th5thOther CombinationsPercentage of Vectors Covered ALP: Adaptive Lossless floating-Point Compression SIGMOD ’24 June 09–15 2024 Santiago Chile 1 2 3 4 5 6 Handling Exceptions.
+Values which fail to be encoded as decimals become exceptions.
+Exceptions are stored uncompressed in a separate segment (i.
+However since our approach is vectorized we cannot simply skip the exceptions in the resulting vector of encoded values (i.
+Hence when exceptions occur we store an auxiliary value in the encoded_vec (i.
+ first_encoded in Algorithm 1 Line 20).
+This auxiliary value is the first successfully encoded 𝒅 which is obtained by the FIND_FIRST_ENCODED function in Algorithm 1: Line 20.
+Such value will not affect negatively the bit-width of the encoded vector.
+Note that by searching for this value after the encoding process we avoid an additional control statement in each iteration of the main encoding loop.
+Further we also need to store in another storage segment the position in which each exception occurred within a vector (i.
+For 𝒗 = 1024 each exception has an overhead of 80 bits: 64 bits for the uncompressed value and 16 bits to store the exception position.
+Lines 15 to 25 in Algorithm 1 show the exception handling process which is cleverly built to avoid control structures (i.
+By itself ALP encoding does not compress the data.
+Rather it enables the use of lightweight integer compression to further encode its output.
+Based on our study of data similarity in subsection 2.
+4 we decided to encode the yielded integers using a Fused variant of the Frame-Of-Reference encoding available in the FastLanes library called FFOR.
+FastLanes [6] proposes a new data layout to accelerate the encoding and decoding of lightweight [de]compression methods with scalar code that auto-vectorizes.
+FFOR fuses the implementation of bit-[un]packing with the FOR encoding and decoding process into a single kernel that performs both processes.
+The FOR encoding subtracts the minimum value of the integers in a vector this will pick up on localized doubles (inside a tight range) and reduce bits needed in the subsequent bit-packing.
+Fusing saves a SIMD store and load instruction in between the subtraction and the bit-packing loop (improving the performance).
+However there is some more headroom as a modern compression library (e.
+ [6 31]) could try multiple different integers encodings and also cascade these.
+For instance if the data is repetitive one could use Dictionary coding and compress the Dictionary with FFOR or use RLE and then separately encode Run Lengths and Run Values.
+If the data is (somewhat) ordered one could apply Delta encoding rather than FFOR to the Dictionary or the Run Values.
+2 Adaptive Sampling Our compression method does not perform a brute-force search for the exponent 𝒆 and factor 𝒇 to use in a vector.
+Instead to find the best 𝒆 and 𝒇 for a vector we designed a novel two-level sampling mechanism inspired by the findings in subsection 2.
+Specifically from Figure 3 we conclude that there is a limited set of best combinations of exponent 𝒆 and factor 𝒇 for the vectors in a dataset.
+Our sampling mechanism goes as follows: on the first sampling level ALP samples 𝒎 equidistant values from 𝒏 equidistant vectors of a row-group.
+We define a row-group as a set of 𝒘 consecutive vectors of size 𝒗.
+The total number of values obtained from this first sampling is equal to 𝒎 × 𝒏.
+For each vector 𝒏𝒊 we find the best combination of exponent 𝒆 and factor 𝒇.
+This search is performed Algorithm 2: ALP Decompression.
+int e f = ALP::READ_VECTOR_HEADER(input_vec) int64_vec = UNFFOR(input_vec) decoded_vec = ALP::DECODE([](int64_vec) { for (i = 0 i < VECTOR_SIZE ++i){ decoded_vec[i] = int64_vec[i] * F10[f] * i_F10[e] }}) //𝐴𝐿𝑃𝑑𝑒𝑐 ALP::PATCH(decoded_vec exc_vec exc_pos_vec) on the entire search space (i.
+The best combination is the one which minimizes the sum of the exception size and the size of the bit-packed integers resulting from the encoded 𝒎 values.
+This process yields 𝒏 combinations (one for each vector).
+From these 𝒏 combinations we only keep the 𝒌 ones which appeared the most.
+If two combinations appeared the same amount of times we prioritize combinations with higher exponents and higher factors.
+It could be possible that fewer combinations than 𝒌 are yielded.
+If the same best combination is found in every vector there would only be 1 combination.
+Hence we define during runtime a 𝒌′ which is smaller than or equal to 𝒌 that represents the number of yielded combinations.
+Once we have found the 𝒌′ best combinations we proceed to the second level of sampling.
+The second level of sampling (Line 5 of Algorithm 1) samples 𝒔 equidistant values from a vector.
+Then it tries to find the combination of exponent 𝒆 and factor 𝒇 which performs the best on the 𝒔 sampled values.
+However this time the search is performed only among the 𝒌′ best combinations found from the first sampling level.
+To further optimize the search we implemented a greedy strategy of early exit.
+If the performance of two consecutive combinations namely 𝑘′ 𝑖+2 is worse or equal to the performance of the combination 𝑘′ 𝑖 combination is selected to encode the entire vector.
+If 𝒌′ is equal to 1 this second sampling level is omitted for all the vectors inside the row-group.
+𝑖  we stop the search and 𝑘′ 𝑖+1 and 𝑘′ The first level of sampling is the most computationally demanding process of our compression scheme due to the large search space.
+However it occurs only once per row-group.
+Hence the time spent is amortized into 𝒘 × 𝒗 encoded values.
+The second sampling level happens once for each vector and it will only occur if 𝑘′ 𝑖 > 1.
+Hence if the sampling parameters (i.
+ 𝑚 𝑛 𝑤 𝑘 and 𝑠) are tuned optimally the second sampling level will be skipped in datasets such as City-Temp or SD-bench in which there exists only one best combination for all the vectors in the dataset (Figure 3).
+3 Decompression ALP decompression builds upon the 𝐴𝐿𝑃𝑑𝑒𝑐 procedure (Formula 2) to recover the original doubles from a vector of integers 𝑑 yielded by the encoding process.
+In order to do so ALP first reads from the vector header the unique exponent 𝑒 and factor 𝑓 used to encode the vector.
+Then ALP needs to reverse the FFOR integer encoding to recover each value.
+Values encoded as exceptions are directly read from the exception segment alongside their position on the original vector in order to correctly reconstruct it (i.
+The pseudo-code for ALP decoding is presented in Algorithm 2.
+4 ALP𝑟𝑑 : Compression for Real Doubles During the first level of sampling ALP will detect whether the doubles in a row-group are not compressible.
+In that case ALP encoding would result in a high number of exceptions and integers bigger than 248.
+Therefore for such data ALP changes its strategy to a different encoding approach based on the analysis performed SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz Algorithm 3: 𝐴𝐿𝑃𝑟𝑑 Compression and Decompression.
+6 which hinted to us that even on these doubles their front-bits tend to exhibit low variance.
+We named this approach 𝐴𝐿𝑃𝑟𝑑  which stands for ALP for Real Doubles.
+ALP takes this decision at the row-group level rather than the vector level since we found no dataset in which the decimal precision deviates on more than 3 decimals hence taking this decision at a vector level would neither be efficient nor effective.
+"We believe that the data in 28 of the 30 datasets analyzed originate as decimals and are thus not ""real"" doubles however we think that this is representative of the majority of data people store in data systems as doubles."
+The encoding and decoding of 𝐴𝐿𝑃𝑟𝑑 are presented in Algorithm 3.
+The first level of sampling finds at a row-group level which is the smallest position 𝑝 ≥ 48 where the highest 64-𝑝 frontbits still have low variance.
+Afterwards it uses this number 𝑝 as the position to cut the bits of every double of that row-group in two parts (Line 6 of Algorithm 3).
+The right part is compressed using 𝑝-bits bit-packing (BP).
+The position p is stored once per row-group (i.
+ 8 bits of overhead per row-group which can be safely ignored).
+At first glance this method does not achieve any compression however the integers yielded from the left part are easily further compressible with integer lightweight encoding methods.
+For the version of ALP presented here we compress them using a fixed method: skewed DICTIONARY+BP compression.
+A skewed dictionary is a DICTIONARY encoding which tolerates exceptions.
+Here exceptions are values not in the dictionary and these are stored as 16-bits values in an exception array together with an array containing 16-bits exception positions.
+After sampling we consider dictionaries of sizes 2𝑏 with 𝑏 ≤ 3 (i.
+ just 1 2 4 or 8 values) and fill these with the most frequent values in the sample and then choose the smallest dictionary size 𝑏 < 3 such that the exception percentage does not exceed 10% (or else use 𝑏=3).
+We bit-pack the dictionary codes in 𝑏 bits and store the dictionary as 16-bits values.
+Both BP and DICTIONARY encodings implementations are available in our FastLanes library[3].
+The 𝑏 bits dictionary-codes are bit-unpacked using a fast vectorized bit-unpacking primitive (that does this for the entire vector of 1024 values in one go) and (64-𝑝) bits right parts of the doubles as well.
+Dictionary decompression requires one memory load from the dictionary for every code which is relatively expensive.
+In SIMD it can be implemented with a gather instruction but this is not supported on all CPU architectures nor does this instruction tend to be fast hence we do not use such an approach (explicitly).
+Because we use small dictionaries of size ≤ 23 = 8 and Architecture Scalar ISA Best SIMD ISA CPU Model Frequency x86_64 Intel Ice Lake x86_64 AMD Zen3 Apple M1 ARM64 AWS Graviton2 ARM64 AWS Graviton3 ARM64 8375C 3.
+6 GHz AVX2 (256-bits) EPYC 7R13 NEON (128-bits) Apple M1 3.
+2 GHz NEON (128-bits) Neoverse-N1 2.
+5 GHz NEON (128-bits) modified 2.
+6 GHz SVE (variable) Neoverse-V1 the front-bits are maximally 16-bits wide we note that we could implement decoding by preloading the dictionary (maximally 8x16bits values) in a 128-bits SIMD register and then use a shuffle instruction.
+However the results presented in this paper are based on purely scalar dictionary decompression code leaving space for improvement.
+Finally we glue both parts together by left-shifting 𝑝 bits the dictionary-decoded front-bits after applying exception patching [5 27] and adding in the decompressed right part (using vectorized SHIFT and OR fused together in a GLUE primitive seen in Line 18 of Algorithm 3).
+Notice again that all operations are performed in a tight loop over arrays (vectorized query processing [51]) and the work is regular in nature such that C++ compilers get to very efficient code.
+Only the exception patching has some data dependencies and random memory access but it is performed on a minority of the data only – limiting its performance effects.
+4 EVALUATION We experimentally evaluate ALP with respect to its compression ratio and [de]compression speed using all analyzed datasets in Table 1 against six competing approaches for lossless floating-point compression: Gorilla [38] Chimp / Chimp128 [29] Patas [24] Elf [28] and PDE [31].
+Furthermore we also compare against one generalpurpose compression approach: Zstd [14].
+To further test the robustness of ALP we tested its speed on different hardware architectures which are described in Table 3 and using Auto-vectorized Scalar and SIMDized code.
+3 we present end-to-end query speed benchmarks of ALP on Tectorwise [23] to test its performance in a real system.
+4 we present a version of ALP for 32-bits floats and evaluate it on machine learning data.
+Based on Figure 3 we defined the maximum number of combinations 𝒌 as 5.
+The number of vectors 𝒘 inside a row-group is fixed to 100 to emulate the usual modern OLAP engines row-group sizes (e.
+The size of every vector 𝒗 is fixed to 1024 to comfortably fit in the CPU cache [7].
+On the first sampling level the number of vectors sampled per row-group 𝒎 is set to 8 and the number of values sampled per vector 𝒏 is set to 32.
+Finally on the second sampling level the number of values sampled per vector 𝒔 is set to 32.
+𝒎 𝒏 and 𝒔 were tuned during evaluation and showed to yield a good trade-off between compression ratio and speed.
+ALP is implemented in C++ and is available in our GitHub repository10.
+ALP uses the FastLanes library [3] to perform the lightweight encoding and decoding on its output (i.
+Gorilla Chimp Chimp128 and Patas were implemented in C++.
+Gorilla was implemented by ourselves and the other implementations were stripped from 10https://github.
+com/cwida/ALP ALP: Adaptive Lossless floating-Point Compression SIGMOD ’24 June 09–15 2024 Santiago Chile the DuckDB codebase [40] and adjusted to work as standalone algorithms.
+Note that Gorilla is part of a closed-source Facebook system.
+On the other hand PDE and Elf11 benchmarks were carried out using code from the original authors.
+Finally we used Facebook’s implementation of Zstd in C [14] configured at the default compression level (3).
+1 Compression Ratio Table 4 shows the compression ratios of all approaches measured in bits per value (uncompressed each value is a 64-bit double).
+In this experiment the algorithms compressed all vectors in a dataset.
+The best-performing floating-point approach is marked in green.
+ALP evidently stands out from the other floating-point encoding schemes in compression ratio.
+ALP shows an average improvement of ≈31% compared to PDE.
+When compared to Gorilla Patas Chimp and Chimp128 ALP is respectively ≈49% ≈39% ≈43% and ≈24% better.
+In time series datasets ALP achieves a ≈33% and ≈46% improvement over Chimp128 and PseudoDecimals.
+Similarly on non-time series data ALP performs better than both by a ≈19% and ≈21% on average.
+Elf is ALP’s most fierce competitor in terms of compression ratio – excluding Zstd.
+On the other hand Zstd is the only compression algorithm that slightly takes the upper hand in compression ratio with 20.
+6 bits per value on average.
+Even so ALP is slightly better than Zstd on time series data.
+One has to take into account that Zstd has a much lower [de]compression speed and being block-based has the disadvantage that one cannot optimally skip through compressed data.
+For instance in Zstd’s 256KB block-based compression a system has to decompress 32 8KB vectors even if 31 of those 32 vectors are not needed.
+ALP outperforms Chimp128 and Elf on datasets with fixed or low decimal precision or with a low percentage of repeated values (e.
+In other words ALP gets its best gains when the doubles were generated from decimals.
+ALP performs better than Chimp128 in 27 out of 30 datasets and better than PDE in the same amount.
+In fact ALP is at most 2 bits worse than PseudoDecimals on CMS/9 and Medicare/9.
+Both these datasets contain mostly integers encoded as doubles (Table 1).
+PDE benefits from such data since 0 bits are stored after applying BP to the exponents output due to the exponents always being equal to 0.
+Nevertheless on these types of datasets Decimal-based encoding approaches are much better than XORing approaches.
+When ALP encounters real doubles 𝐴𝐿𝑃𝑟𝑑 comes into the equation.
+There are two datasets for which ALP failed to achieve any compression and 𝐴𝐿𝑃𝑟𝑑 encoding was used: POI-lat and POI-lon (marked with *).
+These datasets are characterized by almost 0% of repeated values and a maximum decimal precision of 20 (Table 2:C2).
+In both datasets these compression ratios achieved by 𝐴𝐿𝑃𝑟𝑑 represent an improvement over all the other floating-point compression approaches.
+ALP struggles to keep up with both Elf and Chimp128 on datasets in which the XORing process benefits from a high percentage of repeated values and the decimal-based encoding process is hindered by a high variability in value precision.
+com/Spatio-Temporal-Lab/elf Table 4: Compression ratio measured in Bits per Value.
+The smaller this metric the more compression is achieved (uncompressed data is 64 bits per value).
+ALP achieves the best performance in average (excluding zstd).
+128 Air-Pressure Basel-Temp Basel-Wind Bird-Mig Btc-Price City-Temp Dew-Temp Bio-Temp PM10-dust Stocks-DE Stocks-UK Stocks-USA Wind-dir TS AVG.
+Arade/4 Blockchain CMS/1 CMS/25 CMS/9 Food-prices Gov/10 Gov/26 Gov/30 Gov/31 Gov/40 Medicare/1 Medicare/9 NYC/29 POI-lat POI-lon SD-bench NON-TS ALL AVG.
+6 datasets are: CMS/1 Medicare/1 and NYC/29.
+Despite ALP encoding also taking advantage of similar data the profit of Chimp128 / Elf when it can find an exactly equal value is much higher than the profit that ALP can get.
+Nevertheless on data with many duplicates we question whether floating-point encodings were the best decision in the first place.
+For instance due to the high percentage of repeated values we could plug-in a DICTIONARY encoding before applying a floating-point encoding (or RLE if the repeats are consecutive).
+We in fact tried using DICTIONARY and then compressing the dictionary with ALP allowing it to achieve 33.
+7 bits per value for CMS/1 Medicare/1 and NYC/29 respectively.
+The compression ratios that ALP is able to achieve by cascading compression using another lightweight encoding (i.
+ DICTIONARY or RLE) are shown in the penultimate column of Table 4.
+By doing so ALP even beats Zstd in compression ratios while still retaining its advantages (higher speed compatibility with predicate-pushdown).
+2 [De]compression Speed We measured speed as the amount of tuples (i.
+ values) that an algorithm is capable of [de]compressing in one CPU clock cycle.
+In order to do so we took a vector within each of our datasets (i.
+ 1024 values) and executed the [de]compression algorithms.
+The measure tuples per cycle is then calculated as 1024 divided by the number of computing cycles the process took.
+We chose one vector SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz Table 5: Average compression and decompression speed as tuples processed per computing cycle of all datasets on the Ice Lake architecture.
+Tuples per CPU Cycle (Higher is better) Algorithm Compression ALP is faster by: Decompression ALP is faster by: ALP Chimp Chimp128 Elf Gorilla PDE Patas Zstd 0.
+101 - 66x 65x 215x 55x 7x 17x 26x as the size of the experiment since every float compressor we compare against is optimized to work over a small block of values at a time except Zstd.
+As such we increased the size of the experiment for Zstd to one rowgroup (i.
+In order to correctly characterize CPU cost we repeated this process 300K times and averaged the result to ensure all data is L1 resident.
+In this experiment we prefer the metric tuples per cycle over elapsed time since it is a more effective comparison method across platforms.
+Furthermore this metric makes Zstd speed measurements comparable regardless of the input data size.
+This experiment was performed on Ice Lake.
+ALP clearly outperforms every other algorithm in both compression and decompression speed in every dataset even being able to achieve sub-cycle performance in decompression.
+This speed measurement also includes the FFOR encoding and decoding in ALP.
+ALP is faster than all other approaches in both compression and decompression.
+ALP is ≈7x faster than PDE which is the second-best at decompression speed.
+However PDE is also the slowest at compression (251x slower than ALP) due to the brute force and –per value– search for a viable exponent 𝑒 to encode the doubles as integers.
+Furthermore ALP is ≈8x faster than Patas which is the second-best at compression speed.
+This was expected since Patas is a single-case byte-aligned variant of Chimp optimized for decoding speed.
+On the other hand Elf speed under-performed against the other algorithms with ALP being ≈47x times faster in encoding and ≈215x faster in decoding.
+This was also expected since Elf is a variant of Gorilla tailored to trade speed for more compression ratios.
+Hence the fact that ALP achieved higher compression ratios than Elf is remarkable.
+ALP is x55 faster than Gorilla at decompression since the latter has complex if-then-else (i.
+branch mispredictions) and data dependencies that not only cause wait cycles but also prevent SIMD.
+Zstd resides in a middle position in that it achieves better compression speed than PDE and Elf and decompression speed only slower than Patas and PDE.
+In order to investigate the performance robustness of ALP we evaluated it on all currently mainstream CPU architectures as described in Table 3.
+CPU turboscaling features were disabled when available to allow for reliable tuples-per-cycle measurements.
+In our presentation here we just show results for decompression speed (due to space reasons) as Figure 4: Decompression speed measured in tuples per cycle on different architectures.
+Each dot represents the decompression performance on a dataset in a different architecture.
+this is the most performance-critical aspect for analytical database workloads.
+Furthermore on each architecture we tested three different implementations of our decoding procedure: SIMDized Autovectorized and Scalar.
+The SIMDized implementation uses explicit SIMD intrinsics.
+The Auto-vectorized implementation is the Scalar implementation automatically vectorized by the C++ compiler.
+Finally the purely Scalar implementation is obtained when we explicitly disabled the auto-vectorization of the C++ compiler by using the following flags: -O3 -fno-slp-vectorize -fno-vectorize.
+We can see how Autovectorized and SIMDized on Ice Lake yield the best performance results.
+This is due to this platform having the widest SIMD register of all the platforms at 512-bits.
+We can also see that Gravitons have weak SIMD performance (compared to Scalar).
+Furthermore in every platform Auto-vectorization matches or surpasses Scalar code.
+However Zen3 auto-vectorized performance is hurt by the scalar code using the built-in rounding function due to the lack of a SIMD instruction to perform the cast from double to int64 in our fast rounding procedure.
+We performed speed comparisons of our decompression between FFOR+ALP as a fused kernel and as two separate kernels.
+The plot at the top of Figure 5 shows the result of this experiment.
+Fusing increases the decompression speed by a median ≈40% (but for some datasets 6x).
+However the vectors from our datasets used for this experiment do not cover all the possible bit-widths that FFOR could use.
+The latter is a known factor that may affect the performance of vectorized execution [15].
+Hence for robustness purposes we performed an additional comparison on synthetic integer vectors generated with a specific vector bit-width from 0 to 52.
+Bit-widths from 52 to 64 are omitted from this analysis since on these bit-widths 𝐴𝐿𝑃𝑟𝑑 is used.
+The bottom plot of Figure 5 shows the result of this experiment.
+Sampling Overhead in Compression ALP implements a twolevel sampling mechanism to find the correct encoding method and parameters described in section 3.
+The first level samples row-groups and the second level is done for every vector.
+We analyze the performance cost of the second sampling level since it is on the performance-critical path of ALP compression.
+When the first level sampling yields only one potential combination (e.
+ Bird-Migration Bitcoin-Price) there is 0 sampling overhead at a vector level for the entire row-group since ALP already knows which combination of exponent and factor to use for all the vectors.
+This occurs on ≈54% of the vectors in our datasets.
+0Decompression SpeedTuples per CPU CycleAuto-VectorizedScalarSIMDized ALP: Adaptive Lossless floating-Point Compression SIGMOD ’24 June 09–15 2024 Santiago Chile Table 6: End-to-end performance on City-Temp in the Tectorwise system measured in Tuples per CPU cycle per core.
+ALP is even faster than uncompressed and extends its lead w.
+The competitors are so CPU bound that they scale well in SCAN (=speed stays equal) while ALP and uncompressed drop speed when running multi-core due to scarce RAM bandwidth.
+But when doing query work (SUM) speed is lower and scaling is not an issue for ALP.
+014 [x11 ↓] (SCAN) rather than only a small part.
+Also in the SUM experiment the scan operator feeds data vector-at-a-time into an aggregation operator using the vectorized query execution of Tectorwise.
+We scaled all datasets up to 1 billion doubles by concatenation (8GB uncompressed).
+We also test compression performance which writes the compressed data.
+This also writes extra meta-data for the compressed blocks at the least byte-offsets where they start but for PDE and ALP also offsets where their exceptions start as well as any other compression parameters (like bit-width for bit-packing).
+For presentation purposes we picked five datasets with diverse characteristics such as magnitude decimal precision XORed 0’s bits and compressability.
+These datasets are: Gov/26 City-Temp Food-Prices Blockchain-tr and NYC/29.
+We benchmarked 3 queries: COMPRESSION (COMP) SCAN and SUM (Aggregation).
+For SUM and SCAN we also benchmarked the scaling of every algorithm when using multiple cores (up to 16).
+This experiment was again carried out on Intel Ice Lake in a machine with 16 cores (32 SMT) and 256GB of RAM with a bandwidth of 18.
+The reported results are the average of 32 executions of one query.
+Elf was not included in this analysis due to the lack of an implementation in C++.
+33 Tuples per CPU cycle is in line with the microbenchmarks shown in Figure 5 – though there is about a 25% drop in performance in the end-to-end situation compared to these.
+We attribute this to: (i) the extra effort in reading block metadata (not present in the micro-benchmarks) (ii) the interpretation cost of choosing and calling a decompression function based on the meta-data (always the same and thus free of CPU branch mispredictions in the micro-benchmarks) and (iii) the variable amount of exceptions present in the entire dataset.
+Given these extra activities in end-to-end and just a 25% drop we deem our micro-benchmarks as representative of core decompression work achieved in end-to-end situations.
+What is further striking is that SCAN and SUM on ALP is faster than on uncompressed data and the fact that ALP extends its performance lead over the competitors in the end-to-end benchmarks compared to the micro-benchmarks.
+Note however that the micro-benchmark results were aggregated for all datasets (Table 5) so one should not directly compare with these tables.
+Regarding multi-threading the performance metrics in Table 5 and Figure 6 are per-core hence equal performance would be perfect Figure 5: Speed comparison of ALP decoding with and without fusing ALP and FFOR into one single kernel (Ice Lake).
+Tests performed on our analyzed datasets (top) and on generated data with specific vector bit-width (bottom).
+ALP benefits from fusing consistently with a ≈40% decompression speed increase (and sometimes much more).
+However when ALP has to perform the second-level sampling there is a non-negligible overhead at compression.
+From our experiments this overhead represents on average ≈6% of the total compression time.
+The latter is a trade-off for fast decompression which in the context of analytical databases is a more often-used operation than compression.
+This overhead is bounded by 𝑘 factor and exponent combinations which was set to 5 in our evaluation.
+0% of the vectors tried 2 and 3 combinations respectively in search of the best one.
+3% of the vectors tried 4 and 5 combinations respectively on the vector sample.
+Finally we have also found that the best combination yielded from a brute-force search on the entire search space only improved compression ratio by less than 1% on average.
+Thus demonstrating the efficiency and portability of our fixed sampling parameters.
+Doing a side-by-side comparison ALP𝑟𝑑 is on average ≈3x slower in compression and ≈4x slower in decompression than the main ALP encoding.
+In fact the two datasets in which ALP𝑟𝑑 was used can be seen at the bottom of ALP green dots in Figure 1.
+Although ALP𝑟𝑑 is still remarkably performant compared to the competitors we deem this speed reduction necessary to achieve compression on these types of doubles which present problems for every floating-point compression scheme.
+We believe there is room for improvement since 𝐴𝐿𝑃𝑟𝑑 encoding and decoding are not fused into one single kernel due to current implementation limitations.
+However given that [de]compression in almost any encoding gets faster at high compression ratios this result is not surprising: ALP𝑟𝑑 is used when only low compression ratios can be achieved (maximum ≈1.
+3 End-to-End Query Performance We benchmarked end-to-end query speed of ALP and the other floating-point compressors when integrated in the research system Tectorwise [23].
+The difference with our micro-benchmarks is that a complete dataset is decompressed by Tectorwise’s scan operator 910FusedNon-FusedDatasets012910FusedNon-Fused0481216202428323640444852Bitwidth of Vector012Decompression SpeedTuples per CPU Cycle SIGMOD ’24 June 09–15 2024 Santiago Chile Afroozeh and Kuffó and Boncz Figure 6: End-to-end SUM query execution speed for 5 datasets in Tectorwise (Ice Lake) measured in CPU cycles per Tuple.
+ALP is faster than all other schemes (even faster than uncompressed) while achieving perfect scaling (=speed stays the same) when using multi-core.
+Results show that SCAN is virtually free if data is compressed with ALP.
+𝐴𝐿𝑃𝑟𝑑 32 achieved the best compression ratio.
+128 Dino-Vitb16 [11] GPT2 [42] Grammarly-lg [43] Text2Text Word2Vec W2V Tweets Vision Transformer Text Generation 86389248 124439808 783092736 3000 AVG.
+As all cores of the CPU get loaded per-core ALP SCAN performance slightly drops – which also happens for uncompressed.
+This is caused by the query becoming RAM-bandwidth bound.
+However in the SUM experiment there is additional summing work (although not much) and therefore the query runs slower.
+As a result ALP is able to scale perfectly while uncompressed is not.
+Note that in Figure 6 the performance metric is reversed: lower is better.
+We present the summing work in the SUM query (=SUMSCAN because SUM also scans) as the lower part of the stacked bar: it is roughly 3 cycles per tuple.
+ALP again is the fastest when compressing (Table 6): it is x4 and x7 times faster than the second and third-best algorithms in the City-Temp dataset (i.
+Patas Gorilla) while still maintaining distance from Zstd (x11 slower) and PDE (x138 slower).
+COMP end-to-end performance is lower than in our micro-benchmarks.
+We attribute this to: (i) the extra effort in storing meta-data (ii) the variable amount of exceptions (which are rather costly at compression time) and (iii) the first sampling phase which was not present in the micro-benchmarks.
+4 Single Precision and Machine Learning Data We have also ported 𝐴𝐿𝑃 to 32-bits.
+Those of our double datasets with decimal precision ≤10 can be properly represented as 32-bit floating-point numbers (all except POI’s Basel’s Medicare/1 and NYC/29) and 32-bit ALP works on them.
+This leads to the same compressed representation as in 64-bits (Table 4) but given that the uncompressed width is 32-bits the compression ratio is halved (and becomes ≈1.
+A currently relevant different kind of 32-bit floats are found in trained machine learning models (i.

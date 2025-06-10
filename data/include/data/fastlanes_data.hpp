@@ -3,10 +3,10 @@
 
 #include "data/NextiaJD.hpp"
 #include "data/clickbench.hpp"
+#include "data/example.hpp"
 #include "data/fannie_mae.hpp"
 #include "data/fc_bench.hpp"
 #include "data/generated.hpp"
-#include "data/issue.hpp"
 #include "data/issues.hpp"
 #include "data/public_bi.hpp"
 #include "data/sdrbench.hpp"

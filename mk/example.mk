@@ -18,8 +18,6 @@ EXAMPLES_DIR := $(PROJECT_DIR)/examples
 # ─────────────────────────────────────────────────────────────
 PREFIX       := $(PROJECT_DIR)/build/install
 
-
-
 # ─────────────────────────────────────────────────────────────
 # Phony targets
 # ─────────────────────────────────────────────────────────────
@@ -29,7 +27,11 @@ PREFIX       := $(PROJECT_DIR)/build/install
     run-python-example \
     run-cmake-example \
     run-rust-example \
-    clean-examples
+    clean-examples \
+    venv-python-example \
+    install-python-deps \
+    run-pdf-example \
+    clean-pdf-example
 
 # ─────────────────────────────────────────────────────────────
 # Run the Rust example
@@ -68,5 +70,37 @@ clean-examples:
 	rm -f $(EXAMPLES_DIR)/c_api \
 	       $(EXAMPLES_DIR)/cpp_example
 	rm -rf $(EXAMPLES_DIR)/build
+
+# ─────────────────────────────────────────────────────────────
+# Python virtual environment for PDF sentence-extraction example
+# ─────────────────────────────────────────────────────────────
+
+VENV_DIR    := $(EXAMPLES_DIR)/.venv
+PYTHON      := $(VENV_DIR)/bin/python
+PIP         := $(VENV_DIR)/bin/pip
+PDF_SCRIPT  := $(PROJECT_DIR)/data/example/extract_sentences.py
+CSV_OUTPUT  := $(PROJECT_DIR)/data/example/papers.csv
+
+# Create a Python virtual environment
+venv-python-example:
+	@echo "Creating virtual environment in $(VENV_DIR)…"
+	python3 -m venv $(VENV_DIR)
+
+# Install required Python dependencies into the virtual environment
+install-python-deps: venv-python-example
+	@echo "Installing Python dependencies…"
+	$(PIP) install --upgrade pip
+	$(PIP) install requests pdfminer.six pandas
+
+# Run the PDF sentence-extraction script
+run-pdf-example: install-python-deps
+	@echo "Extracting sentences from PDF and writing to CSV…"
+	$(PYTHON) $(PDF_SCRIPT)
+
+# Clean up the virtual environment and generated CSV
+clean-pdf-example:
+	@echo "Cleaning PDF example artifacts…"
+	rm -rf $(VENV_DIR)
+	rm -f $(CSV_OUTPUT)
 
 endif  # EXAMPLES_MK_INCLUDED

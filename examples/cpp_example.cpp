@@ -11,7 +11,7 @@ int main() {
 		std::cout << "-- FastLanes Version: " << con1->get_version() << std::endl;
 
 		// 2) Define paths
-		const path example_dir_path = string(issue::ISSUE_000);
+		const path example_dir_path = string(EXAMPLE::N1);
 		const path fls_file_path    = path {FLS_CMAKE_SOURCE_DIR} / "data" / "fls" / "data.fls";
 		const path csv_file_path    = fls_file_path.parent_path() / "fastlanes.csv";
 
