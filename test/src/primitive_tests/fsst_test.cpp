@@ -1,4 +1,4 @@
-// test/src/primitive_tests/fsst_test.cpp
+// tests/fsst_tail_guard_24_vs_32.cpp
 
 #include "fls/cor/prm/fsst/fsst.h"
 #include <cstdint>
@@ -6,38 +6,35 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-// Build a decoder where codes 1–4 each expand to 8 bytes
 static fsst_decoder_t make_decoder() {
 	fsst_decoder_t d {};
-	for (uint8_t c = 1; c <= 4; ++c) {
-		d.len[c]    = 8;
-		d.symbol[c] = 0x4242424242424242ULL + c; // distinct 8-byte patterns
+	const char*    sym[] = {"AAAAAAAA", "BBBBBBBB", "CCCCCCCC"};
+	for (uint8_t c = 1; c <= 3; ++c) {
+		d.len[c] = 8;
+		std::memcpy(&d.symbol[c], sym[c - 1], 8);
 	}
 	return d;
 }
 
-// This test will FAIL (ASan abort) if fsst.h still has “+24”
-// and PASS if it has been changed to “+32”.
-TEST(FSSTTailGuard, NoOverflowWithFixedGuard) {
-	auto          dec   = make_decoder();
-	unsigned char in[4] = {1, 2, 3, 4}; // these four codes expand to 32 bytes total
+/*  Compressed input:
+      1, 2, 255, 'x', 3
+      = code1, code2, ESC,literal, code3
+      Fast tail-path worst-case write:
+        raw 'x'      1
+        sym[1]       8
+        sym[2]       8
+        sym[3]       8   → total 25 bytes
+*/
+TEST(FSSTTailGuard, Old24OverflowsBut32IsSafe) {
+	auto          dec           = make_decoder();
+	unsigned char compressed[5] = {1, 2, FSST_ESC, 0x78 /*'x'*/, 3};
 
-	// Allocate exactly 25 bytes on the heap. ASan places red-zones immediately after.
-	auto buf = reinterpret_cast<unsigned char*>(std::malloc(25));
+	auto* buf = static_cast<unsigned char*>(std::malloc(24)); // exactly 24 bytes
 	ASSERT_NE(buf, nullptr);
 
-	// If the tail-handler guard in fsst.h is still “pos_out + 24 <= size”,
-	// fsst_decompress(...) will overflow by 7 bytes under ASan → abort → exit-code ≠ 0 → EXPECT_EXIT fails.
-	//
-	// If the guard has been patched to “pos_out + 32 <= size”,
-	// it skips the fast path and writes only 25 in-range bytes → exits normally → EXPECT_EXIT sees code 0 → pass.
-	EXPECT_EXIT(
-	    {
-		    fsst_decompress(&dec, /*len_in=*/4, /*str_in=*/in, /*size=*/25, /*output=*/buf);
-		    _exit(0);
-	    },
-	    ::testing::ExitedWithCode(0),
-	    "");
+	/* Old guard (+24)  → 0+24 ≤ 24, fast path writes 25 bytes → ASan aborts
+	   New guard (+32)  → 0+32 > 24, fast path skipped, slow loop writes ≤24 → clean exit */
+	fsst_decompress(&dec, 5, compressed, 24, buf);
 
 	std::free(buf);
 }
