@@ -77,8 +77,6 @@ n_t SegmentView::Size() const {
 	}
 
 	return get_offset(entry_point_view, vec_idx) - get_offset(entry_point_view, vec_idx - 1);
-
-	FLS_UNREACHABLE()
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\

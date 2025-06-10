@@ -9,7 +9,7 @@
 namespace fast_lanes {
 #if defined(X86_64)
 #if defined(_MSC_VER)
-static void cpu_getid(int func, int* data) { __cpuid(data, func); }
+static void CpuGetid(int func, int* data) { __cpuid(data, func); }
 #else
 static void CpuGetid(int func, int* data) {
 	__asm__("cpuid" : "=a"(data[0]), "=b"(data[1]), "=c"(data[2]), "=d"(data[3]) : "0"(func), "2"(0));
