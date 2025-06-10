@@ -16,4 +16,4 @@ runs:
 
     - name: Generate embeddings
       shell: bash
-      run: make -f mk/embeddings.mk run
+      run: make -f mk/embeddings.mk generate
