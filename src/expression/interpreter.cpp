@@ -563,6 +563,14 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptorT& column_desc
 			make_enc_dict_expr<i08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
+		case EXP_DICT_U08_U08: {
+			make_enc_dict_expr<u08_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_DICT_FLT_U08: {
+			make_enc_dict_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
 		case EXP_DICT_DBL_U08:
 		case EXP_DICT_DBL_U16:
 		case EXP_DICT_DBL_U32: {
@@ -1496,6 +1504,14 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptorT& column_descriptor
 		}
 		case EXP_DICT_I08_U08: {
 			make_dec_dict_expr<i08_pt, u08_pt>(reader, physical_expr, column_view, state);
+			break;
+		}
+		case EXP_DICT_U08_U08: {
+			make_dec_dict_expr<u08_pt, u08_pt>(reader, physical_expr, column_view, state);
+			break;
+		}
+		case EXP_DICT_FLT_U08: {
+			make_dec_dict_expr<flt_pt, u08_pt>(reader, physical_expr, column_view, state);
 			break;
 		}
 		case EXP_DICT_DBL_U32: {

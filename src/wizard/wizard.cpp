@@ -1169,6 +1169,17 @@ void PushExternalDictionaryEncoding(ColumnDescriptorT& second_column_descriptor,
 		}
 		break;
 	}
+	case DataType::FLOAT: {
+		switch (common_data_type_for_index) {
+		case DataType::UINT8: {
+			second_column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_DICT_FLT_U08);
+			break;
+		}
+		default:
+			FLS_UNREACHABLE();
+		}
+		break;
+	}
 	case DataType::INVALID:
 	default: {
 		FLS_UNREACHABLE();

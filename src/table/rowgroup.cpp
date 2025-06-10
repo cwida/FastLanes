@@ -390,7 +390,19 @@ void Rowgroup::Init() {
 void fill_in(col_pt& col, n_t how_many_to_fill) {
 
 	visit(overloaded {
-	          [&](up<FLSStrColumn>& string_col) {},
+	          [&](up<FLSStrColumn>& string_col) {
+		          const auto last_value_length = string_col->length_arr.back();
+
+		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+			          const auto size = string_col->byte_arr.size();
+			          for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
+				          string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+				          string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+			          }
+			          string_col->length_arr.push_back(last_value_length);
+			          string_col->fsst_length_arr.push_back(last_value_length);
+		          }
+	          },
 	          [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
 		          PT last_element = typed_col->data.back();
 		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {

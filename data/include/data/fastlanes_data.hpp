@@ -3,6 +3,7 @@
 
 #include "data/NextiaJD.hpp"
 #include "data/clickbench.hpp"
+#include "data/embedding.hpp"
 #include "data/example.hpp"
 #include "data/fannie_mae.hpp"
 #include "data/fc_bench.hpp"

@@ -25,6 +25,7 @@ DataType TypeLookUp(const std::string& str) {
 	    {"FLS_STR", DataType::FLS_STR}, //
 	    {"BIGINT", DataType::INT64},    //
 	    {"string", DataType::FLS_STR},  //
+	    {"STRING", DataType::FLS_STR},  //
 	    {"varchar", DataType::FLS_STR}, //
 	    {"VARCHAR", DataType::FLS_STR}, //
 	    {"double", DataType::DOUBLE},   //

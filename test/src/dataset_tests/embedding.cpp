@@ -3,7 +3,8 @@
 namespace fastlanes {
 
 // examples
-TEST_F(FastLanesReaderTester, issue_000) {
-	TestCorrectness(issues::ISSUE_000);
+TEST_F(FastLanesReaderTester, EMBEDDING) {
+	TestCorrectness(EMBEDDING::N1);
 }
+
 } // namespace fastlanes

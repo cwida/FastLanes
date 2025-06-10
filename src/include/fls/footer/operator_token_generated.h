@@ -156,10 +156,12 @@ enum class OperatorToken : uint16_t {
 	EXP_DICT_FLT_FFOR_SLPATCH_U08        = 140,
 	EXP_DICT_FLT_FFOR_SLPATCH_U16        = 141,
 	EXP_DICT_FLT_FFOR_U32                = 142,
-	EXP_DICT_FLT_FFOR_SLPATCH_U32        = 143
+	EXP_DICT_FLT_FFOR_SLPATCH_U32        = 143,
+	EXP_DICT_U08_U08                     = 144,
+	EXP_DICT_FLT_U08                     = 145
 };
 
-inline const OperatorToken (&EnumValuesOperatorToken())[144] {
+inline const OperatorToken (&EnumValuesOperatorToken())[146] {
 	static const OperatorToken values[] = {OperatorToken::INVALID,
 	                                       OperatorToken::EXP_EQUAL,
 	                                       OperatorToken::EXP_CONSTANT_I64,
@@ -303,12 +305,14 @@ inline const OperatorToken (&EnumValuesOperatorToken())[144] {
 	                                       OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U08,
 	                                       OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U16,
 	                                       OperatorToken::EXP_DICT_FLT_FFOR_U32,
-	                                       OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32};
+	                                       OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32,
+	                                       OperatorToken::EXP_DICT_U08_U08,
+	                                       OperatorToken::EXP_DICT_FLT_U08};
 	return values;
 }
 
 inline const char* const* EnumNamesOperatorToken() {
-	static const char* const names[145] = {"INVALID",
+	static const char* const names[147] = {"INVALID",
 	                                       "EXP_EQUAL",
 	                                       "EXP_CONSTANT_I64",
 	                                       "EXP_CONSTANT_I32",
@@ -452,12 +456,14 @@ inline const char* const* EnumNamesOperatorToken() {
 	                                       "EXP_DICT_FLT_FFOR_SLPATCH_U16",
 	                                       "EXP_DICT_FLT_FFOR_U32",
 	                                       "EXP_DICT_FLT_FFOR_SLPATCH_U32",
+	                                       "EXP_DICT_U08_U08",
+	                                       "EXP_DICT_FLT_U08",
 	                                       nullptr};
 	return names;
 }
 
 inline const char* EnumNameOperatorToken(OperatorToken e) {
-	if (::flatbuffers::IsOutRange(e, OperatorToken::INVALID, OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32))
+	if (::flatbuffers::IsOutRange(e, OperatorToken::INVALID, OperatorToken::EXP_DICT_FLT_U08))
 		return "";
 	const size_t index = static_cast<size_t>(e);
 	return EnumNamesOperatorToken()[index];

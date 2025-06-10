@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <gtest/gtest.h>
+#include <vector>
 
 static fsst_decoder_t make_decoder() {
 	fsst_decoder_t d {};
@@ -29,12 +30,9 @@ TEST(FSSTTailGuard, Old24OverflowsBut32IsSafe) {
 	auto          dec           = make_decoder();
 	unsigned char compressed[5] = {1, 2, FSST_ESC, 0x78 /*'x'*/, 3};
 
-	auto* buf = static_cast<unsigned char*>(std::malloc(24)); // exactly 24 bytes
-	ASSERT_NE(buf, nullptr);
+	std::vector<unsigned char> buf(24);
 
 	/* Old guard (+24)  → 0+24 ≤ 24, fast path writes 25 bytes → ASan aborts
 	   New guard (+32)  → 0+32 > 24, fast path skipped, slow loop writes ≤24 → clean exit */
-	fsst_decompress(&dec, 5, compressed, 24, buf);
-
-	std::free(buf);
+	fsst_decompress(&dec, 5, compressed, buf.size(), buf.data());
 }

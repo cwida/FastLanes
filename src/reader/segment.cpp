@@ -215,6 +215,7 @@ template i16_pt* Segment::GetFixedSizeArray<i16_pt>(n_t length);
 template i08_pt* Segment::GetFixedSizeArray<i08_pt>(n_t length);
 template dbl_pt* Segment::GetFixedSizeArray<dbl_pt>(n_t length);
 template flt_pt* Segment::GetFixedSizeArray<flt_pt>(n_t length);
+template u08_pt* Segment::GetFixedSizeArray<u08_pt>(n_t length);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_segment_view

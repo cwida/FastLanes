@@ -13,12 +13,16 @@ public:
 	                                                                    "/issues/cwida/alp/37/kv_cache_original"};
 	static constexpr string_view issues_cwida_alp_37_diff_data {FASTLANES_DATA_DIR "/issues/cwida/alp/37/diff_data"};
 	static constexpr string_view ISSUE_000 {FLS_CMAKE_SOURCE_DIR "/data/issues/issue_000/"};
-	static constexpr string_view ISSUE_001 {FLS_CMAKE_SOURCE_DIR "/data/issues/issue_000/"};
-	static constexpr string_view ISSUE_002 {FLS_CMAKE_SOURCE_DIR "/data/issues/issue_000/"};
+	static constexpr string_view ISSUE_001 {FLS_CMAKE_SOURCE_DIR "/data/issues/issue_001/"};
+	static constexpr string_view ISSUE_002 {FLS_CMAKE_SOURCE_DIR "/data/issues/issue_002/"};
+
+	//
 	static constexpr issues_dataset_t dataset = {{
 	    {"issues_cwida_alp_37_kv_cache_original", issues_cwida_alp_37_kv_cache_original},
 	    {"issues_cwida_alp_37_diff_data", issues_cwida_alp_37_diff_data},
-
+	    {"ISSUE_000", ISSUE_000},
+	    {"ISSUE_001", ISSUE_001},
+	    {"ISSUE_002", ISSUE_002},
 	}};
 };
 } // namespace fastlanes

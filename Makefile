@@ -6,6 +6,8 @@ include mk/cpp.mk
 include mk/rust.mk
 include mk/data.mk
 include mk/scripts.mk
+include mk/embeddings.mk
+
 
 .PHONY: all clean clang-format format-check rust-format-check format
 
