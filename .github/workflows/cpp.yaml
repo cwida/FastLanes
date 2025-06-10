@@ -200,7 +200,6 @@ jobs:
   # 6️⃣  Tests (Linux + macOS, Release only)
   # ──────────────────────────────────────────────────────────────────────────────
   test:
-    needs: example
     strategy:
       matrix:
         platform: [ ubuntu-latest, macos-latest ]
