@@ -7,13 +7,13 @@ ifndef PYTHON_MK_INCLUDED
 PYTHON_MK_INCLUDED := yes
 
 # ─────────────────────────────────────────────────────────────
-# Python bindings & packaging  (cwd‑agnostic)
+# Python bindings & packaging  (cwd-agnostic)
 # ─────────────────────────────────────────────────────────────
 
 # Project root is the parent directory of mk/
 PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
-# Virtual‑env and common paths (absolute)
+# Virtual-env and common paths (absolute)
 VENV      := $(PROJECT_ROOT)/.venv
 DIST_DIR  := $(PROJECT_ROOT)/dist
 
@@ -23,10 +23,10 @@ ifeq ($(OS),Windows_NT)
   PYTHON   := $(VENV)/Scripts/python.exe
 else
   ACTIVATE := $(VENV)/bin/activate
-  PYTHON   := $(VENV)/bin/python3
+  PYTHON   := $(VENV)/bin/python
 endif
 
-PIP := $(PYTHON) -m pip   # always use the project‑local python above
+PIP := $(PYTHON) -m pip   # always use the project-local python above
 
 # --- pick the interpreter that *creates* the venv -----------
 ifeq ($(OS),Windows_NT)
@@ -50,7 +50,7 @@ else
 endif
 
 # ─────────────────────────────────────────────────────────────
-# Virtual‑env bootstrap
+# Virtual-env bootstrap
 # ─────────────────────────────────────────────────────────────
 $(ACTIVATE):
 	$(call echo_start,Setting up virtual environment…)
@@ -73,7 +73,6 @@ PY_DEPS = \
   'pyproject_metadata' \
   'Faker' \
   'twine>=4.0.0'
-
 
 TEST_DIR := $(PROJECT_ROOT)/python/tests
 quote_deps = $(foreach dep,$(PY_DEPS),$(dep))

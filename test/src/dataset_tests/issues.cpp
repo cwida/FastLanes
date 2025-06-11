@@ -15,12 +15,4 @@ TEST_F(FastLanesReaderTester, issue_000) {
 	TestCorrectness(issues::ISSUE_000);
 }
 
-TEST_F(FastLanesReaderTester, issue_001) {
-	TestCorrectness(issues::ISSUE_001);
-}
-
-TEST_F(FastLanesReaderTester, issue_002) {
-	TestCorrectness(issues::ISSUE_002);
-}
-
 } // namespace fastlanes

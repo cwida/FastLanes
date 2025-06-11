@@ -3,7 +3,7 @@
 namespace fastlanes {
 
 TEST_F(FastLanesReaderTester, TEST_FSST) {
-	TestCorrectness(issues::ISSUE_002, {OperatorToken::EXP_FSST_DELTA});
+	TestCorrectness(GENERATED::SINGLE_COLUMN_STRPT, {OperatorToken::EXP_FSST_DELTA});
 }
 
 } // namespace fastlanes

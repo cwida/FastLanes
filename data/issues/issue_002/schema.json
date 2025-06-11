@@ -1,8 +1,0 @@
-{
-  "columns": [
-    {
-      "name": "FSST_TAIL_BUG_STRINGS",
-      "type": "varchar(160)"
-    }
-  ]
-}

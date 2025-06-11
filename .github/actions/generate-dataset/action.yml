@@ -11,8 +11,9 @@ runs:
         python-version: "3.12"
 
     - name: Generate synthetic data
+      working-directory: mk
       shell: bash
-      run: make generate_synthetic_data
+      run: make -f data.mk generate_synthetic_data
 
     - name: Generate embeddings
       shell: bash

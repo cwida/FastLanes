@@ -3,10 +3,19 @@
 import json
 import random
 import csv
+import logging  # ← NEW
 from faker import Faker
 from faker.providers import BaseProvider
 from pathlib import Path
 from datetime import date
+
+# ─────────────────────────────────────────────
+# Logging setup  (INFO level to stdout)
+# ─────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)s  %(message)s"
+)
 
 faker = Faker()
 
@@ -23,6 +32,7 @@ ROW_GROUP_SIZE = 64 * VEC_SIZE
 from generator_helpers.date_generator import generate_date
 from generator_helpers.timestamp_generator import generate_timestamp
 
+
 # ---------------------------
 # Helper Functions
 # ---------------------------
@@ -31,6 +41,7 @@ def write_jsonl(dir_path, generate_func, size):
     """Writes data to a JSONL file using a generator function."""
     dir_path.mkdir(parents=True, exist_ok=True)
     file_path = dir_path / 'data.jsonl'
+    logging.info(f"Writing JSONL → {file_path}  ({size} rows)")  # ← NEW
     with open(file_path, 'w') as jsonlfile:
         for row_id in range(size):
             jsonlfile.write(json.dumps(generate_func(faker, row_id)) + '\n')
@@ -40,6 +51,7 @@ def write_csv(dir_path, generate_func, size):
     """Writes data to a CSV file using a generator function."""
     dir_path.mkdir(parents=True, exist_ok=True)
     file_path = dir_path / "generated.csv"
+    logging.info(f"Writing CSV  → {file_path}  ({size} rows)")  # ← NEW
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter='|', lineterminator='\n')
         writer.writerows(generate_func(faker, row_id) for row_id in range(size))
@@ -743,6 +755,8 @@ def main():
     generate_any_value_count()
     generate_subnormals()
     generate_fsst_test()
+
+    logging.info("✅  All data files generated successfully.")  # ← NEW
 
 
 if __name__ == "__main__":

@@ -1,31 +1,35 @@
-# mk/data.mk — Data & history helpers (cwd-agnostic)
+# mk/data.mk — Build the synthetic-users CSV
+# ------------------------------------------
 
-# Project root (parent of mk/)
 PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+-include $(PROJECT_ROOT)/mk/python.mk           # non-fatal if missing
 
-# Include python.mk to pull in ACTIVATE, PYTHON, PIP, and check_python_deps
-include $(PROJECT_ROOT)/mk/python.mk
+VENV   ?= $(PROJECT_ROOT)/.venv
+PYTHON ?= $(VENV)/bin/python3                   # python.exe on Win via python.mk
+PIP    ?= $(PYTHON) -m pip
 
-# Data and scripts directories
-DATA_DIR := $(PROJECT_ROOT)/data
-SCRIPTS  := $(PROJECT_ROOT)/scripts
+DATA_DIR    := $(PROJECT_ROOT)/data
+SCRIPTS_DIR := $(PROJECT_ROOT)/scripts
+DATA_SCRIPT := $(abspath $(SCRIPTS_DIR)/generate_synthetic_data.py)
 
-.PHONY: generate_synthetic_data check_fastlanes_result_history time_ctest
+.PHONY: generate_synthetic_data time_ctest
 
-generate_synthetic_data: check_python_deps $(ACTIVATE)
+# 1️⃣  Generate data/synthetic_users.csv (5 000 rows)
+generate_synthetic_data: $(ACTIVATE)
 	$(call echo_start,Generating synthetic data…)
-	# Ensure Faker is installed in the venv
+
 	$(PIP) install --upgrade Faker
-	# Run the data-generation script from the project root
-	cd $(SCRIPTS) && \
-		PYTHONPATH=$(PROJECT_ROOT) $(PYTHON) generate_synthetic_data.py \
-		--num-records 5000 \
-		--output $(DATA_DIR)/synthetic_users.csv
+
+	@if [ ! -e "$(VENV)/bin/python" ] && [ -e "$(VENV)/bin/python3" ]; then \
+		ln -sf python3 "$(VENV)/bin/python"; \
+	fi
+
+	PYTHONPATH=$(PROJECT_ROOT) "$(PYTHON)" "$(DATA_SCRIPT)"
+
 	$(call echo_done,Synthetic data generated.)
 
+# 2️⃣  Convenience: run ctest with wall-clock timing
 time_ctest:
 	$(call echo_start,Running ctest with timing…)
-	# Run from the cmake-build-release directory under project root
-	cd $(PROJECT_ROOT)/cmake-build-release && \
-		time ctest --output-on-failure
+	cd "$(PROJECT_ROOT)/cmake-build-release" && time ctest --output-on-failure
 	$(call echo_done,ctest run complete.)
