@@ -15,9 +15,6 @@ int main() {
 		// STEP 1: Read the CSV from the specified directory
 		connection->inline_footer().read_csv(data_dir);
 
-		// STEP 1: Read the CSV from the specified directory
-		connection->inline_footer().read_csv(data_dir);
-
 		// STEP 2: Write data to the FastLanes .fls file
 		connection->to_fls(fls_file);
 
