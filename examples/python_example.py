@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys
 import os
-import subprocess
 import pyfastlanes
 
 
@@ -13,9 +12,10 @@ def main():
     # 2) Paths for the demo
     csv_dir = "../data/example"  # adjust to where your CSVs live
 
+    # 3) Clean up old output files
     if os.path.exists("data.fls"):
         os.remove("data.fls")
-    if os.path.exists("csv.fls"):
+    if os.path.exists("decoded.csv"):
         os.remove("decoded.csv")
 
     # 4) Use Connection as a context manager
