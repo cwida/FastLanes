@@ -3,7 +3,7 @@ from fls_gen.log import *
 from fls_gen.common import *
 
 
-def creat_if_not_exist(path):
+def create_if_not_exist(path):
     is_exist = os.path.exists(path)
     if not is_exist:
         # Create a new directory because it does not exist
