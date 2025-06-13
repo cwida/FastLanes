@@ -1,8 +1,6 @@
 <p align="center">
   <img src="assets/logo.svg" alt="FastLanes Logo" width="360" />
 </p>
-
-
 FastLanes is like Parquet with **40% better compression** and **40× faster decoding**.
 
 ---
