@@ -3,7 +3,7 @@
 
 /*
  * The M1 cycle counter is from Lemire repo. https://github.com/lemire/Code-used-on-Daniel-Lemire-s-blog/tree/master/2021/03/24
- * The other parts are from google benchmark repo, edited heavily. todo -> add the link
+ * The other parts are from google benchmark repo, edited heavily. https://github.com/google/benchmark
  */
 #include <algorithm>
 #include <array>
