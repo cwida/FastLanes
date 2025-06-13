@@ -34,7 +34,10 @@ ifeq ($(OS),Windows_NT)
   EXE_EXT := .exe
 endif
 
-# Runtime library path for running examples
+# Runtime library path for running examples.
+# These settings ensure the FastLanes shared library is
+# discoverable across Linux, macOS and Windows when executing
+# the example binaries.
 RUN_ENV :=
 ifeq ($(OS),Windows_NT)
   RUN_ENV := PATH=$(PREFIX)/bin;$(PATH)
@@ -73,8 +76,8 @@ run-rust-example:
 # ─────────────────────────────────────────────────────────────
 run-cpp-example: install-cpp
 	@echo "Building C++ example…"
-	$(CXX) $(EXAMPLES_DIR)/cpp_example.cpp -I$(PREFIX)/include \
-	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
+	$(CXX) -std=c++20 $(EXAMPLES_DIR)/cpp_example.cpp -I$(PREFIX)/include \
+       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
 	@echo "Running C++ example…"
 	$(RUN_ENV) $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
 
@@ -84,8 +87,8 @@ run-cpp-example: install-cpp
 # ─────────────────────────────────────────────────────────────
 run-c-api-example: install-cpp
 	@echo "Building C API example…"
-	$(CC) $(EXAMPLES_DIR)/c_api.c -I$(PREFIX)/include \
-	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/c_api$(EXE_EXT)
+	$(CC) -std=c11 $(EXAMPLES_DIR)/c_api.c -I$(PREFIX)/include \
+       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/c_api$(EXE_EXT)
 	@echo "Running C API example…"
 	$(RUN_ENV) $(EXAMPLES_DIR)/c_api$(EXE_EXT)
 
