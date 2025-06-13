@@ -266,7 +266,7 @@ class CudaUnpackGenerator(Generator):
     def gen_test_fixture(self, cu):
         with cu.block('class {}: public ::testing::Test'.format(self.name)):
             cu('''
-                    public: 
+                    public:
                     uint64_t  warp_sz {};
                     uint64_t  n_vec {};
                     uint64_t  vec_sz {};
@@ -282,7 +282,7 @@ class CudaUnpackGenerator(Generator):
                     ''')
 
             with cu.block('void SetUp() override'):
-                cu('''		
+                cu('''
                         n_tup         = 1024;
                         n_trd         = 32;
                         n_blc         = 1;
@@ -304,7 +304,7 @@ class CudaUnpackGenerator(Generator):
                 for (int i = 0; i < n_tup; i++) {
                     h_org_arr[i] = rand() % (1 << bitwidth);
                 }
-            
+
                 auto in  = h_org_arr;
                 auto out = h_encoded_data;
                 for (uint64_t vec_idx {0}; vec_idx < n_vec; vec_idx++) {
@@ -312,19 +312,19 @@ class CudaUnpackGenerator(Generator):
                     in  = in + vec_sz;
                     out = out + (bitwidth * vec_sz / 32);
                 }
-            
+
                 auto* d_encoded_arr = fastlanes::gpu::load_to_gpu(h_encoded_data, encoded_arr_bsz, fastlanes::gpu::g_allocator);
                 unpack_global<<<n_blc, n_trd>>>(d_encoded_arr, d_decoded_arr, bitwidth);
                 CUDA_SAFE_CALL(cudaMemcpy(h_decoded_arr, d_decoded_arr, sizeof(uint32_t) * n_tup, cudaMemcpyDeviceToHost));
-        
+
             	for (int i = 0; i < n_tup; i++) {
                     if (h_org_arr[i] != h_decoded_arr[i]) {
                         std::cout << bitwidth << " failed!" << std::endl;
                         return;
                     }
                 }
-                std::cout << bitwidth << " succes!" << std::endl;
-                
+                std::cout << bitwidth << " success!" << std::endl;
+
                 CLEANUP(d_encoded_arr);
 	            ''')
         self.num = self.num + 1
