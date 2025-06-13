@@ -223,7 +223,7 @@ class Generator:
         return '''
             #ifdef NDEBUG
             uint64_t iterations = 3000000;
-            #else 
+            #else
             uint64_t iterations = 1;
             #endif
                 '''
