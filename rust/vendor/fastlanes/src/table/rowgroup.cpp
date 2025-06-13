@@ -13,25 +13,25 @@
 
 namespace fastlanes {
 
-void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns);
+void init_logical_columns(const ColumnDescriptors& footer, rowgroup_pt& columns);
 
 // TODO [COPY] All return values here are copied to be put inside col_t variant. They should be moved.
-col_pt init_logial_columns(const ColumnDescriptorT& col_descriptor) {
+col_pt init_logical_columns(const ColumnDescriptorT& col_descriptor) {
 	switch (static_cast<DataType>(col_descriptor.data_type)) {
 	case DataType::LIST: {
 		auto uped_list   = make_unique<List>();
-		uped_list->child = init_logial_columns(**col_descriptor.children.begin());
+                uped_list->child = init_logical_columns(**col_descriptor.children.begin());
 		return uped_list;
 	}
 	case DataType::STRUCT: {
 		auto uped_struct = make_unique<Struct>();
-		init_logial_columns(col_descriptor.children, uped_struct->internal_rowgroup);
+                init_logical_columns(col_descriptor.children, uped_struct->internal_rowgroup);
 		return uped_struct;
 	}
 	case DataType::MAP: {
 		// MAP(KEY, VALUE) = LIST(STRUCT(KEY, VALUE))
 		auto uped_struct = make_unique<Struct>();
-		init_logial_columns(col_descriptor.children, uped_struct->internal_rowgroup);
+                init_logical_columns(col_descriptor.children, uped_struct->internal_rowgroup);
 
 		auto uped_list   = make_unique<List>();
 		uped_list->child = std::move(uped_struct);
@@ -70,10 +70,10 @@ col_pt init_logial_columns(const ColumnDescriptorT& col_descriptor) {
 	return col_pt {};
 }
 
-void init_logial_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) {
+void init_logical_columns(const ColumnDescriptors& footer, rowgroup_pt& columns) {
 	columns.reserve(footer.size());
 	for (const auto& col_descriptor : footer) {
-		columns.emplace_back(init_logial_columns(*col_descriptor));
+                columns.emplace_back(init_logical_columns(*col_descriptor));
 	}
 }
 
@@ -82,7 +82,7 @@ Rowgroup::Rowgroup(const RowgroupDescriptorT& footer, const Connection& connecti
     , n_tup(footer.m_n_tuples)
     , m_connection(connection)
     , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {
-	init_logial_columns(footer.m_column_descriptors, internal_rowgroup);
+        init_logical_columns(footer.m_column_descriptors, internal_rowgroup);
 }
 
 up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs, const Connection& connection) {
