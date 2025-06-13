@@ -45,8 +45,7 @@ def generate_unpack_lib():
 def generate_bitpack_lib():
     print_success("BITPACK::UNPACK generator has been started.")
     generate_unpack_lib()
-    print_success("FINISHED!.")
-
+    print_success("FINISHED!")
 
 if __name__ == "__main__":
     generate_bitpack_lib()
