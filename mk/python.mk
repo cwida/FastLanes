@@ -16,6 +16,7 @@ PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 # Virtual-env and common paths (absolute)
 VENV      := $(PROJECT_ROOT)/.venv
 DIST_DIR  := $(PROJECT_ROOT)/dist
+CLEAN_SKBUILD := rm -rf $(PROJECT_ROOT)/skbuild-editable
 
 # --- venv paths differ on Windows vs. Unix ------------------
 ifeq ($(OS),Windows_NT)
