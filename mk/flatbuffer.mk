@@ -23,8 +23,12 @@ generate_footer:
 	  echo "❌ '$(FBS_DIR)/footer.fbs' not found."; exit 1; \
 	fi
 
-	@echo "📦 Generating FlatBuffers C++ (footer + datatype)…"
-	@mkdir -p "$(FBS_OUT)"
+        @echo "📦 Generating FlatBuffers C++ (footer + datatype)…"
+        @command -v flatc >/dev/null || { \
+            echo "❌ 'flatc' not found. Please install the FlatBuffers compiler."; \
+            exit 1; \
+        }
+        @mkdir -p "$(FBS_OUT)"
 	@flatc --cpp \
 	       --gen-object-api \
 	       --scoped-enums \
