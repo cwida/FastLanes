@@ -5,6 +5,7 @@ EXAMPLES_MK_INCLUDED := yes
 # Common helpers & C++ rules
 # ─────────────────────────────────────────────────────────────
 include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/preamble.mk
+include $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/cpp.mk
 
 # ─────────────────────────────────────────────────────────────
 # Compute paths relative to this file’s directory
@@ -31,6 +32,16 @@ CXX ?= c++
 EXE_EXT :=
 ifeq ($(OS),Windows_NT)
   EXE_EXT := .exe
+endif
+
+# Runtime library path for running examples
+RUN_ENV :=
+ifeq ($(OS),Windows_NT)
+  RUN_ENV := PATH=$(PREFIX)/bin;$(PATH)
+else ifeq ($(shell uname -s),Darwin)
+  RUN_ENV := DYLD_LIBRARY_PATH=$(PREFIX)/lib:$(DYLD_LIBRARY_PATH)
+else
+  RUN_ENV := LD_LIBRARY_PATH=$(PREFIX)/lib:$(LD_LIBRARY_PATH)
 endif
 
 # ─────────────────────────────────────────────────────────────
@@ -65,7 +76,7 @@ run-cpp-example: install-cpp
 	$(CXX) $(EXAMPLES_DIR)/cpp_example.cpp -I$(PREFIX)/include \
 	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
 	@echo "Running C++ example…"
-	$(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
+	$(RUN_ENV) $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
 
 # ─────────────────────────────────────────────────────────────
 # Build & run the C API example
@@ -76,7 +87,7 @@ run-c-api-example: install-cpp
 	$(CC) $(EXAMPLES_DIR)/c_api.c -I$(PREFIX)/include \
 	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/c_api$(EXE_EXT)
 	@echo "Running C API example…"
-	$(EXAMPLES_DIR)/c_api$(EXE_EXT)
+	$(RUN_ENV) $(EXAMPLES_DIR)/c_api$(EXE_EXT)
 
 # ─────────────────────────────────────────────────────────────
 # Run the Python example (assumes the C++ lib is in PYTHONPATH)
