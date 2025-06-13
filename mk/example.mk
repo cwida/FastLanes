@@ -18,6 +18,21 @@ EXAMPLES_DIR := $(PROJECT_DIR)/examples
 # ─────────────────────────────────────────────────────────────
 PREFIX       := $(PROJECT_DIR)/build/install
 
+# -----------------------------------------------------------------
+# Compiler configuration
+# -----------------------------------------------------------------
+# These targets rely on standard C/C++ compilers being available.
+# Override CC/CXX if clang or another toolchain should be used.
+
+# Default compilers (override via environment). Works on Unix and Windows
+CC  ?= cc
+CXX ?= c++
+# Windows executables use .exe extension
+EXE_EXT :=
+ifeq ($(OS),Windows_NT)
+  EXE_EXT := .exe
+endif
+
 # ─────────────────────────────────────────────────────────────
 # Phony targets
 # ─────────────────────────────────────────────────────────────
@@ -40,6 +55,28 @@ run-rust-example:
 	@echo "Running Rust example…"
 	cd $(EXAMPLES_DIR)/rust_example && \
 	cargo run --bin rust_example
+
+# ─────────────────────────────────────────────────────────────
+# Build & run the standalone C++ example
+# Requires a C++20 capable compiler (clang++ or g++).
+# ─────────────────────────────────────────────────────────────
+run-cpp-example: install-cpp
+	@echo "Building C++ example…"
+	$(CXX) $(EXAMPLES_DIR)/cpp_example.cpp -I$(PREFIX)/include \
+	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
+	@echo "Running C++ example…"
+	$(EXAMPLES_DIR)/cpp_example$(EXE_EXT)
+
+# ─────────────────────────────────────────────────────────────
+# Build & run the C API example
+# Requires a C compiler such as clang or gcc.
+# ─────────────────────────────────────────────────────────────
+run-c-api-example: install-cpp
+	@echo "Building C API example…"
+	$(CC) $(EXAMPLES_DIR)/c_api.c -I$(PREFIX)/include \
+	       -L$(PREFIX)/lib -lFastLanes -o $(EXAMPLES_DIR)/c_api$(EXE_EXT)
+	@echo "Running C API example…"
+	$(EXAMPLES_DIR)/c_api$(EXE_EXT)
 
 # ─────────────────────────────────────────────────────────────
 # Run the Python example (assumes the C++ lib is in PYTHONPATH)
