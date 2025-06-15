@@ -6,4 +6,4 @@
 ---
 ## History
 1. [link](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Xeon+Platinum+8375C+%40+2.90GHz&id=4486)
-2. 
+2.
