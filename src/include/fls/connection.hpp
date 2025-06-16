@@ -113,10 +113,12 @@ public:
 private:
 	void prepare_table() const;
 	void write_footer(const path& dir_path) const;
-
+public:
+	// TODO(duckdb): Change the API
+	up<Table>            m_table;
 private:
 	up<Config>           m_config;
-	up<Table>            m_table;
+
 	up<TableDescriptorT> m_table_descriptor;
 };
 
