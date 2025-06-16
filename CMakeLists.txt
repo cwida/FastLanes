@@ -105,7 +105,7 @@ endif ()
 # Options : ------------------------------------------------------------------------------------------------------------
 option(FLS_BUILD_TESTING "Build Test" OFF)
 option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
-option(FLS_BUILD_EXAMPLES "Build Examples" OFF)
+option(FLS_BUILD_EXAMPLES "Build Examples" ON)
 option(FLS_BUILD_GPU "Build GPU" OFF)
 option(FLS_BUILD_GTEST "Build GTEST" OFF)
 option(FLS_ENABLE_CLANG_TIDY "Enable clang_tidy on all targets" OFF)

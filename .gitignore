@@ -123,3 +123,4 @@ coverage/
 
 .direnv/
 .devenv/
+/.direnv/
