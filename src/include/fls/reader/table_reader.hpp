@@ -23,6 +23,9 @@ public:
 	[[nodiscard]] up<RowgroupReader> get_rowgroup_reader(n_t rowgroup_idx) const;
 	//
 	[[nodiscard]] up<Table> materialize() const;
+	[[nodiscard]] TableDescriptorT& get_file_metadata() const;
+	[[nodiscard]] n_t get_n_rowgroups() const;
+
 	// API: append to the existing csv.
 	// write to the fle path
 	void to_csv(const path& file_path) const;
