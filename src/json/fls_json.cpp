@@ -25,6 +25,7 @@ DataType TypeLookUp(const std::string& str) {
 	    {"FLS_STR", DataType::FLS_STR}, //
 	    {"BIGINT", DataType::INT64},    //
 	    {"string", DataType::FLS_STR},  //
+	    {"STRING", DataType::FLS_STR},  //
 	    {"varchar", DataType::FLS_STR}, //
 	    {"VARCHAR", DataType::FLS_STR}, //
 	    {"double", DataType::DOUBLE},   //
@@ -45,7 +46,6 @@ DataType TypeLookUp(const std::string& str) {
 	    {"varchar(1)", DataType::FLS_STR}, // {"varchar(1)", DataType::FLS_STR},
 	    {"bigint", DataType::INT64},
 	    {"boolean", DataType::FLS_STR},
-	    {"date", DataType::FLS_STR},
 	    {"integer", DataType::INT32},
 	    {"smallint", DataType::INT16},
 	    {"decimal(1, 0)", DataType::DECIMAL},
@@ -98,7 +98,6 @@ DataType TypeLookUp(const std::string& str) {
 	    {"decimal(9, 6)", DataType::DECIMAL},
 	    {"double", DataType::DOUBLE},
 	    {"time", DataType::FLS_STR},
-	    {"timestamp", DataType::FLS_STR},
 	    {"varchar(10)", DataType::FLS_STR},
 	    {"varchar(100)", DataType::FLS_STR},
 	    {"varchar(102)", DataType::FLS_STR},
@@ -229,6 +228,20 @@ DataType TypeLookUp(const std::string& str) {
 	    {"varchar(950)", DataType::FLS_STR},
 	    {"varchar(96)", DataType::FLS_STR},
 	    {"varchar(99)", DataType::FLS_STR},
+
+	    // NextiaJD
+	    {"BOOLEAN", DataType::FLS_STR},
+
+	    // TPCH
+	    {"DECIMAL(15,2)", DataType::DECIMAL},
+
+	    // DATE
+	    {"DATE", DataType::DATE},
+	    {"date", DataType::DATE},
+	    // TIMESTAMP
+	    {"TIMESTAMP", DataType::TIMESTAMP},
+	    {"timestamp", DataType::TIMESTAMP},
+
 	};
 
 	const auto it = TABLE.find(str);

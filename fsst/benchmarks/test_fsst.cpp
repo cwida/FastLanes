@@ -1,7 +1,9 @@
 #include "data.hpp"
 #include "fls/cor/prm/fsst/fsst.h"
-#include "fls/printer/print.hpp"
+#include "fls/printer/az_printer.hpp"
 #include "gtest/gtest.h"
+#include <chrono>     // for std::chrono::steady_clock, duration, etc.
+#include <filesystem> // for std::filesystem
 #include <fls/cor/prm/fsst12/fsst12.h>
 #include <fstream>
 #include <iostream>
@@ -15,6 +17,7 @@
 #pragma clang diagnostic ignored "-Wsign-conversion"
 #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #pragma clang diagnostic ignored "-Wshadow"
+#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -30,9 +33,12 @@ private:
 	vector<unsigned> offsets;
 
 public:
-	static string get_name() { return "FSST"; }
+	static string get_name() {
+		return "FSST";
+	}
 	FSSTCompressionRunner() = default;
-	FSSTCompressionRunner(unsigned /*blockSizeIgnored*/) {}
+	FSSTCompressionRunner(unsigned /*blockSizeIgnored*/) {
+	}
 
 	/// Store the compressed corpus. Returns the compressed size
 	uint64_t compressCorpus(
@@ -173,7 +179,9 @@ private:
 	vector<unsigned> offsets;
 
 public:
-	static string get_name() { return "FSST12"; }
+	static string get_name() {
+		return "FSST12";
+	}
 	FSST12CompressionRunner() = default;
 
 	/// Store the compressed corpus. Returns the compressed size
@@ -321,9 +329,11 @@ void benchmark_file(const string& file, string_view file_name, ofstream& result_
 	while (getline(in, line)) {
 		corpusLen += line.length() + 1;
 		corpus.push_back(std::move(line));
-		if (corpusLen > targetLen) break;
+		if (corpusLen > targetLen)
+			break;
 	}
-	if (corpus.empty()) return;
+	if (corpus.empty())
+		return;
 	if (extend) {
 		unsigned reader = 0;
 		while (corpusLen < targetLen) {
@@ -372,7 +382,8 @@ template <class T>
 vector<pair<unsigned, double>> cmpFilter(unsigned blockSize, const vector<string>& files) {
 	T    runner(blockSize);
 	auto res = doTest(runner, files, false);
-	if (!res.first) exit(1);
+	if (!res.first)
+		exit(1);
 	return res.second;
 }
 

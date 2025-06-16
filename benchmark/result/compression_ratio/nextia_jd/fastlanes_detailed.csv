@@ -1,0 +1,1153 @@
+compression,version,table_name,id,name,data_type,size(bytes),expression,bytes_per_value,bits_per_value
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,0,0,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,1,1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,2,2009-01-02,FLS_STR,1284,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.16
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,3,2,INT8,33139,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.51,4.05
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,4,ABCB4,FLS_STR,118660,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.81,14.48
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,5,10,INT8,24969,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,6,ABC BRASIL,FLS_STR,81315,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.24,9.93
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,7,PN  EJ  N2,FLS_STR,58155,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.10
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,8,null,FLS_STR,50829,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.78,6.20
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,9,R$,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,10,5.05,DOUBLE,155210,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.37,18.95
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,11,5.3,DOUBLE,155866,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.38,19.03
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,12,4.95,DOUBLE,155810,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.38,19.02
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,13,5.09,DOUBLE,163136,"{[EXP_ALP_DBL][]}",2.49,19.91
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,14,5.3_1,DOUBLE,154866,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.36,18.90
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,15,5.2,DOUBLE,140426,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.14,17.14
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,16,5.3_2,DOUBLE,139330,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.13,17.01
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,17,40,INT16,102914,"{[EXP_DICT_I16_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.57,12.56
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,18,241000,INT64,208526,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",3.18,25.45
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,19,122849600,INT64,275940,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",4.21,33.68
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,20,0_1,INT32,63171,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.96,7.71
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,21,0_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,22,9999-12-31 00:00:00,FLS_STR,30691,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.47,3.75
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,23,1_1,INT16,8719,"{[EXP_FREQUENCY_I16][0, 1, 2, 3]}",0.13,1.06
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,24,0_3,INT64,8712,"{[EXP_DICT_I64_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.13,1.06
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,25,BRABCBACNPR4,FLS_STR,83906,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.28,10.24
+FastLanes,0.1.3-alpha.8,COTAHIST_A2009_to_A2019,26,105,INT16,63954,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.98,7.81
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,0,879,INT32,27008,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.41,3.30
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,1,4786321,INT32,102560,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.56,12.52
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,2,HM399414,FLS_STR,233229,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.56,28.47
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,3,01/01/2004 12:01:00 AM,FLS_STR,415079,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.33,50.67
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,4,082XX S COLES AVE,FLS_STR,346801,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.29,42.33
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,5,0840,FLS_STR,67251,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.03,8.21
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,6,THEFT,FLS_STR,41863,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,5.11
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,7,FINANCIAL ID THEFT: OVER $300,FLS_STR,69334,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.06,8.46
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,8,RESIDENCE,FLS_STR,59607,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.91,7.28
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,9,False,FLS_STR,8623,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,10,False_1,FLS_STR,8623,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,11,424,INT16,74766,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.14,9.13
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,12,4.0,INT8,41367,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.63,5.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,13,7.0,FLS_STR,15549,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.24,1.90
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,14,46.0,FLS_STR,15665,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.24,1.91
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,15,06,FLS_STR,41538,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,16,null,FLS_STR,217115,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.31,26.50
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,17,null_1,FLS_STR,217922,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.33,26.60
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,18,2004,INT16,2394,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,19,08/17/2015 03:03:40 PM,FLS_STR,11413,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.17,1.39
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,20,null_2,FLS_STR,345171,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.27,42.14
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,21,null_3,FLS_STR,340121,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.19,41.52
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2001_to_2004,22,null_4,FLS_STR,688945,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.51,84.10
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,0,0,INT32,25344,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.39,3.09
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,1,4673626,INT32,93356,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.42,11.40
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,2,HM274058,FLS_STR,280537,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.28,34.25
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,3,04/02/2006 01:00:00 PM,FLS_STR,421747,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.44,51.48
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,4,055XX N MANGO AVE,FLS_STR,327026,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.99,39.92
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,5,2825,FLS_STR,68054,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.04,8.31
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,6,OTHER OFFENSE,FLS_STR,40948,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.62,5.00
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,7,RESIDENCE,FLS_STR,52132,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.36
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,8,False,FLS_STR,8623,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,9,False_1,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,10,1622,INT16,75078,"{[EXP_DICT_I16_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.15,9.16
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,11,16.0,INT8,41367,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.63,5.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,12,45.0,INT8,49587,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.76,6.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,13,11.0,INT8,57728,"{[EXP_FFOR_I08][0, 1, 2]}",0.88,7.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,14,26,FLS_STR,41528,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,15,1136872.0,FLS_STR,236001,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.60,28.81
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,16,1936499.0,FLS_STR,236248,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.60,28.84
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,17,2006,INT16,4411,"{[EXP_FREQUENCY_I16][0, 1, 2, 3]}",0.07,0.54
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,18,04/15/2016 08:55:02 AM,FLS_STR,1804,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.22
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,19,41.981912692,FLS_STR,375615,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.73,45.85
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,20,-87.771996382,FLS_STR,372403,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.68,45.46
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2005_to_2007,21,(41.981912692, -87.771996382),FLS_STR,754603,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",11.51,92.11
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,0,388,INT32,26880,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.41,3.28
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,1,4785,INT32,110292,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.68,13.46
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,2,HP610824,FLS_STR,283336,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.32,34.59
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,3,10/07/2008 12:39:00 PM,FLS_STR,431637,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.59,52.69
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,4,000XX E 75TH ST,FLS_STR,330656,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.05,40.36
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,5,0110,FLS_STR,68421,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.04,8.35
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,6,HOMICIDE,FLS_STR,36528,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.56,4.46
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,7,ALLEY,FLS_STR,59513,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.91,7.26
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,8,True,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,9,False,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,10,323,INT16,74776,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.14,9.13
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,11,3.0,INT8,41368,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.63,5.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,12,6.0,FLS_STR,49893,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.76,6.09
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,13,69.0,FLS_STR,58249,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.11
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,14,01A,FLS_STR,41537,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,15,1178207.0,FLS_STR,194389,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.97,23.73
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,16,1855308.0,FLS_STR,196760,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.00,24.02
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,17,2008,INT16,3163,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.05,0.39
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,18,08/17/2015 03:03:40 PM,FLS_STR,6640,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.10,0.81
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,19,41.758275857,FLS_STR,305501,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.66,37.29
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,20,-87.622451031,FLS_STR,302883,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.62,36.97
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2008_to_2011,21,(41.758275857, -87.622451031),FLS_STR,660305,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",10.08,80.60
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,0,3,INT32,33152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.51,4.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,1,10508693,INT32,117416,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.79,14.33
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,2,HZ250496,FLS_STR,280522,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.28,34.24
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,3,05/03/2016 11:40:00 PM,FLS_STR,458216,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.99,55.93
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,4,013XX S SAWYER AVE,FLS_STR,331014,"{[EXP_FSST12_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.05,40.41
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,5,0486,FLS_STR,68578,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.05,8.37
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,6,BATTERY,FLS_STR,41565,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,7,APARTMENT,FLS_STR,54030,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.60
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,8,True,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,9,True_1,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,10,1022,INT16,74744,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.14,9.12
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,11,10.0,INT8,41367,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.63,5.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,12,24.0,INT8,49587,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.76,6.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,13,29.0,INT8,57728,"{[EXP_FFOR_I08][0, 1, 2]}",0.88,7.05
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,14,08B,FLS_STR,40254,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.61,4.91
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,15,1154907.0,FLS_STR,217411,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.32,26.54
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,16,1893681.0,FLS_STR,221320,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.38,27.02
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,17,2016,INT16,5534,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.08,0.68
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,18,05/10/2016 03:56:50 PM,FLS_STR,26727,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.41,3.26
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,19,41.864073157,FLS_STR,343260,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.24,41.90
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,20,-87.706818608,FLS_STR,339910,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.19,41.49
+FastLanes,0.1.3-alpha.8,Chicago_Crimes_2012_to_2017,21,(41.864073157, -87.706818608),FLS_STR,684605,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.45,83.57
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,0,3/12/2014,FLS_STR,105136,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.60,12.83
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,1,Other mortgage,FLS_STR,50017,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.76,6.11
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,2,MI,FLS_STR,49943,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.76,6.10
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,3,48382,FLS_STR,173967,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.65,21.24
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,4,null,FLS_STR,16889,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,5,N/A,FLS_STR,16899,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,6,Referral,FLS_STR,25075,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.06
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,7,3/17/2014,FLS_STR,104329,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.59,12.74
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,8,Closed with explanation,FLS_STR,25143,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.07
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,9,Yes,FLS_STR,8615,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,10,No,FLS_STR,8615,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Consumer_Complaints,11,759217,INT32,180992,"{[EXP_FFOR_I32][0, 1, 2]}",2.76,22.09
+FastLanes,0.1.3-alpha.8,Final_comments,0,0,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,Final_comments,1,Christine S,FLS_STR,161935,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.47,19.77
+FastLanes,0.1.3-alpha.8,Final_comments,2,4,INT8,24966,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,Final_comments,3,4_1,INT16,39728,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.61,4.85
+FastLanes,0.1.3-alpha.8,Final_comments,4,4.6.9,FLS_STR,45131,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.69,5.51
+FastLanes,0.1.3-alpha.8,Final_comments,5,2020-05-29 18:56:28,FLS_STR,160473,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.45,19.59
+FastLanes,0.1.3-alpha.8,Final_comments,6,2020-05-30 05:36:53,FLS_STR,81912,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.25,10.00
+FastLanes,0.1.3-alpha.8,Final_comments,7,most_relevant,FLS_STR,248,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,Final_comments,8,com.sevencupsoftea.app,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,0,1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,1,havana,FLS_STR,16857,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,2,gene,FLS_STR,25254,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.39,3.08
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,3,11869,INT32,129802,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.98,15.84
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,4,14409,INT32,130130,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.99,15.89
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,5,.,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,6,+,FLS_STR,6027,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.09,0.74
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,7,._1,FLS_STR,16813,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.05
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,8,null,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,9,null_1,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,10,null_2,FLS_STR,14906,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.23,1.82
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,11,null_3,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,12,null_4,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,13,null_5,FLS_STR,162463,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.48,19.83
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,14,null_6,FLS_STR,44837,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.68,5.47
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,15,null_7,FLS_STR,18445,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.28,2.25
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,16,transcribed_unprocessed_pseudogene,FLS_STR,19418,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.30,2.37
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,17,ENSG00000223972,FLS_STR,29515,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.45,3.60
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,18,DDX11L1,FLS_STR,19927,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.30,2.43
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,19,havana_1,FLS_STR,13576,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.21,1.66
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,20,5,INT8,5284,"{[EXP_CROSS_RLE_I08][0, 1]}",0.08,0.65
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,21,null_8,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,22,null_9,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,23,null_10,FLS_STR,52251,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.80,6.38
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,24,null_11,FLS_STR,12654,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.19,1.54
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,25,null_12,FLS_STR,26,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,26,null_13,FLS_STR,34218,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.18
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,27,null_14,FLS_STR,98711,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.51,12.05
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,28,null_15,FLS_STR,45431,"{[EXP_FSST_DICT_STR_U16][27, 0, 1, 2]}",0.69,5.55
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,29,null_16,FLS_STR,16865,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,30,null_17,FLS_STR,28154,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.43,3.44
+FastLanes,0.1.3-alpha.8,Homo_sapiens_GRCh38_92,31,null_18,FLS_STR,26919,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.41,3.29
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,0,S29198800001,FLS_STR,318577,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.86,38.89
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,1,11/20/2015,FLS_STR,89024,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.36,10.87
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,2,2191,INT16,93220,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.42,11.38
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,3,Keokuk Spirits,FLS_STR,114671,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.75,14.00
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,4,1013 MAIN,FLS_STR,108111,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.65,13.20
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,5,KEOKUK,FLS_STR,77822,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.19,9.50
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,6,52632,FLS_STR,77014,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.18,9.40
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,7,56,FLS_STR,58354,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.12
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,8,Lee,FLS_STR,1062,"{[EXP_FSST_DICT_STR_U08][7, 0, 1, 2]}",0.02,0.13
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,9,null,FLS_STR,50716,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.77,6.19
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,10,null_1,FLS_STR,51213,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.78,6.25
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,11,255,INT16,50634,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.77,6.18
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,12,Wilson Daniels Ltd.,FLS_STR,2043,"{[EXP_FSST_DICT_STR_U08][11, 0, 1, 2]}",0.03,0.25
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,13,297,INT32,103334,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.58,12.61
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,14,6,INT16,26110,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.40,3.19
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,15,750,INT16,33699,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.51,4.11
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,16,$18.09,FLS_STR,97219,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.48,11.87
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,17,$27.14,FLS_STR,100648,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.54,12.29
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,18,6_1,INT16,43018,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.66,5.25
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,19,$162.84,FLS_STR,149545,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.28,18.26
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,20,4.50,DOUBLE,53639,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.82,6.55
+FastLanes,0.1.3-alpha.8,Iowa_Liquor_Sales,21,1.19,DOUBLE,53625,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.82,6.55
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,0,8002531292,INT64,271360,"{[EXP_FFOR_I64][0, 1, 2]}",4.14,33.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,1,EPC5238,FLS_STR,319429,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.87,38.99
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,2,NY,FLS_STR,43799,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.67,5.35
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,3,PAS,FLS_STR,30374,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.46,3.71
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,4,10/01/2014,FLS_STR,77555,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.18,9.47
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,5,21,INT8,50041,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.76,6.11
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,6,SUBN,FLS_STR,41626,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.08
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,7,CHEVR,FLS_STR,53487,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.53
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,8,T,FLS_STR,17189,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.10
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,9,20390,INT32,110514,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.49
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,10,29890,INT32,110862,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.53
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,11,31490,INT32,110870,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.53
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,12,01/01/20150111 12:00:00 PM,FLS_STR,104337,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.59,12.74
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,13,7,FLS_STR,58325,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,14,7_1,INT16,57919,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.88,7.07
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,15,7_2,INT16,58522,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.89,7.14
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,16,345454,INT32,124258,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.90,15.17
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,17,T800,FLS_STR,68722,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.05,8.39
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,18,A2,FLS_STR,43429,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.66,5.30
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,19,NY_1,FLS_STR,19936,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.30,2.43
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,20,F,FLS_STR,17292,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.11
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,21,133,FLS_STR,141991,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.17,17.33
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,22,Essex St,FLS_STR,164803,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.51,20.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,23,null,FLS_STR,108869,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.66,13.29
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,24,01/05/0001 12:00:00 PM,FLS_STR,70426,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.07,8.60
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,25,408,INT16,0,"{[EXP_CONSTANT_I16][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,26,d1,FLS_STR,52851,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.81,6.45
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,27,null_1,FLS_STR,24,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,28,Y Y Y,FLS_STR,35120,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.54,4.29
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,29,BL,FLS_STR,49037,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.75,5.99
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,30,null_2,FLS_STR,24,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,31,2005,INT16,42026,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.64,5.13
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,32,null_3,FLS_STR,60033,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.92,7.33
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,33,0,INT8,6174,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.09,0.75
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,34,A 77,FLS_STR,88709,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.35,10.83
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,35,21-No Parking (street clean),FLS_STR,52138,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.36
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,36,null_4,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,37,null_5,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,38,null_6,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,39,null_7,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,40,null_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,41,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,42,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,43,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,44,null_12,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,45,null_13,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2015,46,null_14,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,0,1363745270,INT64,172380,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",2.63,21.04
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,1,GGY6450,FLS_STR,303827,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.64,37.09
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,2,99,FLS_STR,38374,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.59,4.68
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,3,PAS,FLS_STR,21895,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.33,2.67
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,4,07/09/2015,FLS_STR,56559,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.86,6.90
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,5,46,INT8,39748,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.61,4.85
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,6,SDN,FLS_STR,62563,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.95,7.64
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,7,HONDA,FLS_STR,56839,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.87,6.94
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,8,P,FLS_STR,15576,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.24,1.90
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,9,0,INT32,93630,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.43,11.43
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,10,40404,INT32,91574,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.40,11.18
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,11,40404_1,INT32,90970,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.39,11.10
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,12,20170602,INT32,67546,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.03,8.25
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,13,74,FLS_STR,42454,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.65,5.18
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,14,74_1,INT16,26626,"{[EXP_RLE_I16_U16][0, 1, 2, 3, 4]}",0.41,3.25
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,15,301,INT16,24208,"{[EXP_CROSS_RLE_I16][0, 1]}",0.37,2.96
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,16,358160,INT32,76444,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",1.17,9.33
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,17,T301,FLS_STR,63378,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.97,7.74
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,18,0000,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,19,K,FLS_STR,13978,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.21,1.71
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,20,F,FLS_STR,6433,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.10,0.79
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,21,142,FLS_STR,99872,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.52,12.19
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,22,MACDOUNGH ST,FLS_STR,207709,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.17,25.36
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,23,null,FLS_STR,110087,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.68,13.44
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,24,0_1,INT32,3045,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.05,0.37
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,25,408,INT16,6111,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.09,0.75
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,26,D1,FLS_STR,37574,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.57,4.59
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,27,null_1,FLS_STR,24,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,28,BBBBBBB,FLS_STR,30903,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.47,3.77
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,29,WHITE,FLS_STR,60568,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.92,7.39
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,30,0_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,31,2010,INT16,42572,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.65,5.20
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,32,-,FLS_STR,2127,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.26
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,33,0_3,INT8,5673,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.09,0.69
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,34,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,35,null_3,FLS_STR,730,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.09
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,36,null_4,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,37,null_5,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,38,null_6,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,39,null_7,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,40,null_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,41,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,42,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,43,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,44,null_12,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,45,null_13,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2016,46,null_14,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,0,5092469481,INT64,271360,"{[EXP_FFOR_I64][0, 1, 2]}",4.14,33.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,1,GZH7067,FLS_STR,320346,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.89,39.10
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,2,NY,FLS_STR,43692,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.67,5.33
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,3,PAS,FLS_STR,35533,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.54,4.34
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,4,07/10/2016,FLS_STR,77188,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.18,9.42
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,5,7,INT8,50141,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.77,6.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,6,SUBN,FLS_STR,45668,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.70,5.57
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,7,TOYOT,FLS_STR,53842,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.57
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,8,V,FLS_STR,17779,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.27,2.17
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,9,0,INT32,110510,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.49
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,10,0_1,INT32,110734,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.52
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,11,0_2,INT32,110954,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.69,13.54
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,12,0_3,INT32,95190,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.45,11.62
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,13,null,FLS_STR,58325,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.12
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,14,0_4,INT8,57728,"{[EXP_FFOR_I08][0, 1, 2]}",0.88,7.05
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,15,0_5,INT16,58394,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.89,7.13
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,16,0_6,INT32,123958,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.89,15.13
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,17,null_1,FLS_STR,69294,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.46
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,18,null_2,FLS_STR,43960,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.67,5.37
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,19,BX,FLS_STR,27276,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.42,3.33
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,20,null_3,FLS_STR,17306,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.11
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,21,null_4,FLS_STR,118743,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.81,14.49
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,22,ALLERTON AVE (W/B) @,FLS_STR,179320,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.74,21.89
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,23,BARNES AVE,FLS_STR,153944,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.35,18.79
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,24,0_7,INT32,9309,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.14,1.14
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,25,1111,INT16,16775,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.26,2.05
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,26,D,FLS_STR,52563,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.42
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,27,T,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,28,null_5,FLS_STR,38230,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.58,4.67
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,29,GY,FLS_STR,52445,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.40
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,30,null_6,FLS_STR,24,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,31,2001,INT16,42133,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.64,5.14
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,32,null_7,FLS_STR,50056,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.76,6.11
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,33,0_8,INT8,5307,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.08,0.65
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,34,null_8,FLS_STR,88773,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.35,10.84
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,35,FAILURE TO STOP AT RED LIGHT,FLS_STR,52395,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.40
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,36,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,37,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued_Fiscal_Year_2017,38,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,0,1283294138,INT64,169704,"{[EXP_FFOR_SLPATCH_I64][0, 1, 2, 3, 4, 5]}",2.59,20.72
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,1,GBB9093,FLS_STR,302845,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.62,36.97
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,2,NY,FLS_STR,43567,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.66,5.32
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,3,PAS,FLS_STR,27503,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.42,3.36
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,4,08/04/2013,FLS_STR,57315,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.87,7.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,5,46,INT8,48273,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.74,5.89
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,6,SUBN,FLS_STR,62288,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.95,7.60
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,7,AUDI,FLS_STR,70934,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.08,8.66
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,8,P,FLS_STR,16662,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.25,2.03
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,9,37250,INT32,109598,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.67,13.38
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,10,13610,INT32,107678,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.64,13.14
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,11,21190,INT32,107242,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.64,13.09
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,12,20140831,INT32,84422,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.29,10.31
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,13,33,FLS_STR,53638,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.82,6.55
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,14,33_1,INT16,36434,"{[EXP_RLE_I16_U16][0, 1, 2, 3, 4]}",0.56,4.45
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,15,33_2,INT16,28378,"{[EXP_CROSS_RLE_I16][0, 1]}",0.43,3.46
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,16,921043,INT32,89448,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",1.36,10.92
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,17,0033,FLS_STR,65706,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",1.00,8.02
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,18,0000,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,19,null,FLS_STR,17184,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.26,2.10
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,20,F,FLS_STR,10395,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.16,1.27
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,21,712,FLS_STR,127879,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.95,15.61
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,22,W 175 ST,FLS_STR,240565,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",3.67,29.37
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,23,null_1,FLS_STR,85922,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.31,10.49
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,24,0,INT32,9303,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.14,1.14
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,25,408,INT16,32,"{[EXP_CROSS_RLE_I16][0, 1]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,26,F1,FLS_STR,47390,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.72,5.78
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,27,null_2,FLS_STR,33,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,28,BBBBBBB,FLS_STR,35222,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.54,4.30
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,29,GY,FLS_STR,59419,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.91,7.25
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,30,0_1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,31,2013,INT16,42536,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.65,5.19
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,32,-,FLS_STR,5501,"{[EXP_FREQUENCY_STR][0, 1, 2, 3, 4, 5]}",0.08,0.67
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,33,0_2,INT8,6471,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.10,0.79
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,34,null_3,FLS_STR,27,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,35,null_4,FLS_STR,41,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,36,null_5,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,37,null_6,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,38,null_7,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,39,null_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,40,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,41,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,42,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,43,null_12,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,44,null_13,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,45,null_14,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Parking_Violations_Issued__Fiscal_Year_2014__August_2013___June_2014_,46,null_15,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,0,null,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,1,jayburd13,FLS_STR,437497,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.68,53.41
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,2,null_1,FLS_STR,27,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,3,1401375187.0,FLS_STR,353172,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.39,43.11
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,4,null_2,FLS_STR,1261,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.15
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,5,null_3,FLS_STR,90060,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.37,10.99
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,6,null_4,FLS_STR,113855,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.74,13.90
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,7,null_5,FLS_STR,27,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,8,text,FLS_STR,8626,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,9,t2_griiu,FLS_STR,404195,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.17,49.34
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,10,False,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,11,1546300804,INT32,46208,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.71,5.64
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,12,null_6,FLS_STR,32,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,13,null_7,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,14,null_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,15,0.0,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,16,0.0_1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,17,0.0_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,18,eczayvu,FLS_STR,332840,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.08,40.63
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,19,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,20,t3_ab8wps,FLS_STR,136873,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.09,16.71
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,21,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,22,True,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,23,t3_ab8wps_1,FLS_STR,364825,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",5.57,44.53
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,24,1546300806,INT32,46464,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.71,5.67
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,25,1,INT8,117,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,26,True_1,FLS_STR,2602,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.04,0.32
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,27,False_1,FLS_STR,1461,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.02,0.18
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,28,leagueoflegends,FLS_STR,33426,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.51,4.08
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,29,t5_2rfxx,FLS_STR,174,"{[EXP_FSST_DICT_STR_U08][28, 0, 1, 2]}",0.00,0.02
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,30,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,Reddit_Comments_7M_2019,31,1546300806.0,INT32,0,"{[EXP_EQUAL][24]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,0,ford,FLS_STR,42128,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.14
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,1,galaxy,FLS_STR,78549,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.20,9.59
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,2,151000,FLS_STR,91153,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.39,11.13
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,3,2011,FLS_STR,74285,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.13,9.07
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,4,2000,FLS_STR,80288,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.23,9.80
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,5,103,FLS_STR,53099,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.81,6.48
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,6,null,FLS_STR,41,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,7,null_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,8,None,FLS_STR,15725,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.24,1.92
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,9,man,FLS_STR,8619,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,10,5,FLS_STR,4287,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.07,0.52
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,11,7,FLS_STR,4486,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.07,0.55
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,12,diesel,FLS_STR,8630,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,13,2015-11-14 18:10:06.838319+00,FLS_STR,708529,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",10.81,86.49
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,14,2016-01-27 20:40:15.46361+00,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,all_anonymized_2015_11_2017_03,15,10584.75,DOUBLE,124562,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.90,15.21
+FastLanes,0.1.3-alpha.8,artists,0,cc197bad-dc9c-440d-a5b5-d52ba2e14234,FLS_STR,1360544,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",20.76,166.08
+FastLanes,0.1.3-alpha.8,artists,1,United Kingdom,FLS_STR,57586,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.88,7.03
+FastLanes,0.1.3-alpha.8,artists,2,5381567,INT32,48128,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.73,5.88
+FastLanes,0.1.3-alpha.8,artists,3,360111850,INT32,179692,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.74,21.94
+FastLanes,0.1.3-alpha.8,artists,4,FALSE,FLS_STR,8622,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,az,0,-111.5723157,DOUBLE,171898,"{[EXP_ALP_DBL][]}",2.62,20.98
+FastLanes,0.1.3-alpha.8,az,1,35.2367222,DOUBLE,160750,"{[EXP_ALP_DBL][]}",2.45,19.62
+FastLanes,0.1.3-alpha.8,az,2,6110,FLS_STR,155043,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.37,18.93
+FastLanes,0.1.3-alpha.8,az,3,N HIGHWAY 89,FLS_STR,89285,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.36,10.90
+FastLanes,0.1.3-alpha.8,az,4,null,FLS_STR,105,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,az,5,null_1,FLS_STR,271,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,az,6,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,az,7,null_3,FLS_STR,25,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,az,8,86004,INT32,11396,"{[EXP_CROSS_RLE_I32][0, 1]}",0.17,1.39
+FastLanes,0.1.3-alpha.8,az,9,null_4,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,az,10,ec074bdfa4581255,FLS_STR,597154,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",9.11,72.89
+FastLanes,0.1.3-alpha.8,bgg_13m_reviews,0,0,INT32,25088,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.38,3.06
+FastLanes,0.1.3-alpha.8,bgg_13m_reviews,1,sidehacker,FLS_STR,427849,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.53,52.23
+FastLanes,0.1.3-alpha.8,bgg_13m_reviews,2,10.0,DOUBLE,3376,"{[EXP_CROSS_RLE_DBL][0, 1]}",0.05,0.41
+FastLanes,0.1.3-alpha.8,bgg_13m_reviews,3,13,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,bgg_13m_reviews,4,Catan,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,business_licences,0,14,INT8,15311,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.23,1.87
+FastLanes,0.1.3-alpha.8,business_licences,1,2154508,INT32,156160,"{[EXP_FFOR_I32][0, 1, 2]}",2.38,19.06
+FastLanes,0.1.3-alpha.8,business_licences,2,14-142098,FLS_STR,286754,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.38,35.00
+FastLanes,0.1.3-alpha.8,business_licences,3,00,INT32,10095,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.15,1.23
+FastLanes,0.1.3-alpha.8,business_licences,4,Issued,FLS_STR,20362,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.31,2.49
+FastLanes,0.1.3-alpha.8,business_licences,5,2014-02-05T20:25:36+01:00,FLS_STR,484037,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",7.39,59.09
+FastLanes,0.1.3-alpha.8,business_licences,6,2014-12-31,FLS_STR,47633,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.73,5.81
+FastLanes,0.1.3-alpha.8,business_licences,7,Retail Dealer,FLS_STR,79571,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.21,9.71
+FastLanes,0.1.3-alpha.8,business_licences,8,Clothing/Shoes,FLS_STR,71569,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.74
+FastLanes,0.1.3-alpha.8,business_licences,9,null,FLS_STR,50150,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.77,6.12
+FastLanes,0.1.3-alpha.8,business_licences,10,null_1,FLS_STR,14619,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.22,1.78
+FastLanes,0.1.3-alpha.8,business_licences,11,2870,FLS_STR,92470,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.41,11.29
+FastLanes,0.1.3-alpha.8,business_licences,12,W BROADWAY,FLS_STR,91768,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.40,11.20
+FastLanes,0.1.3-alpha.8,business_licences,13,Vancouver,FLS_STR,22340,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.34,2.73
+FastLanes,0.1.3-alpha.8,business_licences,14,BC,FLS_STR,2888,"{[EXP_FREQUENCY_STR][0, 1, 2, 3, 4, 5]}",0.04,0.35
+FastLanes,0.1.3-alpha.8,business_licences,15,CA,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,business_licences,16,V6K 2G7,FLS_STR,137273,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.09,16.76
+FastLanes,0.1.3-alpha.8,business_licences,17,Kitsilano,FLS_STR,41774,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.64,5.10
+FastLanes,0.1.3-alpha.8,business_licences,18,2,FLS_STR,57392,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.88,7.01
+FastLanes,0.1.3-alpha.8,business_licences,19,170,FLS_STR,91181,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.39,11.13
+FastLanes,0.1.3-alpha.8,business_licences,20,2019-07-21T22:49:12+02:00,FLS_STR,24842,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.03
+FastLanes,0.1.3-alpha.8,checkouts_by_title,0,Physical,FLS_STR,3331,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.41
+FastLanes,0.1.3-alpha.8,checkouts_by_title,1,Horizon,FLS_STR,3382,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.41
+FastLanes,0.1.3-alpha.8,checkouts_by_title,2,BOOK,FLS_STR,28973,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.44,3.54
+FastLanes,0.1.3-alpha.8,checkouts_by_title,3,2006,INT16,729,"{[EXP_CROSS_RLE_I16][0, 1]}",0.01,0.09
+FastLanes,0.1.3-alpha.8,checkouts_by_title,4,6,INT8,783,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.10
+FastLanes,0.1.3-alpha.8,checkouts_by_title,5,1,INT16,43536,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.66,5.31
+FastLanes,0.1.3-alpha.8,checkouts_by_title,6,c2006.,FLS_STR,87000,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.33,10.62
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,0,2355134,INT32,70528,"{[EXP_DELTA_I32][0, 1, 2, 3]}",1.08,8.61
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,1,2014,INT16,0,"{[EXP_CONSTANT_I16][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,2,6,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,3,27,INT8,17,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,4,0,INT8,52,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,5,23,INT8,1123,"{[EXP_CROSS_RLE_I08][0, 1]}",0.02,0.14
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,6,Subscriber,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,7,Male,FLS_STR,8624,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,8,2014-06-30 23:57:00,FLS_STR,154158,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.35,18.82
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,9,2014-07-01 00:07:00,FLS_STR,156689,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.39,19.13
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,10,10.066666666666666,DOUBLE,113606,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.73,13.87
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,11,68.0,DOUBLE,2164,"{[EXP_CROSS_RLE_DBL][0, 1]}",0.03,0.26
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,12,tstorms,FLS_STR,652,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.08
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,13,131,INT16,74650,"{[EXP_DICT_I16_FFOR_U16][0, 1, 2, 3]}",1.14,9.11
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,14,Lincoln Ave & Belmont Ave,FLS_STR,4524,"{[EXP_FSST_DICT_STR_U16][13, 0, 1, 2]}",0.07,0.55
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,15,41.939365,DOUBLE,2402,"{[EXP_DICT_DBL_U16][13, 0]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,16,-87.668385,DOUBLE,2402,"{[EXP_DICT_DBL_U16][13, 0]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,17,15.0,INT8,28512,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.44,3.48
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,18,303,INT16,75110,"{[EXP_DICT_I16_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.15,9.17
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,19,Broadway & Cornelia Ave,FLS_STR,4482,"{[EXP_FSST_DICT_STR_U16][18, 0, 1, 2]}",0.07,0.55
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,20,41.945512,DOUBLE,2402,"{[EXP_DICT_DBL_U16][18, 0]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,21,-87.64598000000001,DOUBLE,2402,"{[EXP_DICT_DBL_U16][18, 0]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,chicagoBicycleData,22,15.0_1,INT8,28511,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.44,3.48
+FastLanes,0.1.3-alpha.8,comments,0,1,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,comments,1,1_1,INT16,8614,"{[EXP_CROSS_RLE_I16][0, 1]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,comments,2,2010-04-01,FLS_STR,69305,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.06,8.46
+FastLanes,0.1.3-alpha.8,comments,3,1_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,covid_19_tw,0,1237777021742338050,INT64,286208,"{[EXP_DELTA_I64][0, 1, 2, 3]}",4.37,34.94
+FastLanes,0.1.3-alpha.8,covid_19_tw,1,2020-03-11 19:26:53,FLS_STR,302984,"{[EXP_RLE_STR_U16][0, 1, 2, 3, 4, 5]}",4.62,36.99
+FastLanes,0.1.3-alpha.8,covid_19_tw,2,50467,INT32,38296,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",0.58,4.67
+FastLanes,0.1.3-alpha.8,covid_19_tw,3,55743,INT32,92646,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.41,11.31
+FastLanes,0.1.3-alpha.8,covid_19_tw,4,0,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,covid_19_tw,5,0_1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,covid_19_tw,6,0_2,INT8,8579,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,covid_19_tw,7,null,FLS_STR,197928,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",3.02,24.16
+FastLanes,0.1.3-alpha.8,covid_19_tw,8,null_1,FLS_STR,10418,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.27
+FastLanes,0.1.3-alpha.8,covid_19_tw,9,World Health Organization (WHO),FLS_STR,654097,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",9.98,79.85
+FastLanes,0.1.3-alpha.8,covid_19_tw,10,14499829,INT64,399272,"{[EXP_DICT_I64_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",6.09,48.74
+FastLanes,0.1.3-alpha.8,covid_19_tw,11,2008-04-23 22:56:27,FLS_STR,529863,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.09,64.68
+FastLanes,0.1.3-alpha.8,covid_19_tw,12,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,covid_19_tw,13,null_3,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,covid_19_tw,14,48639,INT32,159266,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.43,19.44
+FastLanes,0.1.3-alpha.8,covid_19_tw,15,5896245,INT32,137326,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",2.10,16.76
+FastLanes,0.1.3-alpha.8,covid_19_tw,16,1715,INT32,122358,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.87,14.94
+FastLanes,0.1.3-alpha.8,covid_19_tw,17,10510,INT32,155548,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.37,18.99
+FastLanes,0.1.3-alpha.8,econbiz,0,10000168395,INT64,109696,"{[EXP_DELTA_I64][0, 1, 2, 3]}",1.67,13.39
+FastLanes,0.1.3-alpha.8,econbiz,1,6,INT8,33163,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.51,4.05
+FastLanes,0.1.3-alpha.8,eo2,0,000000001,INT32,127872,"{[EXP_DELTA_I32][0, 1, 2, 3]}",1.95,15.61
+FastLanes,0.1.3-alpha.8,eo2,1,null,FLS_STR,499719,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",7.63,61.00
+FastLanes,0.1.3-alpha.8,eo2,2,570 SOUTH FOURTH STREET NO 100,FLS_STR,587526,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.96,71.72
+FastLanes,0.1.3-alpha.8,eo2,3,LOUISVILLE,FLS_STR,153268,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.34,18.71
+FastLanes,0.1.3-alpha.8,eo2,4,KY,FLS_STR,35946,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.55,4.39
+FastLanes,0.1.3-alpha.8,eo2,5,40202-2504,FLS_STR,332665,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.08,40.61
+FastLanes,0.1.3-alpha.8,eo2,6,1736,INT32,88298,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.35,10.78
+FastLanes,0.1.3-alpha.8,eo2,7,03,INT32,33060,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.50,4.04
+FastLanes,0.1.3-alpha.8,eo2,8,9,INT8,12709,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.19,1.55
+FastLanes,0.1.3-alpha.8,eo2,9,7100,INT32,37659,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.57,4.60
+FastLanes,0.1.3-alpha.8,eo2,10,196505,INT32,84866,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.29,10.36
+FastLanes,0.1.3-alpha.8,eo2,11,1,INT8,15090,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.23,1.84
+FastLanes,0.1.3-alpha.8,eo2,12,10,INT32,26908,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.41,3.28
+FastLanes,0.1.3-alpha.8,eo2,13,325902160,INT32,92710,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.41,11.32
+FastLanes,0.1.3-alpha.8,eo2,14,5,INT8,17439,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.27,2.13
+FastLanes,0.1.3-alpha.8,eo2,15,01,INT32,2825,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.04,0.34
+FastLanes,0.1.3-alpha.8,eo2,16,201506,FLS_STR,47880,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.73,5.84
+FastLanes,0.1.3-alpha.8,eo2,17,0,INT8,31922,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.49,3.90
+FastLanes,0.1.3-alpha.8,eo2,18,0_1,INT8,29660,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.45,3.62
+FastLanes,0.1.3-alpha.8,eo2,19,01_1,INT32,18493,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.28,2.26
+FastLanes,0.1.3-alpha.8,eo2,20,0_2,INT8,8901,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.14,1.09
+FastLanes,0.1.3-alpha.8,eo2,21,06,INT32,31722,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.48,3.87
+FastLanes,0.1.3-alpha.8,eo2,22,0_3,FLS_STR,149890,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.29,18.30
+FastLanes,0.1.3-alpha.8,eo2,23,0_4,FLS_STR,148362,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.26,18.11
+FastLanes,0.1.3-alpha.8,eo2,24,0_5,FLS_STR,128261,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.96,15.66
+FastLanes,0.1.3-alpha.8,eo2,25,null_1,FLS_STR,88376,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.35,10.79
+FastLanes,0.1.3-alpha.8,eo2,26,VOAKY HOPEFUL ROAD INC,FLS_STR,220092,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.36,26.87
+FastLanes,0.1.3-alpha.8,eo3,0,000260049,INT32,121344,"{[EXP_DELTA_I32][0, 1, 2, 3]}",1.85,14.81
+FastLanes,0.1.3-alpha.8,eo3,1,null,FLS_STR,528479,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",8.06,64.51
+FastLanes,0.1.3-alpha.8,eo3,2,PO BOX 92,FLS_STR,603255,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",9.20,73.64
+FastLanes,0.1.3-alpha.8,eo3,3,HOSFORD,FLS_STR,150896,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.30,18.42
+FastLanes,0.1.3-alpha.8,eo3,4,FL,FLS_STR,41533,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,eo3,5,32334-0092,FLS_STR,342280,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.22,41.78
+FastLanes,0.1.3-alpha.8,eo3,6,2024,INT32,86470,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.32,10.56
+FastLanes,0.1.3-alpha.8,eo3,7,03,INT32,33604,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",0.51,4.10
+FastLanes,0.1.3-alpha.8,eo3,8,9,INT8,10462,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.16,1.28
+FastLanes,0.1.3-alpha.8,eo3,9,7200,INT32,38222,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.58,4.67
+FastLanes,0.1.3-alpha.8,eo3,10,196908,INT32,82966,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.27,10.13
+FastLanes,0.1.3-alpha.8,eo3,11,1,INT8,13140,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.20,1.60
+FastLanes,0.1.3-alpha.8,eo3,12,10,INT32,27113,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.41,3.31
+FastLanes,0.1.3-alpha.8,eo3,13,059029000,INT32,74306,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.13,9.07
+FastLanes,0.1.3-alpha.8,eo3,14,5,INT8,16374,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.25,2.00
+FastLanes,0.1.3-alpha.8,eo3,15,01,INT32,1965,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.03,0.24
+FastLanes,0.1.3-alpha.8,eo3,16,null_1,FLS_STR,47444,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.72,5.79
+FastLanes,0.1.3-alpha.8,eo3,17,0,INT8,30182,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.46,3.68
+FastLanes,0.1.3-alpha.8,eo3,18,0_1,INT8,28094,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.43,3.43
+FastLanes,0.1.3-alpha.8,eo3,19,06,INT32,24993,"{[EXP_DICT_I32_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,eo3,20,0_2,INT8,8765,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.13,1.07
+FastLanes,0.1.3-alpha.8,eo3,21,12,INT32,33205,"{[EXP_DICT_I32_FFOR_U08][0, 1, 2, 3]}",0.51,4.05
+FastLanes,0.1.3-alpha.8,eo3,22,null_2,FLS_STR,138621,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.12,16.92
+FastLanes,0.1.3-alpha.8,eo3,23,null_3,FLS_STR,138075,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.11,16.85
+FastLanes,0.1.3-alpha.8,eo3,24,null_4,FLS_STR,121607,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.86,14.84
+FastLanes,0.1.3-alpha.8,eo3,25,null_5,FLS_STR,93904,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.43,11.46
+FastLanes,0.1.3-alpha.8,eo3,26,null_6,FLS_STR,209002,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.19,25.51
+FastLanes,0.1.3-alpha.8,examiner_date_text,0,20100101,INT32,218,"{[EXP_CROSS_RLE_I32][0, 1]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,examiner_date_tokens,0,20100101,INT32,218,"{[EXP_CROSS_RLE_I32][0, 1]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,0,B00001,FLS_STR,6057,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.09,0.74
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,1,2019-01-01 00:30:00,FLS_STR,159301,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.43,19.45
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,2,2019-01-01 02:51:55,FLS_STR,178189,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.72,21.75
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,3,null,FLS_STR,65269,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.00,7.97
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,4,null_1,FLS_STR,65658,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.00,8.01
+FastLanes,0.1.3-alpha.8,fhv_tripdata_2019_01,5,null_2,FLS_STR,20546,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.31,2.51
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,0,0,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,1,null,FLS_STR,44291,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.68,5.41
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,2,null_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,3,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,4,Charles Watson,FLS_STR,93521,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.43,11.42
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,5,3.0,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,6,546fd99cdb8155e6700d6ec8,FLS_STR,96597,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.47,11.79
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,7,null_3,FLS_STR,27,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,8,null_4,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,9,/sircharleswatson,FLS_STR,13202,"{[EXP_FSST_DICT_STR_U16][6, 0, 1, 2]}",0.20,1.61
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,10,sircharleswatson,FLS_STR,12559,"{[EXP_FSST_DICT_STR_U16][6, 0, 1, 2]}",0.19,1.53
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,11,1.0,FLS_STR,26078,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.40,3.18
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,12,54a4804fb2b2de4b786502bf,FLS_STR,801907,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",12.24,97.89
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,13,[],FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,14,22,INT8,40997,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.63,5.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,15,2014-12-31T23:01:35.647Z,FLS_STR,590647,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",9.01,72.10
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,16,null_5,FLS_STR,2618,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.32
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,17,False,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom,18,1,INT8,4896,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.07,0.60
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,0,0,INT32,17152,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,1,0_1,INT32,0,"{[EXP_EQUAL][0]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,2,null,FLS_STR,44291,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.68,5.41
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,3,3.0,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,4,546fd99cdb8155e6700d6ec8,FLS_STR,96597,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.47,11.79
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,5,null_1,FLS_STR,27,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,6,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,7,1.0,FLS_STR,26078,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.40,3.18
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,8,54a4804fb2b2de4b786502bf,FLS_STR,801907,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",12.24,97.89
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,9,[],FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,10,22,INT8,40997,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.63,5.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,11,2014-12-31T23:01:35.647Z,FLS_STR,590647,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",9.01,72.10
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,12,null_3,FLS_STR,2618,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.04,0.32
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,13,False,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,freecodecamp_casual_chatroom_anon,14,1,INT8,4896,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.07,0.60
+FastLanes,0.1.3-alpha.8,glassdoor_photos,0,26411,INT32,59060,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",0.90,7.21
+FastLanes,0.1.3-alpha.8,glassdoor_photos,1,0,INT8,24968,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,glassdoor_photos,2,10772510,INT32,202736,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",3.09,24.75
+FastLanes,0.1.3-alpha.8,glassdoor_photos,3,10772511,INT32,202736,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",3.09,24.75
+FastLanes,0.1.3-alpha.8,hail_2015,0,20150101050706,INT64,135296,"{[EXP_DELTA_I64][0, 1, 2, 3]}",2.06,16.52
+FastLanes,0.1.3-alpha.8,hail_2015,1,-97.16003,DOUBLE,190334,"{[EXP_ALP_DBL][]}",2.90,23.23
+FastLanes,0.1.3-alpha.8,hail_2015,2,32.66308,DOUBLE,182456,"{[EXP_ALP_DBL][]}",2.78,22.27
+FastLanes,0.1.3-alpha.8,hail_2015,3,KDFW,FLS_STR,88503,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.35,10.80
+FastLanes,0.1.3-alpha.8,hail_2015,4,C0,FLS_STR,70487,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.08,8.60
+FastLanes,0.1.3-alpha.8,hail_2015,5,27,INT16,66112,"{[EXP_FFOR_I16][0, 1, 2]}",1.01,8.07
+FastLanes,0.1.3-alpha.8,hail_2015,6,207,INT16,73912,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.13,9.02
+FastLanes,0.1.3-alpha.8,hail_2015,7,0,INT16,22548,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.34,2.75
+FastLanes,0.1.3-alpha.8,hail_2015,8,10,INT16,33175,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.51,4.05
+FastLanes,0.1.3-alpha.8,hail_2015,9,0.5,DOUBLE,14073,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.21,1.72
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,0,2019-04-11 21:49:46,FLS_STR,72555,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",1.11,8.86
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,1,MADRID,FLS_STR,452,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.06
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,2,BARCELONA,FLS_STR,6940,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.11,0.85
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,3,2019-04-18 05:50:00,FLS_STR,134444,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.05,16.41
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,4,2019-04-18 08:55:00,FLS_STR,141382,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.16,17.26
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,5,AVE,FLS_STR,30660,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.47,3.74
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,6,68.95,FLS_STR,50640,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.77,6.18
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,7,Preferente,FLS_STR,16871,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,8,Promo,FLS_STR,16857,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,9,null,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,10,null_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,high_speed_spanish_trains,11,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,0,59848,INT32,39936,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.61,4.88
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,1,0.0,DOUBLE,78738,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.20,9.61
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,2,0.0_1,DOUBLE,33407,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.51,4.08
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,3,0.0_2,DOUBLE,49917,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.76,6.09
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,4,0.0_3,DOUBLE,54194,"{[EXP_ALP_DBL][]}",0.83,6.62
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,5,0.0_4,DOUBLE,80414,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.23,9.82
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,6,0.0_5,DOUBLE,37397,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.57,4.57
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,7,null,FLS_STR,4190,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.06,0.51
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,8,null_1,FLS_STR,2130,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.26
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,9,null_2,FLS_STR,6244,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.10,0.76
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,10,null_3,FLS_STR,12833,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.20,1.57
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,11,null_4,FLS_STR,1140,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.14
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,12,null_5,FLS_STR,21819,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.33,2.66
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,13,null_6,FLS_STR,36915,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.56,4.51
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,14,null_7,FLS_STR,5704,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.09,0.70
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,15,null_8,FLS_STR,1299,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.02,0.16
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,16,null_9,FLS_STR,14184,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.22,1.73
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,17,null_10,FLS_STR,2192,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.27
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,18,null_11,FLS_STR,4327,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.07,0.53
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,19,null_12,FLS_STR,4111,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.06,0.50
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,20,null_13,FLS_STR,34011,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.15
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,21,null_14,FLS_STR,10542,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.16,1.29
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,22,null_15,FLS_STR,3722,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.06,0.45
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,23,null_16,FLS_STR,2226,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.03,0.27
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,24,null_17,FLS_STR,10941,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.17,1.34
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,25,null_18,FLS_STR,7106,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.11,0.87
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,26,null_19,FLS_STR,4343,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.07,0.53
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,27,null_20,FLS_STR,2364,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.04,0.29
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,28,null_21,FLS_STR,10487,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.16,1.28
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,29,null_22,FLS_STR,7212,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.11,0.88
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,30,null_23,FLS_STR,17337,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.26,2.12
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,31,2015-09-29 10:50:41.987077+00,FLS_STR,766325,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",11.69,93.55
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,32,2,INT8,17569,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.27,2.14
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,33,null_24,FLS_STR,134007,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",2.04,16.36
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,34,2006,INT32,92450,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.41,11.29
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,35,rejected,FLS_STR,8634,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,36,0,INT8,368,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.04
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,37,0_1,INT8,137,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.02
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,38,0_2,INT8,37,"{[EXP_CROSS_RLE_I08][0, 1]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,39,0_3,INT8,36945,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.56,4.51
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,40,0_4,INT8,408,"{[EXP_CROSS_RLE_I08][0, 1]}",0.01,0.05
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,41,0.0_6,DOUBLE,24007,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.37,2.93
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,42,0_5,INT16,19014,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.29,2.32
+FastLanes,0.1.3-alpha.8,jigsaw_unintended_bias_train_it_clean,43,4,INT16,43673,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.67,5.33
+FastLanes,0.1.3-alpha.8,library_collection_inventory,0,3011076,INT32,180992,"{[EXP_FFOR_I32][0, 1, 2]}",2.76,22.09
+FastLanes,0.1.3-alpha.8,library_collection_inventory,1,jcbk,FLS_STR,28408,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.43,3.47
+FastLanes,0.1.3-alpha.8,library_collection_inventory,2,ncrdr,FLS_STR,59881,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.91,7.31
+FastLanes,0.1.3-alpha.8,library_collection_inventory,3,Floating,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,library_collection_inventory,4,qna,FLS_STR,41604,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.08
+FastLanes,0.1.3-alpha.8,library_collection_inventory,5,2017-09-01T00:00:00.000,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,library_collection_inventory,6,1,INT16,17223,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.26,2.10
+FastLanes,0.1.3-alpha.8,loan,0,null,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,1,null_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,2,2500,INT32,89702,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.37,10.95
+FastLanes,0.1.3-alpha.8,loan,3,2500_1,INT32,0,"{[EXP_EQUAL][2]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,4,2500_2,INT32,90954,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.39,11.10
+FastLanes,0.1.3-alpha.8,loan,5,36 months,FLS_STR,8639,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,loan,6,13.56,DOUBLE,45114,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.69,5.51
+FastLanes,0.1.3-alpha.8,loan,7,84.92,DOUBLE,148416,"{[EXP_ALP_DBL][]}",2.26,18.12
+FastLanes,0.1.3-alpha.8,loan,8,C,FLS_STR,25023,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,loan,9,C1,FLS_STR,41580,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.08
+FastLanes,0.1.3-alpha.8,loan,10,Chef,FLS_STR,422764,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.45,51.61
+FastLanes,0.1.3-alpha.8,loan,11,10+ years,FLS_STR,33283,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.51,4.06
+FastLanes,0.1.3-alpha.8,loan,12,RENT,FLS_STR,16836,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,loan,13,55000,DOUBLE,143346,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",2.19,17.50
+FastLanes,0.1.3-alpha.8,loan,14,Not Verified,FLS_STR,16850,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,loan,15,Dec-2018,FLS_STR,3132,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.05,0.38
+FastLanes,0.1.3-alpha.8,loan,16,Current,FLS_STR,10248,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.16,1.25
+FastLanes,0.1.3-alpha.8,loan,17,n,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,18,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,19,null_3,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,20,debt_consolidation,FLS_STR,33375,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.51,4.07
+FastLanes,0.1.3-alpha.8,loan,21,Debt consolidation,FLS_STR,276,"{[EXP_FSST_DICT_STR_U08][20, 0, 1, 2]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,loan,22,109xx,FLS_STR,87847,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.34,10.72
+FastLanes,0.1.3-alpha.8,loan,23,NY,FLS_STR,49892,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.76,6.09
+FastLanes,0.1.3-alpha.8,loan,24,18.24,FLS_STR,138725,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.12,16.93
+FastLanes,0.1.3-alpha.8,loan,25,0,INT8,19013,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.29,2.32
+FastLanes,0.1.3-alpha.8,loan,26,Apr-2001,FLS_STR,80612,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.23,9.84
+FastLanes,0.1.3-alpha.8,loan,27,1,INT8,18000,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.27,2.20
+FastLanes,0.1.3-alpha.8,loan,28,null_4,FLS_STR,47615,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.73,5.81
+FastLanes,0.1.3-alpha.8,loan,29,45,FLS_STR,25969,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.40,3.17
+FastLanes,0.1.3-alpha.8,loan,30,9,INT8,43166,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.66,5.27
+FastLanes,0.1.3-alpha.8,loan,31,1_1,INT8,9159,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.14,1.12
+FastLanes,0.1.3-alpha.8,loan,32,4341,INT32,142150,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.17,17.35
+FastLanes,0.1.3-alpha.8,loan,33,10.3,FLS_STR,89816,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.37,10.96
+FastLanes,0.1.3-alpha.8,loan,34,34,INT16,51532,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.79,6.29
+FastLanes,0.1.3-alpha.8,loan,35,w,FLS_STR,8609,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,loan,36,2386.02,DOUBLE,181824,"{[EXP_ALP_DBL][]}",2.77,22.20
+FastLanes,0.1.3-alpha.8,loan,37,2386.02_1,DOUBLE,181824,"{[EXP_ALP_DBL][]}",2.77,22.20
+FastLanes,0.1.3-alpha.8,loan,38,167.02,DOUBLE,191192,"{[EXP_ALP_DBL][]}",2.92,23.34
+FastLanes,0.1.3-alpha.8,loan,39,167.02_1,DOUBLE,181824,"{[EXP_ALP_DBL][]}",2.77,22.20
+FastLanes,0.1.3-alpha.8,loan,40,113.98,DOUBLE,181824,"{[EXP_ALP_DBL][]}",2.77,22.20
+FastLanes,0.1.3-alpha.8,loan,41,53.04,DOUBLE,148288,"{[EXP_ALP_DBL][]}",2.26,18.10
+FastLanes,0.1.3-alpha.8,loan,42,0.0,DOUBLE,1927,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.03,0.24
+FastLanes,0.1.3-alpha.8,loan,43,0.0_1,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,44,0.0_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,45,Feb-2019,FLS_STR,9893,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.15,1.21
+FastLanes,0.1.3-alpha.8,loan,46,84.92_1,DOUBLE,181834,"{[EXP_ALP_DBL][]}",2.77,22.20
+FastLanes,0.1.3-alpha.8,loan,47,Mar-2019,FLS_STR,692,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.08
+FastLanes,0.1.3-alpha.8,loan,48,Feb-2019_1,FLS_STR,10503,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.16,1.28
+FastLanes,0.1.3-alpha.8,loan,49,0_1,INT8,3831,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.06,0.47
+FastLanes,0.1.3-alpha.8,loan,50,null_5,FLS_STR,34179,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.17
+FastLanes,0.1.3-alpha.8,loan,51,1_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,52,Individual,FLS_STR,8639,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,loan,53,null_6,FLS_STR,44127,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.67,5.39
+FastLanes,0.1.3-alpha.8,loan,54,null_7,FLS_STR,42673,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.65,5.21
+FastLanes,0.1.3-alpha.8,loan,55,null_8,FLS_STR,16868,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,loan,56,0_2,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,57,0_3,INT32,55839,"{[EXP_FREQUENCY_I32][0, 1, 2, 3]}",0.85,6.82
+FastLanes,0.1.3-alpha.8,loan,58,16901,INT32,165950,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.53,20.26
+FastLanes,0.1.3-alpha.8,loan,59,2,INT8,25435,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.39,3.10
+FastLanes,0.1.3-alpha.8,loan,60,2_1,INT8,35406,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.54,4.32
+FastLanes,0.1.3-alpha.8,loan,61,1_3,INT8,21379,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.33,2.61
+FastLanes,0.1.3-alpha.8,loan,62,2_2,INT8,26734,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.41,3.26
+FastLanes,0.1.3-alpha.8,loan,63,2_3,FLS_STR,67238,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.03,8.21
+FastLanes,0.1.3-alpha.8,loan,64,12560,INT32,151030,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.30,18.44
+FastLanes,0.1.3-alpha.8,loan,65,69,FLS_STR,80329,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.23,9.81
+FastLanes,0.1.3-alpha.8,loan,66,2_4,INT8,26302,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.40,3.21
+FastLanes,0.1.3-alpha.8,loan,67,7,INT8,34067,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.52,4.16
+FastLanes,0.1.3-alpha.8,loan,68,2137,INT32,125506,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",1.92,15.32
+FastLanes,0.1.3-alpha.8,loan,69,28,FLS_STR,59154,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.90,7.22
+FastLanes,0.1.3-alpha.8,loan,70,42000,INT32,107650,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.64,13.14
+FastLanes,0.1.3-alpha.8,loan,71,1_4,INT8,26729,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.41,3.26
+FastLanes,0.1.3-alpha.8,loan,72,11,INT8,34536,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.53,4.22
+FastLanes,0.1.3-alpha.8,loan,73,2_5,INT8,33792,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.52,4.12
+FastLanes,0.1.3-alpha.8,loan,74,9_1,INT8,35191,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.54,4.30
+FastLanes,0.1.3-alpha.8,loan,75,1878,FLS_STR,169517,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.59,20.69
+FastLanes,0.1.3-alpha.8,loan,76,34360,FLS_STR,166196,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.54,20.29
+FastLanes,0.1.3-alpha.8,loan,77,5.9,FLS_STR,91672,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.40,11.19
+FastLanes,0.1.3-alpha.8,loan,78,0_4,INT8,1716,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.03,0.21
+FastLanes,0.1.3-alpha.8,loan,79,0_5,INT16,248,"{[EXP_CROSS_RLE_I16][0, 1]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,loan,80,140,FLS_STR,76723,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.17,9.37
+FastLanes,0.1.3-alpha.8,loan,81,212,INT16,76136,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",1.16,9.29
+FastLanes,0.1.3-alpha.8,loan,82,1_5,INT16,58776,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.90,7.17
+FastLanes,0.1.3-alpha.8,loan,83,1_6,INT16,50360,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.77,6.15
+FastLanes,0.1.3-alpha.8,loan,84,0_6,INT8,26611,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.41,3.25
+FastLanes,0.1.3-alpha.8,loan,85,1_7,FLS_STR,69119,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.05,8.44
+FastLanes,0.1.3-alpha.8,loan,86,null_9,FLS_STR,32172,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.49,3.93
+FastLanes,0.1.3-alpha.8,loan,87,2_6,FLS_STR,41519,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.63,5.07
+FastLanes,0.1.3-alpha.8,loan,88,null_10,FLS_STR,38300,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.58,4.68
+FastLanes,0.1.3-alpha.8,loan,89,0_7,INT8,26907,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.41,3.28
+FastLanes,0.1.3-alpha.8,loan,90,2_7,INT8,33974,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.52,4.15
+FastLanes,0.1.3-alpha.8,loan,91,5,INT8,37662,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.57,4.60
+FastLanes,0.1.3-alpha.8,loan,92,3,INT8,35718,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.55,4.36
+FastLanes,0.1.3-alpha.8,loan,93,3_1,INT8,41928,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.64,5.12
+FastLanes,0.1.3-alpha.8,loan,94,16,INT8,45573,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.70,5.56
+FastLanes,0.1.3-alpha.8,loan,95,7_1,INT8,42202,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.64,5.15
+FastLanes,0.1.3-alpha.8,loan,96,18,INT8,48527,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.74,5.92
+FastLanes,0.1.3-alpha.8,loan,97,5_1,INT8,37094,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.57,4.53
+FastLanes,0.1.3-alpha.8,loan,98,9_2,INT8,43160,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.66,5.27
+FastLanes,0.1.3-alpha.8,loan,99,0_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,100,0_9,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,101,0_10,INT8,8775,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.13,1.07
+FastLanes,0.1.3-alpha.8,loan,102,3_2,INT8,28787,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.44,3.51
+FastLanes,0.1.3-alpha.8,loan,103,100,DOUBLE,72498,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.11,8.85
+FastLanes,0.1.3-alpha.8,loan,104,0_11,FLS_STR,52418,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.80,6.40
+FastLanes,0.1.3-alpha.8,loan,105,1_8,INT8,9153,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.14,1.12
+FastLanes,0.1.3-alpha.8,loan,106,0_12,INT8,0,"{[EXP_CONSTANT_I08][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,107,60124,INT32,166532,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.54,20.33
+FastLanes,0.1.3-alpha.8,loan,108,16901_1,INT32,152764,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.33,18.65
+FastLanes,0.1.3-alpha.8,loan,109,36500,INT32,99726,"{[EXP_DICT_I32_FFOR_U16][0, 1, 2, 3]}",1.52,12.17
+FastLanes,0.1.3-alpha.8,loan,110,18124,INT32,151054,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",2.30,18.44
+FastLanes,0.1.3-alpha.8,loan,111,null_11,FLS_STR,47363,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.72,5.78
+FastLanes,0.1.3-alpha.8,loan,112,null_12,FLS_STR,58639,"{[EXP_FSST12_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.89,7.16
+FastLanes,0.1.3-alpha.8,loan,113,null_13,FLS_STR,23658,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.36,2.89
+FastLanes,0.1.3-alpha.8,loan,114,null_14,FLS_STR,26583,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.41,3.24
+FastLanes,0.1.3-alpha.8,loan,115,null_15,FLS_STR,27288,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.42,3.33
+FastLanes,0.1.3-alpha.8,loan,116,null_16,FLS_STR,41836,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.64,5.11
+FastLanes,0.1.3-alpha.8,loan,117,null_17,FLS_STR,26112,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.40,3.19
+FastLanes,0.1.3-alpha.8,loan,118,null_18,FLS_STR,26282,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.40,3.21
+FastLanes,0.1.3-alpha.8,loan,119,null_19,FLS_STR,3178,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.05,0.39
+FastLanes,0.1.3-alpha.8,loan,120,null_20,FLS_STR,6508,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.10,0.79
+FastLanes,0.1.3-alpha.8,loan,121,null_21,FLS_STR,20504,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.31,2.50
+FastLanes,0.1.3-alpha.8,loan,122,N_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,123,null_22,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,124,null_23,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,125,null_24,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,126,null_25,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,127,null_26,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,128,null_27,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,129,null_28,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,130,null_29,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,131,null_30,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,132,null_31,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,133,null_32,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,134,null_33,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,135,null_34,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,136,null_35,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,137,Cash,FLS_STR,8631,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,loan,138,N_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,139,null_36,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,140,null_37,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,141,null_38,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,142,null_39,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,143,null_40,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,loan,144,null_41,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,news_week_17aug24,0,201708240000,INT64,6196,"{[EXP_CROSS_RLE_I64][0, 1]}",0.09,0.76
+FastLanes,0.1.3-alpha.8,news_week_18aug24,0,201808240000,INT64,6112,"{[EXP_CROSS_RLE_I64][0, 1]}",0.09,0.75
+FastLanes,0.1.3-alpha.8,news_week_18aug24,1,w3-24h-vn,FLS_STR,176214,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.69,21.51
+FastLanes,0.1.3-alpha.8,otp,0,778,FLS_STR,72003,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.10,8.79
+FastLanes,0.1.3-alpha.8,otp,1,N,FLS_STR,8609,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,otp,2,Trenton,FLS_STR,50167,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.77,6.12
+FastLanes,0.1.3-alpha.8,otp,3,Stenton,FLS_STR,67971,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.04,8.30
+FastLanes,0.1.3-alpha.8,otp,4,2016-03-23,FLS_STR,147,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.02
+FastLanes,0.1.3-alpha.8,otp,5,1 min,FLS_STR,39144,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.60,4.78
+FastLanes,0.1.3-alpha.8,otp,6,2016-03-23 00:01:47,FLS_STR,372095,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",5.68,45.42
+FastLanes,0.1.3-alpha.8,plays,0,2018-02-23 15:22:44.015,FLS_STR,137409,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.10,16.77
+FastLanes,0.1.3-alpha.8,plays,1,0000-0000-0353-3D35,FLS_STR,57192,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.87,6.98
+FastLanes,0.1.3-alpha.8,plays,2,darter60k,FLS_STR,488528,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",7.45,59.63
+FastLanes,0.1.3-alpha.8,previous_application,0,2030495,INT32,172800,"{[EXP_FFOR_I32][0, 1, 2]}",2.64,21.09
+FastLanes,0.1.3-alpha.8,previous_application,1,271877,INT32,156416,"{[EXP_FFOR_I32][0, 1, 2]}",2.39,19.09
+FastLanes,0.1.3-alpha.8,previous_application,2,Consumer loans,FLS_STR,16873,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,previous_application,3,1730.43,FLS_STR,223849,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.42,27.33
+FastLanes,0.1.3-alpha.8,previous_application,4,17145.0,DOUBLE,222350,"{[EXP_ALP_DBL][]}",3.39,27.14
+FastLanes,0.1.3-alpha.8,previous_application,5,17145.0_1,DOUBLE,211082,"{[EXP_ALP_DBL][]}",3.22,25.77
+FastLanes,0.1.3-alpha.8,previous_application,6,0.0,FLS_STR,92681,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.41,11.31
+FastLanes,0.1.3-alpha.8,previous_application,7,17145.0_2,FLS_STR,168223,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",2.57,20.54
+FastLanes,0.1.3-alpha.8,previous_application,8,SATURDAY,FLS_STR,25080,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.06
+FastLanes,0.1.3-alpha.8,previous_application,9,15,INT8,35628,"{[EXP_FFOR_SLPATCH_I08][0, 1, 2, 3, 4, 5]}",0.54,4.35
+FastLanes,0.1.3-alpha.8,previous_application,10,Y,FLS_STR,1830,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.03,0.22
+FastLanes,0.1.3-alpha.8,previous_application,11,1,INT8,1082,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.02,0.13
+FastLanes,0.1.3-alpha.8,previous_application,12,0.0_1,FLS_STR,198949,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.04,24.29
+FastLanes,0.1.3-alpha.8,previous_application,13,0.18283180324152784,FLS_STR,4967,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.08,0.61
+FastLanes,0.1.3-alpha.8,previous_application,14,0.8673361522198731,FLS_STR,4366,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.07,0.53
+FastLanes,0.1.3-alpha.8,previous_application,15,XAP,FLS_STR,28182,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.43,3.44
+FastLanes,0.1.3-alpha.8,previous_application,16,Approved,FLS_STR,16861,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,previous_application,17,-73,INT16,98880,"{[EXP_FFOR_I16][0, 1, 2]}",1.51,12.07
+FastLanes,0.1.3-alpha.8,previous_application,18,Cash through the bank,FLS_STR,10477,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.16,1.28
+FastLanes,0.1.3-alpha.8,previous_application,19,XAP_1,FLS_STR,25476,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.39,3.11
+FastLanes,0.1.3-alpha.8,previous_application,20,null,FLS_STR,25134,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.07
+FastLanes,0.1.3-alpha.8,previous_application,21,Repeater,FLS_STR,16844,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,previous_application,22,Mobile,FLS_STR,35579,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.54,4.34
+FastLanes,0.1.3-alpha.8,previous_application,23,POS,FLS_STR,17215,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.10
+FastLanes,0.1.3-alpha.8,previous_application,24,XNA,FLS_STR,16831,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.05
+FastLanes,0.1.3-alpha.8,previous_application,25,Country-wide,FLS_STR,25172,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.07
+FastLanes,0.1.3-alpha.8,previous_application,26,35,INT32,88938,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.36,10.86
+FastLanes,0.1.3-alpha.8,previous_application,27,Connectivity,FLS_STR,26462,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.40,3.23
+FastLanes,0.1.3-alpha.8,previous_application,28,12.0,FLS_STR,37284,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.57,4.55
+FastLanes,0.1.3-alpha.8,previous_application,29,middle,FLS_STR,25057,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.38,3.06
+FastLanes,0.1.3-alpha.8,previous_application,30,POS mobile with interest,FLS_STR,34209,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.18
+FastLanes,0.1.3-alpha.8,previous_application,31,365243.0,FLS_STR,56199,"{[EXP_FREQUENCY_STR][0, 1, 2, 3, 4, 5]}",0.86,6.86
+FastLanes,0.1.3-alpha.8,previous_application,32,-42.0,FLS_STR,108691,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.66,13.27
+FastLanes,0.1.3-alpha.8,previous_application,33,300.0,FLS_STR,105301,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.61,12.85
+FastLanes,0.1.3-alpha.8,previous_application,34,-42.0_1,FLS_STR,103567,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.58,12.64
+FastLanes,0.1.3-alpha.8,previous_application,35,-37.0,FLS_STR,102753,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.57,12.54
+FastLanes,0.1.3-alpha.8,previous_application,36,0.0_2,FLS_STR,8615,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,property_tax_report,0,018-502-725,FLS_STR,305279,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",4.66,37.27
+FastLanes,0.1.3-alpha.8,property_tax_report,1,STRATA,FLS_STR,9271,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.14,1.13
+FastLanes,0.1.3-alpha.8,property_tax_report,2,210706830012,INT32,262400,"{[EXP_UNCOMPRESSED_I32][0]}",4.00,32.03
+FastLanes,0.1.3-alpha.8,property_tax_report,3,21070683,INT32,221952,"{[EXP_FFOR_I32][0, 1, 2]}",3.39,27.09
+FastLanes,0.1.3-alpha.8,property_tax_report,4,C-2,FLS_STR,76373,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.17,9.32
+FastLanes,0.1.3-alpha.8,property_tax_report,5,Commercial,FLS_STR,25709,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.39,3.14
+FastLanes,0.1.3-alpha.8,property_tax_report,6,null,FLS_STR,58084,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.89,7.09
+FastLanes,0.1.3-alpha.8,property_tax_report,7,LMS1111,FLS_STR,174517,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.66,21.30
+FastLanes,0.1.3-alpha.8,property_tax_report,8,301,FLS_STR,67492,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",1.03,8.24
+FastLanes,0.1.3-alpha.8,property_tax_report,9,12,FLS_STR,81783,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.25,9.98
+FastLanes,0.1.3-alpha.8,property_tax_report,10,302,FLS_STR,71542,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.09,8.73
+FastLanes,0.1.3-alpha.8,property_tax_report,11,3981,FLS_STR,150228,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.29,18.34
+FastLanes,0.1.3-alpha.8,property_tax_report,12,FRASER ST,FLS_STR,90845,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.39,11.09
+FastLanes,0.1.3-alpha.8,property_tax_report,13,V5V 4E5,FLS_STR,194310,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.96,23.72
+FastLanes,0.1.3-alpha.8,property_tax_report,14,0 SHARE IN COM PROP THEREIN.,FLS_STR,206018,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",3.14,25.15
+FastLanes,0.1.3-alpha.8,property_tax_report,15,301  NEW WESTMINSTER UNDIV 833/1000,FLS_STR,457972,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",6.99,55.90
+FastLanes,0.1.3-alpha.8,property_tax_report,16,LOT 12  PLAN LMS1111  DISTRICT LOT,FLS_STR,737054,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",11.25,89.97
+FastLanes,0.1.3-alpha.8,property_tax_report,17,null_1,FLS_STR,98834,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.51,12.06
+FastLanes,0.1.3-alpha.8,property_tax_report,18,null_2,FLS_STR,85707,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",1.31,10.46
+FastLanes,0.1.3-alpha.8,property_tax_report,19,269000,FLS_STR,148347,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.26,18.11
+FastLanes,0.1.3-alpha.8,property_tax_report,20,155000,FLS_STR,122853,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.87,15.00
+FastLanes,0.1.3-alpha.8,property_tax_report,21,2018,FLS_STR,99,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,property_tax_report,22,157000,FLS_STR,121338,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.85,14.81
+FastLanes,0.1.3-alpha.8,property_tax_report,23,201000,FLS_STR,146506,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.24,17.88
+FastLanes,0.1.3-alpha.8,property_tax_report,24,1994,FLS_STR,58542,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.15
+FastLanes,0.1.3-alpha.8,property_tax_report,25,1994_1,FLS_STR,58506,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.89,7.14
+FastLanes,0.1.3-alpha.8,property_tax_report,26,1046.55,FLS_STR,237231,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",3.62,28.96
+FastLanes,0.1.3-alpha.8,property_tax_report,27,015,INT32,41465,"{[EXP_DICT_I32_FFOR_U08][0, 1, 2, 3]}",0.63,5.06
+FastLanes,0.1.3-alpha.8,property_tax_report,28,2018_1,INT16,50,"{[EXP_CROSS_RLE_I16][0, 1]}",0.00,0.01
+FastLanes,0.1.3-alpha.8,question_tags,0,1,INT32,56704,"{[EXP_DELTA_I32][0, 1, 2, 3]}",0.87,6.92
+FastLanes,0.1.3-alpha.8,question_tags,1,data,FLS_STR,164691,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.51,20.10
+FastLanes,0.1.3-alpha.8,reviews_detailed,0,6369,INT32,5028,"{[EXP_CROSS_RLE_I32][0, 1]}",0.08,0.61
+FastLanes,0.1.3-alpha.8,reviews_detailed,1,29428,INT32,238336,"{[EXP_FFOR_I32][0, 1, 2]}",3.64,29.09
+FastLanes,0.1.3-alpha.8,reviews_detailed,2,2010-03-14,FLS_STR,122717,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.87,14.98
+FastLanes,0.1.3-alpha.8,reviews_detailed,3,84790,INT32,231176,"{[EXP_FFOR_SLPATCH_I32][0, 1, 2, 3, 4, 5]}",3.53,28.22
+FastLanes,0.1.3-alpha.8,reviews_detailed,4,Nancy,FLS_STR,254762,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",3.89,31.10
+FastLanes,0.1.3-alpha.8,reviews_summary,0,2015,INT32,8060,"{[EXP_CROSS_RLE_I32][0, 1]}",0.12,0.98
+FastLanes,0.1.3-alpha.8,reviews_summary,1,69544350,INT32,238336,"{[EXP_FFOR_I32][0, 1, 2]}",3.64,29.09
+FastLanes,0.1.3-alpha.8,reviews_summary,2,2016-04-11,FLS_STR,121158,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.85,14.79
+FastLanes,0.1.3-alpha.8,reviews_summary,3,7178145,INT32,230144,"{[EXP_FFOR_I32][0, 1, 2]}",3.51,28.09
+FastLanes,0.1.3-alpha.8,reviews_summary,4,Rahel,FLS_STR,239987,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",3.66,29.30
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,0,41140099999,INT64,41738,"{[EXP_DICT_I64_FFOR_U08][0, 1, 2, 3]}",0.64,5.09
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,1,KING ABDULLAH BIN ABDULAZIZ,FLS_STR,486,"{[EXP_FSST_DICT_STR_U08][0, 0, 1, 2]}",0.01,0.06
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,2,SA,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,3,2019,INT16,0,"{[EXP_CONSTANT_I16][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,4,2019-09-08T23:00:00+02:00,FLS_STR,58416,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.89,7.13
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,5,16.901111,DOUBLE,266,"{[EXP_DICT_DBL_U08][0, 0]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,6,42.585833,DOUBLE,266,"{[EXP_DICT_DBL_U08][0, 0]}",0.00,0.03
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,7,6.09,DOUBLE,41602,"{[EXP_DICT_DBL_FFOR_U08][0, 1, 2, 3]}",0.63,5.08
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,8,60,INT16,49611,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.76,6.06
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,9,ANGULAR DEGREES,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,10,Passed all quality control checks,FLS_STR,8712,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.13,1.06
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,11,Normal,FLS_STR,11778,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.18,1.44
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,12,2.1,DOUBLE,41857,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.64,5.11
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,13,METERS PER SECOND,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,14,Passed all quality control checks_1,FLS_STR,1359,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.02,0.17
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,15,22000,INT32,30914,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.47,3.77
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,16,METERS,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,17,Missing,FLS_STR,9434,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.14,1.15
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,18,No,FLS_STR,9911,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.15,1.21
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,19,10000,INT32,29692,"{[EXP_DICT_I32_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.45,3.62
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,20,METERS_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,21,Missing_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,22,Passed gross limits check if element is present,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,23,28.5,DOUBLE,71538,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.09,8.73
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,24,DEGREES CELSIUS,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,25,Passed all quality control checks_2,FLS_STR,1100,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.02,0.13
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,26,23,INT16,47136,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.72,5.75
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,27,DEGREES CELSIUS_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,28,Passed all quality control checks_3,FLS_STR,4839,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.07,0.59
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,29,1004.2,DOUBLE,65954,"{[EXP_DICT_DBL_FFOR_U08][0, 1, 2, 3]}",1.01,8.05
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,30,HECTOPASCALS,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,31,Passed all quality control checks_4,FLS_STR,9236,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.14,1.13
+FastLanes,0.1.3-alpha.8,saudi_hourly_weather_data,32,16.901111,42.585833,FLS_STR,672,"{[EXP_FSST_DICT_STR_U08][0, 0, 1, 2]}",0.01,0.08
+FastLanes,0.1.3-alpha.8,trainView,0,102TT,FLS_STR,759,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.09
+FastLanes,0.1.3-alpha.8,trainView,1,0,INT16,11164,"{[EXP_CROSS_RLE_I16][0, 1]}",0.17,1.36
+FastLanes,0.1.3-alpha.8,trainView,2,Radnor,FLS_STR,40961,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.63,5.00
+FastLanes,0.1.3-alpha.8,trainView,3,LOCAL,FLS_STR,6258,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.10,0.76
+FastLanes,0.1.3-alpha.8,trainView,4,Colmar-Link Belt,FLS_STR,12989,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.20,1.59
+FastLanes,0.1.3-alpha.8,trainView,5,-75.37250,DOUBLE,45930,"{[EXP_DICT_DBL_FFOR_U08][0, 1, 2, 3]}",0.70,5.61
+FastLanes,0.1.3-alpha.8,trainView,6,40.04388,DOUBLE,746,"{[EXP_DICT_DBL_U08][5, 0]}",0.01,0.09
+FastLanes,0.1.3-alpha.8,trainView,7,Devon,FLS_STR,17142,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.26,2.09
+FastLanes,0.1.3-alpha.8,trainView,8,-1,FLS_STR,7685,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.12,0.94
+FastLanes,0.1.3-alpha.8,trainView,9,-1_1,FLS_STR,29078,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.44,3.55
+FastLanes,0.1.3-alpha.8,trainView,10,2016-04-22,FLS_STR,60760,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.93,7.42
+FastLanes,0.1.3-alpha.8,trainView,11,2016-04-22 13:21:07,FLS_STR,455905,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.96,55.65
+FastLanes,0.1.3-alpha.8,trainView,12,2016-04-22 13:22:43,FLS_STR,456199,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.96,55.69
+FastLanes,0.1.3-alpha.8,trainView,13,96,INT32,83210,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.27,10.16
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,0,0,INT8,8579,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.13,1.05
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,1,Trumpbart,FLS_STR,533959,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",8.15,65.18
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,2,politics,FLS_STR,146741,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.24,17.91
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,3,2,INT16,60788,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.93,7.42
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,4,-1,INT16,38376,"{[EXP_FFOR_SLPATCH_I16][0, 1, 2, 3, 4, 5]}",0.59,4.68
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,5,-1_1,INT8,8323,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.13,1.02
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,6,2016-10,FLS_STR,16330,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.25,1.99
+FastLanes,0.1.3-alpha.8,train_balanced_sarcasm,7,2016-10-16 23:55:23,FLS_STR,450193,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",6.87,54.96
+FastLanes,0.1.3-alpha.8,us_perm_visas,0,null,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,1,null_1,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,2,null_2,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,3,PERM,FLS_STR,3262,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.40
+FastLanes,0.1.3-alpha.8,us_perm_visas,4,A-07323-97014,FLS_STR,394077,"{[EXP_FSST_DELTA_SLPATCH][0, 1, 2, 3, 4, 5, 6, 7, 8]}",6.01,48.11
+FastLanes,0.1.3-alpha.8,us_perm_visas,5,null_3,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,6,null_4,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,7,Certified,FLS_STR,14562,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.22,1.78
+FastLanes,0.1.3-alpha.8,us_perm_visas,8,J-1,FLS_STR,42079,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.14
+FastLanes,0.1.3-alpha.8,us_perm_visas,9,null_5,FLS_STR,42174,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.64,5.15
+FastLanes,0.1.3-alpha.8,us_perm_visas,10,ARMENIA,FLS_STR,22212,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.34,2.71
+FastLanes,0.1.3-alpha.8,us_perm_visas,11,2012-02-01,FLS_STR,69981,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.07,8.54
+FastLanes,0.1.3-alpha.8,us_perm_visas,12,NEW YORK,FLS_STR,125502,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.92,15.32
+FastLanes,0.1.3-alpha.8,us_perm_visas,13,null_6,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,14,null_7,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,15,null_8,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,16,null_9,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,17,null_10,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,18,10010.0,FLS_STR,165095,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.52,20.15
+FastLanes,0.1.3-alpha.8,us_perm_visas,19,NY,FLS_STR,50692,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.77,6.19
+FastLanes,0.1.3-alpha.8,us_perm_visas,20,null_11,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,21,null_12,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,22,null_13,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,23,null_14,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,24,null_15,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,25,null_16,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,26,null_17,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,27,null_18,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,28,null_19,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,29,null_20,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,30,null_21,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,31,null_22,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,32,null_23,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,33,null_24,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,34,null_25,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,35,null_26,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,36,null_27,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,37,null_28,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,38,null_29,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,39,null_30,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,40,null_31,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,41,null_32,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,42,null_33,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,43,null_34,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,44,null_35,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,45,null_36,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,46,null_37,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,47,null_38,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,48,null_39,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,49,null_40,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,50,null_41,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,51,null_42,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,52,null_43,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,53,null_44,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,54,null_45,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,55,null_46,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,56,null_47,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,57,null_48,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,58,null_49,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,59,null_50,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,60,null_51,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,61,null_52,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,62,null_53,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,63,null_54,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,64,null_55,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,65,null_56,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,66,null_57,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,67,null_58,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,68,null_59,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,69,null_60,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,70,null_61,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,71,null_62,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,72,New York_1,FLS_STR,149507,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.28,18.25
+FastLanes,0.1.3-alpha.8,us_perm_visas,73,null_63,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,74,NY_1,FLS_STR,50678,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.77,6.19
+FastLanes,0.1.3-alpha.8,us_perm_visas,75,541512,FLS_STR,36045,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",0.55,4.40
+FastLanes,0.1.3-alpha.8,us_perm_visas,76,null_64,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,77,null_65,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,78,null_66,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,79,null_67,FLS_STR,68206,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.04,8.33
+FastLanes,0.1.3-alpha.8,us_perm_visas,80,null_68,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,81,null_69,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,82,null_70,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,83,null_71,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,84,null_72,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,85,75629.0,FLS_STR,195700,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.99,23.89
+FastLanes,0.1.3-alpha.8,us_perm_visas,86,null_73,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,87,null_74,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,88,null_75,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,89,Level II,FLS_STR,16863,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.26,2.06
+FastLanes,0.1.3-alpha.8,us_perm_visas,90,15-1031.00,FLS_STR,90048,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",1.37,10.99
+FastLanes,0.1.3-alpha.8,us_perm_visas,91,OES,FLS_STR,11538,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.18,1.41
+FastLanes,0.1.3-alpha.8,us_perm_visas,92,null_76,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,93,null_77,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,94,yr,FLS_STR,7557,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.12,0.92
+FastLanes,0.1.3-alpha.8,us_perm_visas,95,null_78,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,96,null_79,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,97,null_80,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,98,null_81,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,99,null_82,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,100,null_83,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,101,null_84,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,102,null_85,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,103,null_86,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,104,null_87,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,105,null_88,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,106,null_89,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,107,null_90,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,108,null_91,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,109,null_92,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,110,null_93,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,111,null_94,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,112,null_95,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,113,null_96,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,114,null_97,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,115,null_98,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,116,null_99,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,117,null_100,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,118,null_101,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,119,null_102,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,120,null_103,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,121,null_104,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,122,null_105,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,123,null_106,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,124,null_107,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,125,null_108,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,126,null_109,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,127,null_110,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,128,null_111,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,129,null_112,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,130,null_113,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,131,null_114,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,132,null_115,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,133,null_116,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,134,null_117,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,135,null_118,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,136,null_119,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,137,null_120,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,138,null_121,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00
+FastLanes,0.1.3-alpha.8,us_perm_visas,139,IT,FLS_STR,33993,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.52,4.15
+FastLanes,0.1.3-alpha.8,us_perm_visas,140,75629.0_1,FLS_STR,79741,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",1.22,9.73
+FastLanes,0.1.3-alpha.8,us_perm_visas,141,null_122,FLS_STR,30150,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.46,3.68
+FastLanes,0.1.3-alpha.8,us_perm_visas,142,yr_1,FLS_STR,3262,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.05,0.40
+FastLanes,0.1.3-alpha.8,us_perm_visas,143,null_123,FLS_STR,152756,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.33,18.65
+FastLanes,0.1.3-alpha.8,us_perm_visas,144,null_124,FLS_STR,51717,"{[EXP_FSST_DELTA][0, 1, 2, 3, 4, 5]}",0.79,6.31
+FastLanes,0.1.3-alpha.8,us_perm_visas,145,null_125,FLS_STR,400,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.01,0.05
+FastLanes,0.1.3-alpha.8,utterances,0,57264,INT32,37516,"{[EXP_RLE_I32_U16][0, 1, 2, 3, 4]}",0.57,4.58
+FastLanes,0.1.3-alpha.8,utterances,1,9,INT16,65088,"{[EXP_FFOR_I16][0, 1, 2]}",0.99,7.95
+FastLanes,0.1.3-alpha.8,wowah_data,0,59425,INT32,104922,"{[EXP_DICT_I32_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",1.60,12.81
+FastLanes,0.1.3-alpha.8,wowah_data,1,1,INT8,40243,"{[EXP_RLE_I08_U16][0, 1, 2, 3, 4]}",0.61,4.91
+FastLanes,0.1.3-alpha.8,wowah_data,2,Orc,FLS_STR,15776,"{[EXP_CROSS_RLE_STR][0, 1, 2]}",0.24,1.93
+FastLanes,0.1.3-alpha.8,wowah_data,3,Rogue,FLS_STR,33315,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.51,4.07
+FastLanes,0.1.3-alpha.8,wowah_data,4,Orgrimmar,FLS_STR,59147,"{[EXP_FSST_DICT_STR_FFOR_U08][0, 1, 2, 3, 4, 5]}",0.90,7.22
+FastLanes,0.1.3-alpha.8,wowah_data,5,165,INT16,56795,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",0.87,6.93
+FastLanes,0.1.3-alpha.8,wowah_data,6,01/01/08 00:02:04,FLS_STR,154791,"{[EXP_FSST_DICT_STR_FFOR_U16][0, 1, 2, 3, 4, 5]}",2.36,18.90
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,0,1,INT8,12384,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.19,1.51
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,1,2019-01-01 00:46:40,FLS_STR,295033,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.50,36.01
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,2,2019-01-01 00:53:20,FLS_STR,300805,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6, 7, 8]}",4.59,36.72
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,3,1_1,INT8,24969,"{[EXP_DICT_I08_FFOR_U08][0, 1, 2, 3]}",0.38,3.05
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,4,1.50,DOUBLE,100288,"{[EXP_ALP_DBL][]}",1.53,12.24
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,5,1_2,INT8,4374,"{[EXP_FREQUENCY_I08][0, 1, 2, 3]}",0.07,0.53
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,6,N,FLS_STR,1442,"{[EXP_FSST_DICT_STR_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6, 7, 8]}",0.02,0.18
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,7,151,INT16,66403,"{[EXP_DICT_I16_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",1.01,8.11
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,8,239,INT16,66300,"{[EXP_DICT_I16_FFOR_U08][0, 1, 2, 3]}",1.01,8.09
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,9,1_3,INT8,11103,"{[EXP_DICT_I08_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.17,1.36
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,10,7,DOUBLE,63414,"{[EXP_DICT_DBL_FFOR_SLPATCH_U16][0, 1, 2, 3, 4, 5, 6]}",0.97,7.74
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,11,0.5,DOUBLE,5156,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.08,0.63
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,12,0.5_1,DOUBLE,2983,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.05,0.36
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,13,1.65,DOUBLE,89058,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.36,10.87
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,14,0,DOUBLE,9654,"{[EXP_DICT_DBL_FFOR_SLPATCH_U08][0, 1, 2, 3, 4, 5, 6]}",0.15,1.18
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,15,0.3,DOUBLE,1623,"{[EXP_FREQUENCY_DBL][0, 1, 2, 3]}",0.02,0.20
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,16,9.95,DOUBLE,107626,"{[EXP_DICT_DBL_FFOR_U16][0, 1, 2, 3]}",1.64,13.14
+FastLanes,0.1.3-alpha.8,yellow_tripdata_2019_01,17,null,FLS_STR,0,"{[EXP_CONSTANT_STR][]}",0.00,0.00

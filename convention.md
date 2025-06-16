@@ -4,14 +4,14 @@
     ```
         #ifndef FLS_HEADER_HPP
         #define FLS_HEADER_HPP
-         
+
         namespace fastlanes {
         /*--------------------------------------------------------------------------------------------------------------------*/
         class ForwardDeclared;
         /*--------------------------------------------------------------------------------------------------------------------*/
         class Header {
         };
-        
+
         } // namespace fastlanes
         #endif // FLS_HEADER_HPP
     ```
@@ -35,7 +35,7 @@
     * *_v -> value
     * *_arr -> C-arr
     * *_vec -> std::vec
-    * *_idx -< index
+    * *_idx -> index
     * *_krl -> kernel
     * *_trd -> cpu thread
     * __Can be combined__
@@ -79,12 +79,12 @@
 
       public:     /* Member functions */
       public:     /* Members */
-            
+
                   /* PROTECTED: */
       protected:  /* Constructors */
       protected:  /* Member Functions */
       protected:  /* Members */
-            
+
                   /* PRIVATE: */
       private:    /* Constructors */
       private:    /* Member Functions */
@@ -115,14 +115,14 @@
   /*--------------------------------------------------------------------------------------------------------------------*\
    * Implementation
   \*--------------------------------------------------------------------------------------------------------------------*/
-  
+
   ```
 
   ```cmake
-  
+
   Options
   # Options: -------------------------------------------------------------------------------------------------------------
-  
+
   ```
 * __Single Line Delimitor__
 
@@ -142,4 +142,4 @@
   class FastLanes;
   /*--------------------------------------------------------------------------------------------------------------------*/
   ```
-  
+

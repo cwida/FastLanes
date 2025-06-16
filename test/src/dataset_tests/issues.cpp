@@ -11,4 +11,8 @@ TEST_F(FastLanesReaderTester, issues_cwida_alp_37_kv_cache_original) {
 	TestCorrectness(issues::issues_cwida_alp_37_kv_cache_original);
 }
 
+TEST_F(FastLanesReaderTester, issue_000) {
+	TestCorrectness(issues::ISSUE_000);
+}
+
 } // namespace fastlanes

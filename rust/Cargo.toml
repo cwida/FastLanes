@@ -1,6 +1,6 @@
 [package]
 name = "fls-rs"
-version = "0.1.3-alpha.1"
+version = "0.1.3-alpha.7"
 edition = "2021"
 authors = ["Azim Afroozeh <afroozeh3@gmail.com>"]
 description = "FastLanes File Format"
@@ -9,21 +9,34 @@ repository = "https://github.com/cwida/FastLanes"
 homepage = "https://fastlanes.io"
 documentation = "https://docs.rs/fls-rs"
 readme = "README.md"
-keywords = ["FastLanes", "FileFormat", "Compression"]
-categories = ["database", "compression"]
-exclude = ["/build/*"]
+build = "build.rs"
+
+include = [
+    "src/**",
+    "bridge_shim.cpp",
+    "bridge_shim.hpp",
+    "build.rs",
+    "Cargo.toml",
+    "README.md",
+    "vendor/fastlanes/CMakeLists.txt",
+    "vendor/fastlanes/include/**",
+    "vendor/fastlanes/src/**",
+    "LICENSE*"
+]
 
 [badges]
 [badges.docsrs]
 status = "true"
-
 [badges."github-actions"]
 repository = "cwida/FastLanes"
-workflow   = "rust"
+workflow = "rust"
 
 [dependencies]
-cxx = "1.0"
-anyhow = "1.0"
+cxx = "1"
+anyhow = "1"
 
 [build-dependencies]
-cxx-build = "1.0"
+vergen = { version = "9.0.5", default-features = false, features = ["build"] }
+vergen-gix = { version = "1.0.9", default-features = false, features = ["build"] }
+cmake = "0.1"
+cxx-build = "1"

@@ -24,7 +24,7 @@ add_compile_definitions(NOMINMAX)
 
 # Project : ------------------------------------------------------------------------------------------------------------
 project(FastLanes)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 
 set(CMAKE_CXX_STANDARD 20)
@@ -39,6 +39,7 @@ include(CMakePrintHelpers)
 # https://stackoverflow.com/questions/56089330/cmake-creates-lots-of-targets-i-didnt-specify
 set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 include(CTest)
+include(GNUInstallDirs)
 
 # Checks : -------------------------------------------------------------------------------------------------------
 if (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
@@ -108,6 +109,9 @@ option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLES "Build Examples" ON)
 option(FLS_BUILD_GPU "Build GPU" OFF)
 option(FLS_BUILD_GTEST "Build GTEST" OFF)
+option(FLS_BUILD_PYTHON "Build FastLanes Python bindings" OFF)
+option(FLS_BUILD_SHARED_LIBS "Build FastLanes library as shared" OFF)
+option(FLS_ENABLE_INSTALL "Generate install targets for FastLanes" ON)
 option(FLS_ENABLE_CLANG_TIDY "Enable clang_tidy on all targets" OFF)
 option(FLS_ENABLE_IWYU "Enable include-what-you-use tool" OFF)
 option(FLS_ENABLE_DOC "Enable Doc build" OFF)
@@ -162,45 +166,15 @@ if (true)
     message("-- FLS: Building ALP Lib.")
     add_compile_definitions(ALP_N_VECTORS_PER_ROWGROUP=64)
     set(ALP_ENABLE_ADAPTIVE_MODE OFF CACHE BOOL "Enable adaptive mode" FORCE)
-    add_subdirectory(alp)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/alp/src/include)
 endif ()
 
 
 if (true)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Building FastLanes Lib.")
-    # Include : --------------------------------------------------------------------------------------------------------
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-    # Primitives: ------------------------------------------------------------------------------------------------------
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/primitives)
 
     # Source: ----------------------------------------------------------------------------------------------------------
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-    install(
-            EXPORT FLSTargets
-            FILE FLSTargets.cmake
-            DESTINATION lib/FLS
-            NAMESPACE FLS::
-    )
-
-    export(
-            EXPORT FLSTargets
-            FILE "${CMAKE_BINARY_DIR}/FLSTargets.cmake"
-            NAMESPACE FLS::
-    )
-
-    install(
-            DIRECTORY
-            ${CMAKE_SOURCE_DIR}/include/     # your "include/fls/…" tree
-            DESTINATION
-            include                           # will land under <prefix>/include/fls/…
-            FILES_MATCHING
-            PATTERN "*.h"
-            PATTERN "*.hpp"
-    )
 
 endif ()
 
@@ -209,19 +183,26 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLES OR FLS_ENA
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Enabling Data.")
 
+
+    # If the user has set FASTLANES_DATA_DIR in their environment, use that:
+    if (DEFINED ENV{FASTLANES_DATA_DIR})
+        set(data_SOURCE_DIR "$ENV{FASTLANES_DATA_DIR}")
+        message("-- FLS : Using FASTLANES_DATA_DIR from environment: ${data_SOURCE_DIR}")
+    else ()
+        include(FetchContent)
+        FetchContent_Declare(
+                data
+                GIT_REPOSITORY https://github.com/cwida/FastLanes_Data.git
+                GIT_TAG main
+        )
+        FetchContent_MakeAvailable(data)
+        set(data_SOURCE_DIR "${data_SOURCE_DIR}")  # from FetchContent
+        message("-- FLS : Fetched FastLanes_Data into: ${data_SOURCE_DIR}")
+    endif ()
+
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/data/include)
-
-    FetchContent_Declare(
-            data
-            GIT_REPOSITORY https://github.com/cwida/FastLanes_Data.git
-            GIT_TAG main
-    )
-
-    FetchContent_MakeAvailable(data)
-
     add_compile_definitions(FASTLANES_DATA_DIR="${data_SOURCE_DIR}")
     cmake_print_variables(data_SOURCE_DIR)
-
 endif ()
 
 if (FLS_ENABLE_CLANG_TIDY)
@@ -240,13 +221,6 @@ if (FLS_ENABLE_CLANG_TIDY)
         else ()
             message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
         endif ()
-
-        execute_process(
-                COMMAND ${CLANG_TIDY_EXE} --version
-                OUTPUT_VARIABLE CLANG_TIDY_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
 
         execute_process(
                 COMMAND ${CLANG_TIDY_EXE} --version
@@ -299,7 +273,6 @@ if (FLS_BUILD_TESTING)
 
 
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
-
 
 endif ()
 

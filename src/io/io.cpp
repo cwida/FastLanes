@@ -69,8 +69,6 @@ span<PT> IO::read(const io& io) {
 	      },
 	      io);
 	return span_result;
-
-	// FLS_UNREACHABLE()
 }
 
 template span<i64_pt>    IO::read(const io& io);

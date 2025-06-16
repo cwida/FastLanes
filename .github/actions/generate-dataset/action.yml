@@ -1,18 +1,20 @@
 name: Generate Synthetic Dataset
-description: Generate synthetic data using Makefile target
+
+description: Generate synthetic data and embeddings using Makefile targets
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.12"
 
-    - name: Install dependencies
-      shell: bash
-      run: python -m pip install --upgrade pip faker
-
     - name: Generate synthetic data
+      working-directory: mk
       shell: bash
-      run: make generate_synthetic_data
+      run: make -f data.mk generate_synthetic_data
+
+    - name: Generate embeddings
+      shell: bash
+      run: make -f mk/embeddings.mk generate

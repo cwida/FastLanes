@@ -1,0 +1,9 @@
+{
+    "columns": [
+        {
+            "name": "profile desc",
+            "type": "varchar(160)",
+            "nullability": "NULL"
+        }
+    ]
+}

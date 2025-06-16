@@ -33,10 +33,10 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 	}
 
 	if (!is_schema_found) {
-		throw std::runtime_error("schema is not found!");
+		throw std::runtime_error("schema is not found at " + dir_path.string() + "!");
 	}
 	if (!is_file_found) {
-		throw std::runtime_error("csv file is not found!");
+		throw std::runtime_error("csv file is not found at " + dir_path.string() + "!");
 	}
 
 	auto                 json_string         = File::read(found_schema_path);

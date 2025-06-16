@@ -69,6 +69,7 @@ template struct enc_dict_opr<i16_pt>;
 template struct enc_dict_opr<i08_pt>;
 template struct enc_dict_opr<dbl_pt>;
 template struct enc_dict_opr<flt_pt>;
+template struct enc_dict_opr<u08_pt>;
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * enc_dict_opr
@@ -160,6 +161,7 @@ template struct dec_dict_opr<dbl_pt, u08_pt>;
 template struct dec_dict_opr<flt_pt, u32_pt>;
 template struct dec_dict_opr<flt_pt, u16_pt>;
 template struct dec_dict_opr<flt_pt, u08_pt>;
+template struct dec_dict_opr<u08_pt, u08_pt>;
 template <typename INDEX_PT>
 dec_dict_opr<fls_string_t, INDEX_PT>::dec_dict_opr(const PhysicalExpr& physical_expr,
                                                    const ColumnView&   column_view,

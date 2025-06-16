@@ -36,9 +36,9 @@ up<Table> TableReader::materialize() const {
 }
 
 void TableReader::to_csv(const path& file_path) const {
-	const auto materialized_table_up = materialize();
-	for (const auto& rowgroup_up : materialized_table_up->m_rowgroups) {
-		CSV::to_csv(file_path, *rowgroup_up);
+	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->m_rowgroup_descriptors.size(); rowgroup_idx++) {
+		auto rowgroup_up = get_rowgroup_reader(rowgroup_idx)->materialize();
+		CSV::to_csv(file_path, *rowgroup_up, rowgroup_up->m_descriptor);
 	}
 }
 

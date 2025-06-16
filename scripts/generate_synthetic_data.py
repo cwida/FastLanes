@@ -1,9 +1,21 @@
+# scripts/generate_helpers/main_generators.py
+
 import json
 import random
 import csv
+import logging  # ← NEW
 from faker import Faker
 from faker.providers import BaseProvider
 from pathlib import Path
+from datetime import date
+
+# ─────────────────────────────────────────────
+# Logging setup  (INFO level to stdout)
+# ─────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)s  %(message)s"
+)
 
 faker = Faker()
 
@@ -14,6 +26,12 @@ faker = Faker()
 VEC_SIZE = 1024
 ROW_GROUP_SIZE = 64 * VEC_SIZE
 
+# ---------------------------
+# DATE & TIMESTAMP generator imports
+# ---------------------------
+from generator_helpers.date_generator import generate_date
+from generator_helpers.timestamp_generator import generate_timestamp
+
 
 # ---------------------------
 # Helper Functions
@@ -21,8 +39,9 @@ ROW_GROUP_SIZE = 64 * VEC_SIZE
 
 def write_jsonl(dir_path, generate_func, size):
     """Writes data to a JSONL file using a generator function."""
-    dir_path.mkdir(parents=True, exist_ok=True)  # <- added
+    dir_path.mkdir(parents=True, exist_ok=True)
     file_path = dir_path / 'data.jsonl'
+    logging.info(f"Writing JSONL → {file_path}  ({size} rows)")  # ← NEW
     with open(file_path, 'w') as jsonlfile:
         for row_id in range(size):
             jsonlfile.write(json.dumps(generate_func(faker, row_id)) + '\n')
@@ -30,8 +49,9 @@ def write_jsonl(dir_path, generate_func, size):
 
 def write_csv(dir_path, generate_func, size):
     """Writes data to a CSV file using a generator function."""
-    dir_path.mkdir(parents=True, exist_ok=True)  # <- added
+    dir_path.mkdir(parents=True, exist_ok=True)
     file_path = dir_path / "generated.csv"
+    logging.info(f"Writing CSV  → {file_path}  ({size} rows)")  # ← NEW
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter='|', lineterminator='\n')
         writer.writerows(generate_func(faker, row_id) for row_id in range(size))
@@ -107,8 +127,8 @@ def map_value(row_id, map_info):
                      10000000000006, 10000000000007, 10000000000008,
                      10000000000009]
 
-    str = ['zero', 'one', 'two', 'three', 'four', 'five',
-           'six', 'seven', 'eight', 'nine']
+    str_list = ['zero', 'one', 'two', 'three', 'four', 'five',
+                'six', 'seven', 'eight', 'nine']
 
     chosen_list = []
     if map_info == "original":
@@ -120,7 +140,7 @@ def map_value(row_id, map_info):
     elif map_info == "original_plus":
         chosen_list = original_plus
     elif map_info == "str":
-        chosen_list = str
+        chosen_list = str_list
 
     return chosen_list[row_id % 10]
 
@@ -333,6 +353,16 @@ def generate_alp_dbl_func(faker, row_id):
     return [row_id + 0.1]
 
 
+def generate_example_one(faker, row_id):
+    NAMES = ["Azim", "Amir", "Ali", "Omid"]
+
+    size_of_list = len(NAMES)
+
+    return [
+        NAMES[row_id % size_of_list],
+    ]
+
+
 # ---------------------------
 # CSV Generators
 # ---------------------------
@@ -444,10 +474,10 @@ def generate_float():
 
 def generate_fls_decimal():
     file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'decimal'
-    write_csv(file, generate_fls_dbl_func, ROW_GROUP_SIZE)
+    write_csv(file, generate_fls_decimal_func, ROW_GROUP_SIZE)
 
     file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'decimal'
-    write_csv(file, generate_fls_dbl_func, VEC_SIZE)
+    write_csv(file, generate_fls_decimal_func, VEC_SIZE)
 
 
 def fls_str():
@@ -459,6 +489,104 @@ def fls_str():
 
     file = Path.cwd() / '..' / 'data' / 'generated' / 'two_vector' / 'fls_str'
     write_csv(file, generate_strings, 2 * VEC_SIZE)
+
+
+# ----------------------------------------------------------------------
+# 1) Wrap generate_date() to match other “generate_fls_*” signatures
+# ----------------------------------------------------------------------
+def generate_fls_date(_faker, row_id):
+    """Generates a list containing a single DATE value as 'YYYY-MM-DD'."""
+    return generate_date(_faker, row_id)
+
+
+# ----------------------------------------------------------------------
+# 2) Writer for the DATE column (with schema.json)
+# ----------------------------------------------------------------------
+def fls_date():
+    """
+    Write a single-column CSV of DATE values ("YYYY-MM-DD").
+    Creates two outputs, each with a schema.json alongside generated.csv:
+      - data/generated/single_columns/fls_date/generated.csv   (ROW_GROUP_SIZE rows)
+      - data/generated/one_vector/fls_date/generated.csv       (VEC_SIZE rows)
+    """
+    # Directory for the “rowgroup” version
+    dir_rowgroup = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_date'
+    write_csv(dir_rowgroup, generate_fls_date, ROW_GROUP_SIZE)
+
+    # Write schema.json in the same folder
+    schema_rg = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_DATE",
+                "type": "DATE"
+            }
+        ]
+    }
+    (dir_rowgroup / 'schema.json').write_text(json.dumps(schema_rg, indent=2))
+
+    # Directory for the “one_vector” (VEC_SIZE rows) version
+    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_date'
+    write_csv(dir_onevec, generate_fls_date, VEC_SIZE)
+
+    # Write schema.json in that folder as well
+    schema_ov = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_DATE",
+                "type": "DATE"
+            }
+        ]
+    }
+    (dir_onevec / 'schema.json').write_text(json.dumps(schema_ov, indent=2))
+
+
+# ----------------------------------------------------------------------
+# 3) Wrap generate_timestamp() to match other “generate_fls_*” signatures
+# ----------------------------------------------------------------------
+def generate_fls_timestamp(_faker, row_id):
+    """Generates a list containing a single TIMESTAMP value as 'YYYY-MM-DDThh:mm:ss.ffffff'."""
+    return generate_timestamp(_faker, row_id)
+
+
+# ----------------------------------------------------------------------
+# 4) Writer for the TIMESTAMP column (with schema.json)
+# ----------------------------------------------------------------------
+def fls_timestamp():
+    """
+    Write a single-column CSV of TIMESTAMP values ("YYYY-MM-DDThh:mm:ss.ffffff").
+    Creates two outputs, each with a schema.json alongside generated.csv:
+      - data/generated/single_columns/fls_timestamp/generated.csv   (ROW_GROUP_SIZE rows)
+      - data/generated/one_vector/fls_timestamp/generated.csv       (VEC_SIZE rows)
+    """
+    # Directory for the “rowgroup” version
+    dir_rowgroup = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_timestamp'
+    write_csv(dir_rowgroup, generate_fls_timestamp, ROW_GROUP_SIZE)
+
+    # Write schema.json in the same folder
+    schema_rg = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_TIMESTAMP",
+                "type": "TIMESTAMP"
+            }
+        ]
+    }
+    (dir_rowgroup / 'schema.json').write_text(json.dumps(schema_rg, indent=2))
+
+    # Directory for the “one_vector” (VEC_SIZE rows) version
+    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_timestamp'
+    write_csv(dir_onevec, generate_fls_timestamp, VEC_SIZE)
+
+    # Write schema.json in that folder as well
+    schema_ov = {
+        "columns": [
+            {
+                "name": "SYNTHETIC_DATA_TIMESTAMP",
+                "type": "TIMESTAMP"
+            }
+        ]
+    }
+    (dir_onevec / 'schema.json').write_text(json.dumps(schema_ov, indent=2))
 
 
 def all_types_dbl_i64_struct():
@@ -518,8 +646,11 @@ def generate_alp_dbl():
 
 def generate_specific_number_of_values(count):
     # one rowgroup
-    write_csv(Path.cwd() / '..' / 'data' / 'generated' / f'any_value_count/{count}',
-              generate_fls_i64, count)
+    write_csv(
+        Path.cwd() / '..' / 'data' / 'generated' / f'any_value_count/{count}',
+        generate_fls_i64,
+        count
+    )
 
 
 # ---------------------------
@@ -534,10 +665,14 @@ def generate_subnormals():
     write_csv(file, lambda faker, row_id: [faker.subnormal_str()], ROW_GROUP_SIZE)
 
 
+def example_one():
+    file = Path.cwd() / '..' / 'fsst' / 'data' / 'test'
+    write_csv(file, generate_example_one, ROW_GROUP_SIZE)
+
+
 # ---------------------------
 # Main Generation Functions
 # ---------------------------
-
 def generate_nested_data():
     struct()
 
@@ -551,6 +686,8 @@ def generate_single_column():
     generate_fls_dbl()
     generate_fls_decimal()
     generate_float()
+    fls_date()
+    fls_timestamp()
 
 
 def generate_irregular_data():
@@ -597,10 +734,13 @@ def mostly_null():
     null_table()
 
 
+def generate_fsst_test():
+    example_one()
+
+
 # ---------------------------
 # Main Function
 # ---------------------------
-
 def main():
     all_constant()
     equality()
@@ -614,6 +754,9 @@ def main():
     generate_irregular_data()
     generate_any_value_count()
     generate_subnormals()
+    generate_fsst_test()
+
+    logging.info("✅  All data files generated successfully.")  # ← NEW
 
 
 if __name__ == "__main__":

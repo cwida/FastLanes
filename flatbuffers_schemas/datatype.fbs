@@ -24,5 +24,6 @@ enum DataType : ubyte {
   MAP        = 17,
   FALLBACK   = 18,
   FLS_STR    = 19,
-  DECIMAL    = 20
+  DECIMAL    = 20,
+  TIMESTAMP   = 21,
 }

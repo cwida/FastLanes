@@ -3,6 +3,11 @@ add_executable(unit_test
         double_test.cpp
         json_test.cpp
         decimal_test.cpp
+        parse_integer_test.cpp
+        parse_timestamp_test.cpp
+        parse_timestamp_12hour_test.cpp
+        parse_timestamp_with_offset_test.cpp
+        parse_timestamp_zulu_test.cpp
         sampling_layout_test.cpp
 )
 

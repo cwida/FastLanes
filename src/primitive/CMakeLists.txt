@@ -5,7 +5,6 @@ add_subdirectory(fsst)
 add_subdirectory(fsst12)
 add_subdirectory(predicate)
 add_subdirectory(rle)
-add_subdirectory(unffor)
 add_subdirectory(untraspose)
 
 
@@ -22,3 +21,8 @@ set(FASTLANES_OBJECT_FILES
 if (FLS_ENABLE_IWYU)
     set_property(TARGET fls_primitive PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
+
+target_link_libraries(fls_primitive
+        PUBLIC
+        FastLanes::headers
+)

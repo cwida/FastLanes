@@ -1,0 +1,8 @@
+{
+  "columns": [
+    {
+      "name": "SYNTHETIC_DATA_DATE",
+      "type": "DATE"
+    }
+  ]
+}
