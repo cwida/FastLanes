@@ -20,10 +20,10 @@
 #include "fls/table/rowgroup.hpp" // for Rowgroup
 #include "fls/table/table.hpp"
 #include "fls/wizard/wizard.hpp" // for Wizard
-#include <filesystem>            // for directory_iterator, begin
-#include <memory>                // for make_unique, operator==
-#include <stdexcept>             // for runtime_error
-#include <string>                // for basic_string, string
+#include <filesystem> // for directory_iterator, begin
+#include <memory>     // for make_unique, operator==
+#include <stdexcept>  // for runtime_error
+#include <string>     // for basic_string, string
 
 namespace fastlanes {
 
@@ -52,6 +52,10 @@ up<TableReader> Connection::read_fls(const path& file_path) {
 
 	// init
 	return make_unique<TableReader>(file_path, *this);
+}
+
+up<Writer> Connection::writer(const path& target_path, std::vector<std::unique_ptr<ColumnDescriptorT>>& schema) {
+	return make_unique<Writer>(target_path, schema, *this);
 }
 
 void prepare_rowgroup(Rowgroup& rowgroup) {

@@ -50,6 +50,7 @@ add_subdirectory(table)
 add_subdirectory(types)
 add_subdirectory(utl)
 add_subdirectory(wizard)
+add_subdirectory(writer)
 
 ###########################################################################
 # 3. Core FastLanes library
