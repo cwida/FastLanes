@@ -14,6 +14,7 @@ from generator_helpers.struct_generator import *
 from generator_helpers.list_generator import list_data
 from generator_helpers.write_helpers import *
 from generator_helpers.byte_array_generator import *
+from generator_helpers.jpeg_generator import *
 
 
 # ---------------------------
@@ -203,7 +204,7 @@ def generate_languages(faker, row_id):
 
 def generate_strings(faker, row_id):
     """Generates a list containing a single floating-point number."""
-    LIST = ["A","BB","CCC","DDDD"]
+    LIST = ["A", "BB", "CCC", "DDDD"]
     size = len(LIST)
     return [LIST[row_id % size]]
 
@@ -582,6 +583,7 @@ def generate_single_column():
     fls_date()
     fls_timestamp()
     byte_array_data()
+    jpeg_data()
 
 
 def generate_irregular_data():

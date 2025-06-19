@@ -68,6 +68,8 @@ col_pt init_logical_columns(const ColumnDescriptorT& col_descriptor) {
 		return make_unique<col_i64>();
 	case DataType::BYTE_ARRAY:
 		return make_unique<FLSStrColumn>();
+	case DataType::JPEG:
+		return make_unique<FLSStrColumn>();
 	default:
 		FLS_UNREACHABLE();
 	}

@@ -41,29 +41,15 @@ DataType TypeLookUp(const string& str) {
 	// 4) Static table of all the remaining fixed names (also all uppercase)
 	static const std::unordered_map<string, DataType> TABLE {
 	    // FLS types
-	    {"FLS_I64", DataType::INT64},
-	    {"FLS_I32", DataType::INT32},
-	    {"FLS_I16", DataType::INT16},
-	    {"FLS_I08", DataType::INT8},
-	    {"FLS_U08", DataType::UINT8},
-	    {"FLS_DBL", DataType::DOUBLE},
-	    {"FLS_STR", DataType::FLS_STR},
-	    {"BIGINT", DataType::INT64},
-	    {"STRING", DataType::FLS_STR},
-	    {"DOUBLE", DataType::DOUBLE},
-	    {"LIST", DataType::LIST},
-	    {"STRUCT", DataType::STRUCT},
-	    {"MAP", DataType::MAP},
-	    {"FLOAT", DataType::FLOAT},
-	    {"BOOLEAN", DataType::FLS_STR},
-	    {"INTEGER", DataType::INT64},
-	    {"CHAR", DataType::FLS_STR},
-	    {"BIGINT", DataType::INT64},
-	    {"TIME", DataType::FLS_STR},
-	    {"DATE", DataType::DATE},
-	    {"TIMESTAMP", DataType::TIMESTAMP},
-	    {"SMALLINT", DataType::INT16},
-	    {"BYTE_ARRAY", DataType::BYTE_ARRAY},
+	    {"FLS_I64", DataType::INT64},       {"FLS_I32", DataType::INT32},   {"INT", DataType::INT32},
+	    {"FLS_I16", DataType::INT16},       {"FLS_I08", DataType::INT8},    {"FLS_U08", DataType::UINT8},
+	    {"FLS_DBL", DataType::DOUBLE},      {"FLS_STR", DataType::FLS_STR}, {"BIGINT", DataType::INT64},
+	    {"STRING", DataType::FLS_STR},      {"DOUBLE", DataType::DOUBLE},   {"LIST", DataType::LIST},
+	    {"STRUCT", DataType::STRUCT},       {"MAP", DataType::MAP},         {"FLOAT", DataType::FLOAT},
+	    {"BOOLEAN", DataType::FLS_STR},     {"INTEGER", DataType::INT64},   {"CHAR", DataType::FLS_STR},
+	    {"BIGINT", DataType::INT64},        {"TIME", DataType::FLS_STR},    {"DATE", DataType::DATE},
+	    {"TIMESTAMP", DataType::TIMESTAMP}, {"SMALLINT", DataType::INT16},  {"BYTE_ARRAY", DataType::BYTE_ARRAY},
+	    {"JPEG", DataType::JPEG},
 
 	    // …add any other fixed names here…
 	};

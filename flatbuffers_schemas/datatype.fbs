@@ -26,4 +26,5 @@ enum DataType : ubyte {
   FLS_STR    = 19,
   DECIMAL    = 20,
   TIMESTAMP   = 21,
+  JPEG = 22,
 }
