@@ -9,246 +9,54 @@
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include "fls/json/json_unique_ptr.hpp" // <─ must appear before you call get_to(...)
+#include <algorithm>
+#include <cctype>
 #include <fls/json/nlohmann/json.hpp>
+#include <regex>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
 
 namespace fastlanes {
-DataType TypeLookUp(const std::string& str) {
-	static std::unordered_map<std::string, DataType> const TABLE {
-	    // FLS types
-	    {"FLS_I64", DataType::INT64},   //
-	    {"FLS_I32", DataType::INT32},   //
-	    {"FLS_I16", DataType::INT16},   //
-	    {"FLS_I08", DataType::INT8},    //
-	    {"FLS_U08", DataType::UINT8},   //
-	    {"FLS_DBL", DataType::DOUBLE},  //
-	    {"FLS_STR", DataType::FLS_STR}, //
-	    {"BIGINT", DataType::INT64},    //
-	    {"string", DataType::FLS_STR},  //
-	    {"STRING", DataType::FLS_STR},  //
-	    {"varchar", DataType::FLS_STR}, //
-	    {"VARCHAR", DataType::FLS_STR}, //
-	    {"double", DataType::DOUBLE},   //
-	    {"DOUBLE", DataType::DOUBLE},   //
-	    {"list", DataType::LIST},       //
-	    {"struct", DataType::STRUCT},   //
-	    {"map", DataType::MAP},         //
-	    {"float", DataType::FLOAT},     //
-	    {"FLOAT", DataType::FLOAT},     //
 
-	    // CLickHouse
-	    {"SMALLINT", DataType::INT64},
-	    {"INTEGER", DataType::INT64},
-	    {"VARCHAR(255)", DataType::FLS_STR},
-	    {"CHAR", DataType::FLS_STR},
+DataType TypeLookUp(const string& str) {
+	// 1) Normalize to uppercase
+	std::string s = str;
+	std::ranges::transform(s, s.begin(), [](unsigned char c) { return std::toupper(c); });
 
-	    // Public Bi
-	    {"varchar(1)", DataType::FLS_STR}, // {"varchar(1)", DataType::FLS_STR},
-	    {"bigint", DataType::INT64},
-	    {"boolean", DataType::FLS_STR},
-	    {"integer", DataType::INT32},
-	    {"smallint", DataType::INT16},
-	    {"decimal(1, 0)", DataType::DECIMAL},
-	    {"decimal(10, 4)", DataType::DECIMAL},
-	    {"decimal(10, 5)", DataType::DECIMAL},
-	    {"decimal(10, 6)", DataType::DECIMAL},
-	    {"decimal(10, 8)", DataType::DECIMAL},
-	    {"decimal(11, 6)", DataType::DECIMAL},
-	    {"decimal(11, 8)", DataType::DECIMAL},
-	    {"decimal(11, 9)", DataType::DECIMAL},
-	    {"decimal(12, 6)", DataType::DECIMAL},
-	    {"decimal(15, 10)", DataType::DECIMAL},
-	    {"decimal(15, 11)", DataType::DECIMAL},
-	    {"decimal(15, 13)", DataType::DECIMAL},
-	    {"decimal(16, 10)", DataType::DECIMAL},
-	    {"decimal(16, 12)", DataType::DECIMAL},
-	    {"decimal(16, 14)", DataType::DECIMAL},
-	    {"decimal(16, 15)", DataType::DECIMAL},
-	    {"decimal(17, 11)", DataType::DECIMAL},
-	    {"decimal(17, 14)", DataType::DECIMAL},
-	    {"decimal(17, 16)", DataType::DECIMAL},
-	    {"decimal(18, 11)", DataType::DECIMAL},
-	    {"decimal(18, 12)", DataType::DECIMAL},
-	    {"decimal(18, 13)", DataType::DECIMAL},
-	    {"decimal(18, 14)", DataType::DECIMAL},
-	    {"decimal(18, 15)", DataType::DECIMAL},
-	    {"decimal(18, 17)", DataType::DECIMAL},
-	    {"decimal(2, 0)", DataType::DECIMAL},
-	    {"decimal(2, 1)", DataType::DECIMAL},
-	    {"decimal(3, 0)", DataType::DECIMAL},
-	    {"decimal(3, 1)", DataType::DECIMAL},
-	    {"decimal(3, 2)", DataType::DECIMAL},
-	    {"decimal(4, 0)", DataType::DECIMAL},
-	    {"decimal(4, 1)", DataType::DECIMAL},
-	    {"decimal(4, 2)", DataType::DECIMAL},
-	    {"decimal(4, 3)", DataType::DECIMAL},
-	    {"decimal(5, 0)", DataType::DECIMAL},
-	    {"decimal(5, 1)", DataType::DECIMAL},
-	    {"decimal(5, 2)", DataType::DECIMAL},
-	    {"decimal(5, 4)", DataType::DECIMAL},
-	    {"decimal(6, 1)", DataType::DECIMAL},
-	    {"decimal(6, 2)", DataType::DECIMAL},
-	    {"decimal(6, 4)", DataType::DECIMAL},
-	    {"decimal(7, 2)", DataType::DECIMAL},
-	    {"decimal(7, 4)", DataType::DECIMAL},
-	    {"decimal(8, 4)", DataType::DECIMAL},
-	    {"decimal(8, 6)", DataType::DECIMAL},
-	    {"decimal(9, 3)", DataType::DECIMAL},
-	    {"decimal(9, 4)", DataType::DECIMAL},
-	    {"decimal(9, 6)", DataType::DECIMAL},
-	    {"double", DataType::DOUBLE},
-	    {"time", DataType::FLS_STR},
-	    {"varchar(10)", DataType::FLS_STR},
-	    {"varchar(100)", DataType::FLS_STR},
-	    {"varchar(102)", DataType::FLS_STR},
-	    {"varchar(104)", DataType::FLS_STR},
-	    {"varchar(108)", DataType::FLS_STR},
-	    {"varchar(11)", DataType::FLS_STR},
-	    {"varchar(113)", DataType::FLS_STR},
-	    {"varchar(116)", DataType::FLS_STR},
-	    {"varchar(117)", DataType::FLS_STR},
-	    {"varchar(118)", DataType::FLS_STR},
-	    {"varchar(12)", DataType::FLS_STR},
-	    {"varchar(120)", DataType::FLS_STR},
-	    {"varchar(121)", DataType::FLS_STR},
-	    {"varchar(126)", DataType::FLS_STR},
-	    {"varchar(129)", DataType::FLS_STR},
-	    {"varchar(13)", DataType::FLS_STR},
-	    {"varchar(137)", DataType::FLS_STR},
-	    {"varchar(138)", DataType::FLS_STR},
-	    {"varchar(14)", DataType::FLS_STR},
-	    {"varchar(140)", DataType::FLS_STR},
-	    {"varchar(141)", DataType::FLS_STR},
-	    {"varchar(15)", DataType::FLS_STR},
-	    {"varchar(151)", DataType::FLS_STR},
-	    {"varchar(153)", DataType::FLS_STR},
-	    {"varchar(154)", DataType::FLS_STR},
-	    {"varchar(156)", DataType::FLS_STR},
-	    {"varchar(16)", DataType::FLS_STR},
-	    {"varchar(160)", DataType::FLS_STR},
-	    {"varchar(162)", DataType::FLS_STR},
-	    {"varchar(17)", DataType::FLS_STR},
-	    {"varchar(173)", DataType::FLS_STR},
-	    {"varchar(18)", DataType::FLS_STR},
-	    {"varchar(187)", DataType::FLS_STR},
-	    {"varchar(19)", DataType::FLS_STR},
-	    {"varchar(194)", DataType::FLS_STR},
-	    {"varchar(2)", DataType::FLS_STR},
-	    {"varchar(20)", DataType::FLS_STR},
-	    {"varchar(21)", DataType::FLS_STR},
-	    {"varchar(213)", DataType::FLS_STR},
-	    {"varchar(22)", DataType::FLS_STR},
-	    {"varchar(228)", DataType::FLS_STR},
-	    {"varchar(229)", DataType::FLS_STR},
-	    {"varchar(23)", DataType::FLS_STR},
-	    {"varchar(230)", DataType::FLS_STR},
-	    {"varchar(24)", DataType::FLS_STR},
-	    {"varchar(25)", DataType::FLS_STR},
-	    {"varchar(255)", DataType::FLS_STR},
-	    {"varchar(256)", DataType::FLS_STR},
-	    {"varchar(259)", DataType::FLS_STR},
-	    {"varchar(26)", DataType::FLS_STR},
-	    {"varchar(27)", DataType::FLS_STR},
-	    {"varchar(28)", DataType::FLS_STR},
-	    {"varchar(29)", DataType::FLS_STR},
-	    {"varchar(293)", DataType::FLS_STR},
-	    {"varchar(3)", DataType::FLS_STR},
-	    {"varchar(30)", DataType::FLS_STR},
-	    {"varchar(31)", DataType::FLS_STR},
-	    {"varchar(32)", DataType::FLS_STR},
-	    {"varchar(324)", DataType::FLS_STR},
-	    {"varchar(33)", DataType::FLS_STR},
-	    {"varchar(338)", DataType::FLS_STR},
-	    {"varchar(34)", DataType::FLS_STR},
-	    {"varchar(35)", DataType::FLS_STR},
-	    {"varchar(36)", DataType::FLS_STR},
-	    {"varchar(3688)", DataType::FLS_STR},
-	    {"varchar(37)", DataType::FLS_STR},
-	    {"varchar(38)", DataType::FLS_STR},
-	    {"varchar(39)", DataType::FLS_STR},
-	    {"varchar(4)", DataType::FLS_STR},
-	    {"varchar(40)", DataType::FLS_STR},
-	    {"varchar(402)", DataType::FLS_STR},
-	    {"varchar(41)", DataType::FLS_STR},
-	    {"varchar(42)", DataType::FLS_STR},
-	    {"varchar(43)", DataType::FLS_STR},
-	    {"varchar(44)", DataType::FLS_STR},
-	    {"varchar(45)", DataType::FLS_STR},
-	    {"varchar(46)", DataType::FLS_STR},
-	    {"varchar(47)", DataType::FLS_STR},
-	    {"varchar(48)", DataType::FLS_STR},
-	    {"varchar(480)", DataType::FLS_STR},
-	    {"varchar(49)", DataType::FLS_STR},
-	    {"varchar(5)", DataType::FLS_STR},
-	    {"varchar(50)", DataType::FLS_STR},
-	    {"varchar(500)", DataType::FLS_STR},
-	    {"varchar(505)", DataType::FLS_STR},
-	    {"varchar(51)", DataType::FLS_STR},
-	    {"varchar(53)", DataType::FLS_STR},
-	    {"varchar(54)", DataType::FLS_STR},
-	    {"varchar(55)", DataType::FLS_STR},
-	    {"varchar(56)", DataType::FLS_STR},
-	    {"varchar(562)", DataType::FLS_STR},
-	    {"varchar(57)", DataType::FLS_STR},
-	    {"varchar(58)", DataType::FLS_STR},
-	    {"varchar(59)", DataType::FLS_STR},
-	    {"varchar(6)", DataType::FLS_STR},
-	    {"varchar(60)", DataType::FLS_STR},
-	    {"varchar(61)", DataType::FLS_STR},
-	    {"varchar(62)", DataType::FLS_STR},
-	    {"varchar(620)", DataType::FLS_STR},
-	    {"varchar(63)", DataType::FLS_STR},
-	    {"varchar(64)", DataType::FLS_STR},
-	    {"varchar(65)", DataType::FLS_STR},
-	    {"varchar(67)", DataType::FLS_STR},
-	    {"varchar(69)", DataType::FLS_STR},
-	    {"varchar(7)", DataType::FLS_STR},
-	    {"varchar(70)", DataType::FLS_STR},
-	    {"varchar(71)", DataType::FLS_STR},
-	    {"varchar(74)", DataType::FLS_STR},
-	    {"varchar(75)", DataType::FLS_STR},
-	    {"varchar(76)", DataType::FLS_STR},
-	    {"varchar(77)", DataType::FLS_STR},
-	    {"varchar(776)", DataType::FLS_STR},
-	    {"varchar(78)", DataType::FLS_STR},
-	    {"varchar(8)", DataType::FLS_STR},
-	    {"varchar(80)", DataType::FLS_STR},
-	    {"varchar(800)", DataType::FLS_STR},
-	    {"varchar(8160)", DataType::FLS_STR},
-	    {"varchar(82)", DataType::FLS_STR},
-	    {"varchar(83)", DataType::FLS_STR},
-	    {"varchar(84)", DataType::FLS_STR},
-	    {"varchar(89)", DataType::FLS_STR},
-	    {"varchar(9)", DataType::FLS_STR},
-	    {"varchar(90)", DataType::FLS_STR},
-	    {"varchar(91)", DataType::FLS_STR},
-	    {"varchar(92)", DataType::FLS_STR},
-	    {"varchar(94)", DataType::FLS_STR},
-	    {"varchar(95)", DataType::FLS_STR},
-	    {"varchar(950)", DataType::FLS_STR},
-	    {"varchar(96)", DataType::FLS_STR},
-	    {"varchar(99)", DataType::FLS_STR},
+	// 2) Regex for DECIMAL(p,s)
+	static const std::regex decimal_re(R"(DECIMAL\(\d+,\s*\d+\))");
 
-	    // NextiaJD
-	    {"BOOLEAN", DataType::FLS_STR},
-
-	    // TPCH
-	    {"DECIMAL(15,2)", DataType::DECIMAL},
-
-	    // DATE
-	    {"DATE", DataType::DATE},
-	    {"date", DataType::DATE},
-	    // TIMESTAMP
-	    {"TIMESTAMP", DataType::TIMESTAMP},
-	    {"timestamp", DataType::TIMESTAMP},
-
-	};
-
-	const auto it = TABLE.find(str);
-	if (it == TABLE.end()) {
-		throw std::runtime_error("type " + str + " not found");
+	if (std::regex_match(s, decimal_re)) {
+		return DataType::DECIMAL;
 	}
 
+	// 3) Regex for VARCHAR(n)
+	static const std::regex varchar_re(R"(^VARCHAR(?:\(\d+\))?$)");
+	if (std::regex_match(s, varchar_re)) {
+		return DataType::FLS_STR;
+	}
+
+	// 4) Static table of all the remaining fixed names (also all uppercase)
+	static const std::unordered_map<string, DataType> TABLE {
+	    // FLS types
+	    {"FLS_I64", DataType::INT64},   {"FLS_I32", DataType::INT32}, {"FLS_I16", DataType::INT16},
+	    {"FLS_I08", DataType::INT8},    {"FLS_U08", DataType::UINT8}, {"FLS_DBL", DataType::DOUBLE},
+	    {"FLS_STR", DataType::FLS_STR}, {"BIGINT", DataType::INT64},  {"STRING", DataType::FLS_STR},
+	    {"DOUBLE", DataType::DOUBLE},   {"LIST", DataType::LIST},     {"STRUCT", DataType::STRUCT},
+	    {"MAP", DataType::MAP},         {"FLOAT", DataType::FLOAT},   {"BOOLEAN", DataType::FLS_STR},
+	    {"INTEGER", DataType::INT64},   {"CHAR", DataType::FLS_STR},  {"BIGINT", DataType::INT64},
+	    {"TIME", DataType::FLS_STR},    {"DATE", DataType::DATE},     {"TIMESTAMP", DataType::TIMESTAMP},
+	    {"SMALLINT", DataType::INT16},
+
+	    // …add any other fixed names here…
+	};
+
+	const auto it = TABLE.find(s);
+	if (it == TABLE.end()) {
+		throw std::runtime_error("type “" + str + "” not found");
+	}
 	return it->second;
 }
 
@@ -315,7 +123,7 @@ std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pai
 	for (const auto& ptr : pairs) {
 		if (!ptr) {
 			continue;
-		}                                          // defensive: skip nulls
+		} // defensive: skip nulls
 		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
 
 		if (!first) {
@@ -487,7 +295,7 @@ void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
 constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
 void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
-	                 j = nlohmann::json {
+    j = nlohmann::json {
         //
         {OPERATOR_TOKEN, expression_result.operator_token}, //
         {SIZE, expression_result.size},                     //
