@@ -12,8 +12,8 @@ from generator_helpers.date_generator import *
 from generator_helpers.timestamp_generator import *
 from generator_helpers.struct_generator import *
 from generator_helpers.list_generator import list_data
-from generator_helpers.common import *
 from generator_helpers.write_helpers import *
+from generator_helpers.byte_array_generator import *
 
 
 # ---------------------------
@@ -581,6 +581,7 @@ def generate_single_column():
     generate_float()
     fls_date()
     fls_timestamp()
+    byte_array_data()
 
 
 def generate_irregular_data():
