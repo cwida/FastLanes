@@ -31,10 +31,7 @@ int main() {
 
 		// 4) Step 1: Read the CSV file from the specified directory path
 		std::cout << "-- Step 1: Reading CSV data from directory: " << example_dir_path << std::endl;
-		con1->set_n_vectors_per_rowgroup(64)
-		    .enable_verbose()
-		    .read_csv(example_dir_path)
-		    .force_schema_pool({OperatorToken::EXP_UNCOMPRESSED_STR});
+		con1->read_csv(example_dir_path);
 		std::cout << "-- Step 1 complete: CSV data loaded into memory." << std::endl;
 
 		// 5) Step 2: Write the data to the FastLanes file format
