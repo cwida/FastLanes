@@ -93,6 +93,11 @@ public:
 	// @param n_vecs The desired sample size in terms of vector count. Use 0 to default to the row group size.
 	// @return Reference to the current Connection object.
 	Connection& set_sample_size(n_t n_vecs);
+	// API:
+	// Enables verbose mode. When verbose is enabled, the table descriptor
+	// is emitted in JSON format to the same file path as the “fastlanes”
+	// artifact, but with a “.json” extension.
+	Connection& enable_verbose();
 	//
 	[[nodiscard]] n_t get_sample_size() const;
 	//
