@@ -22,12 +22,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install latest flatc from GitHub releases
+      - name: Install latest flatc from SourceForge
         run: |
-          curl -sL \
-            https://github.com/google/flatbuffers/releases/download/v25.2.10/flatc_linux_x64 \
-            -o flatc && chmod +x flatc
-          sudo mv flatc /usr/local/bin/flatc
+          # grab the g++-13 build (2.5 MB)
+          curl -L \
+            -o flatc.zip \
+            https://sourceforge.net/projects/flatbuffers.mirror/files/v25.2.10/Linux.flatc.binary.g%2B%2B-13.zip/download
+          # unpack and install
+          sudo apt-get update && sudo apt-get install -y unzip
+          unzip flatc.zip -d flatc
+          sudo mv flatc/flatc /usr/local/bin/flatc
+          sudo chmod +x /usr/local/bin/flatc
 
       - name: Generate FlatBuffers C++ (footer)
         run: make generate_footer
