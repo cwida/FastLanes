@@ -54,7 +54,7 @@ jobs:
           FILE=src/include/fls/footer/footer_generated.h
           before=$(stat -c %Y "$FILE")
           sleep 1
-          make -C mk generate_footer
+          make generate_footer
           after=$(stat -c %Y "$FILE")
           if [ "$after" -le "$before" ]; then
             echo "❌ $FILE timestamp did not update (before=$before, after=$after)"
