@@ -1,0 +1,69 @@
+name: FlatBuffers CI
+
+# ─────────────────────────────────────────────────────────────
+# Trigger on every push & PR, on all branches
+# ─────────────────────────────────────────────────────────────
+on:
+  push:     # no branches filter ⇒ every branch
+  pull_request:  # no branches filter ⇒ every target branch
+concurrency:
+  group: flatbuffers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flatbuffers:
+    name: Generate & Validate FlatBuffers + Build FastLanes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install FlatBuffers compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatbuffers-compiler
+
+      - name: Generate FlatBuffers C++ (footer)
+        run: make generate_footer
+
+      - name: Verify generated headers exist
+        run: |
+          if [ ! -f src/include/fls/footer/datatype_generated.h ]; then
+            echo "❌ datatype_generated.h not found"
+            exit 1
+          fi
+          if [ ! -f src/include/fls/footer/footer_generated.h ]; then
+            echo "❌ footer_generated.h not found"
+            exit 1
+          fi
+          echo "✅ All expected headers found"
+
+      - name: Check regeneration updates timestamps
+        run: |
+          FILE=src/include/fls/footer/footer_generated.h
+          before=$(stat -c %Y "$FILE")
+          sleep 1
+          make -C mk generate_footer
+          after=$(stat -c %Y "$FILE")
+          if [ "$after" -le "$before" ]; then
+            echo "❌ $FILE timestamp did not update (before=$before, after=$after)"
+            exit 1
+          else
+            echo "✅ $FILE timestamp updated (before=$before → after=$after)"
+          fi
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build build-essential
+
+      - name: Configure FastLanes
+        run: |
+          mkdir -p build
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+
+      - name: Build FastLanes
+        run: cmake --build build --parallel $(nproc)
