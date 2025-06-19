@@ -104,8 +104,9 @@ struct material_visitor {
 			str_col->length_arr.push_back(opr->Length()[idx]);
 		}
 		const size_t old_size = str_col->byte_arr.size(); // Save the current size
-		str_col->byte_arr.resize(old_size + opr->byte_arr_segment.Size());
-		std::memcpy(str_col->byte_arr.data() + old_size, opr->Data(), opr->byte_arr_segment.Size());
+		const size_t new_size = opr->byte_arr_segment.Size();
+		str_col->byte_arr.resize(old_size + new_size);
+		std::memcpy(str_col->byte_arr.data() + old_size, opr->Data(), new_size);
 	}
 	void operator()(const sp<dec_fsst_opr>& opr, up<FLSStrColumn>& str_col) const {
 		opr->Decode(str_col->byte_arr, str_col->length_arr);

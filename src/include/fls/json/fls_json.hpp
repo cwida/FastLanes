@@ -76,7 +76,7 @@ void from_json(const nlohmann::json& j, ExpressionResultT& p);
 \*--------------------------------------------------------------------------------------------------------------------*/
 class JSON {
 public:
-	static n_t write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor);
+	static n_t write(const Connection& connection, const path& file_path, TableDescriptorT& table_descriptor);
 };
 
 /// write the footer or profiling as json file

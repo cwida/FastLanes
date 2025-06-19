@@ -1,6 +1,6 @@
+#include "fls/expression/rpn.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/expression/rpn.hpp"
 #include "fls/std/unordered_set.hpp"
 
 namespace fastlanes {

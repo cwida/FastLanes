@@ -55,7 +55,7 @@ col_pt init_logical_columns(const ColumnDescriptorT& col_descriptor) {
 	case DataType::FLOAT:
 		return make_unique<flt_col_t>();
 	case DataType::STR:
-		return make_unique<str_col_t>();
+		FLS_UNREACHABLE()
 	case DataType::DOUBLE:
 		return make_unique<dbl_col_t>();
 	case DataType::FALLBACK:
@@ -66,6 +66,8 @@ col_pt init_logical_columns(const ColumnDescriptorT& col_descriptor) {
 		return make_unique<col_i32>();
 	case DataType::TIMESTAMP:
 		return make_unique<col_i64>();
+	case DataType::BYTE_ARRAY:
+		return make_unique<FLSStrColumn>();
 	default:
 		FLS_UNREACHABLE();
 	}
@@ -711,6 +713,7 @@ FlsStrColumnView::FlsStrColumnView(const col_pt& column)
 		                                  fsst_string_p   = fls_str_column->fsst_str_p_arr.data();
 		                                  fsst_length_ptr = fls_str_column->fsst_length_arr.data();
 		                                  fls_string_p    = fls_str_column->fls_str_arr.data();
+		                                  byte_arr_p      = fls_str_column->byte_arr.data();
 
 		                                  return fls_str_column->m_stats;
 	                                  },

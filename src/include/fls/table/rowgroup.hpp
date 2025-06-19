@@ -150,6 +150,7 @@ public:
 
 public:
 	uint8_t**       string_p;
+	uint8_t*        byte_arr_p;
 	len_t*          length_ptr;
 	const n_t*      ttl_size_ptr;
 	n_t             vec_idx;

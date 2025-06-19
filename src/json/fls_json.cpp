@@ -41,14 +41,29 @@ DataType TypeLookUp(const string& str) {
 	// 4) Static table of all the remaining fixed names (also all uppercase)
 	static const std::unordered_map<string, DataType> TABLE {
 	    // FLS types
-	    {"FLS_I64", DataType::INT64},   {"FLS_I32", DataType::INT32}, {"FLS_I16", DataType::INT16},
-	    {"FLS_I08", DataType::INT8},    {"FLS_U08", DataType::UINT8}, {"FLS_DBL", DataType::DOUBLE},
-	    {"FLS_STR", DataType::FLS_STR}, {"BIGINT", DataType::INT64},  {"STRING", DataType::FLS_STR},
-	    {"DOUBLE", DataType::DOUBLE},   {"LIST", DataType::LIST},     {"STRUCT", DataType::STRUCT},
-	    {"MAP", DataType::MAP},         {"FLOAT", DataType::FLOAT},   {"BOOLEAN", DataType::FLS_STR},
-	    {"INTEGER", DataType::INT64},   {"CHAR", DataType::FLS_STR},  {"BIGINT", DataType::INT64},
-	    {"TIME", DataType::FLS_STR},    {"DATE", DataType::DATE},     {"TIMESTAMP", DataType::TIMESTAMP},
+	    {"FLS_I64", DataType::INT64},
+	    {"FLS_I32", DataType::INT32},
+	    {"FLS_I16", DataType::INT16},
+	    {"FLS_I08", DataType::INT8},
+	    {"FLS_U08", DataType::UINT8},
+	    {"FLS_DBL", DataType::DOUBLE},
+	    {"FLS_STR", DataType::FLS_STR},
+	    {"BIGINT", DataType::INT64},
+	    {"STRING", DataType::FLS_STR},
+	    {"DOUBLE", DataType::DOUBLE},
+	    {"LIST", DataType::LIST},
+	    {"STRUCT", DataType::STRUCT},
+	    {"MAP", DataType::MAP},
+	    {"FLOAT", DataType::FLOAT},
+	    {"BOOLEAN", DataType::FLS_STR},
+	    {"INTEGER", DataType::INT64},
+	    {"CHAR", DataType::FLS_STR},
+	    {"BIGINT", DataType::INT64},
+	    {"TIME", DataType::FLS_STR},
+	    {"DATE", DataType::DATE},
+	    {"TIMESTAMP", DataType::TIMESTAMP},
 	    {"SMALLINT", DataType::INT16},
+	    {"BYTE_ARRAY", DataType::BYTE_ARRAY},
 
 	    // …add any other fixed names here…
 	};
@@ -123,7 +138,7 @@ std::string to_string(const std::vector<std::unique_ptr<ExpressionResultT>>& pai
 	for (const auto& ptr : pairs) {
 		if (!ptr) {
 			continue;
-		} // defensive: skip nulls
+		}                                          // defensive: skip nulls
 		const auto& [operator_token, size] = *ptr; // structured-bind the pointed-to pair
 
 		if (!first) {
@@ -197,11 +212,17 @@ void to_json(nlohmann::json& j, const RowgroupEncodingResult& p) {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * NewRpn
 \*--------------------------------------------------------------------------------------------------------------------*/
-constexpr const auto* OPERATORS_KEY = "1, [REQUIRED], OPERATOR KEY";
-constexpr const auto* OPERANDS_KEY  = "2, [OPTIONAL], OPERAND KEY";
+constexpr const auto* OPERATORS_KEY     = "OPERATOR KEY";
+constexpr const auto* OPERATORS_KEY_STR = "OPERATOR KEY STRINGS";
+constexpr const auto* OPERANDS_KEY      = "OPERAND KEY";
 
 void to_json(nlohmann::json& j, const RPNT& p) {
-	j = nlohmann::json {{OPERATORS_KEY, p.operator_tokens}, {OPERANDS_KEY, p.operand_tokens}};
+	std::vector<std::string> op_strs(p.operator_tokens.size());
+	std::transform(p.operator_tokens.begin(), p.operator_tokens.end(), op_strs.begin(), [](OperatorToken tok) {
+		return token_to_string(tok);
+	});
+	j = nlohmann::json {
+	    {OPERATORS_KEY, p.operator_tokens}, {OPERATORS_KEY_STR, op_strs}, {OPERANDS_KEY, p.operand_tokens}};
 }
 void from_json(const nlohmann::json& j, RPNT& p) {
 	j.at(OPERATORS_KEY).get_to(p.operator_tokens); //
@@ -253,20 +274,11 @@ void from_json(const nlohmann::json& j, SegmentDescriptorT& p) {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * JSON
 \*--------------------------------------------------------------------------------------------------------------------*/
-n_t JSON::write(const Connection& connection, const path& dir_path, TableDescriptorT& table_descriptor) {
-
+n_t JSON::write(const Connection& connection, const path& file_path, TableDescriptorT& table_descriptor) {
 	const nlohmann::json table_descriptor_json      = table_descriptor;
 	const auto           table_descriptor_json_dump = table_descriptor_json.dump();
 
-	if (connection.is_footer_inlined()) {
-		const path fls_path = dir_path / FASTLANES_FILE_NAME;
-		File::append(fls_path, table_descriptor_json_dump);
-
-		return table_descriptor_json_dump.size();
-	}
-
-	const path table_descriptor_path = dir_path / TABLE_DESCRIPTOR_FILE_NAME;
-	File::write(table_descriptor_path, table_descriptor_json_dump);
+	File::write(file_path, table_descriptor_json_dump);
 
 	return table_descriptor_json_dump.size();
 }
@@ -295,7 +307,7 @@ void from_json(const nlohmann::json& j, TableDescriptorT& table_descriptor) {
 constexpr const auto* OPERATOR_TOKEN = "1  [REQUIRED], OPERATOR_TOKEN";
 constexpr const auto* SIZE           = "2  [REQUIRED], SIZE";
 void                  to_json(nlohmann::json& j, const ExpressionResultT& expression_result) {
-    j = nlohmann::json {
+	                 j = nlohmann::json {
         //
         {OPERATOR_TOKEN, expression_result.operator_token}, //
         {SIZE, expression_result.size},                     //

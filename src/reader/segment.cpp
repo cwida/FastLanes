@@ -73,10 +73,10 @@ n_t SegmentView::Size() const {
 	FLS_ASSERT_L(vec_idx, get_size(entry_point_view))
 
 	if (vec_idx == 0) {
-		return get_offset(entry_point_view, 0);
+		return get_offset(entry_point_view, 1);
 	}
 
-	return get_offset(entry_point_view, vec_idx) - get_offset(entry_point_view, vec_idx - 1);
+	return get_offset(entry_point_view, vec_idx + 1) - get_offset(entry_point_view, vec_idx);
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\

@@ -824,6 +824,10 @@ void expression_check_column(const rowgroup_pt&   rowgroup,
 		TypedDecide<flt_pt>(rowgroup, column_descriptor, footer, fls);
 		break;
 	}
+	case DataType::BYTE_ARRAY: {
+		column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_UNCOMPRESSED_STR);
+		break;
+	}
 	case DataType::STR:
 	case DataType::INVALID:
 	default:

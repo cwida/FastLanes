@@ -53,7 +53,6 @@ public:
 	void       PointTo(n_t vec_idx);
 	std::byte* Data() const;
 	len_t*     Length() const;
-	n_t*       ByteArrSize();
 
 public:
 	SegmentView byte_arr_segment;

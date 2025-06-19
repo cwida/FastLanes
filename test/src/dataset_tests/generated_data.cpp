@@ -47,6 +47,9 @@ TEST_F(FastLanesReaderTester, SINGLE_COLUMN_DATE) {
 TEST_F(FastLanesReaderTester, SINGLE_COLUMN_TIMESTAMP) {
 	TestCorrectness(GENERATED::SINGLE_COLUMN_TIMESTAMP);
 }
+TEST_F(FastLanesReaderTester, SINGLE_COLUMN_BYTE_ARRAY) {
+	TestCorrectness(GENERATED::SINGLE_COLUMN_BYTE_ARRAY);
+}
 
 // All Constants
 TEST_F(FastLanesReaderTester, ALL_CONSTANT) {

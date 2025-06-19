@@ -203,7 +203,7 @@ def generate_languages(faker, row_id):
 
 def generate_strings(faker, row_id):
     """Generates a list containing a single floating-point number."""
-    LIST = [1]
+    LIST = ["A","BB","CCC","DDDD"]
     size = len(LIST)
     return [LIST[row_id % size]]
 

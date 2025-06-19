@@ -50,7 +50,7 @@ generate: install
 	"$(PYTHON)" "$(SCRIPT)"
 
 # 4️⃣  House-keeping helpers
-clean:
+clean-embeddings:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 
 venv-clean:

@@ -58,8 +58,8 @@ TEST(TableDescriptorTest, ComplexFixture) {
               "6, [REQUIRED], COLUMN OFFSET(B)": 0,
               "7, [REQUIRED], COLUMN SIZE(B)": 262,
               "8, [REQUIRED], RPN": {
-                "1, [REQUIRED], OPERATOR KEY": [112],
-                "2, [OPTIONAL], OPERAND KEY": [0,1,2,3]
+                "OPERATOR KEY": [112],
+                "OPERAND KEY": [0,1,2,3]
               },
               "9, [OPTIONAL], N NULL": 0,
               "B, [REQUIRED], MAX": { "1, [REQUIRED], BINARY DATA": [127] },
