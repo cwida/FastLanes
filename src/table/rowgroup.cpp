@@ -10,6 +10,7 @@
 #include "fls/table/attribute.hpp"
 #include "fls/table/chunk.hpp"
 #include "fls/table/vector.hpp"
+#include <iostream>
 
 namespace fastlanes {
 
@@ -81,15 +82,14 @@ void init_logical_columns(const ColumnDescriptors& footer, rowgroup_pt& columns)
 	}
 }
 
-Rowgroup::Rowgroup(const RowgroupDescriptorT& footer, const Connection& connection)
+Rowgroup::Rowgroup(const RowgroupDescriptorT& footer, n_t capacity)
     : m_descriptor(footer)
     , n_tup(footer.m_n_tuples)
-    , m_connection(connection)
-    , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {
+    , capacity(capacity) {
 	init_logical_columns(footer.m_column_descriptors, internal_rowgroup);
 }
 
-up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs, const Connection& connection) {
+up<Rowgroup> Rowgroup::Project(const vector<idx_t>& idxs) {
 	/**/
 	FLS_IMPLEMENT_THIS()
 	// auto  result = make_unique<Rowgroup>(*m_descriptor.Project(idxs), connection);

@@ -77,7 +77,7 @@ void parse_json_tuple(const nlohmann::json& json, rowgroup_pt& columns, const Co
 }
 
 up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
-	auto table = make_unique<Table>(connection);
+	auto table = make_unique<Table>();
 	bool is_schema_found {false};
 	bool is_file_found {false};
 	path found_jsonl_path;
@@ -112,7 +112,10 @@ up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
 	string        line;
 
 	n_t  n_tup {0};
-	auto cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, connection);
+	// TODO: capacity is really max_n_tuple, this shouldn't be part of the row group as it is more a policy on how to
+	// handle a row group.
+	auto max_n_tuple = CFG::N_VEC_PER_RG * CFG::VEC_SZ;
+	auto cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, max_n_tuple);
 	while (getline(jsonl_stream, line)) {
 		const auto tuple = nlohmann::json::parse(line);
 		parse_json_tuple(tuple, cur_rowgroup->internal_rowgroup, rowgroup_descriptor.m_column_descriptors);
@@ -121,7 +124,7 @@ up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
 		if (n_tup == cur_rowgroup->capacity) {
 			cur_rowgroup->n_tup = n_tup;
 			table->m_rowgroups.push_back(std::move(cur_rowgroup));
-			cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, connection);
+			cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, max_n_tuple);
 			n_tup        = 0;
 		}
 	}

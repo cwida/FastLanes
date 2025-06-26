@@ -14,7 +14,7 @@ class Connection;
 \*--------------------------------------------------------------------------------------------------------------------*/
 class FlatBuffers {
 public:
-	static n_t Write(const Connection& connection, const path& file_path, TableDescriptorT& table_descriptor);
+	static n_t Write(fls_bool inlined, const path& file_path, TableDescriptorT& table_descriptor);
 };
 
 /// write the footer or profiling as json file

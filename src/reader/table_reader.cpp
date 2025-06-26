@@ -25,7 +25,7 @@ TableDescriptorT& TableReader::get_file_metadata() const {
 };
 
 up<Table> TableReader::materialize() const {
-	auto table_up = std::make_unique<Table>(m_connection);
+	auto table_up = std::make_unique<Table>();
 
 	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->m_rowgroup_descriptors.size(); rowgroup_idx++) {
 		auto rowgroup_up = get_rowgroup_reader(rowgroup_idx)->materialize();

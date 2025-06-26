@@ -21,7 +21,7 @@ public:
 
 class Table {
 public:
-	Table(const Connection& connection);
+	Table();
 
 public:
 	n_t get_n_rowgroups() const;
@@ -36,7 +36,6 @@ public:
 
 public:
 	vector<up<Rowgroup>> m_rowgroups;
-	const Connection&    m_connection;
 };
 } // namespace fastlanes
 

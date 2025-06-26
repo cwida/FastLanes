@@ -24,11 +24,7 @@ n_t WriteBuffer(const std::filesystem::path& file_path,
 	return static_cast<n_t>(buf_size);
 }
 
-n_t FlatBuffers::Write(const Connection&            conn,
-                       const std::filesystem::path& file_path,
-                       TableDescriptorT&            table_descriptor) {
-	const auto inlined = conn.is_footer_inlined();
-
+n_t FlatBuffers::Write(const fls_bool inlined, const std::filesystem::path& file_path, TableDescriptorT& table_descriptor) {
 	const auto footer_path = inlined ? file_path : (file_path.parent_path() / FOOTER_NAME);
 	const auto mode        = std::ios::binary | (inlined ? std::ios::app : std::ios::out);
 

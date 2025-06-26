@@ -4,17 +4,17 @@
 
 namespace fastlanes {
 
-Table::Table(const Connection& connection)
-    : m_connection(connection) {
+Table::Table() {
 }
+
 n_t Table::get_n_rowgroups() const {
 	return m_rowgroups.size();
 }
 
 up<Table> Table::Project(const vector<idx_t>& idxs) {
-	auto result_table_up = make_unique<Table>(m_connection);
+	auto result_table_up = make_unique<Table>();
 	for (const auto& rowgroup : m_rowgroups) {
-		result_table_up->m_rowgroups.push_back(rowgroup->Project(idxs, m_connection));
+		result_table_up->m_rowgroups.push_back(rowgroup->Project(idxs));
 	}
 
 	return result_table_up;

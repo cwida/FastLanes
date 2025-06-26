@@ -12,7 +12,7 @@
 namespace fastlanes {
 
 up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
-	auto table = make_unique<Table>(connection);
+	auto table = make_unique<Table>();
 	bool is_schema_found {false};
 	bool is_file_found {false};
 	path found_csv_path;
@@ -52,7 +52,10 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 	aria::csv::CsvParser parser     = aria::csv::CsvParser(csv_stream).delimiter(delimiter).terminator(terminator);
 
 	n_t  n_tup {0};
-	auto cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, connection);
+	// TODO: capacity is really max_n_tuple, this shouldn't be part of the row group as it is more a policy on how to
+	// handle a row group.
+	auto max_n_tuple = CFG::N_VEC_PER_RG * CFG::VEC_SZ;
+	auto cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, max_n_tuple);
 	for (auto& tuple : parser) {
 		for (uint64_t col_idx {0}; auto& val : tuple) {
 			[[maybe_unused]] const auto n_cols = cur_rowgroup->ColCount();
@@ -66,7 +69,7 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 		if (n_tup == cur_rowgroup->capacity) {
 			cur_rowgroup->n_tup = n_tup;
 			table->m_rowgroups.push_back(std::move(cur_rowgroup));
-			cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, connection);
+			cur_rowgroup = make_unique<Rowgroup>(rowgroup_descriptor, max_n_tuple);
 			n_tup        = 0;
 		}
 	}

@@ -15,12 +15,10 @@
 #include "fls/std/vector.hpp"     // for vector
 #include "fls/table/rowgroup.hpp" // for Rowgroup
 #include "fls/table/table.hpp"    // for Reader
-#include "fls/writer/writerv2.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Dir;
-class Writer;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Config
@@ -50,7 +48,7 @@ public:
 	friend class column;
 	friend class equal;
 	friend class RowgroupEncoder;
-	friend class Wizard;
+	// friend class Wizard;
 	friend class Encoder;
 	friend class CsvReader;
 	friend class Rowgroup;
@@ -66,8 +64,6 @@ public:
 	Connection& read_json(const path& dir_path);
 	///! read a fls file return a reader
 	up<TableReader> read_fls(const path& file_path);
-	///! Create a writer on top of the current connection.
-	up<Writer> writer(const path& target_path, std::vector<std::unique_ptr<ColumnDescriptorT>>& schema);
 	///!
 	Connection& spell();
 	///!

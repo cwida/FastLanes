@@ -19,7 +19,7 @@
 #include "fls/table/dir.hpp"      // for Dir, FileT
 #include "fls/table/rowgroup.hpp" // for Rowgroup
 #include "fls/table/table.hpp"
-#include "fls/wizard/wizard.hpp" // for Wizard
+// #include "fls/wizard/wizard.hpp" // for Wizard
 #include <filesystem>            // for directory_iterator, begin
 #include <memory>                // for make_unique, operator==
 #include <stdexcept>             // for runtime_error
@@ -89,7 +89,7 @@ Connection& Connection::spell() {
 		throw std::runtime_error("Data is not loaded.");
 	}
 
-	m_table_descriptor = Wizard::Spell(*this);
+	// m_table_descriptor = Wizard::Spell(*this);
 
 	return *this;
 }

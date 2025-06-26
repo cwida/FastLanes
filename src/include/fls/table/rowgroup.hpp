@@ -198,7 +198,7 @@ public:
 	friend class column;
 
 public:
-	explicit Rowgroup(const RowgroupDescriptorT& rowgroup_footer, const Connection& connection);
+	explicit Rowgroup(const RowgroupDescriptorT& rowgroup_footer, n_t capacity);
 
 	Rowgroup(const Rowgroup&)             = delete;
 	Rowgroup& operator=(const Rowgroup&)  = delete;
@@ -225,9 +225,9 @@ public:
 	///
 	[[nodiscard]] RowgroupDescriptor& GetRowgroupDescriptor();
 	///
-	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs, const Connection& connection);
+	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs);
 	///
-	[[nodiscard]] up<Rowgroup> Project(const vector<string>& idxs, const Connection& connection);
+	[[nodiscard]] up<Rowgroup> Project(const vector<string>& idxs);
 	///
 	void GetStatistics();
 	///
@@ -243,7 +243,6 @@ public: /* Members */
 	RowgroupDescriptorT m_descriptor;
 	n_t                 n_tup;
 	rowgroup_pt         internal_rowgroup;
-	const Connection&   m_connection;
 	const n_t           capacity;
 };
 
