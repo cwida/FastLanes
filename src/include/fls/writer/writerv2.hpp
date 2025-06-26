@@ -84,6 +84,34 @@ inline bool IsNumeric(const string& val_str) {
 	return true;
 }
 
+inline void fill_in(col_pt& col, n_t how_many_to_fill) {
+	visit(overloaded {
+			  [&](up<FLSStrColumn>& string_col) {
+				  const auto last_value_length = string_col->length_arr.back();
+
+				  for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+					  const auto size = string_col->byte_arr.size();
+					  for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
+						  string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+						  string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+					  }
+					  string_col->length_arr.push_back(last_value_length);
+					  string_col->fsst_length_arr.push_back(last_value_length);
+				  }
+			  },
+			  [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
+				  PT last_element = typed_col->data.back();
+				  for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+					  typed_col->data.push_back(last_element);
+				  }
+			  },
+			  [&](up<Struct>& struct_col) {},
+			  [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
+		  },
+		  col);
+}
+
+
 struct WriterOptions {
 	//! Schema which is used to encode incoming data.
 	std::vector<std::unique_ptr<ColumnDescriptorT>> schema;
@@ -288,7 +316,7 @@ public:
 		row_group_descriptor->m_column_descriptors = std::move(cds);
 		// TODO: We don't use the max capacity, managed by the writer
 		row_group        = make_unique<Rowgroup>(*row_group_descriptor, 2048);
-		row_group->n_tup = 2048;
+		n_tuples_per_column.resize(file_writer.options.schema.size());
 	}
 	~RowGroupWriter() {
 	}
@@ -301,6 +329,17 @@ public:
 	}
 
 	void Flush() {
+		// Fill in the values up to the used vector size.
+		for (n_t col_idx {0}; col_idx < row_group->internal_rowgroup.size(); col_idx++) {
+			auto& col_pt = row_group->internal_rowgroup[col_idx];
+			const n_t leftover = n_tuples_per_column[0] % file_writer.options.vector_size;
+			const auto to_fill = file_writer.options.vector_size - leftover;
+
+			fill_in(col_pt, to_fill);
+		}
+
+		std::cout << "tuple count: " << n_tuples_per_column[0] << "\n";
+		row_group->n_tup = n_tuples_per_column[0];
 		file_writer.FlushRowGroup(std::move(row_group));
 		// TODO (optional): After flushing we create a new row_group so that we can keep reusing the same row_group
 		// writer.
@@ -332,6 +371,8 @@ private:
 			      },
 			      col_variant);
 		}
+
+		n_tuples_per_column[col_idx] += src_column.size();
 	}
 
 	template <typename PT>
@@ -461,10 +502,10 @@ private:
 
 		const idx_t prev_size = data.size();
 		data.resize(prev_size + count);
-		nulls.resize(prev_size + count);
+		// nulls.resize(prev_size + count);
 
 		auto target_ptr = data.data() + prev_size;
-		auto null_ptr   = nulls.data() + prev_size;
+		// auto null_ptr   = nulls.data() + prev_size;
 
 		PT&   min                = stats.min;
 		PT&   max                = stats.max;
@@ -475,7 +516,8 @@ private:
 		for (idx_t i = 0; i < count; i++) {
 			PT         value   = src_column[i];
 			const bool is_null = value == TypedNull<PT>();
-			null_ptr[i]        = is_null;
+			// null_ptr[i]        = is_null;
+			nulls.push_back(is_null);
 
 			if (is_null) {
 				++n_nulls;
@@ -509,7 +551,7 @@ private:
 	FileWriter&             file_writer;
 	up<RowgroupDescriptorT> row_group_descriptor;
 	up<Rowgroup>            row_group;
-	std::vector<n_t>        n_tuples_per_column;
+	std::vector<n_t>        n_tuples_per_column{};
 };
 
 } // namespace fastlanes
