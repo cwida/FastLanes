@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Requirements : -------------------------------------------------------------------------------------------------------
-find_program(CLANG_CXX NAMES clang++ REQUIRED)
-find_program(CLANG_C NAMES clang REQUIRED)
-
-if (CLANG_CXX AND CLANG_C)
-  # Set Clang as the compiler explicitly
-  set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
-  set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
-endif ()
+#find_program(CLANG_CXX NAMES clang++ REQUIRED)
+#find_program(CLANG_C NAMES clang REQUIRED)
+#
+#if (CLANG_CXX AND CLANG_C)
+#  # Set Clang as the compiler explicitly
+#  set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
+#  set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
+#endif ()
 
 
 #  ---------------------------------------------------------------------------------------------------------------------
