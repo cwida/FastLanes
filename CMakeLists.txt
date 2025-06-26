@@ -9,11 +9,6 @@ cmake_minimum_required(VERSION 3.22)
 #  set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
 #  set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
 #endif ()
-if (APPLE AND NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3"
-            CACHE STRING "Minimum macOS version")
-endif ()
-
 
 #  ---------------------------------------------------------------------------------------------------------------------
 # Prevent Windows <minwindef.h> from defining min/max macros,
