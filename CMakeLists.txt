@@ -4,12 +4,10 @@ cmake_minimum_required(VERSION 3.22)
 find_program(CLANG_CXX NAMES clang++ REQUIRED)
 find_program(CLANG_C NAMES clang REQUIRED)
 
-if (NOT CMAKE_C_COMPILER_ID MATCHES "Clang" OR
-        NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    message(FATAL_ERROR
-            "FastLanes requires Clang or AppleClang as the C/C++ compiler. "
-            "Please configure CMAKE_C_COMPILER and CMAKE_CXX_COMPILER "
-            "before adding FastLanes as a subdirectory.")
+if (CLANG_CXX AND CLANG_C)
+    # Set Clang as the compiler explicitly
+    set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
+    set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
 endif ()
 
 #  ---------------------------------------------------------------------------------------------------------------------
