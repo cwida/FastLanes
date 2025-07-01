@@ -223,7 +223,7 @@ public:
 	///
 	[[nodiscard]] DataType GetDataType(idx_t col_idx) const;
 	///
-	[[nodiscard]] RowgroupDescriptor& GetRowgroupDescriptor();
+	[[nodiscard]] RowgroupDescriptorT& GetRowgroupDescriptor();
 	///
 	[[nodiscard]] up<Rowgroup> Project(const vector<idx_t>& idxs);
 	///

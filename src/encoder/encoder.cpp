@@ -37,7 +37,7 @@ void Encoder::encode(Table& table, TableDescriptorT& descriptor, const path& fil
 			// interpret
 			InterpreterState state;
 			auto             physical_expr_up =
-				Interpreter::Encoding::Interpret(*column_descriptor, rowgroup.internal_rowgroup, state);
+			    Interpreter::Encoding::Interpret(*column_descriptor, rowgroup.internal_rowgroup, state);
 
 			// execute the expression for each vector
 			for (n_t vec_idx {0}; vec_idx < rowgroup_descriptor->m_n_vec; ++vec_idx) {
@@ -56,6 +56,41 @@ void Encoder::encode(Table& table, TableDescriptorT& descriptor, const path& fil
 		buf.Reset();
 	}
 	descriptor.m_table_binary_size = cur_rowgroup_offset;
+}
+
+n_t Encoder::encode_row_group(const rowgroup_pt&   rowgroup,
+                              RowgroupDescriptorT& footer,
+                              const path&          file_path,
+                              n_t                  offset) {
+	// init
+	Buf buf; // TODO[memory pool]
+	io file_io = make_unique<File>(file_path); // TODO[io]
+
+	// write each column
+	for (auto& column_descriptor : footer.m_column_descriptors) {
+		uint8_t helper_buffer[sizeof(entry_point_t) * (CFG::N_VEC_PER_RG)]; // todo [fix me]
+
+		// interpret
+		InterpreterState state;
+		auto             physical_expr_up = Interpreter::Encoding::Interpret(*column_descriptor, rowgroup, state);
+
+		// execute the expression for each vector
+		for (n_t vec_idx {0}; vec_idx < footer.m_n_vec; ++vec_idx) {
+			physical_expr_up->PointTo(vec_idx);
+			ExprExecutor::execute(*physical_expr_up, vec_idx);
+		}
+
+		physical_expr_up->Finalize();
+		physical_expr_up->Flush(buf, *column_descriptor, helper_buffer);
+	}
+
+	IO::append(file_io, buf);
+	footer.m_size = buf.Size();
+	// TODO: This probably should get comitted at the last possible step so we can write out of order.
+	footer.m_offset = offset;
+	buf.Reset();
+
+	return footer.m_size;
 }
 
 } // namespace fastlanes

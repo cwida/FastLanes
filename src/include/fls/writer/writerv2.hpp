@@ -27,9 +27,39 @@ struct DataTypeTraits<u08_pt> {
 	using ColT                  = u08_col_t;
 };
 template <>
+struct DataTypeTraits<u16_pt> {
+	static constexpr auto value = DataType::UINT16;
+	using ColT                  = u16_col_t;
+};
+template <>
 struct DataTypeTraits<u32_pt> {
 	static constexpr auto value = DataType::UINT32;
 	using ColT                  = u32_col_t;
+};
+template <>
+struct DataTypeTraits<u64_pt> {
+	static constexpr auto value = DataType::UINT64;
+	using ColT                  = u64_col_t;
+};
+template <>
+struct DataTypeTraits<i08_pt> {
+	static constexpr auto value = DataType::INT8;
+	using ColT                  = col_i08;
+};
+template <>
+struct DataTypeTraits<i16_pt> {
+	static constexpr auto value = DataType::INT16;
+	using ColT                  = col_i16;
+};
+template <>
+struct DataTypeTraits<i32_pt> {
+	static constexpr auto value = DataType::INT32;
+	using ColT                  = col_i32;
+};
+template <>
+struct DataTypeTraits<i64_pt> {
+	static constexpr auto value = DataType::INT64;
+	using ColT                  = col_i64;
 };
 template <>
 struct DataTypeTraits<dbl_pt> {
@@ -86,31 +116,30 @@ inline bool IsNumeric(const string& val_str) {
 
 inline void fill_in(col_pt& col, n_t how_many_to_fill) {
 	visit(overloaded {
-			  [&](up<FLSStrColumn>& string_col) {
-				  const auto last_value_length = string_col->length_arr.back();
+	          [&](up<FLSStrColumn>& string_col) {
+		          const auto last_value_length = string_col->length_arr.back();
 
-				  for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
-					  const auto size = string_col->byte_arr.size();
-					  for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
-						  string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-						  string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-					  }
-					  string_col->length_arr.push_back(last_value_length);
-					  string_col->fsst_length_arr.push_back(last_value_length);
-				  }
-			  },
-			  [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
-				  PT last_element = typed_col->data.back();
-				  for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
-					  typed_col->data.push_back(last_element);
-				  }
-			  },
-			  [&](up<Struct>& struct_col) {},
-			  [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
-		  },
-		  col);
+		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+			          const auto size = string_col->byte_arr.size();
+			          for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
+				          string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+				          string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
+			          }
+			          string_col->length_arr.push_back(last_value_length);
+			          string_col->fsst_length_arr.push_back(last_value_length);
+		          }
+	          },
+	          [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
+		          PT last_element = typed_col->data.back();
+		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
+			          typed_col->data.push_back(last_element);
+		          }
+	          },
+	          [&](up<Struct>& struct_col) {},
+	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
+	      },
+	      col);
 }
-
 
 struct WriterOptions {
 	//! Schema which is used to encode incoming data.
@@ -236,8 +265,11 @@ public:
 	};
 
 	void Open() {
+		table_descriptor = make_unique<TableDescriptorT>();
+		// TODO: Remove connection, or change dependency on inline footer.
+
 		FileHeader::Write(*options.connection, options.file_path);
-		table = make_unique<Table>();
+		cur_file_offset = sizeof(FileHeader);
 	};
 
 	up<RowGroupWriter> CreateRowGroupWriter() {
@@ -245,21 +277,9 @@ public:
 	}
 
 	void Close() {
-		for (auto& rowgroup : table->m_rowgroups) {
-			rowgroup->Init();
-			rowgroup->Cast();
-			rowgroup->Finalize();
-			rowgroup->GetStatistics();
-		}
-		auto wizard           = make_unique<Wizard<FileWriter>>(*this);
-		auto table_descriptor = wizard->Spell();
-		Encoder::encode(*table, *table_descriptor, options.file_path);
-		const n_t table_descriptor_size =
-		    FlatBuffers::Write(options.inlined_footer, options.file_path, *table_descriptor);
-		const FileFooter file_footer {
-		    table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+		table_descriptor->m_table_binary_size = cur_file_offset;
 
-		FileFooter::Write(options.file_path, file_footer);
+		WriteFooter();
 	};
 
 	Table& GetTable() const {
@@ -290,14 +310,30 @@ private:
 
 	    };
 
-	void FlushRowGroup(up<Rowgroup>&& row_group) {
-		// TODO: commit to transport.
-		table->m_rowgroups.push_back(std::move(row_group));
+	void WriteFooter() {
+		const n_t table_descriptor_size =
+		    FlatBuffers::Write(options.inlined_footer, options.file_path, *table_descriptor);
+		const FileFooter file_footer {
+		    table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+
+		FileFooter::Write(options.file_path, file_footer);
+	}
+
+	void FlushRowGroup(up<Rowgroup>&& row_group, up<RowgroupDescriptorT>&& descriptor) {
+		// TODO: Encode in rowgroup writer.
+		cur_file_offset +=
+		    Encoder::encode_row_group(row_group->internal_rowgroup, *descriptor, options.file_path, cur_file_offset);
+		table_descriptor->m_rowgroup_descriptors.push_back(std::move(descriptor));
 	}
 
 private:
 	WriterOptions options;
-	up<Table>     table;
+
+	// TODO: remove
+	up<Table> table;
+
+	up<TableDescriptorT> table_descriptor;
+	n_t                  cur_file_offset = 0;
 };
 
 // TODO: Currently single use, should we make it multiple use?
@@ -306,7 +342,7 @@ public:
 	explicit RowGroupWriter(FileWriter& file_writer)
 	    : file_writer(file_writer) {
 
-		row_group_descriptor = make_unique<RowgroupDescriptorT>();
+		const auto row_group_descriptor = make_unique<RowgroupDescriptorT>();
 
 		std::vector<std::unique_ptr<ColumnDescriptorT>> cds;
 		cds.reserve(file_writer.options.schema.size());
@@ -315,7 +351,7 @@ public:
 		}
 		row_group_descriptor->m_column_descriptors = std::move(cds);
 		// TODO: We don't use the max capacity, managed by the writer
-		row_group        = make_unique<Rowgroup>(*row_group_descriptor, 2048);
+		row_group = make_unique<Rowgroup>(*row_group_descriptor, 0);
 		n_tuples_per_column.resize(file_writer.options.schema.size());
 	}
 	~RowGroupWriter() {
@@ -331,18 +367,33 @@ public:
 	void Flush() {
 		// Fill in the values up to the used vector size.
 		for (n_t col_idx {0}; col_idx < row_group->internal_rowgroup.size(); col_idx++) {
-			auto& col_pt = row_group->internal_rowgroup[col_idx];
-			const n_t leftover = n_tuples_per_column[0] % file_writer.options.vector_size;
-			const auto to_fill = file_writer.options.vector_size - leftover;
+			auto&     col_pt   = row_group->internal_rowgroup[col_idx];
+			const n_t leftover = n_tuples_per_column[col_idx] % file_writer.options.vector_size;
+			if (leftover == 0) {
+				continue;
+			}
 
+			const auto to_fill = file_writer.options.vector_size - leftover;
 			fill_in(col_pt, to_fill);
 		}
 
-		std::cout << "tuple count: " << n_tuples_per_column[0] << "\n";
 		row_group->n_tup = n_tuples_per_column[0];
-		file_writer.FlushRowGroup(std::move(row_group));
+
+		row_group->Init();
+		row_group->Cast();
+		row_group->Finalize();
+		row_group->GetStatistics();
+
+		auto descriptor = make_rowgroup_descriptor(*row_group);
+
+		descriptor->m_n_vec    = row_group->VecCount();
+		descriptor->m_n_tuples = row_group->RowCount();
+
+		const auto wizard = make_unique<Wizard<FileWriter>>(file_writer);
+		wizard->SpellRowGroup(row_group->internal_rowgroup, *descriptor);
+
+		file_writer.FlushRowGroup(std::move(row_group), std::move(descriptor));
 		// TODO (optional): After flushing we create a new row_group so that we can keep reusing the same row_group
-		// writer.
 	};
 
 private:
@@ -419,6 +470,7 @@ private:
 		FLS_UNREACHABLE();
 	}
 
+	// TODO: Verify/optimize
 	void FLSStringIngest(FLSStrColumn& fls_str_column, std::span<const str_pt> src_column) {
 		const auto count = src_column.size();
 
@@ -502,10 +554,10 @@ private:
 
 		const idx_t prev_size = data.size();
 		data.resize(prev_size + count);
-		// nulls.resize(prev_size + count);
+		nulls.resize(prev_size + count);
 
 		auto target_ptr = data.data() + prev_size;
-		// auto null_ptr   = nulls.data() + prev_size;
+		auto null_ptr   = nulls.data() + prev_size;
 
 		PT&   min                = stats.min;
 		PT&   max                = stats.max;
@@ -516,8 +568,7 @@ private:
 		for (idx_t i = 0; i < count; i++) {
 			PT         value   = src_column[i];
 			const bool is_null = value == TypedNull<PT>();
-			// null_ptr[i]        = is_null;
-			nulls.push_back(is_null);
+			null_ptr[i]        = is_null;
 
 			if (is_null) {
 				++n_nulls;
@@ -548,10 +599,9 @@ private:
 	}
 
 private:
-	FileWriter&             file_writer;
-	up<RowgroupDescriptorT> row_group_descriptor;
-	up<Rowgroup>            row_group;
-	std::vector<n_t>        n_tuples_per_column{};
+	FileWriter& file_writer;
+	up<Rowgroup>     row_group;
+	std::vector<n_t> n_tuples_per_column {};
 };
 
 } // namespace fastlanes

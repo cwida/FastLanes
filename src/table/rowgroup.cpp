@@ -615,6 +615,10 @@ n_t Rowgroup::ColCount() const {
 	return m_descriptor.m_column_descriptors.size();
 }
 
+RowgroupDescriptorT& Rowgroup::GetRowgroupDescriptor() {
+	return m_descriptor;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*\
  * TypedColumnView
 \*--------------------------------------------------------------------------------------------------------------------*/

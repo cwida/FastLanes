@@ -29,7 +29,6 @@ enum class ExpressionChoosingStrategy : uint8_t {
 	BEST_COMPRESSION_RATIO = 1,
 };
 
-// TODO: Move to concept
 template <typename Ctx>
 concept WizardContext = requires(Ctx const& c) {
 	{ c.IsForcedSchemaPool() } -> std::convertible_to<bool>;
@@ -48,12 +47,15 @@ public:
 	}
 
 public:
+	void SpellRowGroup(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer) {
+		RowGroupCheck(rowgroup, footer);
+	};
+
 	up<TableDescriptorT> Spell() {
 		const auto& table            = m_ctx.GetTable();
 		auto        table_descriptor = make_table_descriptor(table);
 
 		for (n_t rowgroup_idx {0}; rowgroup_idx < table.get_n_rowgroups(); ++rowgroup_idx) {
-			std::cout << "has rowgroup" << "\n";
 			RowGroupCheck(table.m_rowgroups[rowgroup_idx]->internal_rowgroup,
 			              *table_descriptor->m_rowgroup_descriptors[rowgroup_idx]);
 		}
