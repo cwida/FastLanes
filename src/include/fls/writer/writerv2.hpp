@@ -9,6 +9,7 @@
 #include "fls/file/file_header.hpp"
 #include "fls/flatbuffers/flatbuffers.hpp"
 #include "fls/info.hpp"
+#include "fls/io/io.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls/table/table.hpp"
@@ -319,10 +320,13 @@ private:
 		FileFooter::Write(options.file_path, file_footer);
 	}
 
-	void FlushRowGroup(up<Rowgroup>&& row_group, up<RowgroupDescriptorT>&& descriptor) {
-		// TODO: Encode in rowgroup writer.
-		cur_file_offset +=
-		    Encoder::encode_row_group(row_group->internal_rowgroup, *descriptor, options.file_path, cur_file_offset);
+	void FlushRowGroup(const Buf& buf, up<RowgroupDescriptorT>&& descriptor) {
+		io file_io = make_unique<File>(options.file_path);
+		IO::append(file_io, buf);
+
+		descriptor->m_offset = cur_file_offset;
+		cur_file_offset += descriptor->m_size;
+
 		table_descriptor->m_rowgroup_descriptors.push_back(std::move(descriptor));
 	}
 
@@ -364,7 +368,7 @@ public:
 		}
 	}
 
-	void Flush() {
+	void Finalize() {
 		// Fill in the values up to the used vector size.
 		for (n_t col_idx {0}; col_idx < row_group->internal_rowgroup.size(); col_idx++) {
 			auto&     col_pt   = row_group->internal_rowgroup[col_idx];
@@ -384,7 +388,7 @@ public:
 		row_group->Finalize();
 		row_group->GetStatistics();
 
-		auto descriptor = make_rowgroup_descriptor(*row_group);
+		descriptor = make_rowgroup_descriptor(*row_group);
 
 		descriptor->m_n_vec    = row_group->VecCount();
 		descriptor->m_n_tuples = row_group->RowCount();
@@ -392,7 +396,11 @@ public:
 		const auto wizard = make_unique<Wizard<FileWriter>>(file_writer);
 		wizard->SpellRowGroup(row_group->internal_rowgroup, *descriptor);
 
-		file_writer.FlushRowGroup(std::move(row_group), std::move(descriptor));
+		Encoder::encode_row_groupv2(buf, row_group->internal_rowgroup, *descriptor);
+	}
+
+	void Flush() {
+		file_writer.FlushRowGroup(buf, std::move(descriptor));
 		// TODO (optional): After flushing we create a new row_group so that we can keep reusing the same row_group
 	};
 
@@ -599,9 +607,11 @@ private:
 	}
 
 private:
-	FileWriter& file_writer;
-	up<Rowgroup>     row_group;
-	std::vector<n_t> n_tuples_per_column {};
+	Buf                     buf; // TODO[memory pool]
+	FileWriter&             file_writer;
+	up<Rowgroup>            row_group;
+	up<RowgroupDescriptorT> descriptor;
+	std::vector<n_t>        n_tuples_per_column {};
 };
 
 } // namespace fastlanes

@@ -18,6 +18,8 @@ public:
 
 	static n_t
 	encode_row_group(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer, const path& file_path, n_t offset);
+
+	static void encode_row_groupv2(Buf& buf, const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer);
 };
 } // namespace fastlanes
 

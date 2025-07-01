@@ -111,7 +111,7 @@ Connection& Connection::to_fls(const path& file_path) {
 		spell();
 	}
 
-	FileHeader::Write(*this, file_path);
+	// FileHeader::Write(*this, file_path);
 
 	// encode
 	// Encoder::encode(*this, file_path);
