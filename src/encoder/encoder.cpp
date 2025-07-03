@@ -14,7 +14,6 @@
 #include "fls/std/vector.hpp"     // for vector
 #include "fls/table/rowgroup.hpp" // for Rowgroup
 #include <fls/io/io.hpp>
-#include <iostream>
 #include <memory> // for unique_ptr
 
 namespace fastlanes {
@@ -100,17 +99,14 @@ void Encoder::encode_row_groupv2(Buf& buf, const rowgroup_pt& rowgroup, Rowgroup
 		// interpret
 		InterpreterState state;
 		auto             physical_expr_up = Interpreter::Encoding::Interpret(*column_descriptor, rowgroup, state);
-
 		// execute the expression for each vector
 		for (n_t vec_idx {0}; vec_idx < footer.m_n_vec; ++vec_idx) {
 			physical_expr_up->PointTo(vec_idx);
 			ExprExecutor::execute(*physical_expr_up, vec_idx);
 		}
-
 		physical_expr_up->Finalize();
 		physical_expr_up->Flush(buf, *column_descriptor, helper_buffer);
 	}
-
 	footer.m_size = buf.Size();
 }
 

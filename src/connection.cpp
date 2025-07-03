@@ -71,11 +71,11 @@ void Connection::prepare_table() const {
 
 void Connection::write_footer(const path& file_path) const {
 	// Write table descriptor
-	const n_t        table_descriptor_size = FlatBuffers::Write(is_footer_inlined(), file_path, *m_table_descriptor);
-	const FileFooter file_footer {
-	    m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+	// const n_t        table_descriptor_size = FlatBuffers::Write(is_footer_inlined(), file_path, *m_table_descriptor);
+	// const FileFooter file_footer {
+	//     m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
 
-	FileFooter::Write(file_path, file_footer);
+	// FileFooter::Write(file_path, file_footer);
 }
 
 up<Connection> connect() {

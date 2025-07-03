@@ -6,15 +6,15 @@
 
 namespace fastlanes {
 
-void FileHeader::Write(const Connection& connection, const path& file_path) {
-	io         file_io = make_unique<File>(file_path); // TODO[io]
+void FileHeader::Write(io& io, const fls_bool inline_footer) {
+	 // TODO[io]
 	FileHeader file_header {};
 
 	file_header.magic_bytes            = Info::get_magic_bytes();
 	file_header.version                = Info::get_version_bytes();
-	file_header.settings.inline_footer = connection.is_footer_inlined();
+	file_header.settings.inline_footer = inline_footer;
 
-	IO::append(file_io, reinterpret_cast<const char*>(&file_header), sizeof(file_header));
+	IO::append(io, reinterpret_cast<const char*>(&file_header), sizeof(file_header));
 }
 
 Status FileHeader::Load(FileHeader& file_header, const path& file_path) {

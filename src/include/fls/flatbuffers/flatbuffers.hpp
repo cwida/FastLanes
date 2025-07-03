@@ -2,6 +2,7 @@
 #define FLS_FLATBUFFER_FLATBUFFER_HPP
 
 #include "fls/common/common.hpp"
+#include "fls/io/io.hpp"
 #include "fls/std/filesystem.hpp"
 
 namespace fastlanes {
@@ -14,7 +15,7 @@ class Connection;
 \*--------------------------------------------------------------------------------------------------------------------*/
 class FlatBuffers {
 public:
-	static n_t Write(fls_bool inlined, const path& file_path, TableDescriptorT& table_descriptor);
+	static n_t Write(io& io, const TableDescriptorT& table_descriptor);
 };
 
 /// write the footer or profiling as json file

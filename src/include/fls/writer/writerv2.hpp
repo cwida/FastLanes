@@ -14,10 +14,11 @@
 #include "fls/table/rowgroup.hpp"
 #include "fls/table/table.hpp"
 #include "fls/wizard/wizard.hpp"
-#include <iostream>
 #include <memory>
 
 namespace fastlanes {
+
+constexpr std::string_view FOOTER_NAME = "table_descriptor.fbb";
 
 template <typename PT>
 struct DataTypeTraits;
@@ -189,6 +190,7 @@ struct WriterOptions {
 
 class FileWriter {
 	friend class RowGroupWriter;
+	friend class Builder;
 
 public:
 	class Builder {
@@ -255,10 +257,10 @@ public:
 			return *this;
 		}
 
-		[[nodiscard]] FileWriter Build() {
+		[[nodiscard]] std::unique_ptr<FileWriter> Build() {
 			// Verify that the connection and file path are set.
 			options.Validate();
-			return FileWriter(std::move(options));
+			return std::unique_ptr<FileWriter>(new FileWriter(std::move(options)));
 		}
 
 	private:
@@ -267,9 +269,13 @@ public:
 
 	void Open() {
 		table_descriptor = make_unique<TableDescriptorT>();
-		// TODO: Remove connection, or change dependency on inline footer.
+		n_row_groups     = 0;
+		cur_file_offset  = 0;
 
-		FileHeader::Write(*options.connection, options.file_path);
+		io_target = make_unique<File>(options.file_path);
+		io_footer = make_unique<File>(options.file_path.parent_path() / FOOTER_NAME);
+
+		FileHeader::Write(io_target, options.inlined_footer);
 		cur_file_offset = sizeof(FileHeader);
 	};
 
@@ -312,32 +318,44 @@ private:
 	    };
 
 	void WriteFooter() {
-		const n_t table_descriptor_size =
-		    FlatBuffers::Write(options.inlined_footer, options.file_path, *table_descriptor);
-		const FileFooter file_footer {
-		    table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+		if (options.inlined_footer) {
+			const n_t        table_descriptor_size = FlatBuffers::Write(io_target, *table_descriptor);
+			const FileFooter file_footer {
+			    table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
 
-		FileFooter::Write(options.file_path, file_footer);
+			FileFooter::Write(io_target, file_footer);
+		} else {
+			const n_t        table_descriptor_size = FlatBuffers::Write(io_footer, *table_descriptor);
+			const FileFooter file_footer {
+			    table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
+
+			FileFooter::Write(io_footer, file_footer);
+		}
 	}
 
 	void FlushRowGroup(const Buf& buf, up<RowgroupDescriptorT>&& descriptor) {
-		io file_io = make_unique<File>(options.file_path);
-		IO::append(file_io, buf);
+		std::lock_guard<std::mutex> glock(flush_lock);
+
+		IO::append(io_target, buf);
 
 		descriptor->m_offset = cur_file_offset;
 		cur_file_offset += descriptor->m_size;
+		n_row_groups++;
 
 		table_descriptor->m_rowgroup_descriptors.push_back(std::move(descriptor));
 	}
 
 private:
 	WriterOptions options;
-
+	std::mutex    flush_lock;
+	io            io_target;
+	io            io_footer;
 	// TODO: remove
 	up<Table> table;
 
 	up<TableDescriptorT> table_descriptor;
 	n_t                  cur_file_offset = 0;
+	size_t               n_row_groups    = 0;
 };
 
 // TODO: Currently single use, should we make it multiple use?
@@ -382,14 +400,11 @@ public:
 		}
 
 		row_group->n_tup = n_tuples_per_column[0];
-
 		row_group->Init();
 		row_group->Cast();
 		row_group->Finalize();
 		row_group->GetStatistics();
-
 		descriptor = make_rowgroup_descriptor(*row_group);
-
 		descriptor->m_n_vec    = row_group->VecCount();
 		descriptor->m_n_tuples = row_group->RowCount();
 

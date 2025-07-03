@@ -3,6 +3,7 @@
 
 #include "fls/common/alias.hpp"
 #include "fls/common/status.hpp"
+#include "fls/io/io.hpp"
 #include "fls/std/filesystem.hpp"
 
 namespace fastlanes {
@@ -12,7 +13,7 @@ class Connection;
 
 class FileFooter {
 public:
-	static void   Write(const path& file_path, const FileFooter& file_footer);
+	static void   Write(io& io, const FileFooter& file_footer);
 	static Status Load(FileFooter& file_footer, const path& file_path);
 
 public:
