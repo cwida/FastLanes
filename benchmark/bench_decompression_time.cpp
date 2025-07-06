@@ -11,7 +11,7 @@ public:
 	[[nodiscard]] double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto fls_reader            = conn.reset().read_fls(dir_path);
+		auto fls_reader            = conn.reset().read_fls(dir_path / "data.fls");
 		auto first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		auto start = std::chrono::high_resolution_clock::now();
@@ -50,6 +50,9 @@ void bench_decompression(dataset_view_t dataset_view) {
 
 	// Iterate over all tables in the dataset and process them in parallel
 	for (const auto& [table_name, file_path] : dataset_view) {
+		// Cleanup: Remove the thread-specific directory
+		clear_directory(thread_specific_fls_dir_path);
+
 		DecompressionTimeBenchmarker benchmarker {n_repetition};
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
@@ -60,6 +63,8 @@ void bench_decompression(dataset_view_t dataset_view) {
 		                       << " is benchmarked with time(ms): " << decompression_time_ms << std::endl;
 
 		main_results.emplace_back(table_name, decompression_time_ms);
+
+		az_printer::green_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
 	}
 
 	// Sort main results by table name
@@ -82,14 +87,10 @@ void bench_decompression(dataset_view_t dataset_view) {
 		         << "\n";
 	}
 	csv_file.close();
+	az_printer::green_cout << "-- Decompression times written to " << result_file_path << '\n';
 
 	// Print the total sum to the console
 	az_printer::bold_magenta_cout << "-- Total decompression time (ms): " << total_decompression_time_ms << std::endl;
-
-	// Cleanup: Remove the thread-specific directory
-	remove_all(thread_specific_fls_dir_path);
-	az_printer::green_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
-	az_printer::green_cout << "-- Decompression times written to " << result_file_path << '\n';
 }
 
 int main() {

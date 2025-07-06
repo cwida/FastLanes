@@ -1,15 +1,15 @@
 #ifndef DATA_SDRBENCH_HPP
 #define DATA_SDRBENCH_HPP
 
-#include "fls/std/string.hpp"
 #include <array>
+#include <string>
 
 namespace fastlanes {
-using sdrbnech_dataset_t = std::array<std::pair<string_view, string_view>, 1>;
+using sdrbnech_dataset_t = std::array<std::pair<std::string_view, std::string_view>, 1>;
 
 class sdrbnech {
 public:
-	static constexpr string_view hurricane_isabel {FASTLANES_DATA_DIR "/sdrbench/Hurricane_ISABEL"};
+	static constexpr std::string_view hurricane_isabel {FASTLANES_DATA_DIR "/sdrbench/Hurricane_ISABEL"};
 
 	static constexpr sdrbnech_dataset_t dataset = {{
 	    {"hurricane_isabel", hurricane_isabel},

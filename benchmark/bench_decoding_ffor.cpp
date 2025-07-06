@@ -3354,11 +3354,10 @@ void benchmark_all(benchmark::Benchmark& benchmark) {
 	benchmark.Run(bench123_unpack_64bw_64ow_64crw_1uf(packed64, unpacked64));
 }
 int main() {
-	benchmark::Benchmark benchmark =
-	    benchmark::create("fallback_scalar_av_1024_uf1_unffor")
-	        .save()
-	        .at(std::string(FLS_CMAKE_SOURCE_DIR) + "/fls_pub/results/" + benchmark::CmakeInfo::getCmakeToolchainFile())
-	        .print()
-	        .add_extra_info(benchmark::CmakeInfo::getCmakeInfo());
+	benchmark::Benchmark benchmark = benchmark::create("fallback_scalar_av_1024_uf1_unffor")
+	                                     .save()
+	                                     .at(std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/microbenchmark")
+	                                     .print()
+	                                     .add_extra_info(benchmark::CmakeInfo::getCmakeInfo());
 	benchmark_all(benchmark);
 }

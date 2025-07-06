@@ -10,7 +10,7 @@ public:
 
 	double bench_random_access(const path& dir_path) const {
 		Connection conn;
-		auto       fls_reader            = conn.reset().read_fls(dir_path);
+		auto       fls_reader            = conn.reset().read_fls(dir_path / "data.fls");
 		auto       first_rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		const auto rowgroup_up = std::make_unique<Rowgroup>(first_rowgroup_reader->get_descriptor(), conn);
@@ -40,7 +40,7 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 	// Containers for results to be sorted later
 	std::vector<std::pair<std::string, double>> main_results;
 
-	const n_t n_repetition {1000};
+	constexpr n_t n_repetition {1000};
 
 	// Generate a thread-specific directory path
 	std::ostringstream thread_id_stream;
@@ -49,6 +49,9 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 
 	// Iterate over all tables in the dataset and process them in parallel
 	for (const auto& [table_name, file_path] : dataset_view) {
+		// Cleanup: Remove the thread-specific directory
+		clear_directory(thread_specific_fls_dir_path);
+
 		DecompressionTimeBenchmarker benchmarker {n_repetition};
 
 		benchmarker.Write(file_path, thread_specific_fls_dir_path);
@@ -74,9 +77,6 @@ void benchmark_random_access(dataset_view_t dataset_view) {
 		csv_file << table_name << "," << Info::get_version() << "," << random_access_ms << "," << n_repetition << "\n";
 	}
 	csv_file.close();
-
-	remove_all(thread_specific_fls_dir_path);
-
 	az_printer::green_cout << "-- Decompression times written to " << result_file_path << '\n';
 }
 

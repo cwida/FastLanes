@@ -13,15 +13,13 @@ SCRIPTS_DIR  := $(PROJECT_ROOT)/scripts
 SCRIPT       := $(abspath $(SCRIPTS_DIR)/generate_embedding.py)
 
 ifeq ($(OS),Windows_NT)
-  PYTHON := $(VENV_DIR)/Scripts/python.exe
-  PIP    := $(VENV_DIR)/Scripts/pip.exe
+  VENV_PY := $(VENV_DIR)/Scripts/python.exe
 else
-  PYTHON := $(VENV_DIR)/bin/python3
-  PIP    := $(VENV_DIR)/bin/pip
+  VENV_PY := $(VENV_DIR)/bin/python
 endif
 
 .DEFAULT_GOAL := help
-.PHONY: help venv install generate clean venv-clean
+.PHONY: help venv install generate clean-embeddings venv-clean
 
 help:
 	@echo "Targets:"
@@ -30,24 +28,38 @@ help:
 	@echo "  make clean       – delete __pycache__"
 	@echo "  make venv-clean  – remove .venv"
 
-# 1️⃣  Create virtual-env if missing
+# 1️⃣  Create virtual-env if missing (uses the interpreter first on PATH)
 venv:
 	@if [ ! -d "$(VENV_DIR)" ]; then \
-		echo "Creating virtualenv…"; \
-		python3 -m venv "$(VENV_DIR)"; \
+		echo "Creating virtualenv with interpreter: $$(python --version)"; \
+		python -m venv "$(VENV_DIR)"; \
 	else \
 		echo ".venv already exists."; \
 	fi
 
-# 2️⃣  Install required packages
+# 2️⃣  Install deps (and auto-repair if venv was built with Python 3.13)
 install: venv
-	$(PIP) install --upgrade pip
-	$(PIP) install torch torchvision numpy pandas pyarrow
+	@if [ -f "$(VENV_DIR)/pyvenv.cfg" ] && \
+	    grep -qE '^version = 3\.13' "$(VENV_DIR)/pyvenv.cfg"; then \
+	    echo "⚠️  .venv uses Python 3.13 — recreating with ‘python’ on PATH"; \
+	    rm -rf "$(VENV_DIR)"; \
+	    python -m venv "$(VENV_DIR)"; \
+	fi
 
-# 3️⃣  Generate embeddings (single absolute command)
+	# ── 1. upgrade pip ────────────────────────────────────────────
+	"$(VENV_PY)" -m pip install --upgrade pip
+
+	# ── 2. install NumPy-1.x (+ pandas / pyarrow versions still built on it)
+	"$(VENV_PY)" -m pip install "numpy<2" "pandas<2.3" "pyarrow<16"
+
+	# ── 3. install PyTorch / torchvision from the official wheel index
+	"$(VENV_PY)" -m pip install torch torchvision \
+	              --extra-index-url https://download.pytorch.org/whl/cpu
+
+# 3️⃣  Generate embeddings
 generate: install
-	@echo "Running generate_embedding.py inside $(VENV_DIR)…"
-	"$(PYTHON)" "$(SCRIPT)"
+	@echo "Running generate_embedding.py with $$( "$(VENV_PY)" --version ) …"
+	"$(VENV_PY)" "$(SCRIPT)"
 
 # 4️⃣  House-keeping helpers
 clean-embeddings:

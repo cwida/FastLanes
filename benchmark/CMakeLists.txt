@@ -1,31 +1,32 @@
 add_library(fastlanes_benchmarker SHARED benchmarker.cpp)
 target_include_directories(fastlanes_benchmarker PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(fastlanes_benchmarker PUBLIC FastLanes)
 
 add_library(FastLanes::benchmarker ALIAS fastlanes_benchmarker)
 
 add_executable(bench_compression_ratio bench_compression_ratio.cpp)
-target_link_libraries(bench_compression_ratio PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_compression_ratio PUBLIC FastLanes::benchmarker)
 
-add_executable(benchmark_decompression_time benchmark_decompression_time.cpp)
-target_link_libraries(benchmark_decompression_time PUBLIC FastLanes FastLanes::benchmarker)
+add_executable(benchmark_decompression_time bench_decompression_time.cpp)
+target_link_libraries(benchmark_decompression_time PUBLIC FastLanes::benchmarker)
 
-add_executable(benchmark_random_access benchmark_random_access.cpp)
-target_link_libraries(benchmark_random_access PUBLIC FastLanes FastLanes::benchmarker)
+add_executable(benchmark_random_access bench_random_access.cpp)
+target_link_libraries(benchmark_random_access PUBLIC FastLanes::benchmarker)
 
 add_executable(bench_decoding_ffor bench_decoding_ffor.cpp)
-target_link_libraries(bench_decoding_ffor PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_decoding_ffor PUBLIC FastLanes::benchmarker)
 
 add_executable(micro_benchmark_decompression micro_benchmark_decompression.cpp)
-target_link_libraries(micro_benchmark_decompression PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(micro_benchmark_decompression PUBLIC FastLanes::benchmarker)
 
 add_executable(bench_sample_size bench_sample_size.cpp)
-target_link_libraries(bench_sample_size PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_sample_size PUBLIC FastLanes::benchmarker)
 
 add_executable(bench_accuracy_over_rowgroups bench_accuracy_over_rowgroups.cpp)
-target_link_libraries(bench_accuracy_over_rowgroups PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_accuracy_over_rowgroups PUBLIC FastLanes::benchmarker)
 
 add_executable(bench_share_schema bench_shared_schema.cpp)
-target_link_libraries(bench_share_schema PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_share_schema PUBLIC FastLanes::benchmarker)
 
 add_executable(bench_compression_time bench_compression_time.cpp)
-target_link_libraries(bench_compression_time PUBLIC FastLanes FastLanes::benchmarker)
+target_link_libraries(bench_compression_time PUBLIC FastLanes::benchmarker)

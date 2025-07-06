@@ -8,7 +8,7 @@ public:
 	    : n_repetitions(n_repetitions) {
 	}
 
-	double bench(const path& dir_path) const {
+	[[nodiscard]] double bench(const path& dir_path) const {
 		Connection conn;
 
 		auto fls_reader            = conn.reset().read_fls(dir_path);
@@ -26,18 +26,17 @@ public:
 		return elapsed.count();
 	}
 	// Method to write a table's data to a thread-specific FLS directory
-	double bench_compression_time(const string_view file_path, const path& thread_specific_fls_dir_path) const {
-		const path dir_path = fastlanes_repo_data_path / string(file_path);
-
+	[[nodiscard]] double bench_compression_time(const string_view file_path,
+	                                            const path&       thread_specific_fls_dir_path) const {
 		// Ensure the thread-specific directory exists
 		create_directories(thread_specific_fls_dir_path);
 
 		// Original rowgroup
 		Connection con1;
-		con1.reset().read_csv(dir_path);
+		con1.reset().read_csv(file_path);
 		auto start = std::chrono::high_resolution_clock::now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			con1.to_fls(thread_specific_fls_dir_path);
+			con1.to_fls(thread_specific_fls_dir_path / "data.fls");
 		}
 		const auto                                      end     = std::chrono::high_resolution_clock::now();
 		const std::chrono::duration<double, std::milli> elapsed = end - start; // in milliseconds
@@ -68,9 +67,12 @@ void bench_compression(dataset_view_t dataset_view) {
 
 	// Iterate over all tables in the dataset and process them in parallel
 	for (const auto& [table_name, file_path] : dataset_view) {
-		CompressionTimeBenchmarker benchmarker {n_repetition};
 
-		benchmarker.Write(file_path, thread_specific_fls_dir_path);
+		// Cleanup: Remove the thread-specific directory
+		clear_directory(thread_specific_fls_dir_path);
+		az_printer::green_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
+
+		CompressionTimeBenchmarker benchmarker {n_repetition};
 		auto compression_time_ms = benchmarker.bench_compression_time(file_path, thread_specific_fls_dir_path);
 
 		az_printer::green_cout << "-- Table " << table_name << " is benchmarked with time(ms): " << compression_time_ms
@@ -99,14 +101,10 @@ void bench_compression(dataset_view_t dataset_view) {
 		         << "\n";
 	}
 	csv_file.close();
+	az_printer::green_cout << "-- Compression times written to " << result_file_path << '\n';
 
 	// Print the total sum to the console
 	az_printer::bold_magenta_cout << "-- Total compression time (ms): " << total_compression_time_ms << std::endl;
-
-	// Cleanup: Remove the thread-specific directory
-	remove_all(thread_specific_fls_dir_path);
-	az_printer::green_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
-	az_printer::green_cout << "-- Compression times written to " << result_file_path << '\n';
 }
 
 int main() {

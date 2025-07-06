@@ -1,20 +1,38 @@
+# .github/actions/generate_dataset/action.yml
 name: Generate Synthetic Dataset
-
 description: Generate synthetic data and embeddings using Makefile targets
 
 runs:
   using: composite
   steps:
-    - name: Set up Python
+    # ─────────────────────────────────────────────────────────────
+    # 1️⃣  Use a Python version for which PyTorch publishes wheels
+    # ─────────────────────────────────────────────────────────────
+    - name: Set up Python 3.12
       uses: actions/setup-python@v5
       with:
         python-version: "3.12"
 
+    # ─────────────────────────────────────────────────────────────
+    # 2️⃣  Remove any .venv that might have been created earlier
+    #     with Python 3.13, so we always recreate it with 3.12.
+    # ─────────────────────────────────────────────────────────────
+    - name: Remove stale virtual-env
+      shell: bash
+      run: rm -rf "$GITHUB_WORKSPACE/.venv"
+
+    # ─────────────────────────────────────────────────────────────
+    # 3️⃣  Generate the synthetic data
+    # ─────────────────────────────────────────────────────────────
     - name: Generate synthetic data
       working-directory: mk
       shell: bash
       run: make -f data.mk generate_synthetic_data
 
+    # ─────────────────────────────────────────────────────────────
+    # 4️⃣  Generate the sentence embeddings
+    # ─────────────────────────────────────────────────────────────
     - name: Generate embeddings
+      working-directory: mk
       shell: bash
-      run: make -f mk/embeddings.mk generate
+      run: make -f embeddings.mk generate

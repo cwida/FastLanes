@@ -60,14 +60,23 @@ void enc_dict_map_opr<VALUE_PT, INDEX_PT>::PointTo(n_t vec_idx) {
 
 template <typename VALUE_PT, typename INDEX_PT>
 void enc_dict_map_opr<VALUE_PT, INDEX_PT>::Map() {
-	[[maybe_unused]] const auto& bimap_frequency =
-	    typed_column_view.GetStats()->bimap_frequency; // todo get bimap_frequency from bimap_frequency operator
+	// 1) Stats must exist
+	const auto* stats = typed_column_view.GetStats();
+	if (!stats) {
+		throw std::runtime_error("typed_column_view.GetStats() returned null");
+	}
+	const auto& bimap_frequency = stats->bimap_frequency;
 
+	// 2) Data pointer must exist
 	const auto* value_p = typed_column_view.Data();
+	if (!value_p) {
+		throw std::runtime_error("typed_column_view.Data() returned null");
+	}
 
 	for (auto idx = 0; idx < CFG::VEC_SZ; ++idx) {
 		const auto value = value_p[idx];
-		index_arr[idx]   = static_cast<INDEX_PT>(bimap_frequency.get_key(value));
+		// wrap get_key in try/catch if your bimap might throw
+		index_arr[idx] = static_cast<INDEX_PT>(bimap_frequency.get_key(value));
 	}
 }
 

@@ -1,15 +1,15 @@
 #ifndef DATA_TEST_HPP
 #define DATA_TEST_HPP
 
-#include "fls/std/string.hpp"
 #include <array>
+#include <string>
 
 namespace fastlanes {
 
 /* ---------------------------------------------------------------------------
    Helper aliases
    -------------------------------------------------------------------------*/
-using dataset_entry_t = std::pair<string_view, string_view>;
+using dataset_entry_t = std::pair<std::string_view, std::string_view>;
 using test_dataset_t  = std::array<dataset_entry_t, 6>;
 
 /* ---------------------------------------------------------------------------
@@ -18,22 +18,23 @@ using test_dataset_t  = std::array<dataset_entry_t, 6>;
 class test_dataset {
 public:
 	// Absolute or CMake-relative paths (CMake sets FLS_CMAKE_SOURCE_DIR)
-	static constexpr string_view VALID_FLS {FLS_CMAKE_SOURCE_DIR "/data/test/verify_fastlanes_file_tests/valid.fls"};
+	static constexpr std::string_view VALID_FLS {FLS_CMAKE_SOURCE_DIR
+	                                             "/data/test/verify_fastlanes_file_tests/valid.fls"};
 
-	static constexpr string_view BAD_HEADER_MAGIC {FLS_CMAKE_SOURCE_DIR
-	                                               "/data/test/verify_fastlanes_file_tests/bad_header_magic.fls"};
+	static constexpr std::string_view BAD_HEADER_MAGIC {FLS_CMAKE_SOURCE_DIR
+	                                                    "/data/test/verify_fastlanes_file_tests/bad_header_magic.fls"};
 
-	static constexpr string_view BAD_FOOTER_MAGIC {FLS_CMAKE_SOURCE_DIR
-	                                               "/data/test/verify_fastlanes_file_tests/bad_footer_magic.fls"};
+	static constexpr std::string_view BAD_FOOTER_MAGIC {FLS_CMAKE_SOURCE_DIR
+	                                                    "/data/test/verify_fastlanes_file_tests/bad_footer_magic.fls"};
 
-	static constexpr string_view BAD_VERSION {FLS_CMAKE_SOURCE_DIR
-	                                          "/data/test/verify_fastlanes_file_tests/bad_version.fls"};
+	static constexpr std::string_view BAD_VERSION {FLS_CMAKE_SOURCE_DIR
+	                                               "/data/test/verify_fastlanes_file_tests/bad_version.fls"};
 
-	static constexpr string_view MISSING_FOOTER {FLS_CMAKE_SOURCE_DIR
-	                                             "/data/test/verify_fastlanes_file_tests/missing_footer.fls"};
+	static constexpr std::string_view MISSING_FOOTER {FLS_CMAKE_SOURCE_DIR
+	                                                  "/data/test/verify_fastlanes_file_tests/missing_footer.fls"};
 
-	static constexpr string_view TRUNCATED_HEADER {FLS_CMAKE_SOURCE_DIR
-	                                               "/data/test/verify_fastlanes_file_tests/truncated_header.fls"};
+	static constexpr std::string_view TRUNCATED_HEADER {FLS_CMAKE_SOURCE_DIR
+	                                                    "/data/test/verify_fastlanes_file_tests/truncated_header.fls"};
 
 	// Handy iterable for parameterised tests
 	static constexpr test_dataset_t dataset = {{{"VALID_FLS", VALID_FLS},

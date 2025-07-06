@@ -2,5 +2,6 @@ add_subdirectory(dataset_tests)
 add_subdirectory(expression_tests)
 add_subdirectory(fls_reader_tests)
 add_subdirectory(primitive_tests)
+add_subdirectory(quick_fuzz_tests)
 add_subdirectory(unit_tests)
 

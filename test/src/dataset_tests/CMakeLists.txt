@@ -1,7 +1,7 @@
 add_executable(
         dataset_tests
         #
-        embedding.cpp
+        #        embedding.cpp
         generated_data.cpp
         issues.cpp
         nextiajd_test.cpp

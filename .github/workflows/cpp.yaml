@@ -44,7 +44,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
+        platform:
+          - ubuntu-24.04
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04-arm
+          - macos-15
+          - macos-14
+          - macos-13
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
         shared_lib: [ false, true ]
@@ -121,9 +128,17 @@ jobs:
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
   generate_dataset:
+    needs: build
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
+        platform:
+          - ubuntu-24.04
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04-arm
+          - macos-15
+          - macos-14
+          - macos-13
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -140,7 +155,7 @@ jobs:
   # 5️⃣  Example build & run
   # ──────────────────────────────────────────────────────────────────────────────
   example:
-    needs: build
+#    needs: build
     strategy:
       matrix:
         platform: [ ubuntu-latest, macos-latest, windows-latest ]
@@ -200,9 +215,18 @@ jobs:
   # 6️⃣  Tests (Linux + macOS, Release only)
   # ──────────────────────────────────────────────────────────────────────────────
   test:
+#    needs: build
+    name: test (${{ matrix.platform }}, ${{ matrix.build_type }}, ${{ matrix.shared_lib && 'shared' || 'static' }})
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform:
+          - ubuntu-24.04
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04-arm
+          - macos-15
+          - macos-14
+          - macos-13
         build_type: [ Release ]
         shared_lib: [ false, true ]
     runs-on: ${{ matrix.platform }}
@@ -216,8 +240,16 @@ jobs:
         with:
           submodules: recursive
 
+      # Map the boolean shared_lib into a human-friendly label
+      - name: Determine lib label
+        run: |
+          if [[ "${{ matrix.shared_lib }}" == "true" ]]; then
+            echo "LIB_LABEL=shared" >> $GITHUB_ENV
+          else
+            echo "LIB_LABEL=static" >> $GITHUB_ENV
+          fi
+
       - name: Detect CPU count
-        shell: bash
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Generate synthetic dataset
@@ -228,9 +260,11 @@ jobs:
 
       - name: Configure tests
         run: |
+          # Build directory uses our human-friendly label
+          BUILD_DIR="test_build_${LIB_LABEL}"
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B "test_build_${{ matrix.shared_lib }}"
+            -B "${BUILD_DIR}"
             -DFLS_BUILD_TESTING=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
@@ -246,11 +280,19 @@ jobs:
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build tests
-        run: cmake --build "test_build_${{ matrix.shared_lib }}" -j $BUILD_THREADS
+        run: |
+          # Use the same labeled build directory
+          cmake --build "test_build_${LIB_LABEL}" -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: "test_build_${{ matrix.shared_lib }}"
-        run: ctest -j $BUILD_THREADS --stop-on-failure --output-on-failure --timeout 5000
+        working-directory: "test_build_${{ env.LIB_LABEL }}"
+        run: |
+          # Exclude Quick-Fuzz tests from the normal suite
+          ctest -j $BUILD_THREADS \
+                --stop-on-failure \
+                --output-on-failure \
+                --timeout 5000 \
+                -E "QuickFuzz"
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 7️⃣  Install job

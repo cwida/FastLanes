@@ -1,17 +1,50 @@
-# install-llvm/action.yml
+# .github/actions/install-llvm-toolchain/action.yml
+name: Install LLVM Toolchain
+description: Cross-platform LLVM installer for macOS, Ubuntu and Windows
 
-name: Install LLVM 20 Toolchain
-description: Cross-platform LLVM 20 installer for macOS and Ubuntu
+inputs:
+  version:
+    description: "Exact LLVM/Clang version to install, e.g. 18.1.4 or 18"
+    default: "18.1.4"   # macOS & Linux are happy with 18.x; Windows auto-bumps if too old
+
 runs:
   using: "composite"
   steps:
     - shell: bash
       run: |
+        set -euo pipefail
+        VERSION="${{ inputs.version }}"
+        MAJOR="${VERSION%%.*}"
+
+        echo "🟣 Installing LLVM/Clang ${VERSION} on ${{ runner.os }}"
+
         if [[ "${{ runner.os }}" == "macOS" ]]; then
-          brew install llvm
-          echo "/opt/homebrew/opt/llvm/bin" >> "$GITHUB_PATH"
+          # ── 1. Install LLVM (Homebrew) ────────────────────────────────────────
+          if brew info "llvm@${MAJOR}" > /dev/null 2>&1; then
+            brew install "llvm@${MAJOR}"
+            LLVM_PREFIX="$(brew --prefix "llvm@${MAJOR}")"
+          else
+            echo "::warning ::llvm@${MAJOR} formula not found – installing latest 'llvm' instead"
+            brew install llvm
+            LLVM_PREFIX="$(brew --prefix llvm)"
+          fi
+          echo "${LLVM_PREFIX}/bin" >> "$GITHUB_PATH"
+
+          # ── 2. Reclaim disk space so large static libs fit ───────────────────
+          echo "🧹 Freeing disk space on macOS runner …"
+          # Remove .NET (~6 GB) and Haskell (~3 GB)
+          sudo rm -rf /usr/share/dotnet || true
+          sudo rm -rf /opt/ghc         || true
+          # Delete cached iOS / tvOS simulators & Android SDK (~4 GB)
+          sudo rm -rf "$HOME/Library/Developer/CoreSimulator" || true
+          sudo rm -rf "$HOME/Library/Android"                 || true
+          # Remove old Homebrew download caches (~2 GB)
+          brew cleanup -s      || true
+          rm -rf "$(brew --cache)" || true
+          df -h
 
         elif [[ "${{ runner.os }}" == "Linux" ]]; then
+          # ── Ubuntu LTS ────────────────────────────────────────────────────────
           sudo apt-get update -y
           sudo apt-get install -y wget gnupg lsb-release software-properties-common
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
@@ -20,18 +53,33 @@ runs:
           UBUNTU_CODENAME=$(lsb_release -cs)
           echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
             http://apt.llvm.org/${UBUNTU_CODENAME}/ \
-            llvm-toolchain-${UBUNTU_CODENAME}-20 main" | \
-            sudo tee /etc/apt/sources.list.d/llvm20.list
+            llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR} main" | \
+            sudo tee /etc/apt/sources.list.d/llvm${MAJOR}.list
 
           sudo apt-get update -y
-          sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 lld-20
+          sudo apt-get install -y clang-${MAJOR} clang++-${MAJOR} clang-tidy-${MAJOR} lld-${MAJOR}
 
-          sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-20       200
-          sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-20     200
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20  200
+          sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-${MAJOR}       200
+          sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-${MAJOR}     200
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-${MAJOR}  200
 
-          echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+          echo "/usr/lib/llvm-${MAJOR}/bin" >> "$GITHUB_PATH"
+
+        elif [[ "${{ runner.os }}" == "Windows" ]]; then
+          # ── Windows Server 2022 ──────────────────────────────────────────────
+          # MSVC STL (VS 2022 17.11+) needs Clang ≥19. Auto-bump if caller asks for less.
+          if [[ "${MAJOR}" -lt 19 ]]; then
+            echo "::notice ::Requested LLVM ${VERSION} is older than MSVC STL accepts; upgrading to LLVM 20.1.7"
+            VERSION="20.1.7"
+            MAJOR="20"
+          fi
+
+          echo "→ chocolatey upgrade llvm --version=${VERSION}"
+          choco upgrade llvm --version="${VERSION}" -y --no-progress --allow-downgrade
+
+          # Add to PATH; quoting keeps the space intact
+          echo 'C:\Program Files\LLVM\bin' >> "$GITHUB_PATH"
 
         else
-          echo "LLVM installation is not supported on this OS: ${{ runner.os }}"
+          echo "::warning ::LLVM install not supported on ${{ runner.os }}"
         fi

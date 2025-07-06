@@ -16,6 +16,17 @@
 #include <vector>
 
 namespace fastlanes {
+
+inline void clear_directory(const fs::path& dir) {
+	if (!fs::exists(dir) || !fs::is_directory(dir))
+		return; // nothing to do
+
+	for (auto& entry : fs::directory_iterator(dir)) {
+		// remove files or entire subtrees
+		fs::remove_all(entry.path());
+	}
+}
+
 struct DetailedTableView {
 	std::string_view table_name;
 	std::string_view path;
@@ -50,8 +61,10 @@ public:
 
 		// Original rowgroup
 		Connection con1;
+		// Original rowgroup
+		const auto thread_specific_fls_file_path = thread_specific_fls_dir_path / "data.fls";
 		con1.reset().read_csv(dir_path).project(idxs);
-		con1.to_fls(thread_specific_fls_dir_path);
+		con1.to_fls(thread_specific_fls_file_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
 	void Write(const string_view file_path, const path& thread_specific_fls_dir_path, n_t sample_size) const {
@@ -62,8 +75,9 @@ public:
 
 		// Original rowgroup
 		Connection con1;
+		const auto thread_specific_fls_file_path = thread_specific_fls_dir_path / "data.fls";
 		con1.reset().read_csv(dir_path);
-		con1.set_sample_size(sample_size).to_fls(thread_specific_fls_dir_path);
+		con1.set_sample_size(sample_size).to_fls(thread_specific_fls_file_path);
 	}
 	// Method to write a table's data to a thread-specific FLS directory
 	void Write(const string_view            file_path,
@@ -76,8 +90,9 @@ public:
 
 		// Original rowgroup
 		Connection con1;
+		const auto thread_specific_fls_file_path = thread_specific_fls_dir_path / "data.fls";
 		con1.reset().read_csv(dir_path);
-		con1.force_schema(operator_tokens).to_fls(thread_specific_fls_dir_path);
+		con1.force_schema(operator_tokens).to_fls(thread_specific_fls_file_path);
 	}
 
 	// Method to get the footer for the thread-specific directory

@@ -1,0 +1,98 @@
+name: Quick-Fuzz CI
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }}
+  (#${{ github.run_number }}) —
+  ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  pull_request:
+    branches: [ dev ]
+    paths:
+      - '**/*.cpp'
+      - 'test/src/quick_fuzz_tests/fuzz_config.json'
+      - '.github/workflows/quick-fuzz.yml'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Checkout the PR
+      - uses: actions/checkout@v4
+
+      # 2) Tool-chain
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build jq python3
+
+      # 2½) Enforce base_seed was bumped by exactly +1 vs dev
+      - name: Verify base_seed bump
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin dev || true
+          python scripts/verify_seed_bump.py
+
+      # 3) Configure
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DFLS_BUILD_TESTING=ON
+
+      # 4) Build
+      - name: Build
+        run: cmake --build build -- -j$(nproc)
+
+      # 5) Run Quick-Fuzz — job turns red if tests fail
+      - name: Run Quick-Fuzz
+        env:
+          CTEST_TEST_TIMEOUT: 0
+        run: |
+          set -o pipefail
+          ctest --test-dir build \
+                -R QuickFuzz \
+                --parallel $(nproc) \
+                --output-on-failure \
+                -V | tee ctest.log
+
+      # 6) Upload artefacts *only* when Quick-Fuzz failed
+      - name: Upload failure artefacts
+        id: upload
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quick-fuzz-failure-${{ github.run_id }}
+          path: |
+            tmp/fls_quick_fuzz/**
+            ctest.log
+
+      # 7) Comment on the PR with deep link to the ZIP
+      - name: Comment on failure
+        if: failure() &&
+          github.event_name == 'pull_request' &&
+          github.base_ref == 'dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          RUN=${{ github.run_id }}
+          ART_ID=${{ steps.upload.outputs.artifact-id }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          CONFIG_PATH='test/src/quick_fuzz_tests/fuzz_config.json'
+
+          ZIP_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${RUN}/artifacts/${ART_ID}"
+          CONFIG_URL="${{ github.server_url }}/${{ github.repository }}/blob/${HEAD_SHA}/${CONFIG_PATH}"
+          SNIPPET=$(tail -n 20 ctest.log)
+
+          gh pr comment "$PR" --body "$(printf '%s\n' \
+            '## ❌ Quick-Fuzz CI Failed' \
+            '' \
+            "[**⬇ Download artefact ZIP**](${ZIP_URL})" \
+            '' \
+            "[**Fuzz config**](${CONFIG_URL})" \
+            '' \
+            '**Last 20 lines of test log:**' \
+            '```' \
+            "${SNIPPET}" \
+            '```')"

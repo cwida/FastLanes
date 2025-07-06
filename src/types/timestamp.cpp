@@ -5,7 +5,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
-#include <format>
+#include <cstdio>
 #include <limits>
 #include <stdexcept>
 #include <string_view>
@@ -277,6 +277,7 @@ int64_t parse_timestamp(std::string_view ts) {
 
 // ───────────────────── timestamp_formatter ────────────────────
 std::string timestamp_formatter(int64_t micros) {
+	// Split micros into civil-date parts and time-of-day
 	int64_t days = micros / K_MICROS_PER_DAY;
 	int64_t rem  = micros % K_MICROS_PER_DAY;
 	if (rem < 0) {
@@ -284,18 +285,19 @@ std::string timestamp_formatter(int64_t micros) {
 		--days;
 	}
 
-	int64_t  z      = days + civil_to_days(kEpochYear, kEpochMonth, kEpochDay) + 719468;
-	int64_t  era    = (z >= 0 ? z : z - 146096) / 146097;
-	unsigned doe    = static_cast<unsigned>(z - era * 146097);
-	unsigned yoe    = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
-	int64_t  y_full = yoe + era * 400;
-	unsigned doy    = doe - (365 * yoe + yoe / 4 - yoe / 100);
-	unsigned mp     = (5 * doy + 2) / 153;
+	// Civil-from-days (inverse of civil_to_days)
+	int64_t  z   = days + civil_to_days(kEpochYear, kEpochMonth, kEpochDay) + 719468;
+	int64_t  era = (z >= 0 ? z : z - 146096) / 146097;
+	unsigned doe = static_cast<unsigned>(z - era * 146097);
+	unsigned yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+	int64_t  y   = yoe + era * 400;
+	unsigned doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+	unsigned mp  = (5 * doy + 2) / 153;
 
-	int      m_s   = static_cast<int>(mp) + (mp < 10 ? 3 : -9); // 1–12
+	int      m_s   = static_cast<int>(mp) + (mp < 10 ? 3 : -9); // 1-12
 	unsigned month = static_cast<unsigned>(m_s);
 	unsigned day   = doy - (153 * mp + 2) / 5 + 1;
-	int      year  = static_cast<int>(y_full + (month <= 2 ? 1 : 0));
+	int      year  = static_cast<int>(y + (month <= 2 ? 1 : 0));
 
 	int hour = static_cast<int>(rem / K_MICROS_PER_HOUR);
 	rem %= K_MICROS_PER_HOUR;
@@ -304,11 +306,15 @@ std::string timestamp_formatter(int64_t micros) {
 	int second = static_cast<int>(rem / K_MICROS_PER_SECOND);
 	int micro  = static_cast<int>(rem % K_MICROS_PER_SECOND);
 
-	std::string out = std::format("{:04d}-{:02d}-{:02d}T{:02d}:{:02d}:{:02d}", year, month, day, hour, minute, second);
-	if (micro) {
-		out += std::format(".{:06d}", micro);
+	// Build ISO-8601 string
+	char buf[32]; // enough
+	int  len = std::snprintf(buf, sizeof(buf), "%04d-%02u-%02uT%02d:%02d:%02d", year, month, day, hour, minute, second);
+
+	if (micro != 0) {
+		std::size_t remaining = sizeof(buf) - static_cast<std::size_t>(len);
+		std::snprintf(buf + len, remaining, ".%06d", micro);
 	}
-	return out;
+	return std::string(buf);
 }
 
 } // namespace fastlanes

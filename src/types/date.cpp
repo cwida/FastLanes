@@ -2,7 +2,7 @@
 #include <array>
 #include <charconv>
 #include <chrono>
-#include <format>
+#include <cstdio> // for std::snprintf
 #include <stdexcept>
 #include <string_view>
 
@@ -68,8 +68,14 @@ std::string date_formatter(const int32_t days_since_epoch) {
 	if (!ymd.ok()) {
 		throw std::runtime_error("days_since_epoch out of range");
 	}
-	// Format as "YYYY-MM-DD"
-	return std::format("{:%Y-%m-%d}", ymd);
+
+	int      y = static_cast<int>(ymd.year());
+	unsigned m = static_cast<unsigned>(ymd.month());
+	unsigned d = static_cast<unsigned>(ymd.day());
+
+	char buf[11]; // "YYYY-MM-DD" + '\0'
+	std::snprintf(buf, sizeof(buf), "%04d-%02u-%02u", y, m, d);
+	return std::string(buf);
 }
 
 } // namespace fastlanes

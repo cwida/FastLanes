@@ -12,7 +12,7 @@ public:
 	double bench(const path& dir_path) const {
 		Connection conn;
 
-		auto fls_reader      = conn.reset().read_fls(dir_path);
+		auto fls_reader      = conn.reset().read_fls(dir_path / "data.fls");
 		auto rowgroup_reader = fls_reader->get_rowgroup_reader(0);
 
 		auto start = benchmark::cycleclock::Now();
@@ -49,9 +49,13 @@ void micro_benchmark_decompression(detailed_dataset_view_t dataset_view, const s
 
 	// Iterate over all tables in the dataset and process them in parallel
 	for (const auto& [table_name, file_path, idxs] : dataset_view) {
+		clear_directory(thread_specific_fls_dir_path);
+		az_printer::yellow_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
+
 		DecompressionTimeBenchmarker benchmarker {n_repetition};
 
-		benchmarker.Write(file_path, thread_specific_fls_dir_path, idxs);
+		// benchmarker.Write(file_path, thread_specific_fls_dir_path, idxs); << fix this
+		benchmarker.Write(file_path, thread_specific_fls_dir_path);
 		auto        cycles_per_value = benchmarker.bench(thread_specific_fls_dir_path);
 		const auto& footer_up        = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
 
@@ -75,10 +79,6 @@ void micro_benchmark_decompression(detailed_dataset_view_t dataset_view, const s
 		         << "\n";
 	}
 	csv_file.close();
-
-	// Cleanup: Remove the thread-specific directory
-	remove_all(thread_specific_fls_dir_path);
-	az_printer::yellow_cout << "-- Removed directory: " << thread_specific_fls_dir_path << std::endl;
 	az_printer::yellow_cout << "-- Cycles per value are written to " << result_file_path << '\n';
 }
 

@@ -1,0 +1,88 @@
+name: Benchmarker
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+concurrency:
+  group: Benchmarker CI-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CMAKE_GENERATOR: Ninja
+
+jobs:
+  benchmark:
+    name: Run benchmarks (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-latest, macos-latest ]
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Detect CPU count
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Configure
+        run: |
+          cmake -S "${{ github.workspace }}" \
+                -B build \
+                -G "$CMAKE_GENERATOR" \
+                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+                -DFLS_BUILD_BENCHMARKING=ON \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_C_COMPILER=clang \
+                -DCMAKE_CXX_COMPILER=clang++
+
+      - name: Build benchmarks
+        run: cmake --build build -j $BUILD_THREADS
+
+      - name: List build output
+        run: |
+          cd build/benchmark
+          ls -l
+
+      - name: Run bench_compression_ratio
+        run: build/benchmark/bench_compression_ratio
+
+      - name: Run benchmark_decompression_time
+        run: build/benchmark/benchmark_decompression_time
+
+      - name: Run benchmark_random_access
+        run: build/benchmark/benchmark_random_access
+
+      - name: Run bench_decoding_ffor
+        run: build/benchmark/bench_decoding_ffor
+
+      - name: Run micro_benchmark_decompression
+        run: build/benchmark/micro_benchmark_decompression
+
+      - name: Run bench_sample_size
+        run: build/benchmark/bench_sample_size
+
+      #      - name: Run bench_accuracy_over_rowgroups
+      #        run: build/benchmark/bench_accuracy_over_rowgroups
+      #
+      #      - name: Run bench_share_schema
+      #        run: build/benchmark/bench_share_schema
+
+      - name: Run bench_compression_time
+        run: build/benchmark/bench_compression_time
