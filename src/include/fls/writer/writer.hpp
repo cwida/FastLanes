@@ -1,208 +1,187 @@
 #ifndef FLS_WRITER_WRITER_HPP
 #define FLS_WRITER_WRITER_HPP
 
-#include "fls/common/alias.hpp"
-#include "fls/common/double.hpp"
+#include "fls/cor/lyt/buf.hpp"
+#include "fls/io/io.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/table/rowgroup.hpp"
 
 namespace fastlanes {
+
+constexpr std::string_view FOOTER_NAME = "table_descriptor.fbb";
+
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Table;
-struct RowgroupDescriptorT;
 class Connection;
+struct TableDescriptorT;
+class RowGroupWriter;
 /*--------------------------------------------------------------------------------------------------------------------*/
-// struct ColumnBatchBase {
-// 	virtual ~ColumnBatchBase()                      = default;
-// 	virtual idx_t N() const                         = 0;
-// 	virtual void  Apply(class Writer& writer) const = 0;
-// };
-//
-// template <typename GetFn, typename ValidFn>
-// struct ColumnBatchImpl : ColumnBatchBase {
-// 	size_t  col;
-// 	idx_t   count;
-// 	GetFn   get;
-// 	ValidFn is_valid;
-//
-// 	ColumnBatchImpl(size_t c, idx_t N, GetFn g, ValidFn v)
-// 	    : col(c)
-// 	    , count(N)
-// 	    , get(std::move(g))
-// 	    , is_valid(std::move(v)) {
-// 	}
-//
-// 	idx_t N() const override {
-// 		return count;
-// 	}
-//
-// 	void Apply(Writer& writer) const override;
-// };
-//
-// template <typename GetFn, typename ValidFn>
-// struct ColumnBatch {
-// 	size_t  col;
-// 	idx_t   N;
-// 	GetFn   get;
-// 	ValidFn is_valid;
-// };
-// template <typename GetFn, typename ValidFn>
-// ColumnBatch(size_t, idx_t, GetFn, ValidFn) -> ColumnBatch<GetFn, ValidFn>;
-// /*--------------------------------------------------------------------------------------------------------------------*\
-//  * Writer
-// \*--------------------------------------------------------------------------------------------------------------------*/
-// class Writer {
-// public:
-// 	explicit Writer(const path&                                      dir_path,
-// 	                std::vector<std::unique_ptr<ColumnDescriptorT>>& schema,
-// 	                Connection&                                      connection);
-//
-//
-// 	template <typename GetFn, typename ValidFn>
-// 	void WriteColumn(const ColumnBatch<GetFn, ValidFn>& batch) {
-// 		Ingest(row_group->internal_rowgroup[batch.col], batch);
-// 	}
-//
-// 	void WriteBatch(const std::vector<std::unique_ptr<ColumnBatchBase>>& batches) {
-// 		FLS_ASSERT_FALSE(batches.empty());
-// 		for (auto& b : batches) {
-// 			FLS_ASSERT_EQUALITY(b->N(), batches[0]->N());
-// 			b->Apply(*this);
-// 		}
-// 	}
-//
-// private:
-// 	template <typename PT>
-// 	PT TypedNull() {
-// 		static constexpr i08_pt I08_NULL   = 0;
-// 		static constexpr i16_pt I16_NULL   = 0;
-// 		static constexpr i32_pt I32_NULL   = 0;
-// 		static constexpr i64_pt I64_NULL   = 0;
-// 		static constexpr u08_pt U08_NULL   = 0;
-// 		static constexpr u16_pt U16_NULL   = 0;
-// 		static constexpr u32_pt U32_NULL   = 0;
-// 		static constexpr u64_pt U64_NULL   = 0;
-// 		static constexpr bol_pt BOOL_NULL  = false;
-// 		static constexpr flt_pt FLOAT_NULL = 0.0;
-// 		static constexpr dbl_pt DBL_NULL   = 0.0;
-// 		static constexpr char   STR_NULL[] = "NULL";
-//
-// 		if constexpr (std::is_same_v<PT, i08_pt>) {
-// 			return I08_NULL;
-// 		} else if constexpr (std::is_same_v<PT, i16_pt>) {
-// 			return I16_NULL;
-// 		} else if constexpr (std::is_same_v<PT, i32_pt>) {
-// 			return I32_NULL;
-// 		} else if constexpr (std::is_same_v<PT, i64_pt>) {
-// 			return I64_NULL;
-// 		} else if constexpr (std::is_same_v<PT, u08_pt>) {
-// 			return U08_NULL;
-// 		} else if constexpr (std::is_same_v<PT, u16_pt>) {
-// 			return U16_NULL;
-// 		} else if constexpr (std::is_same_v<PT, u32_pt>) {
-// 			return U32_NULL;
-// 		} else if constexpr (std::is_same_v<PT, u64_pt>) {
-// 			return U64_NULL;
-// 		} else if constexpr (std::is_same_v<PT, str_pt>) {
-// 			return STR_NULL;
-// 		} else if constexpr (std::is_same_v<PT, bol_pt>) {
-// 			return BOOL_NULL;
-// 		} else if constexpr (std::is_same_v<PT, flt_pt>) {
-// 			return FLOAT_NULL;
-// 		} else if constexpr (std::is_same_v<PT, dbl_pt>) {
-// 			return DBL_NULL;
-// 		}
-//
-// 		FLS_UNREACHABLE();
-// 	}
-//
-// 	template <typename PT, typename GetFn, typename ValidFn>
-// 	void TypedIngest(TypedCol<PT>& typed_column, const ColumnBatch<GetFn, ValidFn>& batch) {
-// 		auto& stats = typed_column.m_stats;
-// 		auto& data  = typed_column.data;
-// 		auto& nulls = typed_column.null_map_arr;
-//
-// 		if (typed_column.data.empty()) {
-// 			typed_column.m_stats.last_seen_val = TypedNull<PT>();
-// 			if constexpr (std::is_same_v<PT, dbl_pt>) {
-// 				stats.is_double_castable = true;
-// 			}
-// 		}
-//
-// 		const idx_t prev_size = data.size();
-// 		data.resize(prev_size + -1);
-// 		nulls.resize(prev_size + -1);
-//
-// 		auto target_ptr = data.data() + prev_size;
-// 		auto null_ptr   = nulls.data() + prev_size;
-//
-// 		PT   min                = stats.min;
-// 		PT   max                = stats.max;
-// 		auto last_seen_val      = stats.last_seen_val;
-// 		auto n_nulls            = stats.n_nulls;
-// 		bool is_double_castable = stats.is_double_castable;
-//
-// 		for (idx_t i = 0; i < -1; i++) {
-// 			bool isNull = !batch.is_valid(i);
-// 			null_ptr[i] = isNull;
-//
-// 			if (isNull) {
-// 				++n_nulls;
-// 				target_ptr[i] = last_seen_val;
-// 			} else {
-// 				PT value = batch.get(i);
-//
-// 				target_ptr[i] = value;
-// 				last_seen_val = value;
-//
-// 				min = std::min(min, value);
-// 				max = std::max(max, value);
-//
-// 				if constexpr (std::is_same_v<PT, dbl_pt>) {
-// 					if (is_double_castable && !Double::is_safely_castable_to_int64(value)) {
-// 						is_double_castable = false;
-// 					}
-// 				}
-// 			}
-// 		}
-//
-// 		stats.min           = min;
-// 		stats.max           = max;
-// 		stats.last_seen_val = last_seen_val;
-// 		stats.n_nulls       = n_nulls;
-//
-// 		if constexpr (std::is_same_v<PT, dbl_pt>) {
-// 			stats.is_double_castable = is_double_castable;
-// 		}
-// 	}
-//
-// 	template <typename GetFn, typename ValidFn>
-// 	void Ingest(col_pt& col, const ColumnBatch<GetFn, ValidFn>& batch) {
-// 		std::visit(overloaded {
-// 		               [&]<typename PT>(up<TypedCol<PT>>& typed_column) { TypedIngest<PT>(*typed_column, batch); },
-// 		               [&](up<FLSStrColumn>& fls_str_column) {
-//
-// 		               },
-// 		               [](auto&) { FLS_UNREACHABLE(); },
-// 		               [](std::monostate&) { FLS_UNREACHABLE(); },
-// 		           },
-// 		           col);
-// 	}
-//
-// private:
-// 	const path&                                      dir_path;
-// 	std::vector<std::unique_ptr<ColumnDescriptorT>>& schema;
-// 	//! TODO: Support multiple, by making these FIFO queues.
-// 	RowgroupDescriptorT descriptor;
-// 	up<Rowgroup>        row_group;
-//
-// 	Connection& connection;
-// };
-//
-// template <typename GetFn, typename ValidFn>
-// void ColumnBatchImpl<GetFn, ValidFn>::Apply(Writer& writer) const {
-// 	writer.WriteColumn(ColumnBatch<GetFn, ValidFn> {col, count, get, is_valid});
-// }
+struct WriterOptions {
+	WriterOptions()                           = default;
+	WriterOptions(WriterOptions&&)            = default;
+	WriterOptions& operator=(WriterOptions&&) = default;
+
+	WriterOptions(const WriterOptions&)            = delete;
+	WriterOptions& operator=(const WriterOptions&) = delete;
+
+	//! Schema which is used to encode incoming data.
+	std::vector<std::unique_ptr<ColumnDescriptorT>> schema;
+	//! Target file path (TODO: Should abstract this so it works for any transport.)
+	path file_path;
+	//! Target for committing write operations.
+	Connection* connection;
+	//! Amount of entries within a single vector. Must be a multiple of 1024.
+	size_t vector_size = CFG::VEC_SZ;
+	//! Amount of tuples within a single row group.
+	size_t row_group_size = CFG::ROW_GROUP_SIZE;
+	//! Maximum amount of row groups in a single file, when set to 0 there is no maximum.
+	size_t max_row_groups = 0;
+	//! If the footer is stored separately or within the Fastlanes file.
+	fls_bool inlined_footer = fls_bool::FLS_TRUE;
+	//!
+	n_t sample_size = CFG::SAMPLER::SAMPLE_SIZE;
+	//!
+	vector<OperatorToken> forced_schema_pool;
+	vector<OperatorToken> forced_schema;
+	//! If enabled, flush must be called before any bytes are commited to the target storage medium.
+	bool explicit_flush = false;
+
+	void Validate() const {
+		if (file_path.empty()) {
+			throw std::invalid_argument("file_path cannot be empty");
+		}
+		if (connection == nullptr) {
+			throw std::invalid_argument("connection must be defined");
+		}
+		if (row_group_size == 0) {
+			throw std::invalid_argument("row_group_size must be greater than 0");
+		}
+		if (row_group_size % 1024 != 0) {
+			throw std::invalid_argument("row_group_size must be a multiple of 1024");
+		}
+		if (vector_size % 1024 != 0) {
+			throw std::invalid_argument("vector_size must be a multiple of 1024");
+		}
+	}
+};
+
+class FileWriter {
+	friend class RowGroupWriter;
+	friend class Builder;
+
+public:
+	class Builder {
+	public:
+		Builder& WithSchema(std::vector<std::unique_ptr<ColumnDescriptorT>>&& schema) {
+			options.schema = std::move(schema);
+			return *this;
+		}
+
+		Builder& WithPath(const path& file_path) {
+			options.file_path = file_path;
+			return *this;
+		}
+
+		Builder& WithConnection(Connection& conn) {
+			options.connection = &conn;
+			return *this;
+		}
+
+		Builder& WithVectorSize(const size_t vec_size) {
+			if (vec_size % 1024 != 0) {
+				throw std::invalid_argument("vector_size must be a multiple of 1024");
+			}
+			options.vector_size = vec_size;
+			return *this;
+		}
+
+		Builder& WithRowGroupSize(const size_t rg_size) {
+			if (rg_size == 0) {
+				throw std::invalid_argument("row_group_size must be greater than 0");
+			}
+			if (rg_size % 1024 != 0) {
+				throw std::invalid_argument("row_group_size must be a multiple of 1024");
+			}
+			options.row_group_size = rg_size;
+			return *this;
+		}
+
+		Builder& WithMaxRowGroups(const size_t rg_max) {
+			options.max_row_groups = rg_max;
+			return *this;
+		}
+
+		Builder& WithInlinedFooter(const fls_bool inlined_footer) {
+			options.inlined_footer = inlined_footer;
+			return *this;
+		}
+
+		Builder& WithForcedSchemaPool(vector<OperatorToken>&& operator_token) {
+			options.forced_schema_pool = std::move(operator_token);
+			return *this;
+		}
+
+		Builder& WithForcedSchema(vector<OperatorToken>&& operator_token) {
+			options.forced_schema = std::move(operator_token);
+			return *this;
+		}
+
+		Builder& WithExplicitFlush() {
+			options.explicit_flush = true;
+			return *this;
+		}
+
+		[[nodiscard]] std::unique_ptr<FileWriter> Build() {
+			// Verify that the connection and file path are set.
+			options.Validate();
+			return std::unique_ptr<FileWriter>(new FileWriter(std::move(options)));
+		}
+
+	private:
+		WriterOptions options {};
+	};
+
+	void Open();
+
+	void Close();
+
+	up<RowGroupWriter> CreateRowGroupWriter();
+
+	[[nodiscard]] n_t GetSampleSize() const {
+		return options.sample_size;
+	}
+
+	[[nodiscard]] bool IsForcedSchemaPool() const {
+		return !options.forced_schema_pool.empty();
+	}
+
+	[[nodiscard]] const vector<OperatorToken>& GetForcedSchemaPool() const {
+		return options.forced_schema_pool;
+	}
+
+	[[nodiscard]] bool IsForcedSchema() const {
+		return !options.forced_schema.empty();
+	}
+
+	[[nodiscard]] const vector<OperatorToken>& GetForcedSchema() const {
+		return options.forced_schema;
+	}
+
+private:
+	explicit FileWriter(WriterOptions&& opts);
+
+	void WriteFooter();
+	void FlushRowGroup(const Buf& buf, up<RowgroupDescriptorT>&& descriptor);
+
+private:
+	WriterOptions options;
+	std::mutex    flush_lock;
+	io            io_target;
+	io            io_footer;
+
+	up<TableDescriptorT> table_descriptor;
+	n_t                  cur_file_offset = 0;
+	size_t               n_row_groups    = 0;
+};
 
 } // namespace fastlanes
 

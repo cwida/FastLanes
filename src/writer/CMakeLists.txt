@@ -1,5 +1,7 @@
 add_library(fls_writer
         OBJECT
+        ingest.cpp
+        rowgroup_writer.cpp
         writer.cpp
 )
 

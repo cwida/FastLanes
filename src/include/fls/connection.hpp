@@ -65,8 +65,6 @@ public:
 	///! read a fls file return a reader
 	up<TableReader> read_fls(const path& file_path);
 	///!
-	Connection& spell();
-	///!
 	Connection& to_fls(const path& dir_path);
 	//
 	Status verify_fls(const path& file_path);
@@ -110,9 +108,6 @@ public:
 	//
 	string_view get_version() const;
 
-private:
-	void prepare_table() const;
-	void write_footer(const path& dir_path) const;
 public:
 	// TODO(duckdb): Change the API
 	up<Table>            m_table;

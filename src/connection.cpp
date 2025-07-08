@@ -19,11 +19,13 @@
 #include "fls/table/dir.hpp"      // for Dir, FileT
 #include "fls/table/rowgroup.hpp" // for Rowgroup
 #include "fls/table/table.hpp"
-// #include "fls/wizard/wizard.hpp" // for Wizard
+#include "fls/writer/rowgroup_writer.hpp"
+#include "fls/writer/writer.hpp"
 #include <filesystem> // for directory_iterator, begin
-#include <memory>     // for make_unique, operator==
-#include <stdexcept>  // for runtime_error
-#include <string>     // for basic_string, string
+#include <iostream>
+#include <memory>    // for make_unique, operator==
+#include <stdexcept> // for runtime_error
+#include <string>    // for basic_string, string
 
 namespace fastlanes {
 
@@ -54,44 +56,8 @@ up<TableReader> Connection::read_fls(const path& file_path) {
 	return make_unique<TableReader>(file_path, *this);
 }
 
-void prepare_rowgroup(Rowgroup& rowgroup) {
-
-	// could be combined
-	rowgroup.Init();
-	rowgroup.Cast();
-	rowgroup.Finalize();
-	rowgroup.GetStatistics();
-}
-
-void Connection::prepare_table() const {
-	for (auto& rowgroup : m_table->m_rowgroups) {
-		prepare_rowgroup(*rowgroup);
-	}
-}
-
-void Connection::write_footer(const path& file_path) const {
-	// Write table descriptor
-	// const n_t        table_descriptor_size = FlatBuffers::Write(is_footer_inlined(), file_path, *m_table_descriptor);
-	// const FileFooter file_footer {
-	//     m_table_descriptor->m_table_binary_size, table_descriptor_size, Info::get_magic_bytes()};
-
-	// FileFooter::Write(file_path, file_footer);
-}
-
 up<Connection> connect() {
 	return make_unique<Connection>();
-}
-
-Connection& Connection::spell() {
-	if (m_table == nullptr) {
-		/**/
-		throw std::runtime_error("Data is not loaded.");
-	}
-
-	// FIXME
-	// m_table_descriptor = Wizard::Spell(*this);
-
-	return *this;
 }
 
 Connection& Connection::to_fls(const path& file_path) {
@@ -99,25 +65,24 @@ Connection& Connection::to_fls(const path& file_path) {
 		throw std::runtime_error("Fastlanes file already exists at: " + file_path.string());
 	}
 
-	// check if data is loaded into memory
 	if (m_table == nullptr) {
 		throw std::runtime_error("data is not loaded.");
 	}
 
-	prepare_table();
+	auto writer_builder = std::move(FileWriter::Builder().WithPath(file_path).WithConnection(*this));
 
-	//  make a rowgroup-get_descriptor if there is no rowgroup-get_descriptor .
-	if (m_table_descriptor == nullptr) {
-		spell();
+	const auto writer = writer_builder.Build();
+	writer->Open();
+
+	for (idx_t rg_idx = 0; rg_idx < m_table->get_n_rowgroups(); rg_idx++) {
+		auto&      rowgroup_ptr     = m_table->m_rowgroups[rg_idx];
+		const auto row_group_writer = make_unique<RowGroupWriter>(*writer, *rowgroup_ptr);
+
+		row_group_writer->Finalize();
+		row_group_writer->Flush();
 	}
 
-	// FileHeader::Write(*this, file_path);
-
-	// encode
-	// Encoder::encode(*this, file_path);
-
-	// write the footer
-	write_footer(file_path);
+	writer->Close();
 
 	return *this;
 }

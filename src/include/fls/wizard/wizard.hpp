@@ -36,7 +36,6 @@ concept WizardContext = requires(Ctx const& c) {
 	{ c.GetForcedSchemaPool() } -> std::same_as<const std::vector<OperatorToken>&>;
 	{ c.GetForcedSchema() } -> std::same_as<const std::vector<OperatorToken>&>;
 	{ c.GetSampleSize() } -> std::convertible_to<n_t>;
-	{ c.GetTable() } -> std::convertible_to<Table&>;
 };
 
 template <WizardContext Ctx>
@@ -49,18 +48,6 @@ public:
 public:
 	void SpellRowGroup(const rowgroup_pt& rowgroup, RowgroupDescriptorT& footer) {
 		RowGroupCheck(rowgroup, footer);
-	};
-
-	up<TableDescriptorT> Spell() {
-		const auto& table            = m_ctx.GetTable();
-		auto        table_descriptor = make_table_descriptor(table);
-
-		for (n_t rowgroup_idx {0}; rowgroup_idx < table.get_n_rowgroups(); ++rowgroup_idx) {
-			RowGroupCheck(table.m_rowgroups[rowgroup_idx]->internal_rowgroup,
-			              *table_descriptor->m_rowgroup_descriptors[rowgroup_idx]);
-		}
-
-		return table_descriptor;
 	};
 
 private:
