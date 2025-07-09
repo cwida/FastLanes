@@ -70,6 +70,8 @@ col_pt init_logical_columns(const ColumnDescriptorT& col_descriptor) {
 		return make_unique<FLSStrColumn>();
 	case DataType::JPEG:
 		return make_unique<FLSStrColumn>();
+	case DataType::BOOLEAN:
+		return make_unique<u08_col_t>();
 	default:
 		FLS_UNREACHABLE();
 	}
@@ -327,46 +329,53 @@ DataType getSmallestSignedType(PT min, PT max) {
 }
 
 void cast(rowgroup_pt& rowgroup, ColumnDescriptorT& column_descriptor) {
-	bool should_be_cast {false};
+	switch (column_descriptor.data_type) {
+	case DataType::BOOLEAN: {
+		return;
+	}
+	default: {
+		bool should_be_cast {false};
 
-	visit(overloaded {
-	          [&](up<FLSStrColumn>& string_col) {
-		          should_be_cast = string_col->m_stats.is_numeric;
-		          if (should_be_cast) {
-			          column_descriptor.data_type = DataType::INT32;
-		          }
-	          },
-	          [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
-		          if (column_descriptor.data_type == DataType::DECIMAL) {
-			          column_descriptor.data_type = DataType::INT64;
-			          should_be_cast              = true;
-		          }
+		visit(overloaded {
+		          [&](up<FLSStrColumn>& string_col) {
+			          should_be_cast = string_col->m_stats.is_numeric;
+			          if (should_be_cast) {
+				          column_descriptor.data_type = DataType::INT32;
+			          }
+		          },
+		          [&]<typename PT>(up<TypedCol<PT>>& typed_col) {
+			          if (column_descriptor.data_type == DataType::DECIMAL) {
+				          column_descriptor.data_type = DataType::INT64;
+				          should_be_cast              = true;
+			          }
 
-		          auto casted_data_type = getSmallestSignedType<PT>(typed_col->m_stats.min, typed_col->m_stats.max);
-		          if (casted_data_type != column_descriptor.data_type) {
-			          should_be_cast              = true;
-			          column_descriptor.data_type = casted_data_type;
-		          }
-	          },
-	          [&](up<TypedCol<dbl_pt>>& double_col) {
-		          auto is_double_castable = double_col->m_stats.is_double_castable;
-		          if (is_double_castable) {
-			          const auto casted_data_type =
-			              getSmallestSignedType<dbl_pt>(double_col->m_stats.min, double_col->m_stats.max);
-			          should_be_cast              = true;
-			          column_descriptor.data_type = casted_data_type;
-		          }
-	          },
-	          [&](up<TypedCol<flt_pt>>& float_column) {
-		          // TODO
-	          },
-	          [&](up<Struct>& struct_col) {},
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
-	      },
-	      rowgroup[column_descriptor.idx]);
+			          auto casted_data_type = getSmallestSignedType<PT>(typed_col->m_stats.min, typed_col->m_stats.max);
+			          if (casted_data_type != column_descriptor.data_type) {
+				          should_be_cast              = true;
+				          column_descriptor.data_type = casted_data_type;
+			          }
+		          },
+		          [&](up<TypedCol<dbl_pt>>& double_col) {
+			          auto is_double_castable = double_col->m_stats.is_double_castable;
+			          if (is_double_castable) {
+				          const auto casted_data_type =
+				              getSmallestSignedType<dbl_pt>(double_col->m_stats.min, double_col->m_stats.max);
+				          should_be_cast              = true;
+				          column_descriptor.data_type = casted_data_type;
+			          }
+		          },
+		          [&](up<TypedCol<flt_pt>>& float_column) {
+			          // TODO
+		          },
+		          [&](up<Struct>& struct_col) {},
+		          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg) },
+		      },
+		      rowgroup[column_descriptor.idx]);
 
-	if (should_be_cast) {
-		rowgroup[column_descriptor.idx] = cast_visit(rowgroup, column_descriptor);
+		if (should_be_cast) {
+			rowgroup[column_descriptor.idx] = cast_visit(rowgroup, column_descriptor);
+		}
+	}
 	}
 }
 

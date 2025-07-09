@@ -46,7 +46,7 @@ DataType TypeLookUp(const string& str) {
 	    {"FLS_DBL", DataType::DOUBLE},      {"FLS_STR", DataType::FLS_STR}, {"BIGINT", DataType::INT64},
 	    {"STRING", DataType::FLS_STR},      {"DOUBLE", DataType::DOUBLE},   {"LIST", DataType::LIST},
 	    {"STRUCT", DataType::STRUCT},       {"MAP", DataType::MAP},         {"FLOAT", DataType::FLOAT},
-	    {"BOOLEAN", DataType::FLS_STR},     {"INTEGER", DataType::INT64},   {"CHAR", DataType::FLS_STR},
+	    {"BOOLEAN", DataType::BOOLEAN},     {"INTEGER", DataType::INT64},   {"CHAR", DataType::FLS_STR},
 	    {"BIGINT", DataType::INT64},        {"TIME", DataType::FLS_STR},    {"DATE", DataType::DATE},
 	    {"TIMESTAMP", DataType::TIMESTAMP}, {"SMALLINT", DataType::INT16},  {"BYTE_ARRAY", DataType::BYTE_ARRAY},
 	    {"JPEG", DataType::JPEG},

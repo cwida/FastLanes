@@ -5,6 +5,7 @@
 #include "fls/common/string.hpp"
 #include "fls/detail/parse_fp.hpp"
 #include "fls/expression/data_type.hpp"
+#include "fls/types/bool.hpp"
 #include "fls/types/date.hpp"
 #include "fls/types/integer.hpp"
 #include "fls/types/timestamp.hpp"
@@ -55,7 +56,22 @@ PT TypedCast(const std::string& val_str, const DataType& data_type) {
 			return parse_timestamp(val_str);
 		}
 	} break;
-	default:
+	case DataType::BOOLEAN: {
+		if constexpr (std::is_same_v<PT, u08_pt>) {
+			return parse_bool(val_str);
+		}
+	} break;
+	case DataType::INT8:
+	case DataType::INT16:
+	case DataType::INT32:
+	case DataType::INT64:
+	case DataType::UINT8:
+	case DataType::UINT16:
+	case DataType::UINT32:
+	case DataType::UINT64:
+	case DataType::FLS_STR:
+	case DataType::FLOAT:
+	case DataType::DOUBLE: {
 		try {
 			// Unsigned integers
 			if constexpr (std::is_same_v<PT, u08_pt> || std::is_same_v<PT, u16_pt> || std::is_same_v<PT, u32_pt> ||
@@ -90,6 +106,9 @@ PT TypedCast(const std::string& val_str, const DataType& data_type) {
 		} catch (const std::exception& e) {
 			throw std::runtime_error(std::string("Error in TypedCast for input '") + val_str + "': " + e.what());
 		}
+	}
+	default:
+		FLS_UNREACHABLE();
 	}
 	FLS_UNREACHABLE();
 }
@@ -146,8 +165,22 @@ std::string TypedToStr(TypedCol<PT>& typed_column, n_t row_idx, const DataType& 
 			return date_formatter(static_cast<int32_t>(typed_column.data[row_idx]));
 		}
 	}
-
-	default:
+	case DataType::BOOLEAN: {
+		if constexpr (std::is_same_v<PT, uint8_t>) {
+			return bool_formatter(typed_column.data[row_idx]);
+		}
+	}
+	case DataType::INT8:
+	case DataType::INT16:
+	case DataType::INT32:
+	case DataType::INT64:
+	case DataType::UINT8:
+	case DataType::UINT16:
+	case DataType::UINT32:
+	case DataType::UINT64:
+	case DataType::FLS_STR:
+	case DataType::DOUBLE:
+	case DataType::FLOAT:
 		if constexpr (std::is_arithmetic_v<PT>) {
 			if constexpr (std::is_floating_point_v<PT>) {
 				// Handle floating-point types with full precision
@@ -159,6 +192,8 @@ std::string TypedToStr(TypedCol<PT>& typed_column, n_t row_idx, const DataType& 
 				return std::to_string(typed_column.data[row_idx]);
 			}
 		}
+	default:
+		FLS_UNREACHABLE();
 	}
 	FLS_UNREACHABLE();
 }

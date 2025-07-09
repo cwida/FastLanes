@@ -1,5 +1,6 @@
 add_library(fls_types
         OBJECT
+        bool.cpp
         #[[]]
         date.cpp
         integer.cpp

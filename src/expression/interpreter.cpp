@@ -479,6 +479,7 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptorT& column_desc
 		case EXP_CONSTANT_STR:
 		case EXP_CONSTANT_U08:
 		case EXP_CONSTANT_FLT:
+		case EXP_CONSTANT_BOOL:
 		case EXP_EQUAL: {
 			break;
 		}
@@ -1375,6 +1376,10 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptorT& column_descriptor
 			break;
 		}
 		case EXP_CONSTANT_U08: {
+			make_dec_constant_expr<u08_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_CONSTANT_BOOL: {
 			make_dec_constant_expr<u08_pt>(physical_expr, column_view, state);
 			break;
 		}

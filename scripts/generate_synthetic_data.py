@@ -15,7 +15,7 @@ from generator_helpers.list_generator import list_data
 from generator_helpers.write_helpers import *
 from generator_helpers.byte_array_generator import *
 from generator_helpers.jpeg_generator import *
-
+from generator_helpers.boolean_generator import *
 
 # ---------------------------
 # Faker Providers
@@ -584,6 +584,7 @@ def generate_single_column():
     fls_timestamp()
     byte_array_data()
     jpeg_data()
+    fls_boolean()
 
 
 def generate_irregular_data():

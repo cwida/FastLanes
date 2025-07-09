@@ -110,6 +110,10 @@ struct constant_visitor {
 				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_U08);
 				break;
 			}
+			case DataType::BOOLEAN: {
+				column_descriptor.encoding_rpn->operator_tokens.emplace_back(OperatorToken::EXP_CONSTANT_BOOL);
+				break;
+			}
 			case DataType::INVALID:
 			default:;
 				FLS_UNREACHABLE()
@@ -794,6 +798,7 @@ void expression_check_column(const rowgroup_pt&   rowgroup,
 		TypedDecide<int16_t>(rowgroup, column_descriptor, footer, fls);
 		break;
 	}
+	case DataType::BOOLEAN:
 	case DataType::UINT8: {
 		TypedDecide<uint8_t>(rowgroup, column_descriptor, footer, fls);
 		break;
