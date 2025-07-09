@@ -47,6 +47,8 @@
 #define FLS_ASSERT_E(L_VAL, R_VAL)              FLS_ASSERT(L_VAL == R_VAL, " ", " ");
 #define FLS_ASSERT_CORRECT_IDX(Expr)            FLS_ASSERT(Expr != INVALID_N, " ", fastlanes::Assert::IDX);
 #define FLS_ASSERT_NOT_EMPTY_VEC(VEC)           FLS_ASSERT(!VEC.empty(), " ", fastlanes::Assert::EMPTY_VECTOR);
+#define FLS_ASSERT_CORRECT_VEC_INDEX(C)         FLS_ASSERT(C <= 1024 && C >= 0, " ", fastlanes::Assert::VEC_INDEX);
+
 #include <cstdint>
 
 namespace fastlanes {
@@ -75,6 +77,7 @@ public:
 	static constexpr auto SMART_OFFSET           = "offset <= 0.";
 	static constexpr auto IDX                    = "IDX <= 0.";
 	static constexpr auto EMPTY_VECTOR           = "Empty Vector";
+	static constexpr auto VEC_INDEX              = "An index within the vector must be in range 0 - 1024.";
 };
 } // namespace fastlanes
 #endif // FLS_COMMON_ASSERT_HPP

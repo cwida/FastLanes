@@ -102,10 +102,10 @@ public:
 		static constexpr uint64_t MAX = 5;
 	};
 
-	struct BitMap {
-		static constexpr uint64_t UNIT_BIT = 64;                //
+	struct ValidityMask {
+		static constexpr uint64_t WORD_BITS = 64;                //
 		static constexpr uint64_t SZ       = VEC_SZ / 8;        //
-		static constexpr uint64_t UNIT_C   = VEC_SZ / UNIT_BIT; //
+		static constexpr uint64_t UNIT_C   = VEC_SZ / WORD_BITS; //
 	};
 
 	struct FF {
