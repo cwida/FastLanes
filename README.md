@@ -1,7 +1,16 @@
 <p align="center">
   <img src="assets/logo.svg" alt="FastLanes Logo" width="360" />
 </p>
-FastLanes is like Parquet with **40% better compression** and **40× faster decoding**.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**Like Parquet, but with 40% better compression and 40× faster decoding.**
+
+FastLanes features:
+
+- **Fully SIMD-friendly with zero explicit SIMD instructions**:
+- **Zero dependencies**:
+    - no external libraries required
 
 ---
 
@@ -100,7 +109,8 @@ fn main() -> Result<()> {
     * [Read the paper](https://doi.org/10.1145/3662010.3663450)
     * [Source code](https://github.com/cwida/FastLanesGPU)
 
-* **Azim Afroozeh, Leonardo Kuffó & Peter Boncz**, “ALP: Adaptive Lossless Floating-Point Compression,” *SIGMOD ’24*, ACM SIGMOD, June 2024
+* **Azim Afroozeh, Leonardo Kuffó & Peter Boncz**, “ALP: Adaptive Lossless Floating-Point Compression,” *SIGMOD ’24*,
+  ACM SIGMOD, June 2024
 
     * [Read the paper](https://doi.org/10.1145/3626717)
     * [Source code](https://github.com/cwida/ALP)
