@@ -298,6 +298,14 @@ string token_to_string(OperatorToken token) {
 		return "EXP_DICT_FLT_FFOR_U32"; // 142
 	case OperatorToken::EXP_DICT_FLT_FFOR_SLPATCH_U32:
 		return "EXP_DICT_FLT_FFOR_SLPATCH_U32"; // 143
+	case OperatorToken::EXP_DICT_U08_U08:
+		return "EXP_DICT_U08_U08"; // 144
+	case OperatorToken::EXP_DICT_FLT_U08:
+		return "EXP_DICT_FLT_U08"; // 145
+	case OperatorToken::EXP_CONSTANT_BOOL:
+		return "EXP_CONSTANT_BOOL"; // 146
+	case OperatorToken::EXP_VALIDITY_MASK:
+		return "EXP_VALIDITY_MASK"; // 147
 	default:
 		FLS_UNREACHABLE()
 	}

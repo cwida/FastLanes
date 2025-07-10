@@ -1,4 +1,5 @@
 #include "fls/types/validitymask.hpp"
+#include "fls/common/assert.hpp"
 #include <bit>     // std::popcount (C++20)
 #include <cstring> // std::memset / memcpy
 
@@ -98,6 +99,45 @@ void ValidityMask::bit_xor(const ValidityMask& other) noexcept {
 // ───────────────────────────────────────── copy
 void ValidityMask::copy_from(const ValidityMask& other) noexcept {
 	std::memcpy(m_data, other.m_data, sizeof(m_data));
+}
+
+// ───────────────────────────────────────── ingest dense byte-vector
+void ValidityMask::encode(const uint8_t* bytes) noexcept {
+	for (n_t word = 0; word < WORD_COUNT; ++word) {
+		uint64_t       w     = 0;
+		const uint8_t* block = bytes + word * WORD_BITS; // 64 bytes per word
+		for (n_t bit = 0; bit < WORD_BITS; ++bit) {
+			if (block[bit])
+				w |= (uint64_t {1} << bit);
+		}
+		m_data[word] = w;
+	}
+}
+
+// ───────────────────────────────────────── static decode helper
+void ValidityMask::decode(const uint64_t* words, uint8_t* bytes) noexcept {
+	FLS_ASSERT_NOT_NULL_POINTER(words);
+	FLS_ASSERT_NOT_NULL_POINTER(bytes);
+
+	for (n_t word = 0; word < WORD_COUNT; ++word) {
+		uint64_t w     = words[word];
+		uint8_t* block = bytes + word * WORD_BITS; // 64 bytes per word
+		for (n_t bit = 0; bit < WORD_BITS; ++bit)
+			block[bit] = static_cast<uint8_t>((w >> bit) & 1u); // 0 or **1**
+	}
+}
+
+// ───────────────────────────────────────── non-static delegating overload
+void ValidityMask::decode(uint8_t* bytes) const noexcept {
+	// Re-use the static helper on our own storage
+	decode(m_data, bytes);
+}
+
+uint64_t* ValidityMask::data() noexcept {
+	return m_data;
+}
+const uint64_t* ValidityMask::data() const noexcept {
+	return m_data;
 }
 
 } // namespace fastlanes

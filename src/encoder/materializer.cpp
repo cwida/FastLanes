@@ -15,6 +15,7 @@
 #include "fls/expression/rle_expression.hpp"
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
+#include "fls/expression/validitymask_operator.hpp"
 #include "fls/primitive/copy/fls_copy.hpp"
 #include "fls/primitive/untranspose/untranspose.hpp"
 #include "fls/reader/segment.hpp"
@@ -169,6 +170,9 @@ struct material_visitor {
 		opr->Materialize(vec_idx, *typed_col);
 	}
 	void operator()(const sp<dec_cross_rle_opr<fls_string_t>>& opr, up<FLSStrColumn>& typed_col) const {
+		opr->Materialize(vec_idx, *typed_col);
+	}
+	void operator()(const sp<dec_validitymask_opr>& opr, up<TypedCol<uint8_t>>& typed_col) const {
 		opr->Materialize(vec_idx, *typed_col);
 	}
 	void operator()(const auto& opr, auto& col) const {

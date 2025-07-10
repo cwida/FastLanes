@@ -45,7 +45,7 @@ def fls_boolean():
     (dir_rowgroup / 'schema.json').write_text(json.dumps(schema_rg, indent=2) + "\n")
 
     # Directory for the “one_vector” (VEC_SIZE rows) version
-    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_boolean'
+    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'boolean'
     write_csv(dir_onevec, generate_fls_boolean, VEC_SIZE)
 
     # Write schema.json in that folder as well with trailing newline

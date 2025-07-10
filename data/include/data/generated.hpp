@@ -54,6 +54,7 @@ public:
 	static constexpr std::string_view ONE_VEC_STRPT {FLS_CMAKE_SOURCE_DIR "/data/generated/one_vector/fls_str"};
 	static constexpr std::string_view ONE_VEC_DBLPT {FLS_CMAKE_SOURCE_DIR "/data/generated/one_vector/fls_dbl"};
 	static constexpr std::string_view ONE_VEC_DECIMAL {FLS_CMAKE_SOURCE_DIR "/data/generated/one_vector/decimal"};
+	static constexpr std::string_view ONE_VEC_BOOLEAN {FLS_CMAKE_SOURCE_DIR "/data/generated/one_vector/boolean"};
 
 	// TWO VEC
 	static constexpr std::string_view TWO_VEC_STRPT {FLS_CMAKE_SOURCE_DIR "/data/generated/two_vector/fls_str"};

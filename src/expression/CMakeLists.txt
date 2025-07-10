@@ -25,6 +25,7 @@ add_library(fls_expression
         selection_ds.cpp
         slpatch_operator.cpp
         transpose_operator.cpp
+        validitymask_operator.cpp
 )
 
 if (FLS_ENABLE_IWYU)

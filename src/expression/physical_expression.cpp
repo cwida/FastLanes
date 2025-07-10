@@ -17,6 +17,7 @@
 #include "fls/expression/scan_operator.hpp"
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
+#include "fls/expression/validitymask_operator.hpp"
 #include "fls/reader/segment.hpp"
 
 namespace fastlanes {
@@ -204,6 +205,12 @@ struct point_to_visitor {
 	void operator()(const sp<enc_frequency_str_opr>& opr) {
 		opr->PointTo(vec_idx);
 	}
+	void operator()(const sp<enc_validitymask_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
+	void operator()(const sp<dec_validitymask_opr>& opr) {
+		opr->PointTo(vec_idx);
+	}
 	//
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
@@ -347,6 +354,10 @@ struct flush_segments_visitor {
 
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
+		opr->MoveSegments(segments);
+	}
+	//
+	void operator()(const sp<enc_validitymask_opr>& opr) {
 		opr->MoveSegments(segments);
 	}
 
@@ -499,6 +510,10 @@ struct extract_segments_visitor {
 		opr->MoveSegments(segments);
 	}
 	//
+	void operator()(const sp<enc_validitymask_opr>& opr) {
+		opr->MoveSegments(segments);
+	}
+	//
 	void operator()(const auto& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg)
 	}
@@ -631,6 +646,9 @@ struct finalize_operators_visitor {
 	template <typename PT>
 	void operator()(const sp<enc_cross_rle_opr<PT>>& opr) {
 		opr->Finalize();
+	}
+	//
+	void operator()(const sp<enc_validitymask_opr>& opr) {
 	}
 	//
 	void operator()(const auto& arg) {

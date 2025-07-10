@@ -3,11 +3,10 @@
 
 /**
  * @file src/include/fls/types/validitymask.hpp
- * @brief Fixed‑size bitmap interface (implementation moved to validitymask.cpp).
+ * @brief Fixed‑size ValidityMask
  */
 
 #include "fls/cfg/cfg.hpp"
-#include "fls/common/assert.hpp"
 
 namespace fastlanes {
 class ValidityMask {
@@ -57,16 +56,36 @@ public:
 	[[nodiscard]] bool none() const noexcept;  ///< True if all bits are 0.
 	[[nodiscard]] bool all() const noexcept;   ///< True if all bits are 1.
 
-	void bit_or(const ValidityMask& other) noexcept;  ///< this |= other
-	void bit_and(const ValidityMask& other) noexcept; ///< this &= other
-	void bit_xor(const ValidityMask& other) noexcept; ///< this ^= other
-
+	void bit_or(const ValidityMask& other) noexcept;    ///< this |= other
+	void bit_and(const ValidityMask& other) noexcept;   ///< this &= other
+	void bit_xor(const ValidityMask& other) noexcept;   ///< this ^= other
 	void copy_from(const ValidityMask& other) noexcept; ///< memcpy‑style copy.
-};
 
-// ───────────────────────────────────────── namespace‑level checks
-static_assert((1ULL << ValidityMask::WORD_SHIFT) == ValidityMask::WORD_BITS, "WORD_SHIFT must match WORD_BITS");
-static_assert(ValidityMask::WORD_MASK == ValidityMask::WORD_BITS - 1, "WORD_MASK must equal WORD_BITS‑1");
+	/**
+	 * @brief Ingest a dense validity vector.
+	 * @param bytes Pointer to an array of exactly 1024 bytes; each byte value of zero means "invalid / bit 0",
+	 *              any non-zero value means "valid / bit 1". Faster than setting individual bits.
+	 */
+	void encode(const uint8_t* bytes) noexcept;
+	void decode(uint8_t* bytes) const noexcept;
+	/**
+	 * @brief Static helper that decodes a raw 16 × 64-bit word array into
+	 *        a 1024-byte “dense” validity buffer.
+	 * @param words  Pointer to an array of WORD_COUNT (16) uint64_t words.
+	 * @param bytes  Destination buffer of exactly BIT_COUNT (1024) bytes.
+	 */
+	static void decode(const uint64_t* words, uint8_t* bytes) noexcept;
+
+	/// Direct pointer to the first 64-bit word (mutable / const)
+	[[nodiscard]] uint64_t*            data() noexcept;
+	[[nodiscard]] const uint64_t*      data() const noexcept;
+	[[nodiscard]] static constexpr n_t byte_size() noexcept {
+		return WORD_COUNT * static_cast<n_t>(sizeof(uint64_t));
+	}
+	// ───────────────────────────────────────── namespace‑level checks
+	static_assert((1ULL << ValidityMask::WORD_SHIFT) == ValidityMask::WORD_BITS, "WORD_SHIFT must match WORD_BITS");
+	static_assert(ValidityMask::WORD_MASK == ValidityMask::WORD_BITS - 1, "WORD_MASK must equal WORD_BITS‑1");
+};
 } // namespace fastlanes
 
 #endif // FLS_TYPES_VALIDITYMASK_HPP

@@ -103,9 +103,9 @@ public:
 	};
 
 	struct ValidityMask {
-		static constexpr uint64_t WORD_BITS = 64;                //
-		static constexpr uint64_t SZ       = VEC_SZ / 8;        //
-		static constexpr uint64_t UNIT_C   = VEC_SZ / WORD_BITS; //
+		static constexpr uint64_t WORD_BITS = 64;                 //
+		static constexpr uint64_t SZ        = VEC_SZ / 8;         //
+		static constexpr uint64_t UNIT_C    = VEC_SZ / WORD_BITS; //
 	};
 
 	struct FF {

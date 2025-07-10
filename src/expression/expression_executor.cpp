@@ -14,6 +14,7 @@
 #include "fls/expression/scan_operator.hpp"
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
+#include "fls/expression/validitymask_operator.hpp"
 
 namespace fastlanes {
 
@@ -212,6 +213,10 @@ struct operator_visitor {
 	}
 	template <typename PT>
 	void operator()(sp<dec_cross_rle_opr<PT>>& opr) {
+	}
+	//
+	void operator()(sp<enc_validitymask_opr>& opr) {
+		opr->to_validitymask();
 	}
 	//
 	void operator()(std::monostate&) {
@@ -448,6 +453,8 @@ struct operator_counter_visitor {
 	}
 	void operator()(auto& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
+	}
+	void operator()(sp<dec_validitymask_opr>& opr) {
 	}
 
 	PhysicalExpr& physical_expr;

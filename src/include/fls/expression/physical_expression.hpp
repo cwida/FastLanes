@@ -87,6 +87,8 @@ template <typename PT>
 struct enc_cross_rle_opr;
 template <typename PT>
 struct dec_cross_rle_opr;
+struct enc_validitymask_opr;
+struct dec_validitymask_opr;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 using physical_operator = variant<std::monostate,
@@ -318,6 +320,10 @@ using physical_operator = variant<std::monostate,
                                   // RSUM
                                   sp<enc_rsum_opr<u16_pt>>,
                                   sp<struct dec_rsum_opr<u16_pt>>,
+                                  // VALIDITY MASK
+                                  sp<enc_validitymask_opr>,
+                                  sp<dec_validitymask_opr>,
+                                  //
                                   sp<enc_rsum_opr<u32_pt>>,
                                   sp<dec_rsum_opr<u32_pt>>,
                                   sp<enc_rsum_opr<i64_pt>>,
