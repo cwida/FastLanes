@@ -8,6 +8,7 @@ include mk/data.mk
 include mk/scripts.mk
 include mk/embeddings.mk
 include mk/flatbuffers.mk
+include mk/quick_fuzz.mk
 
 .PHONY: all clean clang-format format-check rust-format-check format
 

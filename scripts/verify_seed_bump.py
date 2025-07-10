@@ -45,7 +45,7 @@ def main() -> None:
         print(
             f"::error title=Seed bump required::'base_seed' should be {expected} "
             f"(found {pr_seed}).\n"
-            f"Please run `python scripts/bump_fuzz_seed.py` and commit."
+            f"Please run `make bump` and commit."
         )
         sys.exit(1)
 
