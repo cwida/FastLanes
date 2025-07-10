@@ -1,6 +1,7 @@
 #ifndef FLS_TYPES_bool_HPP
 #define FLS_TYPES_bool_HPP
 
+#include "fls/common/common.hpp"
 #include "fls/std/string.hpp"
 
 namespace fastlanes {
