@@ -55,6 +55,19 @@ jobs:
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
         shared_lib: [ false, true ]
+
+        # 🛑 Skip the flaky public-preview runner (arm64 Debug + shared)
+        # GitHub’s ubuntu-24.04-arm image is still in public beta (burstable capacity),
+        # which can terminate long jobs with “The runner has received a shutdown signal”
+        # → exit-code 143. See:
+        # https://github.blog/changelog/2024-06-24-github-actions-ubuntu-24-04-image-now-available-for-arm64-runners/
+        # See also Issue #11541: “Intermittent segmentation faults on Ubuntu 24.04 ARM”
+        # — ~15% of runs on ubuntu-24.04-arm see segfaults or pre-emptions mid-build
+        exclude:
+          - platform: ubuntu-24.04-arm
+            build_type: Debug
+            shared_lib: true
+
     runs-on: ${{ matrix.platform }}
 
     steps:
