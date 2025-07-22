@@ -54,18 +54,23 @@ up<TableReader> Connection::read_fls(const path& file_path) {
 	return make_unique<TableReader>(file_path, *this);
 }
 
-void prepare_rowgroup(Rowgroup& rowgroup) {
-
-	// could be combined
+void prepare_rowgroup(Rowgroup& rowgroup, const Config& config) {
+	// init
 	rowgroup.Init();
-	rowgroup.Cast();
+
+	// Only cast if schema wasn’t forced
+	const bool shouldCast = !config.is_forced_schema && !config.is_forced_schema_pool;
+	if (shouldCast) {
+		rowgroup.Cast();
+	}
+
 	rowgroup.Finalize();
 	rowgroup.GetStatistics();
 }
 
 void Connection::prepare_table() const {
 	for (auto& rowgroup : m_table->m_rowgroups) {
-		prepare_rowgroup(*rowgroup);
+		prepare_rowgroup(*rowgroup, *m_config);
 	}
 }
 

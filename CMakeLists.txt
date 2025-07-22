@@ -108,7 +108,7 @@ endif ()
 option(FLS_BUILD_TESTING "Build Test" OFF)
 option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLES "Build Examples" OFF)
-option(FLS_BUILD_GPU "Build GPU" OFF)
+option(FLS_BUILD_CUDA "Build FastLanes CUDA reader" OFF)
 option(FLS_BUILD_GTEST "Build GTEST" OFF)
 option(FLS_BUILD_PYTHON "Build FastLanes Python bindings" OFF)
 option(FLS_BUILD_SHARED_LIBS "Build FastLanes library as shared" OFF)
@@ -120,13 +120,13 @@ option(FLS_ENABLE_TABLE_LOG "Enable Table Log" OFF)
 option(FLS_ENABLE_VERBOSE_OUTPUT "Enable verbose output" OFF)
 option(FLS_ENABLE_DATA "Enable Data" OFF)
 option(FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING "Build FSST" OFF)
+option(FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING "Build GALP" OFF)
 
 # Definitions: ---------------------------------------------------------------------------------------------------------
 add_compile_definitions(FLS_CMAKE_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
-
 # GTEST : --------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_TESTING OR FLS_BUILD_GPU OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
+if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING OR FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Building GTEST:")
     include(GoogleTest)
@@ -182,8 +182,21 @@ if (true)
 
 endif ()
 
+# CUDA : ---------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_CUDA)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("--: Building CU-FastLanes Lib.")
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda)
+endif ()
+
+
 # DATA : ---------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLES OR FLS_ENABLE_DATA)
+if (FLS_BUILD_TESTING OR
+        FLS_BUILD_BENCHMARKING OR
+        FLS_BUILD_EXAMPLES OR
+        FLS_ENABLE_DATA OR
+        FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING OR
+        FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Enabling Data.")
 
@@ -276,19 +289,11 @@ if (FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
     add_subdirectory(fsst)
 endif ()
 
-
 # Example : ------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_EXAMPLES)
     message("---------------------------------------------------------------------------------------------------------")
     message("- Examples:")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
-endif ()
-
-# GPU : ----------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_GPU)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("- GPU:")
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gpu)
 endif ()
 
 # Playground : ---------------------------------------------------------------------------------------------------------
@@ -305,4 +310,9 @@ if (FLS_BUILD_PYTHON)
     add_subdirectory(python)   # your module’s CMakeLists.txt
 endif ()
 
-
+# FSST: ----------------------------------------------------------------------------------------------------------------
+if (FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Adding GALP Testing and Benchmarking.")
+    add_subdirectory(galp)
+endif ()

@@ -318,6 +318,12 @@ string token_to_string(OperatorToken token) {
 		return "EXP_RLE_U08_SLPATCH_U16"; // 152
 	case OperatorToken::EXP_DELTA_U08:
 		return "EXP_DELTA_U08"; // 153
+	case OperatorToken::EXP_RLE_U08_U16:
+		return "EXP_RLE_U08_U16"; // 154
+	case OperatorToken::EXP_GALP_FLT:
+		return "EXP_GALP_FLT"; // 155
+	case OperatorToken::EXP_GALP_DBL:
+		return "EXP_GALP_DBL"; // 156
 	default:
 		FLS_UNREACHABLE()
 	}

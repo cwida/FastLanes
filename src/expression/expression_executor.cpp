@@ -1,6 +1,7 @@
 #include "fls/expression/expression_executor.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_parallelize_patch_operator.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/frequency_operator.hpp"
@@ -219,6 +220,9 @@ struct operator_visitor {
 		opr->to_validitymask();
 	}
 	//
+	template <typename PT>
+	void operator()(sp<enc_data_parallel_patch_opr<PT>>& opr) {
+	}
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
 	}

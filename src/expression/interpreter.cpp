@@ -5,6 +5,7 @@
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
 #include "fls/expression/cross_rle_operator.hpp"
+#include "fls/expression/data_parallelize_patch_operator.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/dict_expression.hpp"
 #include "fls/expression/encoding_operator.hpp"
@@ -349,6 +350,22 @@ void make_enc_alp_expr(PhysicalExpr&      physical_expr,
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
+ * make_galp_expr
+\*--------------------------------------------------------------------------------------------------------------------*/
+template <typename PT>
+void make_enc_galp_expr(PhysicalExpr&      physical_expr,
+                        const rowgroup_pt& rowgroup,
+                        ColumnDescriptorT& column_descriptor,
+                        InterpreterState&  state) {
+	auto&       operators = physical_expr.operators;
+	const auto& column    = rowgroup[column_descriptor.idx];
+
+	operators.emplace_back(make_shared<enc_alp_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    make_shared<enc_data_parallel_patch_opr<PT>>(physical_expr, column, column_descriptor, state));
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
  * make_rle_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename KEY_PT, typename INDEX_PT>
@@ -611,6 +628,14 @@ sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptorT& column_desc
 		}
 		case EXP_ALP_FLT: {
 			make_enc_alp_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_GALP_FLT: {
+			make_enc_galp_expr<flt_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
+			break;
+		}
+		case EXP_GALP_DBL: {
+			make_enc_galp_expr<dbl_pt>(*physical_expr, physical_rowgroup, column_descriptor, state);
 			break;
 		}
 		case EXP_ALP_RD_DBL: {
@@ -1126,6 +1151,15 @@ void make_dec_alp_expr(PhysicalExpr& physical_expr, const ColumnView& column_vie
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
+ * make_dec_galp_expr
+\*--------------------------------------------------------------------------------------------------------------------*/
+template <typename PT>
+void make_dec_galp_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
+	state.cur_operand = column_view.column_descriptor.encoding_rpn->operand_tokens.size() - 1;
+	physical_expr.operators.emplace_back(make_shared<dec_alp_opr<PT>>(column_view, state));
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
  * make_dec_alp_rd_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
@@ -1614,6 +1648,14 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptorT& column_descriptor
 		}
 		case EXP_ALP_FLT: {
 			make_dec_alp_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_GALP_FLT: {
+			make_dec_galp_expr<flt_pt>(physical_expr, column_view, state);
+			break;
+		}
+		case EXP_GALP_DBL: {
+			make_dec_galp_expr<dbl_pt>(physical_expr, column_view, state);
 			break;
 		}
 		case EXP_ALP_RD_DBL: {

@@ -1,6 +1,6 @@
 IMAGE             := ghcr.io/azimafroozeh/clang-format-python/clang-format-python:14
 UBUNTU_IMAGE      := ubuntu:22.04
-DIRS              := examples src benchmark test data/include python
+DIRS              := examples src benchmark test data/include python cuda galp
 EXCLUDES          := --exclude src/include/fls/json/nlohmann \
                      --exclude src/include/flatbuffers \
                      --exclude src/primitives \
@@ -14,7 +14,9 @@ DOCKER := docker run --rm -v "$$(pwd)":/app -w /app
 # the actual clang-format invocation
 FMT_CMD := python3 scripts/run-clang-format.py \
            -r $(DIRS) \
+           --extensions='c,h,C,H,cpp,hpp,cc,hh,cxx,hxx,cu,cuh' \
            $(EXCLUDES)
+
 
 .PHONY: format clang-format format-check rust-format-check
 

@@ -18,7 +18,7 @@ from generator_helpers.jpeg_generator import *
 from generator_helpers.boolean_generator import *
 from generator_helpers.i08_generator import *
 from generator_helpers.u08_generator import *
-
+from generator_helpers.galp_generator import *
 
 # ---------------------------
 # Faker Providers
@@ -622,6 +622,7 @@ def main():
     generate_any_value_count()
     generate_subnormals()
     generate_fsst_test()
+    fls_galp()
 
     logging.info("✅  All data files generated successfully.")  # ← NEW
 

@@ -4,6 +4,7 @@
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/primitive/bitpack/bitpack.hpp"
+#include "fls/primitive/patch/patch.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/unffor.hpp"
@@ -30,6 +31,9 @@ enc_alp_opr<PT>::enc_alp_opr(const PhysicalExpr& expr,
 	exp_segment       = make_unique<Segment>();
 	pos_segment       = make_unique<Segment>();
 	n_exp_segment     = make_unique<Segment>();
+	//
+	out_count_segment  = make_unique<Segment>();
+	out_offset_segment = make_unique<Segment>();
 }
 
 template <typename PT>
@@ -59,6 +63,11 @@ void enc_alp_opr<PT>::Encode() {
 	alp::encoder<PT>::analyze_ffor(encoded_arr, alp_state.bit_width, &base);
 	ffor::ffor(encoded_arr, ffor_arr, alp_state.bit_width, &base);
 
+	if (data_parallelize) {
+		Patch<PT>::data_parallelize(
+		    exc_arr, pos_arr, alp_state.n_exceptions, out_exc_arr, out_offset, out_pos_arr, out_count);
+	}
+
 	const n_t bytes        = calculate_bitpacked_vector_size(alp_state.bit_width);
 	const n_t exc_arr_size = calculate_alp_exception_vector_size<PT>(alp_state.n_exceptions);
 	const n_t pos_arr_size = calculate_alp_pos_vector_size(alp_state.n_exceptions);
@@ -66,11 +75,28 @@ void enc_alp_opr<PT>::Encode() {
 	bw_segment->Flush(&alp_state.bit_width, sizeof(bw_t));
 	base_segment->Flush(&base, sizeof(typename alp::inner_t<PT>::st));
 	ffor_segment->Flush(ffor_arr, bytes);
-	exception_segment->Flush(exc_arr, exc_arr_size);
+
+	if (data_parallelize) {
+		exception_segment->Flush(out_exc_arr, exc_arr_size);
+	} else {
+		exception_segment->Flush(exc_arr, exc_arr_size);
+	}
+
 	fac_segment->Flush(&alp_state.fac, sizeof(uint8_t));
 	exp_segment->Flush(&alp_state.exp, sizeof(uint8_t));
-	pos_segment->Flush(pos_arr, pos_arr_size);
+
+	if (data_parallelize) {
+		pos_segment->Flush(out_pos_arr, pos_arr_size);
+	} else {
+		pos_segment->Flush(pos_arr, pos_arr_size);
+	}
+
 	n_exp_segment->Flush(&alp_state.n_exceptions, sizeof(uint16_t));
+
+	if (data_parallelize) {
+		out_count_segment->Flush(out_count, 32);
+		out_offset_segment->Flush(out_offset, 64);
+	};
 }
 
 template <typename PT>
@@ -84,6 +110,10 @@ void enc_alp_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 	segments.push_back(std::move(exp_segment));
 	segments.push_back(std::move(pos_segment));
 	segments.push_back(std::move(n_exp_segment));
+	if (data_parallelize) {
+		segments.push_back(std::move(out_count_segment));
+		segments.push_back(std::move(out_offset_segment));
+	}
 }
 
 template struct enc_alp_opr<dbl_pt>;

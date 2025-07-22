@@ -89,6 +89,8 @@ template <typename PT>
 struct dec_cross_rle_opr;
 struct enc_validitymask_opr;
 struct dec_validitymask_opr;
+template <typename PT>
+struct enc_data_parallel_patch_opr;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 using physical_operator = variant<std::monostate,
@@ -357,7 +359,11 @@ using physical_operator = variant<std::monostate,
                                   sp<enc_fsst12_dict_opr>,
                                   sp<dec_fsst12_dict_opr<u32_pt>>,
                                   sp<dec_fsst12_dict_opr<u16_pt>>,
-                                  sp<dec_fsst12_dict_opr<u08_pt>>
+                                  sp<dec_fsst12_dict_opr<u08_pt>>,
+                                  //
+                                  // DATA Parallelize Patch
+                                  sp<enc_data_parallel_patch_opr<dbl_pt>>,
+                                  sp<enc_data_parallel_patch_opr<flt_pt>>
                                   //
                                   >;
 
