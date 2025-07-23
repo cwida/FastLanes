@@ -50,7 +50,7 @@ install: venv
 	              --extra-index-url https://download.pytorch.org/whl/cpu
 
 # 2️⃣  Generate embeddings
-generate: install
+generate-embeddings: install
 	@echo "Running generate_embedding.py with $$($(VENV_PY) --version) …"
 	"$(VENV_PY)" "$(SCRIPT)"
 

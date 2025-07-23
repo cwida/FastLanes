@@ -34,4 +34,4 @@ runs:
     - name: Generate embeddings
       working-directory: mk
       shell: bash
-      run: make -f embeddings.mk generate
+      run: make generate-embeddings
