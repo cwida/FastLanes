@@ -3,16 +3,16 @@
 # ────────────────────────────────────────────────────────
 # .github/workflows/header-check.yml
 # ────────────────────────────────────────────────────────
+name: Header-check
+
 run-name: >-
   ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
   — ${{ github.event.pull_request.title || github.event.head_commit.message }}
 
-name: FastLanes Header Check
-
 on:
-  pull_request:
   push:
-    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, dev ]
 
 jobs:
   check-header:
