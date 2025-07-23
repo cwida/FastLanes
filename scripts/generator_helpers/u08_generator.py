@@ -31,7 +31,7 @@ def write_fls_u08_to_file(
 ) -> None:
     """Write *size* rows to *data/generated/<sub_path>/generated.csv* plus *schema.json*."""
     # Target directory where generated.csv and schema.json will reside
-    dir_path = Path.cwd().parent / "data" / "generated" / sub_path
+    dir_path = Path.cwd() / "data" / "generated" / sub_path
 
     # Let *write_csv* create the directory and CSV
     write_csv(dir_path, generator, size)
