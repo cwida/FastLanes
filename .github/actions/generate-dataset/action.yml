@@ -25,9 +25,8 @@ runs:
     # 3️⃣  Generate the synthetic data
     # ─────────────────────────────────────────────────────────────
     - name: Generate synthetic data
-      working-directory: mk
       shell: bash
-      run: make -f data.mk generate_synthetic_data
+      run: make generate_synthetic_data
 
     # ─────────────────────────────────────────────────────────────
     # 4️⃣  Generate the sentence embeddings

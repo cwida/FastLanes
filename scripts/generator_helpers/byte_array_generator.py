@@ -34,7 +34,7 @@ def byte_array_data(size: int = 1024) -> None:
     in a CSV file with no header and line terminator \\n.
     """
     faker = Faker()
-    output_dir = Path.cwd() / ".." / "data" / "generated" / "single_columns" / "byte_array"
+    output_dir = Path.cwd() / "data" / "generated" / "single_columns" / "byte_array"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Write data.csv

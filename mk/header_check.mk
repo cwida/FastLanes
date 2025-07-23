@@ -1,25 +1,17 @@
 # ────────────────────────────────────────────────────────
 # |                      FastLanes                       |
 # ────────────────────────────────────────────────────────
-# Makefile
+# mk/header_check.mk
 # ────────────────────────────────────────────────────────
-include mk/preamble.mk
-include mk/python.mk
-include mk/format.mk
-include mk/cpp.mk
-include mk/rust.mk
-include mk/data.mk
-include mk/scripts.mk
-include mk/embeddings.mk
-include mk/flatbuffers.mk
-include mk/quick_fuzz.mk
-include mk/header_check.mk
+include mk/venv.mk
 
-.PHONY: all clean clang-format format-check rust-format-check format
+PYTHON := $(VENV_DIR)/bin/python3
+SCRIPT := scripts/header_check.py
 
-all: build-cpp build-rust
+.PHONY: check-header fix-header
 
-clean:
-	$(MAKE) clean-cpp clean-rust clean-python
+check-header: venv
+	$(PYTHON) $(SCRIPT) --check
 
-format: clang-format
+fix-header: venv
+	$(PYTHON) $(SCRIPT)

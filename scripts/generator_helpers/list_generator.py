@@ -40,7 +40,7 @@ def list_data(size: int = 1024) -> None:
     the list-of-integers structure.
     """
     faker = Faker()
-    output_dir = Path.cwd() / ".." / "data" / "generated" / "list"
+    output_dir = Path.cwd() / "data" / "generated" / "list"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Write data.jsonl

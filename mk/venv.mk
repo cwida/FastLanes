@@ -1,25 +1,15 @@
 # ────────────────────────────────────────────────────────
 # |                      FastLanes                       |
 # ────────────────────────────────────────────────────────
-# Makefile
+# mk/venv.mk
 # ────────────────────────────────────────────────────────
-include mk/preamble.mk
-include mk/python.mk
-include mk/format.mk
-include mk/cpp.mk
-include mk/rust.mk
-include mk/data.mk
-include mk/scripts.mk
-include mk/embeddings.mk
-include mk/flatbuffers.mk
-include mk/quick_fuzz.mk
-include mk/header_check.mk
+ifndef VENV_TARGET_DEFINED
+VENV_TARGET_DEFINED := 1
 
-.PHONY: all clean clang-format format-check rust-format-check format
+VENV_DIR := ../.venv
 
-all: build-cpp build-rust
+.PHONY: venv
+venv:
+	@test -d $(VENV_DIR) || python3 -m venv $(VENV_DIR)
 
-clean:
-	$(MAKE) clean-cpp clean-rust clean-python
-
-format: clang-format
+endif
