@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/i08_generator.py
+# ────────────────────────────────────────────────────────
 """
 Module: scripts/generator_helpers/i08_generator.py
 Description: Generates synthetic 8-bit integer (I08) data values and writes them to CSV files with accompanying schema definitions.
