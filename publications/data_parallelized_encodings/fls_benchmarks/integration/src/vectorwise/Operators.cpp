@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/Operators.cpp
+// ────────────────────────────────────────────────────────
 #include "vectorwise/Operators.hpp"
 #include "benchmarks/fls/config.hpp"
 #include "common/Compat.hpp"

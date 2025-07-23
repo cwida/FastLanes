@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls_gen/unrsum/unrsum.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_UNRSUM_UNRSUM_HPP
 #define FLS_GEN_UNRSUM_UNRSUM_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/analyze_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_ANALYZE_OPERATOR_HPP
 #define FLS_EXPRESSION_ANALYZE_OPERATOR_HPP
 

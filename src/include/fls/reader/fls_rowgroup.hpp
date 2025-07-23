@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/reader/fls_rowgroup.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_READER_FLS_ROWGROUP_HPP
 #define FLS_READER_FLS_ROWGROUP_HPP
 

@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# .github/workflows/rust.yml
+# ────────────────────────────────────────────────────────
 # GitHub Actions workflow: Rust + C++ (FastLanes)
 # Save as .github/workflows/rust.yml
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/common/runtime/Stack.cpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Stack.hpp"
 #include <cstdint>
 #include <gtest/gtest.h>

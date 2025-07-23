@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/table/chunk.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_CHUNK_HPP
 #define FLS_TABLE_CHUNK_HPP
 

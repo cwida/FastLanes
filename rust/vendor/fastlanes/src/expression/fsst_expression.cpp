@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/expression/fsst_expression.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/fsst_expression.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/string.hpp"

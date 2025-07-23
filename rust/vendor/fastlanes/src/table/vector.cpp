@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/table/vector.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/vector.hpp"
 #include "fls/reader/segment.hpp"
 

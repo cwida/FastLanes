@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/common/string.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/string.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/assert.hpp" // for FLS_ASSERT_CORRECT_SZ, FLS_ASSERT_N...

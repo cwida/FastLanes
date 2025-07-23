@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/test/galp_test.cu
+// ────────────────────────────────────────────────────────
 #include "alp/alp-bindings.cuh"
 #include "data/fastlanes_data.hpp"
 #include "engine/device-utils.cuh"

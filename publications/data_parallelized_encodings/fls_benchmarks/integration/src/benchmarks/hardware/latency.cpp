@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/hardware/latency.cpp
+// ────────────────────────────────────────────────────────
 #include <atomic>
 #include <iostream>
 #include <algorithm>

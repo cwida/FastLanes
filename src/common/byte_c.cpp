@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/common/byte_c.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/byte_c.hpp"
 #include "fls/common/assert.hpp" // for FLS_ASSERT_CORRECT_SZ
 

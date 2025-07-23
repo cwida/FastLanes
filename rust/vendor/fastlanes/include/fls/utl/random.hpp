@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/utl/random.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_UTL_RANDOM_HPP
 #define FLS_UTL_RANDOM_HPP
 

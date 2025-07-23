@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/io/file.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/io/file.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/std/filesystem.hpp"

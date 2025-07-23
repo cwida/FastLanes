@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/types/integer.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/types/integer.hpp"
 #include "fls/std/string.hpp"
 #include <cctype> // for std::isdigit

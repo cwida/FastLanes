@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/validitymask_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_VALIDITYMASK_OPERATOR_HPP
 #define FLS_EXPRESSION_VALIDITYMASK_OPERATOR_HPP
 

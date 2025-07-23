@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// test/src/primitive_tests/patch_test.cpp
+// ────────────────────────────────────────────────────────
 // test/src/primitive_tests/patch_test.cpp
 // Google Test suite for fastlanes::Patch::data_parallelize
 // Updated for API that returns **per‑lane counts (uint8_t) and offsets (uint16_t)**.

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/table/chunk.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/chunk.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/macros.hpp"

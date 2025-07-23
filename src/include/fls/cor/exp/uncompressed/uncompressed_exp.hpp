@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/exp/uncompressed/uncompressed_exp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_EXP_UNCOMPRESSED_UNCOMPRESSED_EXP_HPP
 #define FLS_COR_EXP_UNCOMPRESSED_UNCOMPRESSED_EXP_HPP
 

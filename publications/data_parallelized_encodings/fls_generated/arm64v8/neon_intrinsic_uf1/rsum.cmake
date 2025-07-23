@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/arm64v8/neon_intrinsic_uf1/rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(arm64v8_neon_intrinsic_1024_uf1_rsum OBJECT
             arm64v8_neon_intrinsic_1024_uf1_rsum_src.cpp)
 target_compile_definitions(arm64v8_neon_intrinsic_1024_uf1_rsum PRIVATE IS_SCALAR)

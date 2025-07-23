@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/primitives/KeyEquality.cpp
+// ────────────────────────────────────────────────────────
 #include "vectorwise/Operations.hpp"
 #include "vectorwise/Primitives.hpp"
 #include <functional>

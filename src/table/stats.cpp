@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/table/stats.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/stats.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls/utl/util.hpp"

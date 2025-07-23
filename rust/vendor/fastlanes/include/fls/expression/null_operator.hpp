@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/expression/null_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_NULL_OPERATOR_HPP
 #define FLS_EXPRESSION_NULL_OPERATOR_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/wizard/wizard.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/wizard/wizard.hpp"
 #include "fls/common/alias.hpp"  // for n_t, up, idx_t, make_unique
 #include "fls/common/common.hpp" // for FLS_UNREACHABLE

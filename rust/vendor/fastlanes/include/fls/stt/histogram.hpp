@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/stt/histogram.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_STT_HISTOGRAM_HPP
 #define FLS_STT_HISTOGRAM_HPP
 

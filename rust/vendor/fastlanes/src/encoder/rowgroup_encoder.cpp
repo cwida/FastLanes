@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/encoder/rowgroup_encoder.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/rowgroup_encoder.hpp"
 #include "fls/connection.hpp"                            // for Connector
 #include "fls/cor/exp/exp_pool.hpp"                      // for Expression

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/benchmark/include/generated-bindings/kernel-bindings.cuh
+// ────────────────────────────────────────────────────────
 #ifndef GENERATED_KERNEL_BINDINGS_CUH
 #define GENERATED_KERNEL_BINDINGS_CUH
 

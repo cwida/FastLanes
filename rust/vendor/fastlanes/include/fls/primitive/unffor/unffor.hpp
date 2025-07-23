@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/primitive/unffor/unffor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_UNFFOR_UNFFOR_HPP
 #define FLS_PRIMITIVE_UNFFOR_UNFFOR_HPP
 

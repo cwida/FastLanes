@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/benchmarks/fls/Queries.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "benchmarks/fls/config.hpp"
 #include "benchmarks/tpch/Queries.hpp"

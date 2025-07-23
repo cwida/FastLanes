@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/slpatch_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/buf.hpp"

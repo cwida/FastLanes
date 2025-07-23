@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/hyper/ParallelHelper.hpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Query.hpp"
 #include <deque>
 #include <tbb/tbb.h>

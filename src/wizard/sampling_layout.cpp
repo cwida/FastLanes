@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/wizard/sampling_layout.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/wizard/sampling_layout.hpp"
 #include "fls/common/assert.hpp"
 #include <algorithm> // min

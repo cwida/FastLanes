@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/timestamp_generator.py
+# ────────────────────────────────────────────────────────
 # scripts/generate_helpers/timestamp_generator.py
 
 import random

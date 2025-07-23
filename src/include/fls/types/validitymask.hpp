@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/types/validitymask.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TYPES_VALIDITYMASK_HPP
 #define FLS_TYPES_VALIDITYMASK_HPP
 

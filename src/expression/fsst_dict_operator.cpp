@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/fsst_dict_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/fsst_dict_operator.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/string.hpp"

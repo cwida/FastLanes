@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/rle_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_RLE_EXPRESSION_HPP
 #define FLS_EXPRESSION_RLE_EXPRESSION_HPP
 

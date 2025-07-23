@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/encoder/exp_col_encoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_EXP_COL_ENCODER_HPP
 #define FLS_ENCODER_EXP_COL_ENCODER_HPP
 

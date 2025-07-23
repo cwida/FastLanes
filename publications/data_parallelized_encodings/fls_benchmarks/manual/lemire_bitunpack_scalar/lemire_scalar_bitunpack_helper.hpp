@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/lemire_bitunpack_scalar/lemire_scalar_bitunpack_helper.hpp
+// ────────────────────────────────────────────────────────
 namespace FastPForLib {
 
 uint32_t *nullpacker(const uint32_t *__restrict__ /*in*/,

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/cor/prm/fsst/fsst_avx512.cpp
+// ────────────────────────────────────────────────────────
 // this software is distributed under the MIT License (http://www.opensource.org/licenses/MIT):
 //
 // Copyright 2018-2020, CWI, TU Munich, FSU Jena

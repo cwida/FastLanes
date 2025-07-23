@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/reader/table_view.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_READER_ROWGROUP_VIEW_HPP
 #define FLS_READER_ROWGROUP_VIEW_HPP
 

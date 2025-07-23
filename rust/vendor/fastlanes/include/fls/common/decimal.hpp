@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/decimal.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_DECIMAL_HPP
 #define FLS_COMMON_DECIMAL_HPP
 

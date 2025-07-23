@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/table/vector.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_VECTOR_HPP
 #define FLS_TABLE_VECTOR_HPP
 #include "chunk.hpp"

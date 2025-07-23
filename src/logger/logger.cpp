@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/logger/logger.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/logger/logger.hpp"
 #include "fls/printer/output.hpp"
 #include "fls/printer/output_factory.hpp"

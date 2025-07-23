@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/template_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_[EXPRESSION_NAME] _EXPRESSION_HPP
 #define FLS_EXPRESSION_ [EXPRESSION_NAME] _EXPRESSION_HPP
 

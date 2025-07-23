@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/u08_generator.py
+# ────────────────────────────────────────────────────────
 """
 Module: scripts/generator_helpers/u08_generator.py
 Description: Generates synthetic **unsigned** 8-bit integer (U08) data values and writes them to CSV files with accompanying schema definitions.

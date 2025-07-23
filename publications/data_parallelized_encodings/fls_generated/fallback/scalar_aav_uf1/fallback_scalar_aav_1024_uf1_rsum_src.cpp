@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_rsum_src.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/rsum/rsum.hpp"
 #include "fls_gen/macros.hpp"
 namespace generated

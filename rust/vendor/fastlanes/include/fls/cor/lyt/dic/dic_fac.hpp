@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/lyt/dic/dic_fac.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_LYT_DIC_DIC_FAC_HPP
 #define FLS_COR_LYT_DIC_DIC_FAC_HPP
 

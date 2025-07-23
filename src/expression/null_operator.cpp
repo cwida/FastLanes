@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/null_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/null_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/buf.hpp"

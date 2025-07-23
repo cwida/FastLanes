@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# mk/format.mk
+# ────────────────────────────────────────────────────────
 IMAGE             := ghcr.io/azimafroozeh/clang-format-python/clang-format-python:14
 UBUNTU_IMAGE      := ubuntu:22.04
 DIRS              := examples src benchmark test data/include python cuda galp

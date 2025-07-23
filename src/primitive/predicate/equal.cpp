@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/primitive/predicate/equal.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/primitive/predicate/equal.hpp"
 #include "fls/expression/selection_ds.hpp"
 

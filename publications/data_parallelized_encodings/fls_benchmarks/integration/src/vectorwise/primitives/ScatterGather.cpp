@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/primitives/ScatterGather.cpp
+// ────────────────────────────────────────────────────────
 
 #include "common/runtime/Hash.hpp"
 #include "vectorwise/Operations.hpp"

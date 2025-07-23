@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/eng/compressor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_ENG_COMPRESSOR_HPP
 #define FLS_COR_ENG_COMPRESSOR_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/printer/output.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/printer/output.hpp"
 #include <fls/std/string.hpp>
 #include <fls/std/vector.hpp>

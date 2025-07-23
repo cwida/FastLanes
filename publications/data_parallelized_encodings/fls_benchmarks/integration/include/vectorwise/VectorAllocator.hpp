@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/vectorwise/VectorAllocator.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/runtime/Concurrency.hpp"
 #include "vectorwise/defs.hpp"

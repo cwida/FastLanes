@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/tpch/queries/q5.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarks/tpch/Queries.hpp"
 #include "common/runtime/Concurrency.hpp"
 #include "common/runtime/Hash.hpp"

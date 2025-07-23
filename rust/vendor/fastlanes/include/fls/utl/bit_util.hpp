@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/utl/bit_util.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_UTL_BIT_UTIL_HPP
 #define FLS_UTL_BIT_UTIL_HPP
 

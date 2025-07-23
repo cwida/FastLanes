@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/encoder/assert_eq.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_ASSERT_EQ_HPP
 #define FLS_ENCODER_ASSERT_EQ_HPP
 

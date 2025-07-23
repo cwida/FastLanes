@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/reader/rowgroup_view.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/rowgroup_view.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/connection.hpp"

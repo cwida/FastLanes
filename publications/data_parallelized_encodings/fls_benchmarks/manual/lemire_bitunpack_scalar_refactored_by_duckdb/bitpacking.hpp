@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/lemire_bitunpack_scalar_refactored_by_duckdb/bitpacking.hpp
+// ────────────────────────────────────────────────────────
 /**
 * This code is released under the
 * Apache License Version 2.0 http://www.apache.org/licenses/.

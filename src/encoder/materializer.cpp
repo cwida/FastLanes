@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/encoder/materializer.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/materializer.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/expression/alp_expression.hpp"

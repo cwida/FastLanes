@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# benchmark/result/galp/plot.py
+# ────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Benchmark visualisation helper (combined float & dbl subplots, new vs old).
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/benchmark/nvcomp/benchmark-compressors.cu
+// ────────────────────────────────────────────────────────
 #include "alp/alp-bindings.cuh"
 #include "engine/data.cuh"
 #include "engine/device-utils.cuh"

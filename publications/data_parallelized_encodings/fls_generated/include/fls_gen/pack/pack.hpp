@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/include/fls_gen/pack/pack.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PACK_HPP
 #define FLS_PACK_HPP
 

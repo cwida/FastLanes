@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/x86_64/avx512bw_intrinsic_uf1/x86_64_avx512bw_intrinsic_1024_uf1_rsum_bench.cpp
+// ────────────────────────────────────────────────────────
 #include <iostream>
 #include "x86_64_avx512bw_intrinsic_1024_uf1_rsum_bench.hpp"
 #include "x86_64_avx512bw_intrinsic_1024_uf1_rsum_helper.hpp"

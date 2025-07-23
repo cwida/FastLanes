@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/table/rowgroup.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/rowgroup.hpp"
 #include "fls/common/magic_enum.hpp"
 #include "fls/common/string.hpp"

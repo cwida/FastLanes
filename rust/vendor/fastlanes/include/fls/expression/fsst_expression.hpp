@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/expression/fsst_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_FSST_EXPRESSION_HPP
 #define FLS_EXPRESSION_FSST_EXPRESSION_HPP
 

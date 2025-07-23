@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls_gen/macros.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_MACROS_HPP
 #define FLS_GEN_MACROS_HPP
 

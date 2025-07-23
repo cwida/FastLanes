@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/utl/cpu/ftr.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/cpu/feature.hpp" // for CPUFeature, CPUFeature::FALLBACK
 #include <iosfwd>                  // for string
 #include <string>                  // for basic_string

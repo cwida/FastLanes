@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/reader/table_reader.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/table_reader.hpp"
 #include "fls/csv/csv.hpp"
 #include "fls/encoder/materializer.hpp"

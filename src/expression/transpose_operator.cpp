@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/transpose_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/expression/encoding_operator.hpp"

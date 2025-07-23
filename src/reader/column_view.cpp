@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/reader/column_view.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/column_view.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/footer/column_descriptor.hpp"

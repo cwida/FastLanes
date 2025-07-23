@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/footer/rowgroup_footer.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/footer/rowgroup_footer.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/assert.hpp"

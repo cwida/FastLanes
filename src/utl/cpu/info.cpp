@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/utl/cpu/info.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/cpu/info.hpp"
 #include "fls/utl/cpu/feature.hpp" // for CPUFeature, CPUFeature::FALLBACK
 #include <iosfwd>                  // for string

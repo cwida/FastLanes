@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/dict_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_DICT_EXPRESSION_HPP
 #define FLS_EXPRESSION_DICT_EXPRESSION_HPP
 

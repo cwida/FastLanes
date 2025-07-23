@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/common/assert.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/assert.hpp"
 #include <cassert>
 #include <cstdlib>  // for abort

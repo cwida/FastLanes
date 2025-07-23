@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/Util.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 
 #include <functional>

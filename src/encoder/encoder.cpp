@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/encoder/encoder.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/encoder.hpp"
 #include "fls/common/alias.hpp" // for up, n_t
 #include "fls/connection.hpp"   // for Connector

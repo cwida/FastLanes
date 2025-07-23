@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# benchmark/result/compression_ratio/nextia_jd/cal_averag.py
+# ────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """
 Report total sizes **and** the *average* compression ratio.

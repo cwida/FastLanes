@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/reader/table_view.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/table_view.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/connection.hpp"

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/frequency_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/frequency_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/buf.hpp"

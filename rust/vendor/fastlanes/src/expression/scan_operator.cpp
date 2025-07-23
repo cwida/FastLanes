@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/expression/scan_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/scan_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"

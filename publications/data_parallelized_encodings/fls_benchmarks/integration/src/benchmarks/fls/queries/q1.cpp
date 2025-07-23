@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/fls/queries/q1.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarks/fls/Queries.hpp"
 #include "benchmarks/fls/config.hpp"
 #include "common/runtime/Types.hpp"

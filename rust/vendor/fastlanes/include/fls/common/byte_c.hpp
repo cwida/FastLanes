@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/byte_c.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_BYTE_C_HPP
 #define FLS_COMMON_BYTE_C_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/primitive/bitpack/bitpack.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/primitive/bitpack/bitpack.hpp"
 #include "fls/cfg/cfg.hpp"
 

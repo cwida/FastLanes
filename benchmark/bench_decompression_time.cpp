@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// benchmark/bench_decompression_time.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarker.hpp"
 
 using namespace fastlanes; // NOLINT

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/SIMD.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include <algorithm>
 #include <immintrin.h>

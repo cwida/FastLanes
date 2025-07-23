@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/eng/sampler.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_ENG_SAMPLER_HPP
 #define FLS_COR_ENG_SAMPLER_HPP
 

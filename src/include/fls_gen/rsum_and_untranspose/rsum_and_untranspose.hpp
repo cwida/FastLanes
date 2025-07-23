@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls_gen/rsum_and_untranspose/rsum_and_untranspose.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_RSUM_AND_UNTRANSPOSE_RSUM_AND_UNTRANSPOSE_HPP
 #define FLS_GEN_RSUM_AND_UNTRANSPOSE_RSUM_AND_UNTRANSPOSE_HPP
 

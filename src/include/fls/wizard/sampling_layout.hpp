@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/wizard/sampling_layout.hpp
+// ────────────────────────────────────────────────────────
 #ifndef SAMPLING_LAYOUT_HPP
 #define SAMPLING_LAYOUT_HPP
 

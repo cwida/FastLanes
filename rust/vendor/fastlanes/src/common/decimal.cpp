@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/common/decimal.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/decimal.hpp"
 #include <cmath>
 #include <format>

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/primitive/ffor/ffor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_FFOR_FFOR_HPP
 #define FLS_PRIMITIVE_FFOR_FFOR_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/benchmark/include/generated-bindings/multi-column-device-kernels.cuh
+// ────────────────────────────────────────────────────────
 #ifndef MULTI_COLUMN_DEVICE_KERNELS_CUH
 #define MULTI_COLUMN_DEVICE_KERNELS_CUH
 

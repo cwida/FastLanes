@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/detail/parse_fp.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/detail/parse_fp.hpp"
 #include <cerrno>    // for errno, ERANGE
 #include <charconv>  // for std::from_chars

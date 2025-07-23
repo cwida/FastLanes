@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/lemire_bitunpack_scalar_refactored_by_duckdb/bitpacking.cpp
+// ────────────────────────────────────────────────────────
 #include "bitpacking.hpp"
 
 #include <cstdint>

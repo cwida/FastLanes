@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/lemire_bitunpack_4way/sse.cpp
+// ────────────────────────────────────────────────────────
 #include "lemire_bitunpack_bench.hpp"
 #include "lemire_bitunpack_helper.hpp"
 #include <iostream>

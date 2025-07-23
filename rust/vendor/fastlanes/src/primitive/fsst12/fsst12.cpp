@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/primitive/fsst12/fsst12.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/primitive/fsst12/fsst12.hpp"
 #include "fls/cor/prm/fsst12/libfsst12.hpp"
 #include "fls/table/rowgroup.hpp"

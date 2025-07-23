@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/encoder/random_accessor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/random_accessor.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/vec.hpp"

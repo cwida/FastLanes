@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/galp_generator.py
+# ────────────────────────────────────────────────────────
 """
 Module: scripts/generate_helpers/galp_generator.py
 Description: For three fields—one random two‑decimal GALP, one constant 1.00,

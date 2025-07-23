@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/test/thrust_core_test.cu
+// ────────────────────────────────────────────────────────
 #include <gtest/gtest.h>
 #include <thrust/device_vector.h>
 #include <thrust/equal.h>

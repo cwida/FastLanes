@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/src/include/engine/multi-column-host-kernels.cuh
+// ────────────────────────────────────────────────────────
 #ifndef MULTI_COLUMN_HOST_KERNELS_CUH
 #define MULTI_COLUMN_HOST_KERNELS_CUH
 

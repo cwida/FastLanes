@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls_gen/untranspose/untranspose.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_UNTRANSPOSE_UNTRANSPOSE_HPP
 #define FLS_GEN_UNTRANSPOSE_UNTRANSPOSE_HPP
 

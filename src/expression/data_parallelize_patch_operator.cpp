@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/data_parallelize_patch_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/data_parallelize_patch_operator.hpp"
 #include "fls/common/string.hpp"
 #include "fls/cor/lyt/buf.hpp"

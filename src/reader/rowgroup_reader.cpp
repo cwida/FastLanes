@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/reader/rowgroup_reader.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/rowgroup_reader.hpp"         //
 #include "fls/connection.hpp"                     // for Connector (ptr only)
 #include "fls/cor/lyt/buf.hpp"                    // for Buf

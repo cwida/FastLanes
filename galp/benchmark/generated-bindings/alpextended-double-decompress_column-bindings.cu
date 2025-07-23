@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// galp/benchmark/generated-bindings/alpextended-double-decompress_column-bindings.cu
+// ────────────────────────────────────────────────────────
 
 #include "engine/kernels.cuh"
 #include "engine/multi-column-host-kernels.cuh"

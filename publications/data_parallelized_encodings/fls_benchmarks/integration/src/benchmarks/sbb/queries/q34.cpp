@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/sbb/queries/q34.cpp
+// ────────────────────────────────────────────────────────
 #include <deque>
 #include <iostream>
 

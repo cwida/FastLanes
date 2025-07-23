@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/rsum/rsum_helper.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FAST_LANES_FLS_BENCHMARKS_DELTA_DELTA_HELPER_HPP
 #define FAST_LANES_FLS_BENCHMARKS_DELTA_DELTA_HELPER_HPP
 

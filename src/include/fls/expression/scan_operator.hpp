@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/scan_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_SCAN_EXPRESSION_HPP
 #define FLS_EXPRESSION_SCAN_EXPRESSION_HPP
 

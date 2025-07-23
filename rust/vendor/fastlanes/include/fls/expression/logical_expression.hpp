@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/expression/logical_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_LOGICAL_EXPRESSION_HPP
 #define FLS_EXPRESSION_LOGICAL_EXPRESSION_HPP
 

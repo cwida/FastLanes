@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/arm64v8/sve_intrinsic_uf1/unpack.cmake
+# ────────────────────────────────────────────────────────
 add_library(arm64v8_sve_intrinsic_1024_uf1_unpack OBJECT
             arm64v8_sve_intrinsic_1024_uf1_unpack_src.cpp)
 target_compile_definitions(arm64v8_sve_intrinsic_1024_uf1_unpack PRIVATE IS_SCALAR)

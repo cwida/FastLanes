@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/validitymask_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/buf.hpp"

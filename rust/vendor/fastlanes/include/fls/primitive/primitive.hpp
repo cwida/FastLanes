@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/primitive/primitive.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_PRIMITIVE_HPP
 #define FLS_PRIMITIVE_PRIMITIVE_HPP
 

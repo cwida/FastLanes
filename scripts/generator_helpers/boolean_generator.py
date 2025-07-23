@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/boolean_generator.py
+# ────────────────────────────────────────────────────────
 """
 Module: scripts/generate_helpers/boolean_generator.py
 Description: Generates synthetic BOOLEAN data values and writes them to CSV files with accompanying schema definitions.

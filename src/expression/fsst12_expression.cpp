@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/fsst12_expression.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/fsst12_expression.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/string.hpp"

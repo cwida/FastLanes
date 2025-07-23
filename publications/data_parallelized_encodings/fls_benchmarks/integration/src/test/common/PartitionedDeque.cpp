@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/common/PartitionedDeque.cpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/PartitionedDeque.hpp"
 #include <functional>
 #include <gtest/gtest.h>

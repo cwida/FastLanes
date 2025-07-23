@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/alias.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_ALIAS_HPP
 #define FLS_COMMON_ALIAS_HPP
 

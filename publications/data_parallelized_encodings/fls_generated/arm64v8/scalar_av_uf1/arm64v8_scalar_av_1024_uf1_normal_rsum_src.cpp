@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/arm64v8/scalar_av_uf1/arm64v8_scalar_av_1024_uf1_normal_rsum_src.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/normal_rsum/normal_rsum.hpp"
 #include "fls_gen/macros.hpp"
 namespace generated

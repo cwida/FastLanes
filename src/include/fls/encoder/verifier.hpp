@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/encoder/verifier.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_VERIFIER_HPP
 #define FLS_ENCODER_VERIFIER_HPP
 

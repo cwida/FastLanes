@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/cross_rle_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/cross_rle_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/buf.hpp"

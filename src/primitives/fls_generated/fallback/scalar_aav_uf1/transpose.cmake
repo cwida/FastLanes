@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# src/primitives/fls_generated/fallback/scalar_aav_uf1/transpose.cmake
+# ────────────────────────────────────────────────────────
 add_library(fallback_scalar_aav_1024_uf1_transpose OBJECT
         fallback_scalar_aav_1024_uf1_transpose_src.cpp)
 target_compile_definitions(fallback_scalar_aav_1024_uf1_transpose PRIVATE IS_SCALAR)

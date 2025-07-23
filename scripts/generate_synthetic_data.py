@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generate_synthetic_data.py
+# ────────────────────────────────────────────────────────
 # scripts/generate_helpers/main_generators.py
 
 import random

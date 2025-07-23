@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/prm/patch/b_patch.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_PATCH_B_PATCH_HPP
 #define FLS_COR_PRM_PATCH_B_PATCH_HPP
 

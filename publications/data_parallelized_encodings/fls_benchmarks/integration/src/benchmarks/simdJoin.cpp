@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/simdJoin.cpp
+// ────────────────────────────────────────────────────────
 #include <iostream>
 #include <cassert>
 #include <algorithm>

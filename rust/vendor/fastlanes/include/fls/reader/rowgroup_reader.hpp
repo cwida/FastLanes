@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/reader/rowgroup_reader.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_READER_ROWGROUP_READER_HPP
 #define FLS_READER_ROWGROUP_READER_HPP
 

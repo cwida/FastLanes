@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/rpn.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/rpn.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/expression/interpreter.hpp"

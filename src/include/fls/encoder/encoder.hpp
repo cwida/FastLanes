@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/encoder/encoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_ENCODER_HPP
 #define FLS_ENCODER_ENCODER_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/encoder/col_encoder.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/col_encoder.hpp"
 #include "fls/cor/eng/analyzer.hpp"
 #include "fls/cor/eng/compressor.hpp"

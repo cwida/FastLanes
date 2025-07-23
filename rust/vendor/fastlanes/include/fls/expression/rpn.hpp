@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/expression/rpn.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_NEW_RPN_HPP
 #define FLS_EXPRESSION_NEW_RPN_HPP
 

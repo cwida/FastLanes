@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/types/validitymask.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/types/validitymask.hpp"
 #include "fls/common/assert.hpp"
 #include <bit>     // std::popcount (C++20)
