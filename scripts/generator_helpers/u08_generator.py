@@ -3,16 +3,11 @@
 # ────────────────────────────────────────────────────────
 # scripts/generator_helpers/u08_generator.py
 # ────────────────────────────────────────────────────────
-"""
-Module: scripts/generator_helpers/u08_generator.py
-Description: Generates synthetic **unsigned** 8-bit integer (U08) data values and writes them to CSV files with accompanying schema definitions.
-"""
-
 from pathlib import Path
 from typing import Callable, List, Any
 import json
 
-from .write_helpers import write_csv
+from .write_helpers import write_csv, write_schema
 from .common import ROW_GROUP_SIZE, VEC_SIZE
 
 
@@ -41,7 +36,7 @@ def write_fls_u08_to_file(
     # Let *write_csv* create the directory and CSV
     write_csv(dir_path, generator, size)
 
-    # Emit schema.json (with trailing newline for POSIX friendliness)
+    # Prepare schema for unsigned 8-bit data
     schema = {
         "columns": [
             {
@@ -50,7 +45,8 @@ def write_fls_u08_to_file(
             }
         ]
     }
-    (dir_path / "schema.json").write_text(json.dumps(schema, indent=2) + "\n")
+    # Emit schema.json (with trailing newline for POSIX friendliness)
+    write_schema(dir_path, schema)
 
 
 # ----------------------------------------------------------------------
