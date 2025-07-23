@@ -29,4 +29,4 @@ jobs:
         run: python -m venv .venv
 
       - name: Check FastLanes file headers
-        run: make header-check
+        run: make check-header
