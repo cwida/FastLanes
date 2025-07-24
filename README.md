@@ -99,6 +99,7 @@ fn main() -> Result<()> {
 ## Documentation
 
 * [Typing System](docs/typing_system.md)
+* [File Format Specification (PDF)](docs/specification.pdf)
 
 ---
 
