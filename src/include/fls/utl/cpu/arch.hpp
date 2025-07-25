@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-namespace fast_lanes {
+namespace fastlanes {
 enum class Arch : uint8_t {
 	FALLBACK = 0, //
 	X86      = 1, //
@@ -18,5 +18,5 @@ enum class Arch : uint8_t {
 };
 
 std::string ArchitectureToString(Arch arch);
-} // namespace fast_lanes
+} // namespace fastlanes
 #endif // FLS_UTL_CPU_ARCH_HPP

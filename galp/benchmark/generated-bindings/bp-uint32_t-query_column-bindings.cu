@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // galp/benchmark/generated-bindings/bp-uint32_t-query_column-bindings.cu
 // ────────────────────────────────────────────────────────
-
 #include "engine/kernels.cuh"
 #include "engine/multi-column-host-kernels.cuh"
 #include "generated-bindings/kernel-bindings.cuh"

@@ -3,7 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/table/column.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/table/column.hpp"
+// #include "fls/table/column.hpp"
 
 namespace fastlanes {
 

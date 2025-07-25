@@ -4,9 +4,10 @@
 // src/common/assert.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/common/assert.hpp"
-#include <cassert>
-#include <cstdlib>  // for abort
-#include <iostream> // for operator<<, char_traits, basic_ostream, cerr
+#include <cassert>  // for assert()
+#include <cstdint>  // for uint64_t
+#include <cstdlib>  // for abort()
+#include <iostream> // for std::cerr
 
 namespace fastlanes {
 
@@ -18,7 +19,7 @@ void FlsAssert(const char* expr_str, const char* str, bool expr, const char* fil
 	          << "Exprsn:\t\t" << expr_str << "\n"
 	          << "Values:\t\t" << str << "\n"
 	          << file << ":" << line << "\n";
-	abort();
+	std::abort();
 }
 
 void DetailedFlsAssert(const char* expr_str, const char* str, bool expr, const char* file, int line, const char* msg) {
@@ -30,7 +31,7 @@ void DetailedFlsAssert(const char* expr_str, const char* str, bool expr, const c
 	          << "\n"
 	          // << "Values:\t\t" << fmt::format("{}", str) << "\n" //TODO[FMT]
 	          << file << ":" << line << "\n";
-	abort();
+	std::abort();
 }
 
 void Assert::NotNullPointer(const void* p) {

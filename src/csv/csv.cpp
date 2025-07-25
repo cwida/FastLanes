@@ -4,13 +4,11 @@
 // src/csv/csv.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/csv/csv.hpp"
-#include "fls/common/common.hpp"
-#include "fls/connection.hpp"
-#include "fls/io/file.hpp"
-#include "fls/reader/segment.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
 #include "fls/table/attribute.hpp"
-#include "fls/table/chunk.hpp"
-#include <sstream>
+#include <stdexcept> // for std::runtime_error
 
 namespace fastlanes {
 

@@ -4,12 +4,18 @@
 // src/common/string.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/common/string.hpp"
-#include "fls/cfg/cfg.hpp"
+#include "fls/cfg/cfg.hpp" // NOLINT(misc-include-cleaner)
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp" // for FLS_ASSERT_CORRECT_SZ, FLS_ASSERT_N...
-#include "fls/std/vector.hpp"    // for vector
+#include "fls/std/string.hpp"
+#include "fls/std/vector.hpp" // for vector
 #include "fls/table/rowgroup.hpp"
+#include <cstdint>
 #include <cstring>
-#include <memory> // for make_unique, unique_ptr
+#include <functional> // for std::hash
+#include <ios>        // for std::streamsize
+#include <memory>     // for make_unique, unique_ptr
+#include <ostream>    // for std::ostream
 
 namespace fastlanes {
 
@@ -18,7 +24,7 @@ FlsString::FlsString()
     , length(INVALID_LENGTH) {
 }
 
-std::string FlsString::to_string() const {
+string FlsString::to_string() const {
 	FLS_ASSERT_NOT_NULL_POINTER(p)
 
 	return {reinterpret_cast<const char*>(p), length};
@@ -67,7 +73,7 @@ FlsString::FlsString(const uint8_t* data, len_t len)
     , length(len) {
 }
 
-decoupled_str_vec Str::decouple(n_t n, std::string* str_arr) {
+decoupled_str_vec Str::decouple(n_t n, string* str_arr) {
 	decoupled_str_vec result;
 	auto&             len_vec = result.first;
 	auto&             ptr_vec = result.second;

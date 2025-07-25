@@ -5,12 +5,17 @@
 // ────────────────────────────────────────────────────────
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/cfg/cfg.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/expression/analyze_operator.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include "fls/types/validitymask.hpp"
+#include <cstdint> // for uint8_t
+#include <utility> // for std::move"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

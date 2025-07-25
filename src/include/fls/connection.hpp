@@ -130,7 +130,6 @@ private:
 	up<TableDescriptorT> m_table_descriptor;
 };
 
-constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.fbb"};
 constexpr static auto const* FASTLANES_FILE_NAME {"data.fls"};
 constexpr static auto const* SCHEMA_FILE_NAME {"schema.json"};
 

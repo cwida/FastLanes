@@ -4,16 +4,25 @@
 // src/expression/alp_expression.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/alp_expression.hpp"
-#include "fls/common/string.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "alp/config.hpp"
+#include "alp/decoder.hpp" // for alp::decoder<…>
+#include "alp/encoder.hpp"
+#include "alp/rd.hpp"           // for alp::rd_encoder<…>
+#include "fls/common/alias.hpp" // for make_unique<>
+#include "fls/common/assert.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/primitive/bitpack/bitpack.hpp"
 #include "fls/primitive/patch/patch.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include "fls/unffor.hpp"
+#include <cstdint> // for uint16_t
 #include <cstring>
+#include <utility> // for std::move
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -121,8 +130,8 @@ void enc_alp_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 	}
 }
 
-template struct enc_alp_opr<dbl_pt>;
-template struct enc_alp_opr<flt_pt>;
+template struct enc_alp_opr<dbl_pt>; // NOLINT(clang-analyzer-optin.performance.Padding)
+template struct enc_alp_opr<flt_pt>; // NOLINT(clang-analyzer-optin.performance.Padding)
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_alp_opr
@@ -253,8 +262,8 @@ void enc_alp_rd_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
 	segments.push_back(std::move(rd_dict_segment));
 }
 
-template struct enc_alp_rd_opr<dbl_pt>;
-template struct enc_alp_rd_opr<flt_pt>;
+template struct enc_alp_rd_opr<dbl_pt>; // NOLINT(clang-analyzer-optin.performance.Padding)
+template struct enc_alp_rd_opr<flt_pt>; // NOLINT(clang-analyzer-optin.performance.Padding)
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_alp_rd_opr
 \*--------------------------------------------------------------------------------------------------------------------*/

@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // src/encoder/multi_col_encoder.cpp
 // ────────────────────────────────────────────────────────
-
 namespace fastlanes {
 //
 // up<AllExpEncodedCol> MultiColEncoder::test(const Schema& footer, const Rowgroup& bff, const TmpSubPlan& sub_plan) {

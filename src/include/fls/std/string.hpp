@@ -12,6 +12,7 @@
 namespace fastlanes {
 using string      = std::string;
 using string_view = std::string_view;
+using std::to_string;
 } // namespace fastlanes
 
 #endif // FLS_STD_STRING_HPP

@@ -3,7 +3,8 @@
 // ────────────────────────────────────────────────────────
 // src/reader/rowgroup_reader.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/reader/rowgroup_reader.hpp"         //
+#include "fls/reader/rowgroup_reader.hpp" //
+#include "fls/common/alias.hpp"
 #include "fls/connection.hpp"                     // for Connector (ptr only)
 #include "fls/cor/lyt/buf.hpp"                    // for Buf
 #include "fls/csv/csv.hpp"                        // for CSV
@@ -13,17 +14,14 @@
 #include "fls/expression/expression_executor.hpp" //
 #include "fls/expression/interpreter.hpp"         // for Interpreter
 #include "fls/expression/physical_expression.hpp" // for PhysicalExpr
-#include "fls/expression/predicate_operator.hpp"  //
 #include "fls/footer/rowgroup_descriptor.hpp"     // for Footer, ColumnMeta...
 #include "fls/io/file.hpp"                        // for File
 #include "fls/io/io.hpp"                          // for IO, io
-#include "fls/json/nlohmann/json.hpp"             // for json
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/rowgroup_view.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/table/chunk.hpp" // for Chunk
 #include <memory>              // for make_unique, uniqu...
-#include <string>              // for basic_string
 
 namespace fastlanes {
 

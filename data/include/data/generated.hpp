@@ -3,6 +3,13 @@
 // ────────────────────────────────────────────────────────
 // data/include/data/generated.hpp
 // ────────────────────────────────────────────────────────
+
+// NOLINTBEGIN
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// data/include/data/generated.hpp
+// ────────────────────────────────────────────────────────
 #ifndef DATA_GENERATED_HPP
 #define DATA_GENERATED_HPP
 
@@ -100,3 +107,4 @@ public:
 } // namespace fastlanes
 
 #endif // DATA_GENERATED_HPP
+// NOLINTEND

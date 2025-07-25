@@ -4,9 +4,14 @@
 // src/primitive/fsst/fsst.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/fsst/fsst.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/cor/lyt/buf.hpp"
+#include "fls/cor/prm/fsst/fsst.h"
 #include "fls/cor/prm/fsst/libfsst.hpp"
 #include "fls/table/rowgroup.hpp"
-#include <fls/cor/lyt/buf.hpp>
+#include <cstdint>
+#include <cstring> // for memcpy
 
 namespace fastlanes {
 
@@ -42,7 +47,7 @@ static inline size_t compressBulk(SymbolTable& symbolTable,
 
 	u8* start_pointer = out;
 
-	u8     buf[512], *cur = nullptr, *end = NULL, *lim = out + size;
+	u8     buf[512], *cur = nullptr, *end = nullptr, *lim = out + size;
 	size_t string_idx, suffixLim = symbolTable.suffixLim;
 	u8     byteLim = symbolTable.nSymbols + symbolTable.zeroTerminated - symbolTable.lenHisto[0];
 

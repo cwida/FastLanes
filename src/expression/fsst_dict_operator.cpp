@@ -4,14 +4,24 @@
 // src/expression/fsst_dict_operator.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/fsst_dict_operator.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp" // for make_unique<>
 #include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/common/string.hpp"
+#include "fls/cor/prm/fsst/fsst.h"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/primitive/fsst/fsst.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
+#include <cstdint>
+#include <utility> // for std::move
+#include <variant> // for std::monostate
 
 namespace fastlanes {
 template <typename INDEX_PT>

@@ -4,8 +4,12 @@
 // src/stt/stt_fac.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/stt/stt_fac.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/macros.hpp"
 #include "fls/stt/histogram.hpp"
 #include "fls/stt/minmax.hpp"
+#include "fls/stt/type.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 template <typename T>

@@ -4,12 +4,20 @@
 // src/footer/table_descriptor.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/footer/table_descriptor.hpp"
-#include "fls/connection.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/cor/lyt/buf.hpp"
 #include "fls/flatbuffers/flatbuffers.hpp"
+#include "fls/footer/rowgroup_descriptor.hpp"
+#include "fls/footer/table_descriptor_generated.h"
 #include "fls/io/file.hpp"
 #include "fls/json/fls_json.hpp"
-#include "fls/json/nlohmann/json.hpp"
+#include "fls/std/filesystem.hpp"
 #include "fls/table/table.hpp"
+#include <cstdint>   // for uint8_t, n_t
+#include <fstream>   // for std::ifstream
+#include <ios>       // for std::ios flags like std::ios::binary, std::ios::ate
+#include <stdexcept> // for std::runtime_error
+#include <vector>    // for std::vector
 
 namespace fastlanes {
 
@@ -52,7 +60,7 @@ up<TableDescriptorT> make_table_descriptor(const Table& table) {
 	return table_descriptor;
 }
 
-std::unique_ptr<TableDescriptorT> make_table_descriptor(const std::filesystem::path& file_path) {
+up<TableDescriptorT> make_table_descriptor(const path& file_path) {
 	// init
 	std::ifstream in {file_path, std::ios::binary | std::ios::ate};
 	if (!in) {
@@ -62,7 +70,7 @@ std::unique_ptr<TableDescriptorT> make_table_descriptor(const std::filesystem::p
 	//
 	auto size = in.tellg();
 	in.seekg(0, std::ios::beg);
-	std::vector<uint8_t> buffer(static_cast<size_t>(size));
+	std::vector<uint8_t> buffer(static_cast<n_t>(size));
 	if (!in.read(reinterpret_cast<char*>(buffer.data()), size)) {
 		throw std::runtime_error("Failed to read footer: " + file_path.string());
 	}

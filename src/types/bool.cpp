@@ -4,7 +4,8 @@
 // src/types/bool.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/types/bool.hpp"
-#include <algorithm>
+#include "fls/common/alias.hpp"
+#include "fls/std/string.hpp"
 #include <cctype>
 #include <cstdint>
 #include <stdexcept>
@@ -28,9 +29,9 @@ inline bool iequals(string_view a, string_view b) {
 	if (a.size() != b.size()) {
 		return false;
 	};
-	for (std::size_t i = 0; i < a.size(); ++i) {
-		unsigned char c1 = static_cast<unsigned char>(a[i]);
-		unsigned char c2 = static_cast<unsigned char>(b[i]);
+	for (n_t i = 0; i < a.size(); ++i) {
+		auto c1 = static_cast<unsigned char>(a[i]);
+		auto c2 = static_cast<unsigned char>(b[i]);
 		if (std::tolower(c1) != std::tolower(c2)) {
 			return false;
 		};
@@ -77,7 +78,7 @@ uint8_t parse_bool(string_view val_str) {
 	throw std::invalid_argument("Unrecognised boolean literal");
 }
 
-std::string bool_formatter(uint8_t value) {
+string bool_formatter(uint8_t value) {
 	return value == 0 ? "false" : "true";
 }
 

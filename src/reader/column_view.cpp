@@ -4,11 +4,12 @@
 // src/reader/column_view.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/column_view.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
-#include "fls/footer/column_descriptor.hpp"
-#include "fls/footer/rowgroup_descriptor.hpp"
-#include "fls/logger/logger.hpp"
+#include "fls/footer/column_descriptor_generated.h"
 #include "fls/reader/segment.hpp"
+#include "fls/std/span.hpp"
+#include <cstddef> // for std::byte
 
 namespace fastlanes {
 

@@ -4,7 +4,10 @@
 // src/printer/output_factory.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/printer/output_factory.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/printer/output.hpp"
+#include <memory>  // for std::make_unique
+#include <ostream> // for std::ostream
 
 namespace fastlanes {
 up<TerminalOutput> OutputFactory::CreateMKD(std::ostream& file_out) {

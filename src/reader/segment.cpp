@@ -4,10 +4,22 @@
 // src/reader/segment.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/segment.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/cor/lyt/buf.hpp"
+#include "fls/expression/data_type.hpp"
+#include "fls/footer/footer_generated.h"
 #include "fls/footer/segment_descriptor.hpp"
+#include "fls/std/span.hpp"
+#include "fls/std/variant.hpp"
 #include "fls/std/vector.hpp"
+#include <cstddef> // for std::byte
+#include <cstdint>
+#include <limits> // for std::numeric_limits
+#include <span>
 #include <stdexcept>
+#include <variant>
 
 namespace fastlanes {
 
@@ -39,24 +51,24 @@ template class EntryPointView<u16_pt>;
 template class EntryPointView<u08_pt>;
 
 n_t get_offset(const entry_point_view_t& entry_point_view, n_t vex_idx) {
-	return std::visit(overloaded {//
-	                              [](const std::monostate&) -> n_t { FLS_UNREACHABLE() },
-	                              [vex_idx]<typename PT>(const EntryPointView<PT>& entry_point_view) -> n_t {
-		                              if (vex_idx == 0) {
-			                              return 0;
-		                              }
-		                              return entry_point_view.entrypoint_span[vex_idx - 1];
-	                              }},
-	                  entry_point_view);
+	return visit(overloaded {//
+	                         [](const std::monostate&) -> n_t { FLS_UNREACHABLE() },
+	                         [vex_idx]<typename PT>(const EntryPointView<PT>& entry_point_view) -> n_t {
+		                         if (vex_idx == 0) {
+			                         return 0;
+		                         }
+		                         return entry_point_view.entrypoint_span[vex_idx - 1];
+	                         }},
+	             entry_point_view);
 }
 
 n_t get_size(const entry_point_view_t& entry_point_view) {
-	return std::visit(overloaded {//
-	                              [](const std::monostate&) -> n_t { FLS_UNREACHABLE() },
-	                              []<typename PT>(const EntryPointView<PT>& entry_point_view) -> n_t {
-		                              return entry_point_view.entrypoint_span.size();
-	                              }},
-	                  entry_point_view);
+	return visit(overloaded {//
+	                         [](const std::monostate&) -> n_t { FLS_UNREACHABLE() },
+	                         []<typename PT>(const EntryPointView<PT>& entry_point_view) -> n_t {
+		                         return entry_point_view.entrypoint_span.size();
+	                         }},
+	             entry_point_view);
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -132,14 +144,14 @@ EntryPointType detect_smallest_entry_point_type(const Segment& segment) {
 }
 
 template <typename T>
-void cast_entry_points(uint8_t* helper_buffer, const std::vector<entry_point_t>& entry_points) {
+void cast_entry_points(uint8_t* helper_buffer, const vector<entry_point_t>& entry_points) {
 	auto* typed_entry_point = reinterpret_cast<T*>(helper_buffer);
 	for (size_t entry_point_idx = 0; entry_point_idx < entry_points.size(); entry_point_idx++) {
 		typed_entry_point[entry_point_idx] = static_cast<T>(entry_points[entry_point_idx]);
 	}
 }
 
-void cast(const std::vector<entry_point_t>& entry_points, EntryPointType entry_point_t, uint8_t* helper_buffer) {
+void cast(const vector<entry_point_t>& entry_points, EntryPointType entry_point_t, uint8_t* helper_buffer) {
 	switch (entry_point_t) {
 	case EntryPointType::UINT8:
 		cast_entry_points<uint8_t>(helper_buffer, entry_points);

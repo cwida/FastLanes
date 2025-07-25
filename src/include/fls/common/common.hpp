@@ -9,6 +9,7 @@
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/macros.hpp"
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 

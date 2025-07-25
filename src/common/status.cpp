@@ -4,6 +4,7 @@
 // src/common/status.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/common/status.hpp"
+#include "fls/std/string.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -27,7 +28,7 @@ Status Status::Error(ErrorCode code) {
 }
 
 // Message lookup
-std::string_view Status::message_for(ErrorCode code) {
+string_view Status::message_for(ErrorCode code) {
 	switch (code) {
 	case ErrorCode::Ok:
 		return "";

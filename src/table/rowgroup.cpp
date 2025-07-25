@@ -4,17 +4,34 @@
 // src/table/rowgroup.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/table/rowgroup.hpp"
-#include "fls/common/magic_enum.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/common/string.hpp"
 #include "fls/connection.hpp"
 #include "fls/csv/csv-parser/parser.hpp"
 #include "fls/expression/data_type.hpp"
+#include "fls/footer/column_descriptor.hpp"
+#include "fls/footer/column_descriptor_generated.h"
 #include "fls/footer/rowgroup_descriptor.hpp"
 #include "fls/json/nlohmann/json.hpp"
-#include "fls/reader/segment.hpp"
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
 #include "fls/table/attribute.hpp"
 #include "fls/table/chunk.hpp"
-#include "fls/table/vector.hpp"
+#include <cassert>     // if you use asserts, or your macros depend on it
+#include <cstdint>     // int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, uint64_t
+#include <fstream>     // std::ifstream
+#include <limits>      // std::numeric_limits
+#include <ostream>     // std::ostream
+#include <stdexcept>   // std::runtime_error
+#include <string>      // std::string, std::to_string
+#include <type_traits> // std::is_same_v, std::is_same
+#include <utility>     // std::move
+#include <variant>     // std::visit, std::monostate
 
 namespace fastlanes {
 
@@ -191,12 +208,14 @@ struct finalize_visitor {
 		str_col->str_p_arr.resize(str_col->length_arr.size());
 		len_t cur_offset = 0;
 		for (idx_t val_idx {0}; val_idx < str_col->length_arr.size(); ++val_idx) {
-			str_col->str_p_arr[val_idx] = (&str_col->byte_arr[cur_offset]);
-			str_col->fls_str_arr.emplace_back(
-			    fls_string_t {(&str_col->byte_arr[cur_offset]), str_col->length_arr[val_idx]});
+			// set pointer into byte array
+			str_col->str_p_arr[val_idx] = &str_col->byte_arr[cur_offset];
+
+			// construct fls_string_t in‐place, no temporary
+			str_col->fls_str_arr.emplace_back(&str_col->byte_arr[cur_offset], str_col->length_arr[val_idx]);
+
 			cur_offset += str_col->length_arr[val_idx];
 		}
-
 		str_col->fsst_str_p_arr.resize(str_col->fsst_length_arr.size());
 		cur_offset = 0;
 		for (idx_t val_idx {0}; val_idx < str_col->fsst_length_arr.size(); ++val_idx) {
@@ -446,7 +465,7 @@ void Rowgroup::FillMissingValues(const n_t how_many_to_fill) {
 /*--------------------------------------------------------------------------------------------------------------------*/
 void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_table) {
 	for (idx_t idx {0}; idx < old_table.ColCount(); ++idx) {
-		std::visit( //
+		visit( //
 		    overloaded {
 		        [](auto&, auto&) { throw std::runtime_error("Incompatible type"); },
 		        [&]<typename LT, typename PT>(const up<TypedCol<LT>>& source_col, up<TypedCol<PT>>& target_col) {
@@ -572,7 +591,7 @@ void Rowgroup::ReadCsv(const path& csv_path, char delimiter, char terminator) {
 nlohmann::json to_json(const rowgroup_pt& columns, const ColumnDescriptors& footer);
 
 nlohmann::json to_json(const col_pt& column, const ColumnDescriptorT& col_description) {
-	return std::visit( //
+	return visit( //
 	    overloaded {
 	        [](const std::monostate&) {
 		        // TODO [SKIP]
@@ -640,21 +659,21 @@ n_t Rowgroup::ColCount() const {
 template <typename PT>
 TypedColumnView<PT>::TypedColumnView(const col_pt& column)
     : m_vec_idx(INVALID_N) {
-	std::visit(overloaded {//
-	                       [&](const up<TypedCol<PT>>& typed_col) {
-		                       //
-		                       m_data    = typed_col->data.data();
-		                       m_stats_p = &typed_col->m_stats;
-		                       n_vals    = typed_col->data.size();
-		                       m_bools   = typed_col->null_map_arr.data();
-		                       n_tuples  = typed_col->data.size();
-	                       },
-	                       [&](const std::monostate&) { FLS_UNREACHABLE() },
-	                       [&](const auto& arg) {
-		                       FLS_UNREACHABLE_WITH_TYPE(arg)
-	                       }},
-	           //
-	           column);
+	visit(overloaded {//
+	                  [&](const up<TypedCol<PT>>& typed_col) {
+		                  //
+		                  m_data    = typed_col->data.data();
+		                  m_stats_p = &typed_col->m_stats;
+		                  n_vals    = typed_col->data.size();
+		                  m_bools   = typed_col->null_map_arr.data();
+		                  n_tuples  = typed_col->data.size();
+	                  },
+	                  [&](const std::monostate&) { FLS_UNREACHABLE() },
+	                  [&](const auto& arg) {
+		                  FLS_UNREACHABLE_WITH_TYPE(arg)
+	                  }},
+	      //
+	      column);
 }
 template <typename PT>
 const PT* TypedColumnView<PT>::Data() {
@@ -703,14 +722,14 @@ template class TypedColumnView<flt_pt>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 
 NullMapView::NullMapView(const col_pt& column) {
-	std::visit(overloaded {
-	               [&]<typename PT>(const up<TypedCol<PT>>& typed_col) { m_null_map = typed_col->null_map_arr.data(); },
-	               [&](const up<FLSStrColumn>& fls_str_column) { m_null_map = fls_str_column->null_map_arr.data(); },
-	               [&](const std::monostate&) { FLS_UNREACHABLE() },
-	               [&](const auto& arg) {
-		               FLS_UNREACHABLE_WITH_TYPE(arg)
-	               }},
-	           column);
+	visit(overloaded {
+	          [&]<typename PT>(const up<TypedCol<PT>>& typed_col) { m_null_map = typed_col->null_map_arr.data(); },
+	          [&](const up<FLSStrColumn>& fls_str_column) { m_null_map = fls_str_column->null_map_arr.data(); },
+	          [&](const std::monostate&) { FLS_UNREACHABLE() },
+	          [&](const auto& arg) {
+		          FLS_UNREACHABLE_WITH_TYPE(arg)
+	          }},
+	      column);
 }
 const uint8_t* NullMapView::NullMap() const {
 	FLS_ASSERT_CORRECT_IDX(m_vec_idx)
@@ -723,21 +742,21 @@ const uint8_t* NullMapView::NullMap() const {
 FlsStrColumnView::FlsStrColumnView(const col_pt& column)
     : vec_idx(INVALID_N)
     , stats([&]() -> FlsStringStats& {
-	    return std::visit(overloaded {[&](const up<FLSStrColumn>& fls_str_column) -> FlsStringStats& {
-		                                  string_p        = fls_str_column->str_p_arr.data();
-		                                  n_tuples        = fls_str_column->length_arr.size();
-		                                  length_ptr      = fls_str_column->length_arr.data();
-		                                  fsst_string_p   = fls_str_column->fsst_str_p_arr.data();
-		                                  fsst_length_ptr = fls_str_column->fsst_length_arr.data();
-		                                  fls_string_p    = fls_str_column->fls_str_arr.data();
-		                                  byte_arr_p      = fls_str_column->byte_arr.data();
+	    return visit(overloaded {[&](const up<FLSStrColumn>& fls_str_column) -> FlsStringStats& {
+		                             string_p        = fls_str_column->str_p_arr.data();
+		                             n_tuples        = fls_str_column->length_arr.size();
+		                             length_ptr      = fls_str_column->length_arr.data();
+		                             fsst_string_p   = fls_str_column->fsst_str_p_arr.data();
+		                             fsst_length_ptr = fls_str_column->fsst_length_arr.data();
+		                             fls_string_p    = fls_str_column->fls_str_arr.data();
+		                             byte_arr_p      = fls_str_column->byte_arr.data();
 
-		                                  return fls_str_column->m_stats;
-	                                  },
-	                                  [&](const auto&) -> FlsStringStats& {
-		                                  FLS_UNREACHABLE();
-	                                  }},
-	                      column);
+		                             return fls_str_column->m_stats;
+	                             },
+	                             [&](const auto&) -> FlsStringStats& {
+		                             FLS_UNREACHABLE();
+	                             }},
+	                 column);
     }()) {
 }
 

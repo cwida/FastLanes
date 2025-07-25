@@ -4,19 +4,23 @@
 // src/flatbuffers/flatbuffers.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/flatbuffers/flatbuffers.hpp"
+#include "flatbuffers/flatbuffer_builder.h"
+#include "fls/common/alias.hpp"
 #include "fls/connection.hpp"
-#include "fls/footer/table_descriptor.hpp"
+#include "fls/footer/table_descriptor_generated.h"
+#include "fls/std/string.hpp"
 #include <filesystem>
 #include <fstream>
+#include <ios>
 #include <stdexcept>
 
 namespace fastlanes {
 
-constexpr std::string_view FOOTER_NAME = "table_descriptor.fbb";
+constexpr string_view FOOTER_NAME = "table_descriptor.fbb";
 
 n_t WriteBuffer(const std::filesystem::path& file_path,
                 const void*                  buf_ptr,
-                std::size_t                  buf_size,
+                n_t                          buf_size,
                 std::ios_base::openmode      mode = std::ios::binary | std::ios::out) {
 	std::ofstream out {file_path, mode};
 	if (!out) {

@@ -4,6 +4,8 @@
 // src/utl/random.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/utl/random.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/std/vector.hpp"
 #include <random>
 
 namespace fastlanes {
@@ -30,7 +32,7 @@ T random::rand(T lowerbound, T upperbound) {
 }
 
 template <typename T>
-void random::rand(n_t n, T lowerbound, T upperbound, std::vector<T>& vec) {
+void random::rand(n_t n, T lowerbound, T upperbound, vector<T>& vec) {
 
 	for (idx_t tup_idx {0}; tup_idx < n; ++tup_idx) {
 		vec.push_back(rand(lowerbound, upperbound));
@@ -38,5 +40,5 @@ void random::rand(n_t n, T lowerbound, T upperbound, std::vector<T>& vec) {
 }
 
 template int64_t random::rand<i64_pt>(i64_pt lowerbound, i64_pt upperbound);
-template void    random::rand<i64_pt>(n_t n, i64_pt lowerbound, i64_pt upperbound, std::vector<i64_pt>& vec);
+template void    random::rand<i64_pt>(n_t n, i64_pt lowerbound, i64_pt upperbound, vector<i64_pt>& vec);
 } // namespace fastlanes

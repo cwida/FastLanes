@@ -4,12 +4,21 @@
 // src/alp/src/encoder.cpp
 // ────────────────────────────────────────────────────────
 #include "alp/encoder.hpp"
+#include "alp/common.hpp"
+#include "alp/config.hpp"
 #include "alp/constants.hpp"
 #include "alp/decoder.hpp"
 #include "alp/sampler.hpp"
+#include "alp/state.hpp"
 #include "fls/common/assert.hpp" // fix me
 #include "fls/ffor_util.hpp"
 #include <algorithm>
+#include <cmath> // for std::ceil
+#include <cstdint>
+#include <limits>  // for std::numeric_limits
+#include <map>     // for std::map
+#include <utility> // for std::pair
+#include <vector>
 
 namespace alp {
 

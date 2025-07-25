@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <unordered_map>
-namespace fast_lanes {
+namespace fastlanes {
 enum class CPUFeature : uint32_t {
 	FALLBACK = 0,
 	CPU_MASK = 0x1f000000,
@@ -163,5 +163,5 @@ enum class CPUFeature : uint32_t {
 };
 
 std::string CPUFeatureToString(CPUFeature feature);
-} // namespace fast_lanes
+} // namespace fastlanes
 #endif // FLS_UTL_CPU_FEATURE_HPP

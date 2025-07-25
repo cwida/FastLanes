@@ -4,11 +4,12 @@
 // src/reader/rowgroup_view.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/rowgroup_view.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
-#include "fls/connection.hpp"
-#include "fls/footer/rowgroup_descriptor.hpp"
+#include "fls/footer/rowgroup_descriptor_generated.h"
 #include "fls/reader/column_view.hpp"
-#include "fls/reader/segment.hpp"
+#include "fls/std/span.hpp"
+#include <cstddef> // for std::byte
 
 namespace fastlanes {
 

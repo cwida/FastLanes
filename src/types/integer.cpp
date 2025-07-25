@@ -10,6 +10,7 @@
 #include <cstdlib> // for std::stoull / std::stoll
 #include <limits>
 #include <stdexcept>
+#include <string>
 
 namespace fastlanes {
 
@@ -59,17 +60,17 @@ INTEGER_T parse_integer(const string& val_str) {
 				throw std::invalid_argument("Invalid character in signed integer");
 			}
 		}
-		// Convert to long long, then range-check
-		long long v = 0;
+		// Convert to int64_t, then range-check
+		int64_t v = 0;
 		try {
 			v = std::stoll(val_str);
 		} catch (const std::invalid_argument&) {
 			throw; // shouldn't reach here, since we've already validated characters
 		} catch (const std::out_of_range&) {
-			throw; // outside of long long
+			throw; // outside of int64_t
 		}
-		if (v < static_cast<long long>(std::numeric_limits<INTEGER_T>::min()) ||
-		    v > static_cast<long long>(std::numeric_limits<INTEGER_T>::max())) {
+		if (v < static_cast<int64_t>(std::numeric_limits<INTEGER_T>::min()) ||
+		    v > static_cast<int64_t>(std::numeric_limits<INTEGER_T>::max())) {
 			throw std::out_of_range("Value out of range for signed type");
 		}
 		return static_cast<INTEGER_T>(v);

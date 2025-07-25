@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // publications/data_parallelized_encodings/fls_generated/include/fls_gen/normal_rsum/normal_rsum.hpp
 // ────────────────────────────────────────────────────────
-
 #ifndef NORMAL_RSUM_HPP
 #define NORMAL_RSUM_HPP
 

@@ -4,9 +4,12 @@
 // src/printer/output.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/printer/output.hpp"
-#include <fls/std/string.hpp>
-#include <fls/std/vector.hpp>
-#include <iomanip>
+#include "fls/common/alias.hpp"
+#include "fls/std/string.hpp"
+#include "fls/std/vector.hpp"
+#include <cstdlib> // for std::mblen
+#include <iomanip> // for std::left and std::right
+#include <ios>     // for std::ios_base flags (sometimes needed)
 
 namespace fastlanes {
 TerminalOutput::TerminalOutput() = default;
@@ -40,15 +43,15 @@ void TerminalOutput::Setup() const {
 	setup_alignment();
 }
 
-const std::vector<TerminalOutput::row_t>& TerminalOutput::Rows() const {
+const vector<TerminalOutput::row_t>& TerminalOutput::Rows() const {
 	return m_rows;
 }
 
-std::string TerminalOutput::Ruler(POS pos) const {
+string TerminalOutput::Ruler(POS pos) const {
 
-	std::string result;
-	size_t      i {0};
-	std::string lft, mid, rgt;
+	string result;
+	n_t    i {0};
+	string lft, mid, rgt;
 	switch (pos) {
 	case POS::TOP:
 		rgt = m_top_rgt;
@@ -83,7 +86,7 @@ unsigned TerminalOutput::Width(unsigned int i) const {
 	return m_width[i];
 }
 
-unsigned TerminalOutput::CorrectDistance(const std::string& string_to_correct) const {
+unsigned TerminalOutput::CorrectDistance(const string& string_to_correct) const {
 	return static_cast<unsigned>(string_to_correct.size() - glyph_length(string_to_correct));
 }
 
@@ -91,8 +94,8 @@ bool TerminalOutput::HasRuler() const {
 	return m_has_ruler;
 }
 
-std::string TerminalOutput::repeat(unsigned int times, const std::string& c) {
-	std::string result;
+string TerminalOutput::repeat(unsigned int times, const string& c) {
+	string result;
 	for (; times > 0; --times) {
 		result += c;
 	}
@@ -100,13 +103,13 @@ std::string TerminalOutput::repeat(unsigned int times, const std::string& c) {
 	return result;
 }
 
-unsigned TerminalOutput::glyph_length(const std::string& s) const {
+unsigned TerminalOutput::glyph_length(const string& s) const {
 	auto        byte_length  = s.length();
 	int         u            = 0;
 	const char* c_str        = s.c_str();
 	unsigned    glyph_length = 0;
 	while (u < byte_length) {
-		u += std::mblen(&c_str[u], byte_length - static_cast<size_t>(u));
+		u += std::mblen(&c_str[u], byte_length - static_cast<n_t>(u));
 		glyph_length += 1;
 	}
 	return glyph_length;
@@ -138,15 +141,15 @@ void TerminalOutput::setup_alignment() const {
 	}
 }
 
-std::string TerminalOutput::Vertical() const {
+string TerminalOutput::Vertical() const {
 	return m_vertical;
 }
 
-std::string TerminalOutput::Horizontal() const {
+string TerminalOutput::Horizontal() const {
 	return m_horizontal;
 }
 
-void TerminalOutput::Add(const std::string& content) {
+void TerminalOutput::Add(const string& content) {
 	//
 	m_current.push_back(content);
 }
@@ -219,7 +222,7 @@ std::ostream& operator<<(std::ostream& stream, TerminalOutput const& table) {
 	return stream;
 }
 
-void CsvOutput::Add(const std::string& content) {
+void CsvOutput::Add(const string& content) {
 	ss << content;
 	ss << ",";
 }

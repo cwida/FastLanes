@@ -4,10 +4,18 @@
 // src/io/file.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/io/file.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
+#include <cstdint>    // for int64_t
+#include <filesystem> // for std::filesystem::file_size, std::filesystem::exists
+#include <fstream>    // for std::ifstream, std::ofstream
+#include <ios>        // for std::ios, std::streamoff, std::streamsize
+#include <memory>     // for std::make_unique
 #include <sstream>
+#include <stdexcept> // for std::runtime_error
 
 namespace fastlanes {
 

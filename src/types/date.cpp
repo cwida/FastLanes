@@ -4,12 +4,14 @@
 // src/types/date.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/types/date.hpp"
-#include <array>
+#include "fls/std/string.hpp"
 #include <charconv>
 #include <chrono>
+#include <cstdint>
 #include <cstdio> // for std::snprintf
 #include <stdexcept>
 #include <string_view>
+#include <system_error> // for std::errc
 
 namespace fastlanes {
 
@@ -17,11 +19,11 @@ namespace fastlanes {
 constexpr std::chrono::sys_days EPOCH_DAYS {std::chrono::year {1970} / std::chrono::January / 1};
 
 template <typename INTEGER_TYPE>
-[[nodiscard]] static INTEGER_TYPE to_uint(std::string_view sv, const char* field_name) {
+[[nodiscard]] static INTEGER_TYPE to_uint(string_view sv, const char* field_name) {
 	INTEGER_TYPE value {};
 	auto [ptr, ec] = std::from_chars(sv.data(), sv.data() + sv.size(), value);
 	if (ec != std::errc {} || ptr != sv.data() + sv.size()) {
-		throw std::invalid_argument(std::string("Invalid ") + field_name);
+		throw std::invalid_argument(string("Invalid ") + field_name);
 	}
 	return value;
 }
@@ -41,7 +43,7 @@ int32_t parse_date(string_view val_str) {
 	else {
 		const auto first_slash  = val_str.find('/');
 		const auto second_slash = val_str.find('/', first_slash + 1);
-		if (first_slash == std::string_view::npos || second_slash == std::string_view::npos) {
+		if (first_slash == string_view::npos || second_slash == string_view::npos) {
 			throw std::invalid_argument("Expected format YYYY-MM-DD or MM/DD/YYYY");
 		}
 
@@ -67,7 +69,7 @@ int32_t parse_date(string_view val_str) {
 	return static_cast<int32_t>((sys_days_val - EPOCH_DAYS).count());
 }
 
-std::string date_formatter(const int32_t days_since_epoch) {
+string date_formatter(const int32_t days_since_epoch) {
 	const std::chrono::sys_days sys_days_val {EPOCH_DAYS + std::chrono::days {days_since_epoch}};
 	std::chrono::year_month_day ymd {sys_days_val};
 	if (!ymd.ok()) {
@@ -80,7 +82,7 @@ std::string date_formatter(const int32_t days_since_epoch) {
 
 	char buf[11]; // "YYYY-MM-DD" + '\0'
 	std::snprintf(buf, sizeof(buf), "%04d-%02u-%02u", y, m, d);
-	return std::string(buf);
+	return buf;
 }
 
 } // namespace fastlanes

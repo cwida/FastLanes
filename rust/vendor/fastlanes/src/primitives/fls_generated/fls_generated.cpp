@@ -3,3 +3,11 @@
 // ────────────────────────────────────────────────────────
 // rust/vendor/fastlanes/src/primitives/fls_generated/fls_generated.cpp
 // ────────────────────────────────────────────────────────
+
+// NOLINTBEGIN
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/primitives/fls_generated/fls_generated.cpp
+// ────────────────────────────────────────────────────────
+// NOLINTEND

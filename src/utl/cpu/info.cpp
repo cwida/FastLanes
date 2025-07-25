@@ -4,14 +4,14 @@
 // src/utl/cpu/info.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/utl/cpu/info.hpp"
+#include "fls/std/string.hpp"
 #include "fls/utl/cpu/feature.hpp" // for CPUFeature, CPUFeature::FALLBACK
-#include <iosfwd>                  // for string
-#include <stdint.h>                // for uint32_t
+#include <cstdint>                 // for uint32_t
 #include <vector>                  // for vector
 
 // clang-format off
 
-namespace fast_lanes {
+namespace fastlanes {
 #if defined(X86_64)
 #if defined(_MSC_VER)
 static void CpuGetid(int func, int* data) { __cpuid(data, func); }
@@ -114,7 +114,7 @@ bool CpuInfo::HasFeature(CPUFeature feature) {
 	return CpuFeatureCheck(feature);
 }
 
-bool CpuInfo::HasFeature(const std::string& feature) {
+bool CpuInfo::HasFeature(const fastlanes::string& feature) {
 	//	auto feature_s = table.find(feature);
 	//	if (feature_s != table.end()) {
 	//		return HasFeature(feature_s->second);

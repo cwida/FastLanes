@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/flex_flat_util.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2022 Google Inc. All rights reserved.
  *

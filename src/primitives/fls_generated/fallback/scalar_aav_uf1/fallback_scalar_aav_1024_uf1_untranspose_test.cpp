@@ -42,3 +42,5 @@ public:
 		delete[] untransposed64;
 	}
 };
+
+// NOLINTEND

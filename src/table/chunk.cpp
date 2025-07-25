@@ -4,10 +4,11 @@
 // src/table/chunk.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/table/chunk.hpp"
-#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/common/macros.hpp"
-#include "fls/expression/physical_expression.hpp"
-#include "fls/reader/segment.hpp"
+#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 
 namespace fastlanes {

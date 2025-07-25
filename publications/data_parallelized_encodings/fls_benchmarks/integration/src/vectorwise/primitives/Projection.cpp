@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/primitives/Projection.cpp
 // ────────────────────────────────────────────────────────
-
 #include "common/runtime/Hash.hpp"
 #include "vectorwise/Operations.hpp"
 #include "vectorwise/Primitives.hpp"

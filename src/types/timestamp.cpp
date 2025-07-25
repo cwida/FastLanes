@@ -5,15 +5,17 @@
 // ────────────────────────────────────────────────────────
 // src/types/timestamp.cpp
 #include "fls/types/timestamp.hpp"
+#include "fls/std/string.hpp"
 #include <cctype>
 #include <charconv>
 #include <chrono>
-#include <cmath>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib> // for std::llabs
 #include <limits>
 #include <stdexcept>
 #include <string_view>
+#include <system_error> // for std::errc
 
 namespace fastlanes {
 
@@ -32,11 +34,11 @@ constexpr unsigned kEpochDay   = 1;
 
 // ───────────────────────── helpers ────────────────────────────
 template <typename INT>
-[[nodiscard]] INT to_int(std::string_view s, const char* field) {
+[[nodiscard]] INT to_int(string_view s, const char* field) {
 	INT v {};
 	auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), v);
 	if (ec != std::errc {} || ptr != s.data() + s.size())
-		throw std::invalid_argument(std::string("Invalid ") + field);
+		throw std::invalid_argument(string("Invalid ") + field);
 	return v;
 }
 
@@ -62,7 +64,7 @@ static void guard_days_range(int y, unsigned m, unsigned d) {
 }
 
 // ─────────────────────── parse_timestamp ──────────────────────
-int64_t parse_timestamp(std::string_view ts) {
+int64_t parse_timestamp(string_view ts) {
 	// ── branch A: “MM/DD/YYYY hh:mm:ss AM/PM” ───────────────────
 	if (ts.size() == 22 && ts[2] == '/' && ts[5] == '/' && ts[10] == ' ' && ts[13] == ':' && ts[16] == ':' &&
 	    ts[19] == ' ' && ((ts[20] == 'A' && ts[21] == 'M') || (ts[20] == 'P' && ts[21] == 'M'))) {
@@ -127,7 +129,7 @@ int64_t parse_timestamp(std::string_view ts) {
 			if (start == end)
 				throw std::invalid_argument("Fraction must have 1-6 digits");
 
-			int64_t v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
+			auto v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
 			for (std::size_t pad = 6 - (end - start); pad; --pad) {
 				v *= 10;
 			}
@@ -140,7 +142,6 @@ int64_t parse_timestamp(std::string_view ts) {
 		if (idx < ts.size()) {
 			if (ts[idx] == 'Z' && idx + 1 == ts.size()) {
 				// Zulu (UTC), so offset = +00:00
-				idx = ts.size();
 			} else if (ts[idx] == '+' || ts[idx] == '-') {
 				sign = (ts[idx++] == '+') ? +1 : -1;
 				if (idx + 1 >= ts.size() || !std::isdigit(static_cast<unsigned char>(ts[idx])) ||
@@ -185,14 +186,14 @@ int64_t parse_timestamp(std::string_view ts) {
 
 	// ── branch C: “YYYY-MM-DD[T| ]hh:mm:ss[.ffffff][Z|±HH[:MM]]” ────
 	const std::size_t p1 = ts.find('-');
-	const std::size_t p2 = (p1 == std::string_view::npos) ? std::string_view::npos : ts.find('-', p1 + 1);
-	if (p1 == std::string_view::npos || p2 == std::string_view::npos) {
+	const std::size_t p2 = (p1 == string_view::npos) ? string_view::npos : ts.find('-', p1 + 1);
+	if (p1 == string_view::npos || p2 == string_view::npos) {
 		throw std::invalid_argument("Expected YYYY-MM-DDThh:mm:ss");
 	}
 
-	int      year  = to_int<int>(ts.substr(0, p1), "year");
-	unsigned month = to_int<unsigned>(ts.substr(p1 + 1, 2), "month");
-	unsigned day   = to_int<unsigned>(ts.substr(p2 + 1, 2), "day");
+	int  year  = to_int<int>(ts.substr(0, p1), "year");
+	auto month = to_int<unsigned>(ts.substr(p1 + 1, 2), "month");
+	auto day   = to_int<unsigned>(ts.substr(p2 + 1, 2), "day");
 
 	std::size_t posT = p2 + 3;
 	if (posT >= ts.size() || (ts[posT] != 'T' && ts[posT] != ' ')) {
@@ -227,7 +228,7 @@ int64_t parse_timestamp(std::string_view ts) {
 		if (start == end) {
 			throw std::invalid_argument("Fraction must have 1-6 digits");
 		}
-		int64_t v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
+		auto v = to_int<int64_t>(ts.substr(start, end - start), "fractional seconds");
 		for (std::size_t pad = 6 - (end - start); pad; --pad) {
 			v *= 10;
 		}
@@ -239,7 +240,6 @@ int64_t parse_timestamp(std::string_view ts) {
 	int sign = 0, off_h = 0, off_m = 0;
 	if (idx < ts.size()) {
 		if (ts[idx] == 'Z' && idx + 1 == ts.size()) {
-			idx = ts.size(); // treat as +00:00
 		} else if (ts[idx] == '+' || ts[idx] == '-') {
 			sign = (ts[idx++] == '+') ? +1 : -1;
 			if (idx + 1 >= ts.size() || !std::isdigit(static_cast<unsigned char>(ts[idx])) ||
@@ -281,7 +281,7 @@ int64_t parse_timestamp(std::string_view ts) {
 }
 
 // ───────────────────── timestamp_formatter ────────────────────
-std::string timestamp_formatter(int64_t micros) {
+string timestamp_formatter(int64_t micros) {
 	// Split micros into civil-date parts and time-of-day
 	int64_t days = micros / K_MICROS_PER_DAY;
 	int64_t rem  = micros % K_MICROS_PER_DAY;
@@ -293,14 +293,14 @@ std::string timestamp_formatter(int64_t micros) {
 	// Civil-from-days (inverse of civil_to_days)
 	int64_t  z   = days + civil_to_days(kEpochYear, kEpochMonth, kEpochDay) + 719468;
 	int64_t  era = (z >= 0 ? z : z - 146096) / 146097;
-	unsigned doe = static_cast<unsigned>(z - era * 146097);
+	auto     doe = static_cast<unsigned>(z - era * 146097);
 	unsigned yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
 	int64_t  y   = yoe + era * 400;
 	unsigned doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
 	unsigned mp  = (5 * doy + 2) / 153;
 
 	int      m_s   = static_cast<int>(mp) + (mp < 10 ? 3 : -9); // 1-12
-	unsigned month = static_cast<unsigned>(m_s);
+	auto     month = static_cast<unsigned>(m_s);
 	unsigned day   = doy - (153 * mp + 2) / 5 + 1;
 	int      year  = static_cast<int>(y + (month <= 2 ? 1 : 0));
 
@@ -319,7 +319,7 @@ std::string timestamp_formatter(int64_t micros) {
 		std::size_t remaining = sizeof(buf) - static_cast<std::size_t>(len);
 		std::snprintf(buf + len, remaining, ".%06d", micro);
 	}
-	return std::string(buf);
+	return buf;
 }
 
 } // namespace fastlanes

@@ -5,6 +5,8 @@
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/bitpack/bitpack.hpp"
 #include "fls/cfg/cfg.hpp"
+#include "fls/common/assert.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 uint64_t calculate_bitpacked_vector_size(uint8_t bw) {

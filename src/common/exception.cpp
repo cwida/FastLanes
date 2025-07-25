@@ -5,10 +5,11 @@
 // ────────────────────────────────────────────────────────
 #include "fls/common/exception.hpp"
 #include "fls/expression/rpn.hpp"
+#include "fls/std/string.hpp"
 #include <sstream>
 
 namespace fastlanes {
-DetailedException::DetailedException(const std::string& msg, const char* file, int line) {
+DetailedException::DetailedException(const string& msg, const char* file, int line) {
 	std::ostringstream oss;
 	oss << msg << " (" << file << ":" << line << ")";
 	message = oss.str();
@@ -18,11 +19,11 @@ const char* DetailedException::what() const noexcept {
 	return message.c_str();
 }
 
-[[noreturn]] void throw_detailed_exception(const std::string& msg, const char* file, int line) {
+[[noreturn]] void throw_detailed_exception(const string& msg, const char* file, int line) {
 	throw DetailedException(msg, file, line);
 }
 
-ExpressionException::ExpressionException(const std::string& operator_name, const char* file, int line) {
+ExpressionException::ExpressionException(const string& operator_name, const char* file, int line) {
 	std::ostringstream oss;
 	oss << operator_name << " is not supported (" << file << ":" << line << ")";
 	message = oss.str();

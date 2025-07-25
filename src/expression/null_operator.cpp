@@ -5,13 +5,18 @@
 // ────────────────────────────────────────────────────────
 #include "fls/expression/null_operator.hpp"
 #include "fls/cfg/cfg.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
-#include "fls/primitive/copy/fls_copy.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
+#include <cstdint>
+#include <utility> // for std::move
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

@@ -4,9 +4,14 @@
 // src/primitive/fsst12/fsst12.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/fsst12/fsst12.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/cor/lyt/buf.hpp"
+#include "fls/cor/prm/fsst12/fsst12.h"
 #include "fls/cor/prm/fsst12/libfsst12.hpp"
 #include "fls/table/rowgroup.hpp"
-#include <fls/cor/lyt/buf.hpp>
+#include <cstdint>
+#include <cstring> // for memcpy
 
 namespace fastlanes {
 

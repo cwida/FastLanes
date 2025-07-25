@@ -5,14 +5,18 @@
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/rle/rle.hpp"
 #include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/restrict.hpp"
 #include "fls/common/string.hpp"
+#include "fls/expression/data_type.hpp"
 
 namespace fastlanes {
 
 template <typename KEY_PT, typename INDEX_PT>
-n_t RLE<KEY_PT, INDEX_PT>::encode(const KEY_PT* __restrict in_arr,
-                                  KEY_PT* __restrict rle_vals,
-                                  INDEX_PT* __restrict rle_idxs) {
+n_t RLE<KEY_PT, INDEX_PT>::encode(const KEY_PT* FLS_RESTRICT in_arr,
+                                  KEY_PT* FLS_RESTRICT       rle_vals,
+                                  INDEX_PT* FLS_RESTRICT     rle_idxs) {
 
 	rle_idx_t pos_val       = 0;
 	n_t       rle_val_idx   = 0;

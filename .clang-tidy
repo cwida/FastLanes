@@ -1,6 +1,7 @@
 Checks: >
   # General Checks
   clang-diagnostic-*,
+  misc-include-cleaner,
   misc-throw-by-value-catch-by-reference,
   misc-definitions-in-headers,
   llvm-header-guard,

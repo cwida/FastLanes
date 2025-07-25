@@ -4,13 +4,16 @@
 // src/expression/interpreter.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/interpreter.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/exception.hpp"
-#include "fls/connection.hpp"
+#include "fls/common/string.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
 #include "fls/expression/cross_rle_operator.hpp"
 #include "fls/expression/data_parallelize_patch_operator.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/dict_expression.hpp"
 #include "fls/expression/encoding_operator.hpp"

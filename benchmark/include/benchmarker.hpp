@@ -21,6 +21,7 @@
 #include <vector>
 
 namespace fastlanes {
+constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.fbb"};
 
 inline void clear_directory(const fs::path& dir) {
 	if (!fs::exists(dir) || !fs::is_directory(dir))

@@ -4,16 +4,17 @@
 // src/json/fls_json.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/json/fls_json.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/decimal.hpp"
 #include "fls/common/magic_enum.hpp"
 #include "fls/connection.hpp"
-#include "fls/expression/logical_expression.hpp"
 #include "fls/expression/rpn.hpp"
-#include "fls/footer/column_descriptor.hpp"
+#include "fls/footer/operator_token_generated.h"
 #include "fls/footer/rowgroup_descriptor.hpp"
-#include "fls/footer/table_descriptor.hpp"
 #include "fls/io/file.hpp"
-#include "fls/json/json_unique_ptr.hpp" // <─ must appear before you call get_to(...)
+#include "fls/json/json_unique_ptr.hpp" //NOLINT <─ must appear before you call get_to(...)
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fls/json/nlohmann/json.hpp>

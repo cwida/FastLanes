@@ -3,7 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/primitive/primitive.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/primitive/primitive.hpp"
+// #include "fls/primitive/primitive.hpp"
 
 namespace fastlanes {
 

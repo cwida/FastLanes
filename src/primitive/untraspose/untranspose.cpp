@@ -5,6 +5,7 @@
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/untranspose/untranspose.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 void untranspose_i(const int64_t* a_in, int64_t* a_out) {

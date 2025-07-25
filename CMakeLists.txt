@@ -130,6 +130,34 @@ option(FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING "Build GALP" OFF)
 # Definitions: ---------------------------------------------------------------------------------------------------------
 add_compile_definitions(FLS_CMAKE_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
+if (FLS_ENABLE_CLANG_TIDY)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Enabling CLANG-TIDY.")
+    find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+    if (NOT CLANG_TIDY_EXE)
+        message(FATAL_ERROR "-- FLS: clang-tidy not found.")
+    else ()
+        if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
+            set(CMAKE_CXX_CLANG_TIDY
+                    ${CLANG_TIDY_EXE};
+                    --quiet;
+                    --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
+            message("-- FLS: Using project-level .clang-tidy")
+        else ()
+            message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
+        endif ()
+
+        execute_process(
+                COMMAND ${CLANG_TIDY_EXE} --version
+                OUTPUT_VARIABLE CLANG_TIDY_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
+
+    endif ()
+endif ()
+
+
 # GTEST : --------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING OR FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING)
     message("---------------------------------------------------------------------------------------------------------")
@@ -166,6 +194,7 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARK
     endif ()
 endif ()
 
+
 # ALP: -----------------------------------------------------------------------------------------------------------------
 if (true)
     message("---------------------------------------------------------------------------------------------------------")
@@ -185,6 +214,13 @@ if (true)
     endif ()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+endif ()
+
+# CLANG TIDY : --------------------------------------------------------------------------------------------------------------
+if (FLS_ENABLE_CLANG_TIDY)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Disabling CLANG-TIDY.")
+    set(CMAKE_CXX_CLANG_TIDY "")
 endif ()
 
 # CUDA : ---------------------------------------------------------------------------------------------------------------
@@ -225,33 +261,6 @@ if (FLS_BUILD_TESTING OR
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/data/include)
     add_compile_definitions(FASTLANES_DATA_DIR="${data_SOURCE_DIR}")
     cmake_print_variables(data_SOURCE_DIR)
-endif ()
-
-if (FLS_ENABLE_CLANG_TIDY)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("-- FLS: Enabling CLANG-TIDY.")
-    find_program(CLANG_TIDY_EXE NAMES clang-tidy)
-    if (NOT CLANG_TIDY_EXE)
-        message(FATAL_ERROR "-- FLS: clang-tidy not found.")
-    else ()
-        if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
-            set(CMAKE_CXX_CLANG_TIDY
-                    ${CLANG_TIDY_EXE};
-                    --quiet;
-                    --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
-            message("-- FLS: Using project-level .clang-tidy")
-        else ()
-            message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
-        endif ()
-
-        execute_process(
-                COMMAND ${CLANG_TIDY_EXE} --version
-                OUTPUT_VARIABLE CLANG_TIDY_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
-
-    endif ()
 endif ()
 
 if (FLS_ENABLE_IWYU)

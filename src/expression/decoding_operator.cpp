@@ -4,10 +4,15 @@
 // src/expression/decoding_operator.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/decoding_operator.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/unffor.hpp"
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
 
 namespace fastlanes {

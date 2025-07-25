@@ -5,12 +5,12 @@
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/copy/fls_copy.hpp"
 #include "fls/common/common.hpp"
+#include "fls/common/restrict.hpp"
 #include "fls/expression/data_type.hpp"
-#include <stdexcept>
-#include <type_traits>
+#include <cstdint>
 
 namespace fastlanes {
-static void unpack_8bw_8ow_8crw_1uf(const uint8_t* __restrict a_in_p, uint8_t* __restrict a_out_p) {
+static void unpack_8bw_8ow_8crw_1uf(const uint8_t* FLS_RESTRICT a_in_p, uint8_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto       out = reinterpret_cast<uint8_t*>(a_out_p);
 	[[maybe_unused]] const auto in  = reinterpret_cast<const uint8_t*>(a_in_p);
 	[[maybe_unused]] uint8_t    register_0;
@@ -36,7 +36,7 @@ static void unpack_8bw_8ow_8crw_1uf(const uint8_t* __restrict a_in_p, uint8_t* _
 	}
 }
 
-static void unpack_16bw_16ow_16crw_1uf(const uint16_t* __restrict a_in_p, uint16_t* __restrict a_out_p) {
+static void unpack_16bw_16ow_16crw_1uf(const uint16_t* FLS_RESTRICT a_in_p, uint16_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto       out = reinterpret_cast<uint16_t*>(a_out_p);
 	[[maybe_unused]] const auto in  = reinterpret_cast<const uint16_t*>(a_in_p);
 	[[maybe_unused]] uint16_t   register_0;
@@ -78,7 +78,7 @@ static void unpack_16bw_16ow_16crw_1uf(const uint16_t* __restrict a_in_p, uint16
 	}
 }
 
-static void unpack_32bw_32ow_32crw_1uf(const uint32_t* __restrict a_in_p, uint32_t* __restrict a_out_p) {
+static void unpack_32bw_32ow_32crw_1uf(const uint32_t* FLS_RESTRICT a_in_p, uint32_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto       out = reinterpret_cast<uint32_t*>(a_out_p);
 	[[maybe_unused]] const auto in  = reinterpret_cast<const uint32_t*>(a_in_p);
 	[[maybe_unused]] uint32_t   register_0;
@@ -152,7 +152,7 @@ static void unpack_32bw_32ow_32crw_1uf(const uint32_t* __restrict a_in_p, uint32
 	}
 }
 
-static void unpack_64bw_64ow_64crw_1uf(const uint64_t* __restrict in, uint64_t* __restrict out) {
+static void unpack_64bw_64ow_64crw_1uf(const uint64_t* FLS_RESTRICT in, uint64_t* FLS_RESTRICT out) {
 	[[maybe_unused]] uint64_t register_0;
 	[[maybe_unused]] uint64_t tmp_0;
 #pragma clang loop vectorize(enable)
@@ -289,7 +289,7 @@ static void unpack_64bw_64ow_64crw_1uf(const uint64_t* __restrict in, uint64_t* 
 }
 
 template <typename PT>
-void copy(const PT* __restrict in_p, PT* __restrict out_p) {
+void copy(const PT* FLS_RESTRICT in_p, PT* FLS_RESTRICT out_p) {
 	if constexpr (std::is_same_v<PT, dbl_pt> || std::is_same_v<PT, u64_pt> || std::is_same_v<PT, i64_pt>) {
 		unpack_64bw_64ow_64crw_1uf(reinterpret_cast<const uint64_t*>(in_p), reinterpret_cast<uint64_t*>(out_p));
 	} else if constexpr (std::is_same_v<PT, flt_pt> || std::is_same_v<PT, u32_pt> || std::is_same_v<PT, i32_pt>) {
@@ -303,14 +303,14 @@ void copy(const PT* __restrict in_p, PT* __restrict out_p) {
 	}
 }
 
-template void copy<dbl_pt>(const dbl_pt* __restrict in_p, dbl_pt* __restrict out_p);
-template void copy<u64_pt>(const u64_pt* __restrict in_p, u64_pt* __restrict out_p);
-template void copy<i64_pt>(const i64_pt* __restrict in_p, i64_pt* __restrict out_p);
-template void copy<flt_pt>(const flt_pt* __restrict in_p, flt_pt* __restrict out_p);
-template void copy<u32_pt>(const u32_pt* __restrict in_p, u32_pt* __restrict out_p);
-template void copy<i32_pt>(const i32_pt* __restrict in_p, i32_pt* __restrict out_p);
-template void copy<u16_pt>(const u16_pt* __restrict in_p, u16_pt* __restrict out_p);
-template void copy<i16_pt>(const i16_pt* __restrict in_p, i16_pt* __restrict out_p);
-template void copy<u08_pt>(const u08_pt* __restrict in_p, u08_pt* __restrict out_p);
-template void copy<i08_pt>(const i08_pt* __restrict in_p, i08_pt* __restrict out_p);
+template void copy<dbl_pt>(const dbl_pt* FLS_RESTRICT in_p, dbl_pt* FLS_RESTRICT out_p);
+template void copy<u64_pt>(const u64_pt* FLS_RESTRICT in_p, u64_pt* FLS_RESTRICT out_p);
+template void copy<i64_pt>(const i64_pt* FLS_RESTRICT in_p, i64_pt* FLS_RESTRICT out_p);
+template void copy<flt_pt>(const flt_pt* FLS_RESTRICT in_p, flt_pt* FLS_RESTRICT out_p);
+template void copy<u32_pt>(const u32_pt* FLS_RESTRICT in_p, u32_pt* FLS_RESTRICT out_p);
+template void copy<i32_pt>(const i32_pt* FLS_RESTRICT in_p, i32_pt* FLS_RESTRICT out_p);
+template void copy<u16_pt>(const u16_pt* FLS_RESTRICT in_p, u16_pt* FLS_RESTRICT out_p);
+template void copy<i16_pt>(const i16_pt* FLS_RESTRICT in_p, i16_pt* FLS_RESTRICT out_p);
+template void copy<u08_pt>(const u08_pt* FLS_RESTRICT in_p, u08_pt* FLS_RESTRICT out_p);
+template void copy<i08_pt>(const i08_pt* FLS_RESTRICT in_p, i08_pt* FLS_RESTRICT out_p);
 } // namespace fastlanes

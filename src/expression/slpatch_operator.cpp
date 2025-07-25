@@ -5,8 +5,11 @@
 // ────────────────────────────────────────────────────────
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/cfg/cfg.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
@@ -16,6 +19,12 @@
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/type_traits.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
+#include <cstdint>
+#include <utility>
+#include <variant>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -89,8 +98,8 @@ struct SLPatchExprVisitor {
 		this_opr.data = opr->unffored_data;
 	}
 	template <typename T = PT>
-	requires(!std::is_same_v<T, std::make_unsigned_t<T>>) void
-	operator()(const sp<dec_unffor_opr<std::make_unsigned_t<PT>>>& opr) {
+	requires(!std::is_same_v<T, make_unsigned_t<T>>) void
+	operator()(const sp<dec_unffor_opr<make_unsigned_t<PT>>>& opr) {
 		this_opr.data = reinterpret_cast<PT*>(opr->unffored_data);
 	}
 	void operator()(std::monostate& arg) {

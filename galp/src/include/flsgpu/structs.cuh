@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // galp/src/include/flsgpu/structs.cuh
 // ────────────────────────────────────────────────────────
-
 #ifndef STRUCTS_CUH
 #define STRUCTS_CUH
 

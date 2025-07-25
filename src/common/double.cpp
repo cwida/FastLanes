@@ -4,7 +4,9 @@
 // src/common/double.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/common/double.hpp"
+#include "fls/expression/data_type.hpp"
 #include <cmath>
+#include <cstdint>
 
 namespace fastlanes {
 

@@ -4,20 +4,19 @@
 // src/encoder/encoder.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/encoder/encoder.hpp"
-#include "fls/common/alias.hpp" // for up, n_t
-#include "fls/connection.hpp"   // for Connector
-#include "fls/cor/lyt/buf.hpp"  // for Buf
-#include "fls/expression/decoding_operator.hpp"
-#include "fls/expression/encoding_operator.hpp"
+#include "fls/cfg/cfg.hpp"                        // for CFG
+#include "fls/common/alias.hpp"                   // for up, n_t
+#include "fls/connection.hpp"                     // for Connection
+#include "fls/cor/lyt/buf.hpp"                    // for Buf
 #include "fls/expression/expression_executor.hpp" // for ExprExecutor
 #include "fls/expression/interpreter.hpp"         // for Interpreter
 #include "fls/expression/physical_expression.hpp" // for PhysicalExpr
-#include "fls/expression/predicate_operator.hpp"
 #include "fls/file/file_header.hpp"
-#include "fls/footer/rowgroup_descriptor.hpp" // for ColumnMetadata
-#include "fls/reader/segment.hpp"
+#include "fls/io/file.hpp" // for File
+#include "fls/std/filesystem.hpp"
 #include "fls/std/vector.hpp"     // for vector
 #include "fls/table/rowgroup.hpp" // for Rowgroup
+#include <cstdint>
 #include <fls/io/io.hpp>
 #include <memory> // for unique_ptr
 

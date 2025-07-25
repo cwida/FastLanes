@@ -4,10 +4,16 @@
 // src/file/file_header.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/file/file_header.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/status.hpp"
 #include "fls/connection.hpp"
 #include "fls/file/file_footer.hpp"
 #include "fls/info.hpp"
+#include "fls/io/file.hpp"
 #include "fls/io/io.hpp"
+#include "fls/std/filesystem.hpp"
+#include <fstream> // for std::ifstream
+#include <ios>     // for std::ios
 
 namespace fastlanes {
 

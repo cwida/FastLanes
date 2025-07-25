@@ -4,9 +4,13 @@
 // src/expression/rpn.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/rpn.hpp"
-#include "fls/common/assert.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/std/unordered_set.hpp"
+#include "fls/footer/operator_token_generated.h"
+#include "fls/std/string.hpp"
+#include <ostream> // for std::ostream
+#include <unordered_set>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -340,7 +344,7 @@ std::ostream& operator<<(std::ostream& os, const RPNT& rpn) {
 
 	// Print operator tokens
 	os << "[";
-	for (size_t i = 0; i < rpn.operator_tokens.size(); ++i) {
+	for (n_t i = 0; i < rpn.operator_tokens.size(); ++i) {
 		os << token_to_string(rpn.operator_tokens[i]);
 		if (i != rpn.operator_tokens.size() - 1)
 			os << ", ";
@@ -349,7 +353,7 @@ std::ostream& operator<<(std::ostream& os, const RPNT& rpn) {
 
 	// Print operand tokens
 	os << "[";
-	for (size_t i = 0; i < rpn.operand_tokens.size(); ++i) {
+	for (n_t i = 0; i < rpn.operand_tokens.size(); ++i) {
 		os << rpn.operand_tokens[i];
 		if (i != rpn.operand_tokens.size() - 1)
 			os << ", ";

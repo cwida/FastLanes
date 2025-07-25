@@ -4,13 +4,22 @@
 // src/expression/rle_expression.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/rle_expression.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
+#include "fls/common/string.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/expression/rsum_operator.hpp"
 #include "fls/primitive/rle/rle.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls_gen/transpose/transpose.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <cstdint>
+#include <utility>
+#include <variant> // for std::monostate
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

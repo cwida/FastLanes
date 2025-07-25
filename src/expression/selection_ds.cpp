@@ -4,6 +4,7 @@
 // src/expression/selection_ds.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/selection_ds.hpp"
+#include "fls/common/alias.hpp"
 
 namespace fastlanes {
 
@@ -19,12 +20,12 @@ SelectionDS::SelectionDS(const LogicalExpr& logical_expression)
 
 void SelectionDS::Reset() {
 	// set index array to zero
-	for (idx_t value_idx {0}; value_idx < idx_arr.size(); ++value_idx) {
+	for (n_t value_idx {0}; value_idx < idx_arr.size(); ++value_idx) {
 		idx_arr[value_idx] = 0;
 	}
 
 	// set
-	for (idx_t idx {}; idx < bitmap.size(); ++idx) {
+	for (n_t idx {}; idx < bitmap.size(); ++idx) {
 		idx_arr[idx] = 0;
 	}
 

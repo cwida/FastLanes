@@ -5,13 +5,19 @@
 // ────────────────────────────────────────────────────────
 #include "fls/expression/cross_rle_operator.hpp"
 #include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/string.hpp"
 #include "fls/cor/lyt/buf.hpp"
-#include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
-#include "fls/primitive/fls_memset/fls_memset.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
+#include <algorithm> // for std::min
+#include <cstdint>   // for uint8_t
+#include <utility>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

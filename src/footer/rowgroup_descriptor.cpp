@@ -4,12 +4,12 @@
 // src/footer/rowgroup_descriptor.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/footer/rowgroup_descriptor.hpp"
-#include "fls/cfg/cfg.hpp"
-#include "fls/common/assert.hpp"
-#include "fls/common/magic_enum.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/footer/column_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include "fls/json/fls_json.hpp"
 #include "fls/json/nlohmann/json.hpp"
+#include "fls/std/filesystem.hpp"
 #include "fls/table/rowgroup.hpp"
 
 namespace fastlanes {

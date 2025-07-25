@@ -5,12 +5,13 @@
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/fls_memset/fls_memset.hpp"
 #include "fls/common/common.hpp"
+#include "fls/common/restrict.hpp"
 #include "fls/expression/data_type.hpp"
-#include <stdexcept>
+#include <cstdint>
 #include <type_traits>
 
 namespace fastlanes {
-static void unffor_0bw_8ow_8crw_1uf(const uint8_t* __restrict base_p, uint8_t* __restrict a_out_p) {
+static void unffor_0bw_8ow_8crw_1uf(const uint8_t* FLS_RESTRICT base_p, uint8_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto    out = reinterpret_cast<uint8_t*>(a_out_p);
 	[[maybe_unused]] uint8_t register_0;
 	[[maybe_unused]] uint8_t tmp_0;
@@ -27,7 +28,7 @@ static void unffor_0bw_8ow_8crw_1uf(const uint8_t* __restrict base_p, uint8_t* _
 	}
 }
 
-static void unffor_0bw_16ow_16crw_1uf(const uint16_t* __restrict base_p, uint16_t* __restrict a_out_p) {
+static void unffor_0bw_16ow_16crw_1uf(const uint16_t* FLS_RESTRICT base_p, uint16_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto     out = reinterpret_cast<uint16_t*>(a_out_p);
 	[[maybe_unused]] uint16_t register_0;
 	[[maybe_unused]] uint16_t tmp_0;
@@ -52,7 +53,7 @@ static void unffor_0bw_16ow_16crw_1uf(const uint16_t* __restrict base_p, uint16_
 	}
 }
 
-static void unffor_0bw_32ow_32crw_1uf(const uint32_t* __restrict base_p, uint32_t* __restrict a_out_p) {
+static void unffor_0bw_32ow_32crw_1uf(const uint32_t* FLS_RESTRICT base_p, uint32_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto     out = reinterpret_cast<uint32_t*>(a_out_p);
 	[[maybe_unused]] uint32_t register_0;
 	[[maybe_unused]] uint32_t tmp_0;
@@ -92,7 +93,7 @@ static void unffor_0bw_32ow_32crw_1uf(const uint32_t* __restrict base_p, uint32_
 		*(out + (i * 1) + (0 * 32) + (32 * 31)) = base_0;
 	}
 }
-static void unffor_0bw_64ow_64crw_1uf(const uint64_t* __restrict base_p, uint64_t* __restrict a_out_p) {
+static void unffor_0bw_64ow_64crw_1uf(const uint64_t* FLS_RESTRICT base_p, uint64_t* FLS_RESTRICT a_out_p) {
 	[[maybe_unused]] auto     out = reinterpret_cast<uint64_t*>(a_out_p);
 	[[maybe_unused]] uint64_t register_0;
 	[[maybe_unused]] uint64_t tmp_0;
@@ -167,7 +168,7 @@ static void unffor_0bw_64ow_64crw_1uf(const uint64_t* __restrict base_p, uint64_
 }
 
 template <typename PT>
-void fls_memset(const PT* __restrict base_p, PT* __restrict out_p) {
+void fls_memset(const PT* FLS_RESTRICT base_p, PT* FLS_RESTRICT out_p) {
 	if constexpr (std::is_same_v<PT, dbl_pt> || std::is_same_v<PT, u64_pt> || std::is_same_v<PT, i64_pt>) {
 		unffor_0bw_64ow_64crw_1uf(reinterpret_cast<const uint64_t*>(base_p), reinterpret_cast<uint64_t*>(out_p));
 	} else if constexpr (std::is_same_v<PT, flt_pt> || std::is_same_v<PT, u32_pt> || std::is_same_v<PT, i32_pt>) {
@@ -181,14 +182,14 @@ void fls_memset(const PT* __restrict base_p, PT* __restrict out_p) {
 	}
 }
 
-template void fls_memset<dbl_pt>(const dbl_pt* __restrict in_p, dbl_pt* __restrict out_p);
-template void fls_memset<u64_pt>(const u64_pt* __restrict in_p, u64_pt* __restrict out_p);
-template void fls_memset<i64_pt>(const i64_pt* __restrict in_p, i64_pt* __restrict out_p);
-template void fls_memset<flt_pt>(const flt_pt* __restrict in_p, flt_pt* __restrict out_p);
-template void fls_memset<u32_pt>(const u32_pt* __restrict in_p, u32_pt* __restrict out_p);
-template void fls_memset<i32_pt>(const i32_pt* __restrict in_p, i32_pt* __restrict out_p);
-template void fls_memset<u16_pt>(const u16_pt* __restrict in_p, u16_pt* __restrict out_p);
-template void fls_memset<i16_pt>(const i16_pt* __restrict in_p, i16_pt* __restrict out_p);
-template void fls_memset<u08_pt>(const u08_pt* __restrict in_p, u08_pt* __restrict out_p);
-template void fls_memset<i08_pt>(const i08_pt* __restrict in_p, i08_pt* __restrict out_p);
+template void fls_memset<dbl_pt>(const dbl_pt* FLS_RESTRICT in_p, dbl_pt* FLS_RESTRICT out_p);
+template void fls_memset<u64_pt>(const u64_pt* FLS_RESTRICT in_p, u64_pt* FLS_RESTRICT out_p);
+template void fls_memset<i64_pt>(const i64_pt* FLS_RESTRICT in_p, i64_pt* FLS_RESTRICT out_p);
+template void fls_memset<flt_pt>(const flt_pt* FLS_RESTRICT in_p, flt_pt* FLS_RESTRICT out_p);
+template void fls_memset<u32_pt>(const u32_pt* FLS_RESTRICT in_p, u32_pt* FLS_RESTRICT out_p);
+template void fls_memset<i32_pt>(const i32_pt* FLS_RESTRICT in_p, i32_pt* FLS_RESTRICT out_p);
+template void fls_memset<u16_pt>(const u16_pt* FLS_RESTRICT in_p, u16_pt* FLS_RESTRICT out_p);
+template void fls_memset<i16_pt>(const i16_pt* FLS_RESTRICT in_p, i16_pt* FLS_RESTRICT out_p);
+template void fls_memset<u08_pt>(const u08_pt* FLS_RESTRICT in_p, u08_pt* FLS_RESTRICT out_p);
+template void fls_memset<i08_pt>(const i08_pt* FLS_RESTRICT in_p, i08_pt* FLS_RESTRICT out_p);
 } // namespace fastlanes

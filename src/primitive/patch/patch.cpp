@@ -4,18 +4,22 @@
 // src/primitive/patch/patch.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/primitive/patch/patch.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/restrict.hpp"
 #include "fls/cuda/common.hpp"
+#include "fls/expression/data_type.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 
 template <typename PT>
-void Patch<PT>::data_parallelize(const PT* __restrict in_exc_arr,
-                                 const uint16_t* __restrict in_pos_arr,
-                                 n_t n_exceptions,
-                                 PT* __restrict out_exc_arr,
-                                 uint16_t* __restrict out_offset,
-                                 uint16_t* __restrict out_pos_arr,
-                                 uint8_t* __restrict out_count) {
+void Patch<PT>::data_parallelize(const PT* FLS_RESTRICT       in_exc_arr,
+                                 const uint16_t* FLS_RESTRICT in_pos_arr,
+                                 n_t                          n_exceptions,
+                                 PT* FLS_RESTRICT             out_exc_arr,
+                                 uint16_t* FLS_RESTRICT       out_offset,
+                                 uint16_t* FLS_RESTRICT       out_pos_arr,
+                                 uint8_t* FLS_RESTRICT        out_count) {
 	//
 	constexpr n_t N_LANES = cuda::get_n_lanes<PT>();
 	static_assert((N_LANES & (N_LANES - 1)) == 0, "N_LANES must be a power of two");

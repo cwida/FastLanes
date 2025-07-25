@@ -15,6 +15,13 @@ FastLanes features:
 
 ---
 
+## Documentation
+
+* [Typing System](docs/typing_system.md)
+* [File Format Specification (PDF)](docs/specification.pdf)
+
+---
+
 ## Getting Started
 
 ### Python
@@ -96,13 +103,6 @@ fn main() -> Result<()> {
 
 ---
 
-## Documentation
-
-* [Typing System](docs/typing_system.md)
-* [File Format Specification (PDF)](docs/specification.pdf)
-
----
-
 ## Publications
 
 * **Azim Afroozeh & Peter Boncz**, “The FastLanes Compression Layout: Decoding > 100 Billion Integers per Second with
@@ -123,11 +123,11 @@ fn main() -> Result<()> {
     * [Read the paper](https://doi.org/10.1145/3626717)
     * [Source code](https://github.com/cwida/ALP)
 
-* **Sven Hielke Hepkema, Azim Afroozeh, Charlotte Felius, Peter Boncz & Stefan Manegold**, “G‑ALP: Rethinking Light‑weight Encodings for GPUs,” *DaMoN ’25*, July 2025
+* **Sven Hielke Hepkema, Azim Afroozeh, Charlotte Felius, Peter Boncz & Stefan Manegold**, “G‑ALP: Rethinking
+  Light‑weight Encodings for GPUs,” *DaMoN ’25*, July 2025
 
     * [Read the paper](https://dl.acm.org/doi/pdf/10.1145/3736227.3736242)
     * [Source code](https://github.com/cwida/FastLanesGpu-Damon2025)
-
 
 ---
 
@@ -171,14 +171,14 @@ If you use FastLanes in your research or projects, please cite:
 }
 
 @inproceedings{hepke2025galp,
-    author       = {Hepkema, Sven Hielke and Afroozeh, Azim and Felius, Charlotte and Boncz, Peter and Manegold, Stefan},
-    title        = {G‑ALP: Rethinking Light‑weight Encodings for GPUs},
-    booktitle    = {DaMoN ’25: Proceedings of the 21st International Workshop on Data Management on New Hardware},
-    pages        = {11:1--11:10},
-    month        = jul,
-    year         = {2025},
+    author = {Hepkema, Sven Hielke and Afroozeh, Azim and Felius, Charlotte and Boncz, Peter and Manegold, Stefan},
+    title = {G‑ALP: Rethinking Light‑weight Encodings for GPUs},
+    booktitle = {DaMoN ’25: Proceedings of the 21st International Workshop on Data Management on New Hardware},
+    pages = {11:1--11:10},
+    month = jul,
+    year = {2025},
     organization = {ACM},
-    url          = {https://dl.acm.org/doi/pdf/10.1145/3736227.3736242}
+    url = {https://dl.acm.org/doi/pdf/10.1145/3736227.3736242}
 }
 ```
 

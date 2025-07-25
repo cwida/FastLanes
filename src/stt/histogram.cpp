@@ -4,8 +4,12 @@
 // src/stt/histogram.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/stt/histogram.hpp"
-#include "fls/std/string.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/macros.hpp"
 #include <algorithm>
+#include <cstdint>
+#include <type_traits> // for std::is_same
 
 namespace fastlanes {
 template <typename T>

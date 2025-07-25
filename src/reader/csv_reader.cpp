@@ -4,15 +4,25 @@
 // src/reader/csv_reader.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/csv_reader.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/connection.hpp"
 #include "fls/csv/csv-parser/parser.hpp"
+#include "fls/footer/column_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include "fls/json/fls_json.hpp"
 #include "fls/json/nlohmann/json.hpp"
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
 #include "fls/table/attribute.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls/table/table.hpp"
+#include <cstdint>
+#include <filesystem>
+#include <fstream> // for std::ifstream
+#include <stdexcept>
+#include <utility> // for std::move
 
 namespace fastlanes {
 
@@ -26,12 +36,12 @@ up<Table> CsvReader::Read(const path& dir_path, const Connection& connection) {
 	for (const auto& entry : std::filesystem::directory_iterator(dir_path)) {
 		const auto& file_path     = entry.path();
 		auto        file_path_str = file_path.string();
-		if (const auto schema_path = file_path_str.find(SCHEMA_FILE_NAME); schema_path != std::string::npos) {
+		if (const auto schema_path = file_path_str.find(SCHEMA_FILE_NAME); schema_path != string::npos) {
 			is_schema_found   = true;
 			found_schema_path = file_path;
 		}
 
-		if (const auto schema_path = file_path.string().find(".csv"); schema_path != std::string::npos) {
+		if (const auto schema_path = file_path.string().find(".csv"); schema_path != string::npos) {
 			is_file_found  = true;
 			found_csv_path = file_path;
 		}

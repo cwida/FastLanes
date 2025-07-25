@@ -4,18 +4,28 @@
 // src/expression/analyze_operator.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/analyze_operator.hpp"
+#include "alp/common.hpp"
 #include "fls/cfg/cfg.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/cor/prm/ffor_prm.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/expression/rsum_operator.hpp"
-#include "fls/ffor.hpp"
 #include "fls/ffor_util.hpp"
 #include "fls/primitive/copy/fls_copy.hpp"
-#include "fls/stt/minmax.hpp"
-#include "fls/utl/util.hpp"
+#include "fls/std/type_traits.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include <algorithm>
+#include <climits>     // for CHAR_BIT
+#include <cstdint>     // for uint16_t
+#include <limits>      // for std::numeric_limits
+#include <type_traits> // for std::make_signed_t
+#include <variant>     // for std::monostate
 
 namespace fastlanes {
 
@@ -99,10 +109,10 @@ bool is_exception(T lower_bound, T upper_bound, T val) {
 }
 
 template <typename T>
-n_t count_exceptions(const T                      lower_bound,
-                     const T                      upper_bound,
-                     const std::vector<T>&        val_vec,
-                     const std::vector<uint16_t>& rep_vec) {
+n_t count_exceptions(const T                 lower_bound,
+                     const T                 upper_bound,
+                     const vector<T>&        val_vec,
+                     const vector<uint16_t>& rep_vec) {
 
 	FLS_ASSERT(!val_vec.empty(), "an empty vec", " ");
 	FLS_ASSERT(!rep_vec.empty(), "an empty vec", " ");
@@ -191,7 +201,7 @@ void enc_analyze_opr<PT, USE_PATCH>::Analyze() {
 			auto min = std::numeric_limits<PT>::max();
 			auto max = std::numeric_limits<PT>::min();
 
-			for (size_t i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				if (data[i] < min) {
 					min = data[i];
 				}
@@ -208,7 +218,7 @@ void enc_analyze_opr<PT, USE_PATCH>::Analyze() {
 
 		bool all_null = true;
 
-		for (size_t i {0}; i < CFG::VEC_SZ; ++i) {
+		for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 			if (data[i] < min && !null_map_arr[i]) {
 				min      = data[i];
 				all_null = false;
@@ -219,7 +229,7 @@ void enc_analyze_opr<PT, USE_PATCH>::Analyze() {
 			}
 		}
 
-		for (size_t i {0}; i < CFG::VEC_SZ; ++i) {
+		for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 			if (null_map_arr[i]) {
 				data[i] = min;
 			}
@@ -303,7 +313,7 @@ void enc_analyze_opr<PT, USE_PATCH>::Analyze() {
 			}
 		}
 
-		for (size_t i {0}; i < CFG::VEC_SZ; ++i) {
+		for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 			if (null_map_arr[i]) {
 				data[i] = base;
 			}

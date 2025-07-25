@@ -5,9 +5,12 @@
 // ────────────────────────────────────────────────────────
 #include "fls/encoder/materializer.hpp"
 #include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
+#include "fls/common/string.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/cross_rle_operator.hpp"
-#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/dict_expression.hpp"
 #include "fls/expression/frequency_operator.hpp"
@@ -22,10 +25,11 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/primitive/copy/fls_copy.hpp"
-#include "fls/primitive/untranspose/untranspose.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls/std/type_traits.hpp"
 #include "fls/table/rowgroup.hpp"
+#include <cstdint>
+#include <cstring>     // for std::memcpy
+#include <type_traits> // for std::make_signed_t
 
 namespace fastlanes {
 
@@ -109,8 +113,8 @@ struct material_visitor {
 		for (n_t idx {0}; idx < CFG::VEC_SZ; ++idx) {
 			str_col->length_arr.push_back(opr->Length()[idx]);
 		}
-		const size_t old_size = str_col->byte_arr.size(); // Save the current size
-		const size_t new_size = opr->byte_arr_segment.Size();
+		const n_t old_size = str_col->byte_arr.size(); // Save the current size
+		const n_t new_size = opr->byte_arr_segment.Size();
 		str_col->byte_arr.resize(old_size + new_size);
 		std::memcpy(str_col->byte_arr.data() + old_size, opr->Data(), new_size);
 	}

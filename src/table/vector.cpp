@@ -4,7 +4,7 @@
 // src/table/vector.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/table/vector.hpp"
-#include "fls/reader/segment.hpp"
+#include "fls/table/chunk.hpp"
 
 namespace fastlanes {
 

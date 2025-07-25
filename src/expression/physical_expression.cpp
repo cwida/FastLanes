@@ -4,6 +4,9 @@
 // src/expression/physical_expression.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/physical_expression.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
@@ -25,6 +28,10 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
+#include <cstdint>
+#include <utility>
 
 namespace fastlanes {
 

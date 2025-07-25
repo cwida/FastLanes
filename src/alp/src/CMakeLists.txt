@@ -3,8 +3,8 @@ add_library(fls_alp_primitive
         encoder.cpp
         falp.cpp
         fastlanes_ffor.cpp
-        fastlanes_generated_unffor.cpp
-        fastlanes_generated_ffor.cpp
+        fastlanes_gen_unffor.cpp
+        fastlanes_gen_ffor.cpp
         fastlanes_unffor.cpp
 )
 

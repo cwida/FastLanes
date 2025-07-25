@@ -4,14 +4,25 @@
 // src/reader/json_reader.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/json_reader.hpp"
-#include "fls/common/assert.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
 #include "fls/connection.hpp"
+#include "fls/footer/column_descriptor.hpp"
 #include "fls/io/file.hpp"
 #include "fls/json/fls_json.hpp"
 #include "fls/json/nlohmann/json.hpp"
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
+#include "fls/std/variant.hpp"
 #include "fls/table/attribute.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls/table/table.hpp"
+#include <filesystem>
+#include <fstream>   // for std::ifstream
+#include <stdexcept> // for std::runtime_error
+#include <string>    // for std::getline
+#include <utility>   // for std::move
+#include <variant>
 
 namespace fastlanes {
 
@@ -91,12 +102,12 @@ up<Table> JsonReader::Read(const path& dir_path, const Connection& connection) {
 	for (const auto& entry : std::filesystem::directory_iterator(dir_path)) {
 		const auto& file_path     = entry.path();
 		auto        file_path_str = file_path.string();
-		if (const auto schema_path = file_path_str.find(SCHEMA_FILE_NAME); schema_path != std::string::npos) {
+		if (const auto schema_path = file_path_str.find(SCHEMA_FILE_NAME); schema_path != string::npos) {
 			is_schema_found   = true;
 			found_schema_path = file_path;
 		}
 
-		if (const auto schema_path = file_path.string().find(".jsonl"); schema_path != std::string::npos) {
+		if (const auto schema_path = file_path.string().find(".jsonl"); schema_path != string::npos) {
 			is_file_found    = true;
 			found_jsonl_path = file_path;
 		}

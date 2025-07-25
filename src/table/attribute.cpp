@@ -4,24 +4,35 @@
 // src/table/attribute.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/table/attribute.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/decimal.hpp"
 #include "fls/common/double.hpp"
 #include "fls/common/string.hpp"
 #include "fls/detail/parse_fp.hpp"
 #include "fls/expression/data_type.hpp"
+#include "fls/footer/column_descriptor_generated.h"
+#include "fls/std/string.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/table/rowgroup.hpp"
 #include "fls/types/bool.hpp"
 #include "fls/types/date.hpp"
 #include "fls/types/integer.hpp"
 #include "fls/types/timestamp.hpp"
 #include <algorithm>
-#include <charconv>
+#include <cctype>  // for std::isdigit
+#include <cstdint> // for int32_t, uint8_t, int64_t, uint16_t, uint32_t, uint64_t
+#include <cstdlib> // for std::strtod, std::stoull, std::stoul
 #include <cstring>
+#include <exception> // for std::exception
+#include <iomanip>   // for std::setprecision
 #include <limits>
+#include <limits> // for std::numeric_limits
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <system_error>
+#include <variant>
 
 namespace fastlanes {
 
@@ -285,7 +296,7 @@ bool isValidUint64(const std::string& str) {
 	}
 
 	try {
-		// Convert to unsigned long long and check if it's within uint64_t range
+		// Convert to uint64_t long and check if it's within uint64_t range
 		uint64_t value = std::stoull(str);
 		return value <= std::numeric_limits<uint64_t>::max();
 	} catch (const std::exception&) {
@@ -369,8 +380,8 @@ bool isValidUint16(const std::string& str) {
 	}
 
 	try {
-		// Convert string to unsigned long and check the range
-		unsigned long value = std::stoul(str);
+		// Convert string to uint64_t and check the range
+		uint64_t value = std::stoul(str);
 		return value <= std::numeric_limits<uint16_t>::max();
 	} catch (const std::exception&) {
 		return false; // Overflow or invalid conversion
@@ -474,7 +485,7 @@ struct rowgroup_visitor {
 			string new_val;
 
 			// fix me
-			std::visit(rowgroup_visitor {new_val, row_idx, data_type}, struct_col->internal_rowgroup[col_idx]);
+			visit(rowgroup_visitor {new_val, row_idx, data_type}, struct_col->internal_rowgroup[col_idx]);
 
 			if (col_idx == FIRST_IDX) {
 				value = "{" + new_val;

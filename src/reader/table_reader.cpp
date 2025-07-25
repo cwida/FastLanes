@@ -4,17 +4,22 @@
 // src/reader/table_reader.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/table_reader.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/csv/csv.hpp"
 #include "fls/encoder/materializer.hpp"
 #include "fls/file/file_footer.hpp"
 #include "fls/file/file_header.hpp"
 #include "fls/footer/table_descriptor.hpp"
-#include "fls/info.hpp"
-#include "fls/io/file.hpp"
-#include "fls/io/io.hpp"
 #include "fls/reader/rowgroup_reader.hpp"
+#include "fls/std/filesystem.hpp"
+#include "fls/std/string.hpp"
+#include <filesystem> // std::filesystem::path, exists, is_directory, is_regular_file
+#include <utility>    // for std::move
 
 namespace fastlanes {
+
+constexpr static auto const* TABLE_DESCRIPTOR_FILE_NAME {"table_descriptor.fbb"};
+
 up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) const {
 	auto rowgroup_reader = make_unique<RowgroupReader>(
 	    m_file_path, *m_table_descriptor->m_rowgroup_descriptors[rowgroup_idx], m_connection);
@@ -22,7 +27,7 @@ up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) cons
 }
 
 up<Table> TableReader::materialize() const {
-	auto table_up = std::make_unique<Table>(m_connection);
+	auto table_up = make_unique<Table>(m_connection);
 
 	for (n_t rowgroup_idx {0}; rowgroup_idx < m_table_descriptor->m_rowgroup_descriptors.size(); rowgroup_idx++) {
 		auto rowgroup_up = get_rowgroup_reader(rowgroup_idx)->materialize();

@@ -4,17 +4,18 @@
 // src/expression/data_parallelize_patch_operator.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/data_parallelize_patch_operator.hpp"
-#include "fls/common/string.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
 #include "fls/expression/alp_expression.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
-#include "fls/primitive/patch/patch.hpp"
 #include "fls/reader/column_view.hpp"
-#include "fls/reader/segment.hpp"
-#include "fls/unffor.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/table/rowgroup.hpp"
 #include <cstring>
+#include <variant> // for std::monostate
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

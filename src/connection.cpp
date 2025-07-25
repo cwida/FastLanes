@@ -3,32 +3,31 @@
 // ────────────────────────────────────────────────────────
 // src/connection.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/connection.hpp"
-#include "fls/cor/lyt/buf.hpp"     // for Buf
-#include "fls/encoder/encoder.hpp" // for Encoder
-#include "fls/expression/decoding_operator.hpp"
-#include "fls/expression/encoding_operator.hpp"
-#include "fls/expression/predicate_operator.hpp"
-#include "fls/file/file_footer.hpp"
-#include "fls/file/file_header.hpp"
+#include "fls/connection.hpp" // for Connection
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"     // for make_unique<>, n_t, idx_t, fls_bool, FLS_TRUE
+#include "fls/common/status.hpp"    // for Status
+#include "fls/encoder/encoder.hpp"  // for Encoder
+#include "fls/file/file_footer.hpp" // for FileFooter
+#include "fls/file/file_header.hpp" // for FileHeader
 #include "fls/flatbuffers/flatbuffers.hpp"
-#include "fls/footer/rowgroup_descriptor.hpp" // for RowgroupDescriptor
+#include "fls/footer/operator_token_generated.h"
 #include "fls/info.hpp"
-#include "fls/io/file.hpp"       // for File
-#include "fls/io/io.hpp"         // for IO, io
-#include "fls/json/fls_json.hpp" // for JSON
-#include "fls/reader/csv_reader.hpp"
-#include "fls/reader/json_reader.hpp"
-#include "fls/reader/segment.hpp"
-#include "fls/std/string.hpp"     // for string
-#include "fls/table/dir.hpp"      // for Dir, FileT
-#include "fls/table/rowgroup.hpp" // for Rowgroup
-#include "fls/table/table.hpp"
-#include "fls/wizard/wizard.hpp" // for Wizard
-#include <filesystem>            // for directory_iterator, begin
-#include <memory>                // for make_unique, operator==
-#include <stdexcept>             // for runtime_error
-#include <string>                // for basic_string, string
+#include "fls/json/fls_json.hpp"       // for JSON
+#include "fls/reader/csv_reader.hpp"   // for CSVReader
+#include "fls/reader/json_reader.hpp"  // for JSONReader
+#include "fls/reader/table_reader.hpp" // for TableReader
+#include "fls/std/filesystem.hpp"      // for std::filesystem::directory_iterator, begin, path
+#include "fls/std/string.hpp"          // for std::string
+#include "fls/std/vector.hpp"          // for fastlanes::vector
+#include "fls/table/rowgroup.hpp"      // for Rowgroup
+#include "fls/table/table.hpp"         // for Table
+#include "fls/wizard/wizard.hpp"       // for Wizard
+#include <algorithm>                   // for std::ranges::none_of
+#include <cstdint>                     // for uint64_t
+#include <filesystem>
+#include <memory>    // for std::make_unique, unique_ptr
+#include <stdexcept> // for std::runtime_error
 
 namespace fastlanes {
 

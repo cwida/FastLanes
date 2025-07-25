@@ -4,8 +4,9 @@
 // src/wizard/sampling_layout.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/wizard/sampling_layout.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
-#include <algorithm> // min
+#include "fls/std/vector.hpp"
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Run-time “sampling layout” mapping
@@ -16,7 +17,7 @@ namespace fastlanes {
 // Runtime “sampling” layout – matches the compile-time pattern for 32 & 64
 // and works for every other N as well.
 // -----------------------------------------------------------------------------
-std::vector<n_t> sampling_layout_dynamic(n_t N) {
+vector<n_t> sampling_layout_dynamic(n_t N) {
 	FLS_ASSERT_G(N, 0);
 
 	if (N == 0) {
@@ -29,10 +30,10 @@ std::vector<n_t> sampling_layout_dynamic(n_t N) {
 		return {0, 1};
 	}
 
-	std::vector<n_t> out;
+	vector<n_t> out;
 	out.reserve(N);
 
-	std::vector<bool> used(N, false);
+	vector<bool> used(N, false);
 
 	auto push = [&](n_t v) {
 		if (!used[v]) {

@@ -4,18 +4,21 @@
 // src/detail/parse_fp.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/detail/parse_fp.hpp"
+#include "fls/std/string.hpp"
 #include <cerrno>    // for errno, ERANGE
-#include <charconv>  // for std::from_chars
-#include <cstdlib>   // for strtof / strtod
-#include <limits>    // for numeric_limits
-#include <locale>    // for classic locale
-#include <sstream>   // for fallback parsing
+#include <cmath>     // for HUGE_VAL
+#include <cstdlib>   // for strtof, strtod
 #include <stdexcept> // for exceptions
+
+#if FASTLANES_HAS_FP_FROM_CHARS
+#include <charconv>     // for std::from_chars, std::chars_format
+#include <system_error> // for std::errc
+#endif
 
 namespace fastlanes { namespace detail {
 
 template <typename FloatT>
-FloatT parse_fp(const std::string& s) {
+FloatT parse_fp(const string& s) {
 #if FASTLANES_HAS_FP_FROM_CHARS
 	// Fast path: C++20 from_chars for floats
 	FloatT value {};
