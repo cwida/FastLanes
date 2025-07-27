@@ -33,6 +33,17 @@ BenchmarkCase nextia_jd_case {
     std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/nextia_jd/fastlanes.csv",
     std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/nextia_jd/fastlanes_detailed.csv"};
 
+
+BenchmarkCase time_series_case {
+    TimeSeries::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/time_series/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/time_series/fastlanes_detailed.csv"};
+
+BenchmarkCase mnist_case {
+    mnist::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/mnist/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/mnist/fastlanes_detailed.csv"};
+
 BenchmarkCase tpch_case {Tpch::dataset,
                          std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/tpch/fastlanes.csv",
                          std::string(FLS_CMAKE_SOURCE_DIR) +
@@ -166,6 +177,8 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 }
 
 int main() {
-	run_compression_ratio_benchmark(public_bi_case);
+	// run_compression_ratio_benchmark(public_bi_case);
+	run_compression_ratio_benchmark(time_series_case);
+	// run_compression_ratio_benchmark(mnist_case);
 	return EXIT_SUCCESS;
 }
