@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/encoder/single_col_decoder.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/single_col_decoder.hpp"
 #include "fls/api/engine.hpp"
 #include "fls/encoder/exp_col_decoder.hpp" // for ExpColDecoder

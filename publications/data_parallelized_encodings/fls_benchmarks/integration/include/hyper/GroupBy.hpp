@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/hyper/GroupBy.hpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Hashmap.hpp"
 #include "common/runtime/Stack.hpp"
 #include "tbb/tbb.h"

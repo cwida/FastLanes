@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls_gen/rsum/rsum.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_RSUM_RSUM_HPP
 #define FLS_GEN_RSUM_RSUM_HPP
 

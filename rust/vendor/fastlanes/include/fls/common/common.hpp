@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/common.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_COMMON_HPP
 #define FLS_COMMON_COMMON_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/info.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FASTLANES_FLS_INFO_HPP
 #define FASTLANES_FLS_INFO_HPP
 

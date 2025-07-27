@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/Memory.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include <stdexcept>
 #include <sys/mman.h>

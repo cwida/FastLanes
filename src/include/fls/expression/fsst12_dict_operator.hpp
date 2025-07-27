@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/fsst12_dict_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_FSST12_DICT_OPERATOR_HPP
 #define FLS_EXPRESSION_FSST12_DICT_OPERATOR_HPP
 

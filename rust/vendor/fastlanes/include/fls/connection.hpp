@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/connection.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_CONNECTION_HPP
 #define FLS_CONNECTION_HPP
 

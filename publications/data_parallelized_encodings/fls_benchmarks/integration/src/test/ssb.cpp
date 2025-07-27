@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/ssb.cpp
+// ────────────────────────────────────────────────────────
 #include "SSB.hpp"
 #include "benchmarks/ssb/Queries.hpp"
 #include "common/runtime/Import.hpp"

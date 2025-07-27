@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/expression/dict_expression.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/dict_expression.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/string.hpp"

@@ -1,6 +1,12 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/table/stats.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/stats.hpp"
-#include "fls/table/rowgroup.hpp"
-#include "fls/utl/util.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/macros.hpp"
 #include <limits>
 
 namespace fastlanes {
@@ -8,7 +14,7 @@ template <typename PT>
 TypedStats<PT>::TypedStats()
     : min {std::numeric_limits<PT>::max()}    //
     , max {std::numeric_limits<PT>::lowest()} //
-    , last_seen_val(0)
+    , last_seen_val(0)                        // NOLINT
     , n_nulls(0)
     , is_double_castable(false) {
 }

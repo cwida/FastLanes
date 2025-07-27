@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/ssb_expected.cpp
+// ────────────────────────────────────────────────────────
 #include "ssb_expected.hpp"
 #include "common/Compat.hpp"
 #include <fstream>

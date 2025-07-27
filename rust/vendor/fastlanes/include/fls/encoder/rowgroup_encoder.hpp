@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/encoder/rowgroup_encoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_ROWGROUP_ENCODER_HPP
 #define FLS_ENCODER_ROWGROUP_ENCODER_HPP
 

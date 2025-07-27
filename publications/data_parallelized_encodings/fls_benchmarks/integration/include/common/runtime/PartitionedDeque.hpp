@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/PartitionedDeque.hpp
+// ────────────────────────────────────────────────────────
 #include "common/defs.hpp"
 #include "common/runtime/Concurrency.hpp"
 #include "common/runtime/MemoryPool.hpp"

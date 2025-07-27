@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# mk/embeddings.mk
+# ────────────────────────────────────────────────────────
 # mk/embeddings.mk — Generate sentence embeddings
 # -----------------------------------------------------------
 # Targets:
@@ -6,6 +11,8 @@
 #   make clean        – delete __pycache__
 #   make venv-clean   – remove .venv entirely
 # -----------------------------------------------------------
+
+include mk/venv.mk
 
 PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 VENV_DIR     := $(PROJECT_ROOT)/.venv
@@ -19,7 +26,7 @@ else
 endif
 
 .DEFAULT_GOAL := help
-.PHONY: help venv install generate clean-embeddings venv-clean
+.PHONY: help install generate clean-embeddings venv-clean
 
 help:
 	@echo "Targets:"
@@ -28,16 +35,7 @@ help:
 	@echo "  make clean       – delete __pycache__"
 	@echo "  make venv-clean  – remove .venv"
 
-# 1️⃣  Create virtual-env if missing (uses the interpreter first on PATH)
-venv:
-	@if [ ! -d "$(VENV_DIR)" ]; then \
-		echo "Creating virtualenv with interpreter: $$(python --version)"; \
-		python -m venv "$(VENV_DIR)"; \
-	else \
-		echo ".venv already exists."; \
-	fi
-
-# 2️⃣  Install deps (and auto-repair if venv was built with Python 3.13)
+# 1️⃣  Install deps (and auto-repair if venv was built with Python 3.13)
 install: venv
 	@if [ -f "$(VENV_DIR)/pyvenv.cfg" ] && \
 	    grep -qE '^version = 3\.13' "$(VENV_DIR)/pyvenv.cfg"; then \
@@ -56,12 +54,12 @@ install: venv
 	"$(VENV_PY)" -m pip install torch torchvision \
 	              --extra-index-url https://download.pytorch.org/whl/cpu
 
-# 3️⃣  Generate embeddings
-generate: install
-	@echo "Running generate_embedding.py with $$( "$(VENV_PY)" --version ) …"
+# 2️⃣  Generate embeddings
+generate-embeddings: install
+	@echo "Running generate_embedding.py with $$($(VENV_PY) --version) …"
 	"$(VENV_PY)" "$(SCRIPT)"
 
-# 4️⃣  House-keeping helpers
+# 3️⃣  House‑keeping helpers
 clean-embeddings:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 

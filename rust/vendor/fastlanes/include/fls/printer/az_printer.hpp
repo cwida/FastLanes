@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/printer/az_printer.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRINTER_AZ_PRINTER_HPP
 #define FLS_PRINTER_AZ_PRINTER_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/page/offset.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/page/offset.hpp"
 #include "fls/cor/lyt/page/page.hpp"
 #include "fls/logger/logger.hpp"

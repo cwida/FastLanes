@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/primitive/bitpack/bitpack.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_BITPACK_BITPACK_HPP
 #define FLS_PRIMITIVE_BITPACK_BITPACK_HPP
 

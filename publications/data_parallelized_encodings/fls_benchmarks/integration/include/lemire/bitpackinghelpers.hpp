@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/lemire/bitpackinghelpers.hpp
+// ────────────────────────────────────────────────────────
 /**
 * This code is released under the
 * Apache License Version 2.0 http://www.apache.org/licenses/.

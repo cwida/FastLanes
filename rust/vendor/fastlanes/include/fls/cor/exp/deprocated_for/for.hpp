@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/exp/deprocated_for/for.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FASTLANES_FOR_HPP
 #define FASTLANES_FOR_HPP
 

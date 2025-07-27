@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/Query.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/runtime/MemoryPool.hpp"
 #include <memory>

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/rle/rle_compress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/eng/compressor.hpp"
 #include "fls/cor/lyt/vec.hpp"
 #include "fls/cor/prm/rle_prm.hpp"

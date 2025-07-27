@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/QueryBuilder.cpp
+// ────────────────────────────────────────────────────────
 #include "vectorwise/QueryBuilder.hpp"
 #include "benchmarks/fls/config.hpp"
 #include <cstddef>

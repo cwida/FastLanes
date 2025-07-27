@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/bitpack/bitpack_compress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/prm/bitpack.hpp" // for pack
 #include <cstdint>                 // for uint64_t, uint32_t, uint16_t, uint8_t
 #include <sys/cdefs.h>             // for __restrict

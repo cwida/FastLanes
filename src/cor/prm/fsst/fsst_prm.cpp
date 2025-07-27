@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/cor/prm/fsst/fsst_prm.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/prm/fsst/fsst_prm.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/assert.hpp"

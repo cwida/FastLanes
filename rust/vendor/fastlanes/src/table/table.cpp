@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/table/table.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/table.hpp"
 #include "fls/connection.hpp"
 #include "fls/table/rowgroup.hpp"

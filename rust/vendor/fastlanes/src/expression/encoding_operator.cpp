@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/expression/encoding_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/string.hpp"

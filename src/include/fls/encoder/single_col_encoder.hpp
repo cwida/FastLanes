@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/encoder/single_col_encoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_SINGLE_COL_ENCODER_HPP
 #define FLS_ENCODER_SINGLE_COL_ENCODER_HPP
 

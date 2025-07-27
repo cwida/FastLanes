@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/encoding_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_ENCODING_OPERATOR_HPP
 #define FLS_EXPRESSION_ENCODING_OPERATOR_HPP
 

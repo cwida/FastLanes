@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/printer/output_factory.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRINTER_OUTPUT_FACTORY_HPP
 #define FLS_PRINTER_OUTPUT_FACTORY_HPP
 

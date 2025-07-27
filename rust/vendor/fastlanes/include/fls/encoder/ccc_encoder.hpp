@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/encoder/ccc_encoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_CCC_ENCODER_HPP
 #define FLS_ENCODER_CCC_ENCODER_HPP
 

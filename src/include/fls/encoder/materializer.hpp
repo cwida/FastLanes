@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/encoder/materializer.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_MATERIALIZER_HPP
 #define FLS_ENCODER_MATERIALIZER_HPP
 

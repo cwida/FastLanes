@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/dic/dic_fac.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/dic/dic_fac.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/eng/analyzer.hpp"

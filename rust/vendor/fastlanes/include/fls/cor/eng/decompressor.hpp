@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/eng/decompressor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_ENG_DECOMPRESSOR_HPP
 #define FLS_COR_ENG_DECOMPRESSOR_HPP
 

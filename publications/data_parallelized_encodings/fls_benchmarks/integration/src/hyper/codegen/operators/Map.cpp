@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/hyper/codegen/operators/Map.cpp
+// ────────────────────────────────────────────────────────
 #include "hyper/codegen/Translator.hpp"
 #include <iostream>
 

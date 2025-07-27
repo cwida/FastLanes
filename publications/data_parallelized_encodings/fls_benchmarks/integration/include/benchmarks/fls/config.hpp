@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/benchmarks/fls/config.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 
 #include "string"

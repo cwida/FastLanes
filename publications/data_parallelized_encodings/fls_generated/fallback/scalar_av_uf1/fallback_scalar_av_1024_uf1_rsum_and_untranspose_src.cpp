@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/fallback/scalar_av_uf1/fallback_scalar_av_1024_uf1_rsum_and_untranspose_src.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/rsum_and_untranspose/rsum_and_untranspose.hpp"
 #include "fls_gen/macros.hpp"
 namespace generated

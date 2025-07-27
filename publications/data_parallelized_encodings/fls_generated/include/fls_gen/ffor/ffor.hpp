@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/include/fls_gen/ffor/ffor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FFOR_HPP
 #define FLS_FFOR_HPP
 

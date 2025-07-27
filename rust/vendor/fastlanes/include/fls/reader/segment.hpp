@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/reader/segment.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_READER_SEGMENT_HPP
 #define FLS_READER_SEGMENT_HPP
 

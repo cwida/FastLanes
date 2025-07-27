@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/primitive/fsst12/fsst12.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_FSST12_FSST12_HPP
 #define FLS_PRIMITIVE_FSST12_FSST12_HPP
 

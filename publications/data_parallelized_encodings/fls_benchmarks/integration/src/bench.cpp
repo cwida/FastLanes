@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/bench.cpp
+// ────────────────────────────────────────────────────────
 #include "common/algebra/Operators.hpp"
 #include "hyper/codegen/Translator.hpp"
 #include <iostream>

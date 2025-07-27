@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/helper/scalar_av_uf1/unffor.cmake
+# ────────────────────────────────────────────────────────
 add_library(helper_scalar_av_1024_uf1_unffor OBJECT
             helper_scalar_av_1024_uf1_unffor_src.cpp)
 target_compile_definitions(helper_scalar_av_1024_uf1_unffor PRIVATE IS_SCALAR)

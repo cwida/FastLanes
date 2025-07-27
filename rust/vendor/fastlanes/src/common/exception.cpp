@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/common/exception.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/exception.hpp"
 #include "fls/expression/rpn.hpp"
 #include <sstream>

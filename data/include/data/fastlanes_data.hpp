@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// data/include/data/fastlanes_data.hpp
+// ────────────────────────────────────────────────────────
 #ifndef DATA_FASTLANES_DATA_HPP
 #define DATA_FASTLANES_DATA_HPP
 
@@ -9,6 +14,7 @@
 #include "data/example.hpp"
 #include "data/fannie_mae.hpp"
 #include "data/fc_bench.hpp"
+#include "data/galp.hpp"
 #include "data/generated.hpp"
 #include "data/issues.hpp"
 #include "data/public_bi.hpp"

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/stl_emulation.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

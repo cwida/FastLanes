@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/file/file_footer.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FILE_FILE_FOOTER_HPP
 #define FLS_FILE_FILE_FOOTER_HPP
 

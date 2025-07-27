@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/x86_64/avx512bw_intrinsic_uf1/x86_64_avx512bw_intrinsic_1024_uf1_rsum_test.cpp
+// ────────────────────────────────────────────────────────
 #include "gtest/gtest.h"
 #include "fls_gen/transpose/transpose.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"

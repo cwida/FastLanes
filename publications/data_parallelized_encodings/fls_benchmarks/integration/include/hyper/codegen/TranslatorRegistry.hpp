@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/hyper/codegen/TranslatorRegistry.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 
 #include "hyper/codegen/Translator.hpp"

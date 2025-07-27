@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/alp/alp_decompress.cpp
+// ────────────────────────────────────────────────────────
 #include "alp.hpp"
 #include "fls/common/common.hpp"
 #include "fls/cor/eng/decompressor.hpp"

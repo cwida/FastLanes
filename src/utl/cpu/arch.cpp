@@ -1,7 +1,12 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/utl/cpu/arch.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/cpu/arch.hpp"
 #include <string>
 
-namespace fast_lanes {
+namespace fastlanes {
 std::string ArchToString(Arch arch) {
 	switch (arch) {
 	case Arch::FALLBACK:
@@ -16,4 +21,4 @@ std::string ArchToString(Arch arch) {
 		return "UNDEFINED";
 	}
 }
-} // namespace fast_lanes
+} // namespace fastlanes

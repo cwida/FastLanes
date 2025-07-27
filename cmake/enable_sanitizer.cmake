@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# cmake/enable_sanitizer.cmake
+# ────────────────────────────────────────────────────────
 # --- cmake/enable_sanitizer.cmake ---
 #
 # Defines fls_enable_sanitizers(<target>) to apply

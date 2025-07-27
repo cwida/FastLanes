@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/stt/histogram.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/stt/histogram.hpp"
 #include "fls/std/string.hpp"
 #include <algorithm>

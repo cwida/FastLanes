@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/fallback/unit64_nav_uf1/rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(fallback_unit64_nav_1024_uf1_rsum OBJECT
             fallback_unit64_nav_1024_uf1_rsum_src.cpp)
 target_compile_definitions(fallback_unit64_nav_1024_uf1_rsum PRIVATE IS_SCALAR)

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// benchmark/bench_accuracy_over_rowgroups.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarker.hpp"
 
 using namespace fastlanes; // NOLINT

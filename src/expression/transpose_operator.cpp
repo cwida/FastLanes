@@ -1,5 +1,14 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/transpose_operator.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/transpose_operator.hpp"
-#include "fls/cor/lyt/buf.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/fsst12_expression.hpp"
 #include "fls/expression/fsst_expression.hpp"
@@ -8,8 +17,11 @@
 #include "fls/expression/rle_expression.hpp"
 #include "fls/expression/rsum_operator.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/table/rowgroup.hpp"
 #include "fls_gen/transpose/transpose.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <variant>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/primitive/copy/fls_copy.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_COPY_FLS_COPY_HPP
 #define FLS_PRIMITIVE_COPY_FLS_COPY_HPP
 

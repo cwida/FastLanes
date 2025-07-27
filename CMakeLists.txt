@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# CMakeLists.txt
+# ────────────────────────────────────────────────────────
 cmake_minimum_required(VERSION 3.22)
 
 # Requirements : -------------------------------------------------------------------------------------------------------
@@ -108,7 +113,7 @@ endif ()
 option(FLS_BUILD_TESTING "Build Test" OFF)
 option(FLS_BUILD_BENCHMARKING "Enable Benchmark Build" OFF)
 option(FLS_BUILD_EXAMPLES "Build Examples" OFF)
-option(FLS_BUILD_GPU "Build GPU" OFF)
+option(FLS_BUILD_CUDA "Build FastLanes CUDA reader" OFF)
 option(FLS_BUILD_GTEST "Build GTEST" OFF)
 option(FLS_BUILD_PYTHON "Build FastLanes Python bindings" OFF)
 option(FLS_BUILD_SHARED_LIBS "Build FastLanes library as shared" OFF)
@@ -120,13 +125,41 @@ option(FLS_ENABLE_TABLE_LOG "Enable Table Log" OFF)
 option(FLS_ENABLE_VERBOSE_OUTPUT "Enable verbose output" OFF)
 option(FLS_ENABLE_DATA "Enable Data" OFF)
 option(FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING "Build FSST" OFF)
+option(FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING "Build GALP" OFF)
 
 # Definitions: ---------------------------------------------------------------------------------------------------------
 add_compile_definitions(FLS_CMAKE_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
+if (FLS_ENABLE_CLANG_TIDY)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Enabling CLANG-TIDY.")
+    find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+    if (NOT CLANG_TIDY_EXE)
+        message(FATAL_ERROR "-- FLS: clang-tidy not found.")
+    else ()
+        if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
+            set(CMAKE_CXX_CLANG_TIDY
+                    ${CLANG_TIDY_EXE};
+                    --quiet;
+                    --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
+            message("-- FLS: Using project-level .clang-tidy")
+        else ()
+            message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
+        endif ()
+
+        execute_process(
+                COMMAND ${CLANG_TIDY_EXE} --version
+                OUTPUT_VARIABLE CLANG_TIDY_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
+
+    endif ()
+endif ()
+
 
 # GTEST : --------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_TESTING OR FLS_BUILD_GPU OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
+if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING OR FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Building GTEST:")
     include(GoogleTest)
@@ -161,6 +194,7 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_GPU OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARKI
     endif ()
 endif ()
 
+
 # ALP: -----------------------------------------------------------------------------------------------------------------
 if (true)
     message("---------------------------------------------------------------------------------------------------------")
@@ -182,8 +216,28 @@ if (true)
 
 endif ()
 
+# CLANG TIDY : --------------------------------------------------------------------------------------------------------------
+if (FLS_ENABLE_CLANG_TIDY)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Disabling CLANG-TIDY.")
+    set(CMAKE_CXX_CLANG_TIDY "")
+endif ()
+
+# CUDA : ---------------------------------------------------------------------------------------------------------------
+if (FLS_BUILD_CUDA)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("--: Building CU-FastLanes Lib.")
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda)
+endif ()
+
+
 # DATA : ---------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLES OR FLS_ENABLE_DATA)
+if (FLS_BUILD_TESTING OR
+        FLS_BUILD_BENCHMARKING OR
+        FLS_BUILD_EXAMPLES OR
+        FLS_ENABLE_DATA OR
+        FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING OR
+        FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
     message("---------------------------------------------------------------------------------------------------------")
     message("-- FLS: Enabling Data.")
 
@@ -207,33 +261,6 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_BENCHMARKING OR FLS_BUILD_EXAMPLES OR FLS_ENA
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/data/include)
     add_compile_definitions(FASTLANES_DATA_DIR="${data_SOURCE_DIR}")
     cmake_print_variables(data_SOURCE_DIR)
-endif ()
-
-if (FLS_ENABLE_CLANG_TIDY)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("-- FLS: Enabling CLANG-TIDY.")
-    find_program(CLANG_TIDY_EXE NAMES clang-tidy)
-    if (NOT CLANG_TIDY_EXE)
-        message(FATAL_ERROR "-- FLS: clang-tidy not found.")
-    else ()
-        if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
-            set(CMAKE_CXX_CLANG_TIDY
-                    ${CLANG_TIDY_EXE};
-                    --quiet;
-                    --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
-            message("-- FLS: Using project-level .clang-tidy")
-        else ()
-            message(FATAL_ERROR "-- FLS: Do not override the clang-tidy configuration. Use the project-level .clang-tidy file instead. Current setting: ${CMAKE_CXX_CLANG_TIDY}")
-        endif ()
-
-        execute_process(
-                COMMAND ${CLANG_TIDY_EXE} --version
-                OUTPUT_VARIABLE CLANG_TIDY_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        message("-- FLS: clang-tidy version: ${CLANG_TIDY_VERSION}")
-
-    endif ()
 endif ()
 
 if (FLS_ENABLE_IWYU)
@@ -276,19 +303,11 @@ if (FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING)
     add_subdirectory(fsst)
 endif ()
 
-
 # Example : ------------------------------------------------------------------------------------------------------------
 if (FLS_BUILD_EXAMPLES)
     message("---------------------------------------------------------------------------------------------------------")
     message("- Examples:")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
-endif ()
-
-# GPU : ----------------------------------------------------------------------------------------------------------------
-if (FLS_BUILD_GPU)
-    message("---------------------------------------------------------------------------------------------------------")
-    message("- GPU:")
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gpu)
 endif ()
 
 # Playground : ---------------------------------------------------------------------------------------------------------
@@ -305,4 +324,9 @@ if (FLS_BUILD_PYTHON)
     add_subdirectory(python)   # your module’s CMakeLists.txt
 endif ()
 
-
+# FSST: ----------------------------------------------------------------------------------------------------------------
+if (FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Adding GALP Testing and Benchmarking.")
+    add_subdirectory(galp)
+endif ()

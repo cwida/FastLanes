@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls_gen/transpose/transpose.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_GEN_TRANSPOSE_TRANSPOSE_HPP
 #define FLS_GEN_TRANSPOSE_TRANSPOSE_HPP
 

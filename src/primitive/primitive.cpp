@@ -1,4 +1,9 @@
-#include "fls/primitive/primitive.hpp"
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/primitive/primitive.cpp
+// ────────────────────────────────────────────────────────
+// #include "fls/primitive/primitive.hpp"
 
 namespace fastlanes {
 

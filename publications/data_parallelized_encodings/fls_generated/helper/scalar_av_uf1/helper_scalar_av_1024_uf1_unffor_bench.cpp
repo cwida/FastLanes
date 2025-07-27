@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/helper/scalar_av_uf1/helper_scalar_av_1024_uf1_unffor_bench.cpp
+// ────────────────────────────────────────────────────────
 #include <iostream>
 #include "helper_scalar_av_1024_uf1_unffor_bench.hpp"
 #include "helper_scalar_av_1024_uf1_unffor_helper.hpp"

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/new_encoder/new_decoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_NEW_ENCODER_NEW_DECODER_HPP
 #define FLS_NEW_ENCODER_NEW_DECODER_HPP
 

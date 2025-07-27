@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/add/add_helper.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FAST_LANES_FLS_BENCHMARKS_ADD_HELPER_HPP
 #define FAST_LANES_FLS_BENCHMARKS_ADD_HELPER_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// python/bindings/connection_binding.cpp
+// ────────────────────────────────────────────────────────
 #include "fastlanes.hpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl/filesystem.h> // for std::filesystem::path

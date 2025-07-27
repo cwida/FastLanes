@@ -1,3 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_generated_ffor.cpp
+// ────────────────────────────────────────────────────────
+
+// NOLINTBEGIN
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_generated_ffor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/ffor.hpp"
 
 namespace fastlanes { namespace generated { namespace ffor::fallback { namespace scalar {
@@ -30140,3 +30152,4 @@ void ffor(const uint64_t* __restrict in, uint64_t* __restrict out, uint8_t bw, c
 	}
 }
 }}}} // namespace fastlanes::generated::ffor::fallback::scalar
+// NOLINTEND

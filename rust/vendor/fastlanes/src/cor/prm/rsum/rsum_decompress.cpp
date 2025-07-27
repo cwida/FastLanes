@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/rsum/rsum_decompress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/common.hpp"
 #include "fls/cor/eng/decompressor.hpp"
 #include "fls/cor/lyt/page/page.hpp"

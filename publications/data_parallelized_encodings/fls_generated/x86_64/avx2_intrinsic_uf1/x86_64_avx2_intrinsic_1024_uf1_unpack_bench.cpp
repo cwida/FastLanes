@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/x86_64/avx2_intrinsic_uf1/x86_64_avx2_intrinsic_1024_uf1_unpack_bench.cpp
+// ────────────────────────────────────────────────────────
 #include <iostream>
 #include "x86_64_avx2_intrinsic_1024_uf1_unpack_bench.hpp"
 #include "x86_64_avx2_intrinsic_1024_uf1_unpack_helper.hpp"

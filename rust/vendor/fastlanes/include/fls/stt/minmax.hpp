@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/stt/minmax.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_STT_MINMAX_HPP
 #define FLS_STT_MINMAX_HPP
 

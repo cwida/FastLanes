@@ -1,10 +1,18 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/data_type.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/data_type.hpp"
 #include "fls/common/common.hpp"
+#include "fls/footer/datatype_generated.h"
+#include "fls/std/string.hpp"
+#include <cstdint>
 #include <iostream>
 
 namespace fastlanes {
 
-std::string ToStr(DataType type) {
+string ToStr(DataType type) {
 	switch (type) {
 	case DataType::INVALID:
 		return "INVALID";

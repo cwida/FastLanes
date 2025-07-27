@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/frequency_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_FREQUENCY_OPERATOR_HPP
 #define FLS_EXPRESSION_FREQUENCY_OPERATOR_HPP
 

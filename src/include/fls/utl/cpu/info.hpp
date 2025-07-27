@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/utl/cpu/info.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_UTL_CPU_INFO_HPP
 #define FLS_UTL_CPU_INFO_HPP
 
@@ -5,7 +10,7 @@
 #include <iosfwd>                  // for string
 #include <vector>                  // for vector
 
-namespace fast_lanes {
+namespace fastlanes {
 class CpuInfo {
 public:
 	CpuInfo(); //
@@ -21,5 +26,5 @@ public:
 	std::vector<CPUFeature> avail_features; //
 	CPUFeature              best_feature;   //
 };
-} // namespace fast_lanes
+} // namespace fastlanes
 #endif // FLS_UTL_CPU_INFO_HPP

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/static_assert.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FASTLANES_STATIC_TEST_HPP
 #define FASTLANES_STATIC_TEST_HPP
 

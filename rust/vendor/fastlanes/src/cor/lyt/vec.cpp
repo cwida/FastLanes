@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/vec.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/vec.hpp"
 #include "fls/common/string.hpp"
 #include "fls/cor/eng/analyzer.hpp"

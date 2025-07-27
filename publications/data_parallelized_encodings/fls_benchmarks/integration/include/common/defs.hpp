@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/defs.hpp
+// ────────────────────────────────────────────────────────
 #include <cstdint>
 
 namespace defs{

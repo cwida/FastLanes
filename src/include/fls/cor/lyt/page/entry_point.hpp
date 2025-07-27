@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/lyt/page/entry_point.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_LYT_PAGE_ENTRY_POINT_HPP
 #define FLS_COR_LYT_PAGE_ENTRY_POINT_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/detail/parse_fp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_DETAIL_PARSE_FP_HPP
 #define FLS_DETAIL_PARSE_FP_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/std/variant.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_STD_VARIANT_HPP
 #define FLS_STD_VARIANT_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/reader/fls_rowgroup.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/fls_rowgroup.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/connection.hpp"

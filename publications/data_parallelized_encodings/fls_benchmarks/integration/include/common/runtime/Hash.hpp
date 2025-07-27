@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/Hash.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/Compat.hpp"
 #include "common/Util.hpp"

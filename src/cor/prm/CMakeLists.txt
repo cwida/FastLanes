@@ -3,8 +3,7 @@ add_subdirectory(fsst12)
 
 add_library(fls_all_prms
         OBJECT
-        prm.cpp
-        type.cpp)
+        prm.cpp)
 
 set(FASTLANES_OBJECT_FILES
         ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_all_prms>

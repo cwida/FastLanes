@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/primitive/predicate/equal.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_PREDICATE_EQUAL_HPP
 #define FLS_PRIMITIVE_PREDICATE_EQUAL_HPP
 

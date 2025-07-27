@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/x86_64/avx512bw_intrinsic_uf1/rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(x86_64_avx512bw_intrinsic_1024_uf1_rsum OBJECT
             x86_64_avx512bw_intrinsic_1024_uf1_rsum_src.cpp)
 target_compile_definitions(x86_64_avx512bw_intrinsic_1024_uf1_rsum PRIVATE IS_SCALAR)

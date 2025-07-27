@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/cross_rle_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_CROSS_RLE_HPP
 #define FLS_EXPRESSION_CROSS_RLE_HPP
 

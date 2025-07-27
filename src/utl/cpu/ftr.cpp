@@ -1,8 +1,12 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/utl/cpu/ftr.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/cpu/feature.hpp" // for CPUFeature, CPUFeature::FALLBACK
-#include <iosfwd>                  // for string
 #include <string>                  // for basic_string
 
-namespace fast_lanes {
+namespace fastlanes {
 std::string CPUFeatureToString(CPUFeature feature) {
 	switch (feature) {
 	case CPUFeature::FALLBACK:
@@ -15,4 +19,4 @@ std::string CPUFeatureToString(CPUFeature feature) {
 		return "UNDEFINED";
 	}
 }
-} // namespace fast_lanes
+} // namespace fastlanes

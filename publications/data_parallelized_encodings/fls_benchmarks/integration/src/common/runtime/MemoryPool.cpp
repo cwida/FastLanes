@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/common/runtime/MemoryPool.cpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/MemoryPool.hpp"
 #include "common/runtime/Memory.hpp"
 #include <new>

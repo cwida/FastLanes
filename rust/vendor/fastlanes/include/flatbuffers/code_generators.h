@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/code_generators.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2014 Google Inc. All rights reserved.
  *

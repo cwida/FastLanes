@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/common/bimap_frequency.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/bimap_frequency.hpp"
 #include "fls/expression/data_type.hpp"
 #include <stdexcept>

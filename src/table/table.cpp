@@ -1,5 +1,12 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/table/table.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/table.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/connection.hpp"
+#include "fls/std/string.hpp"
 #include "fls/table/rowgroup.hpp"
 
 namespace fastlanes {
@@ -46,10 +53,10 @@ TableComparisonResult Table::operator==(const Table& other_table) const {
 			result.first_failed_column_idx   = rowgroup_result.first_failed_column_idx;
 			result.first_failed_rowgroup_idx = rowgroup_idx;
 
-			result.description = "the content of table does not match at rowgroup"         //
-			                     + std::to_string(rowgroup_idx)                            //
-			                     + ", at column index"                                     //
-			                     + std::to_string(rowgroup_result.first_failed_column_idx) //
+			result.description = "the content of table does not match at rowgroup"    //
+			                     + to_string(rowgroup_idx)                            //
+			                     + ", at column index"                                //
+			                     + to_string(rowgroup_result.first_failed_column_idx) //
 			                     + "does not match.";
 			return result;
 		}

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/x86_64/avx2_intrinsic_uf1/x86_64_avx2_intrinsic_1024_uf1_rsum_helper.hpp
+// ────────────────────────────────────────────────────────
 namespace helper
 {
 	uint8_t range_ow8[1024] = 

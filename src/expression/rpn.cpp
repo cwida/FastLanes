@@ -1,7 +1,16 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/rpn.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/rpn.hpp"
-#include "fls/common/assert.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
 #include "fls/expression/interpreter.hpp"
-#include "fls/std/unordered_set.hpp"
+#include "fls/footer/operator_token_generated.h"
+#include "fls/std/string.hpp"
+#include <ostream> // for std::ostream
+#include <unordered_set>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -318,6 +327,12 @@ string token_to_string(OperatorToken token) {
 		return "EXP_RLE_U08_SLPATCH_U16"; // 152
 	case OperatorToken::EXP_DELTA_U08:
 		return "EXP_DELTA_U08"; // 153
+	case OperatorToken::EXP_RLE_U08_U16:
+		return "EXP_RLE_U08_U16"; // 154
+	case OperatorToken::EXP_GALP_FLT:
+		return "EXP_GALP_FLT"; // 155
+	case OperatorToken::EXP_GALP_DBL:
+		return "EXP_GALP_DBL"; // 156
 	default:
 		FLS_UNREACHABLE()
 	}
@@ -329,7 +344,7 @@ std::ostream& operator<<(std::ostream& os, const RPNT& rpn) {
 
 	// Print operator tokens
 	os << "[";
-	for (size_t i = 0; i < rpn.operator_tokens.size(); ++i) {
+	for (n_t i = 0; i < rpn.operator_tokens.size(); ++i) {
 		os << token_to_string(rpn.operator_tokens[i]);
 		if (i != rpn.operator_tokens.size() - 1)
 			os << ", ";
@@ -338,7 +353,7 @@ std::ostream& operator<<(std::ostream& os, const RPNT& rpn) {
 
 	// Print operand tokens
 	os << "[";
-	for (size_t i = 0; i < rpn.operand_tokens.size(); ++i) {
+	for (n_t i = 0; i < rpn.operand_tokens.size(); ++i) {
 		os << rpn.operand_tokens[i];
 		if (i != rpn.operand_tokens.size() - 1)
 			os << ", ";

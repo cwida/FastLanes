@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// benchmark/bench_compression_ratio.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarker.hpp"
 
 using namespace fastlanes; // NOLINT

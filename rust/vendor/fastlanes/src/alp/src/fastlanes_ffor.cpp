@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_ffor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/ffor.hpp"
 
 namespace fastlanes::generated::ffor::fallback::scalar {

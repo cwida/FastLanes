@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/page/entry_point.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/page/entry_point.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/page/page.hpp"

@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/struct_generator.py
+# ────────────────────────────────────────────────────────
 """
 generator_helpers/struct_helper.py
 
@@ -44,7 +49,7 @@ def struct(size: int = 1024) -> None:
     `../data/generated/struct`, mimicking the original `struct()`.
     """
     faker = Faker()
-    output_dir = Path.cwd() / ".." / "data" / "generated" / "struct"
+    output_dir = Path.cwd() / "data" / "generated" / "struct"
     output_dir.mkdir(parents=True, exist_ok=True)
     file_path = output_dir / "data.jsonl"
     logger.info("Writing JSONL → %s  (%s rows)", file_path, size)

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/encoder.cpp
+// ────────────────────────────────────────────────────────
 #include "alp/encoder.hpp"
 #include "alp/constants.hpp"
 #include "alp/decoder.hpp"

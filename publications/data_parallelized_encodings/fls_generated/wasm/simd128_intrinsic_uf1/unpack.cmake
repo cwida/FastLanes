@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/wasm/simd128_intrinsic_uf1/unpack.cmake
+# ────────────────────────────────────────────────────────
 add_library(wasm_simd128_intrinsic_1024_uf1_unpack OBJECT
             wasm_simd128_intrinsic_1024_uf1_unpack_src.cpp)
 target_compile_definitions(wasm_simd128_intrinsic_1024_uf1_unpack PRIVATE IS_SCALAR)

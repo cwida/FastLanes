@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/benchmarks/Config.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/runtime/Types.hpp"
 #include "vectorwise/Operators.hpp"

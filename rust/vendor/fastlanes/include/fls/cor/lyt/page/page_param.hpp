@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/lyt/page/page_param.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_LYT_PAGE_PAGE_PARAM_HPP
 #define FLS_COR_LYT_PAGE_PAGE_PARAM_HPP
 

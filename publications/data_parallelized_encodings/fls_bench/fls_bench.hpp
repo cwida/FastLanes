@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_bench/fls_bench.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FASTLANES_COMPRESSION_FLS_BENCH_FLS_BENCH_HPP
 #define FASTLANES_COMPRESSION_FLS_BENCH_FLS_BENCH_HPP
 

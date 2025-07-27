@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/footer/column_descriptor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FOOTER_COLUMN_DESCRIPTOR_HPP
 #define FLS_FOOTER_COLUMN_DESCRIPTOR_HPP
 

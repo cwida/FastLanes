@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/reader/segment.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/segment.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/footer/segment_descriptor.hpp"

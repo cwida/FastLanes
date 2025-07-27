@@ -1,3 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// test/src/dataset_tests/generated_data.cpp
+// ────────────────────────────────────────────────────────
+
+// NOLINTBEGIN
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// test/src/dataset_tests/generated_data.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_tester.hpp"
 
 namespace fastlanes {
@@ -123,3 +135,4 @@ TEST_F(FastLanesReaderTester, SUBNORMALS) {
 }
 
 } // namespace fastlanes
+// NOLINTEND

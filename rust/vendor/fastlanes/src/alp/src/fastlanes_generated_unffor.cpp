@@ -1,3 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_generated_unffor.cpp
+// ────────────────────────────────────────────────────────
+
+// NOLINTBEGIN
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_generated_unffor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/unffor.hpp"
 
 namespace fastlanes { namespace generated { namespace unffor::fallback { namespace scalar {
@@ -23210,3 +23222,4 @@ void unffor(const uint64_t* __restrict a_in_p,
 	}
 }
 }}}} // namespace fastlanes::generated::unffor::fallback::scalar
+// NOLINTEND

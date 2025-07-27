@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/footer/segment_descriptor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FOOTER_SEGMENT_DESCRIPTOR_HPP
 #define FLS_FOOTER_SEGMENT_DESCRIPTOR_HPP
 

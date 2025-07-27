@@ -1,4 +1,8 @@
-# root Makefile
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# Makefile
+# ────────────────────────────────────────────────────────
 include mk/preamble.mk
 include mk/python.mk
 include mk/format.mk
@@ -9,6 +13,7 @@ include mk/scripts.mk
 include mk/embeddings.mk
 include mk/flatbuffers.mk
 include mk/quick_fuzz.mk
+include mk/header_check.mk
 
 .PHONY: all clean clang-format format-check rust-format-check format
 

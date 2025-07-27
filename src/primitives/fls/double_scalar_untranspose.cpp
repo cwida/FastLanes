@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/primitives/fls/double_scalar_untranspose.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/untranspose/untranspose.hpp"
 
 // todo {clang-tidy}

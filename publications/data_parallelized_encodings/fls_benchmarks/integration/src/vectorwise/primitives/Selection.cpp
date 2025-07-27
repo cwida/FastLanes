@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/vectorwise/primitives/Selection.cpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Hash.hpp"
 #include "common/runtime/SIMD.hpp"
 #include "vectorwise/Operations.hpp"

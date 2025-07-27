@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/file/file_header.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/file/file_header.hpp"
 #include "fls/connection.hpp"
 #include "fls/file/file_footer.hpp"

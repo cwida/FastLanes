@@ -1,9 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/common/common.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_COMMON_HPP
 #define FLS_COMMON_COMMON_HPP
 
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/macros.hpp"
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 

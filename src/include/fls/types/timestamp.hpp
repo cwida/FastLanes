@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/types/timestamp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TYPES_TIMESTAMP_HPP
 #define FLS_TYPES_TIMESTAMP_HPP
 

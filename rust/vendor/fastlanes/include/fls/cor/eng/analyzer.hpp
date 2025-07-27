@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/eng/analyzer.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_ENG_ANALYZER_HPP
 #define FLS_COR_ENG_ANALYZER_HPP
 

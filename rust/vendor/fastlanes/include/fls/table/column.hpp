@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/table/column.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_COLUMN_HPP
 #define FLS_TABLE_COLUMN_HPP
 

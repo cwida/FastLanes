@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generate_synthetic_data.py
+# ────────────────────────────────────────────────────────
 # scripts/generate_helpers/main_generators.py
 
 import random
@@ -18,6 +23,7 @@ from generator_helpers.jpeg_generator import *
 from generator_helpers.boolean_generator import *
 from generator_helpers.i08_generator import *
 from generator_helpers.u08_generator import *
+from generator_helpers.galp_generator import *
 
 
 # ---------------------------
@@ -308,37 +314,37 @@ def generate_example_one(faker, row_id):
 # ---------------------------
 
 def one_to_one_i64_to_i64():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_to_one'
+    file = Path.cwd() / 'data' / 'generated' / 'one_to_one'
     write_csv(file, generate_one_to_one_i64_to_i64, VEC_SIZE)
 
 
 def all_constant():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'all_constant'
+    file = Path.cwd() / 'data' / 'generated' / 'all_constant'
     write_csv(file, generate_all_constant, ROW_GROUP_SIZE)
 
 
 def equality_fls_i64():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'equality' / 'fls_i64'
+    file = Path.cwd() / 'data' / 'generated' / 'equality' / 'fls_i64'
     write_csv(file, generate_equality_fls_i64, ROW_GROUP_SIZE)
 
 
 def equality_fls_dbl():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'equality' / 'fls_dbl'
+    file = Path.cwd() / 'data' / 'generated' / 'equality' / 'fls_dbl'
     write_csv(file, generate_equality_fls_dbl, ROW_GROUP_SIZE)
 
 
 def equality_fls_str():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'equality' / 'fls_str'
+    file = Path.cwd() / 'data' / 'generated' / 'equality' / 'fls_str'
     write_csv(file, generate_equality_fls_str, ROW_GROUP_SIZE)
 
 
 def write_fls_i64_to_file(sub_path, generator, size):
-    file = Path.cwd() / '..' / 'data' / 'generated' / sub_path
+    file = Path.cwd() / 'data' / 'generated' / sub_path
     write_csv(file, generator, size)
 
 
 def write_fls_i32_to_file(sub_path, generator, size):
-    file = Path.cwd() / '..' / 'data' / 'generated' / sub_path
+    file = Path.cwd() / 'data' / 'generated' / sub_path
     write_csv(file, generator, size)
 
 
@@ -351,12 +357,12 @@ def fls_i64():
 
 
 def generate_irregular_i64():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'irregular_i64'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'irregular_i64'
     write_csv(file, generate_irregular_i64_func, ROW_GROUP_SIZE)
 
 
 def generate_irregular_string():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'irregular_string'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'irregular_string'
     write_csv(file, generate_irregular_string_func, ROW_GROUP_SIZE)
 
 
@@ -369,37 +375,37 @@ def fls_i32():
 
 
 def generate_fls_dbl():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_dbl'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'fls_dbl'
     write_csv(file, generate_fls_dbl_func, ROW_GROUP_SIZE)
 
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_dbl'
+    file = Path.cwd() / 'data' / 'generated' / 'one_vector' / 'fls_dbl'
     write_csv(file, generate_fls_dbl_func, VEC_SIZE)
 
 
 def generate_float():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'float'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'float'
     write_csv(file, generate_float_func, ROW_GROUP_SIZE)
 
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'float'
+    file = Path.cwd() / 'data' / 'generated' / 'one_vector' / 'float'
     write_csv(file, generate_float_func, VEC_SIZE)
 
 
 def generate_fls_decimal():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'decimal'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'decimal'
     write_csv(file, generate_fls_decimal_func, ROW_GROUP_SIZE)
 
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'decimal'
+    file = Path.cwd() / 'data' / 'generated' / 'one_vector' / 'decimal'
     write_csv(file, generate_fls_decimal_func, VEC_SIZE)
 
 
 def fls_str():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_str'
+    file = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'fls_str'
     write_csv(file, generate_languages, ROW_GROUP_SIZE)
 
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_str'
+    file = Path.cwd() / 'data' / 'generated' / 'one_vector' / 'fls_str'
     write_csv(file, generate_strings, VEC_SIZE)
 
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'two_vector' / 'fls_str'
+    file = Path.cwd() / 'data' / 'generated' / 'two_vector' / 'fls_str'
     write_csv(file, generate_strings, 2 * VEC_SIZE)
 
 
@@ -422,7 +428,7 @@ def fls_timestamp():
       - data/generated/one_vector/fls_timestamp/generated.csv       (VEC_SIZE rows)
     """
     # Directory for the “rowgroup” version
-    dir_rowgroup = Path.cwd() / '..' / 'data' / 'generated' / 'single_columns' / 'fls_timestamp'
+    dir_rowgroup = Path.cwd() / 'data' / 'generated' / 'single_columns' / 'fls_timestamp'
     write_csv(dir_rowgroup, generate_fls_timestamp, ROW_GROUP_SIZE)
 
     # Write schema.json in the same folder
@@ -437,7 +443,7 @@ def fls_timestamp():
     (dir_rowgroup / 'schema.json').write_text(json.dumps(schema_rg, indent=2))
 
     # Directory for the “one_vector” (VEC_SIZE rows) version
-    dir_onevec = Path.cwd() / '..' / 'data' / 'generated' / 'one_vector' / 'fls_timestamp'
+    dir_onevec = Path.cwd() / 'data' / 'generated' / 'one_vector' / 'fls_timestamp'
     write_csv(dir_onevec, generate_fls_timestamp, VEC_SIZE)
 
     # Write schema.json in that folder as well
@@ -453,64 +459,64 @@ def fls_timestamp():
 
 
 def all_types_dbl_i64_struct():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'all_types'
+    file = Path.cwd() / 'data' / 'generated' / 'all_types'
     write_jsonl(file, generate_all_types_dbl_i64_struct_str, ROW_GROUP_SIZE)
 
 
 def x_plus_y_euqal_z():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'whitebox' / 'x_plus_y_equal_z'
+    file = Path.cwd() / 'data' / 'generated' / 'whitebox' / 'x_plus_y_equal_z'
     write_csv(file, generate_x_plus_y_equal_z, ROW_GROUP_SIZE)
 
 
 def null_table():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'mostly_null'
+    file = Path.cwd() / 'data' / 'generated' / 'mostly_null'
     write_csv(file, generate_mostly_null, ROW_GROUP_SIZE)
 
 
 def generate_number_strings():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'whitebox' / 'number_strings'
+    file = Path.cwd() / 'data' / 'generated' / 'whitebox' / 'number_strings'
     write_csv(file, generate_number_strings_func, VEC_SIZE)
 
 
 def generate_decimal_doubles():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'whitebox' / 'decimal_doubles'
+    file = Path.cwd() / 'data' / 'generated' / 'whitebox' / 'decimal_doubles'
     write_csv(file, generate_decimal_doubles_func, VEC_SIZE)
 
 
 def generate_frequency_double():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'frequency_dbl'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'frequency_dbl'
     write_csv(file, generate_frequency_double_func, VEC_SIZE)
 
 
 def generate_frequency_string():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'frequency_str'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'frequency_str'
     write_csv(file, generate_frequency_string_func, ROW_GROUP_SIZE)
 
 
 def generate_cross_rle_i16():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'cross_rle_i16'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'cross_rle_i16'
     write_csv(file, generate_cross_rle_i16_func, ROW_GROUP_SIZE)
 
 
 def generate_cross_rle_str():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'cross_rle_str'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'cross_rle_str'
     write_csv(file, generate_cross_rle_str_func, ROW_GROUP_SIZE)
 
 
 def generate_alp_flt():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'alp_flt'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'alp_flt'
     write_csv(file, generate_alp_flt_func, ROW_GROUP_SIZE)
 
 
 def generate_alp_dbl():
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'encodings' / 'alp_dbl'
+    file = Path.cwd() / 'data' / 'generated' / 'encodings' / 'alp_dbl'
     write_csv(file, generate_alp_dbl_func, ROW_GROUP_SIZE)
 
 
 def generate_specific_number_of_values(count):
     # one rowgroup
     write_csv(
-        Path.cwd() / '..' / 'data' / 'generated' / f'any_value_count/{count}',
+        Path.cwd() / 'data' / 'generated' / f'any_value_count/{count}',
         generate_fls_i64,
         count
     )
@@ -524,12 +530,12 @@ def generate_subnormals():
     Generate a CSV of pure subnormal float32 values (as decimal strings)
     for testing denormal handling.
     """
-    file = Path.cwd() / '..' / 'data' / 'generated' / 'subnormals'
+    file = Path.cwd() / 'data' / 'generated' / 'subnormals'
     write_csv(file, lambda faker, row_id: [faker.subnormal_str()], ROW_GROUP_SIZE)
 
 
 def example_one():
-    file = Path.cwd() / '..' / 'fsst' / 'data' / 'test'
+    file = Path.cwd() / 'fsst' / 'data' / 'test'
     write_csv(file, generate_example_one, ROW_GROUP_SIZE)
 
 
@@ -622,6 +628,7 @@ def main():
     generate_any_value_count()
     generate_subnormals()
     generate_fsst_test()
+    fls_galp()
 
     logging.info("✅  All data files generated successfully.")  # ← NEW
 

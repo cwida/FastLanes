@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/table/rowgroup.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_ROWGROUP_HPP
 #define FLS_TABLE_ROWGROUP_HPP
 

@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/fallback/scalar_aav_uf1/rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(fallback_scalar_aav_1024_uf1_rsum OBJECT
             fallback_scalar_aav_1024_uf1_rsum_src.cpp)
 target_compile_definitions(fallback_scalar_aav_1024_uf1_rsum PRIVATE IS_SCALAR)

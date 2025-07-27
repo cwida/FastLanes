@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/patch/b_patch/b_patch_compress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/eng/compressor.hpp"
 #include "fls/cor/lyt/vec.hpp"
