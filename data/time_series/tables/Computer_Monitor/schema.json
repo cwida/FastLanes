@@ -1,0 +1,24 @@
+{
+  "columns": [
+    {
+      "name": "Column_1",
+      "type": "BIGINT",
+      "index": "0"
+    },
+    {
+      "name": "Column_2",
+      "type": "DOUBLE",
+      "index": "1"
+    },
+    {
+      "name": "Column_3",
+      "type": "BIGINT",
+      "index": "2"
+    },
+    {
+      "name": "Column_4",
+      "type": "BIGINT",
+      "index": "3"
+    }
+  ]
+}
