@@ -1,5 +1,11 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/utl/util.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/util.hpp"
 #include "fls/common/assert.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 uint64_t MAX_BIT(uint64_t bw) {

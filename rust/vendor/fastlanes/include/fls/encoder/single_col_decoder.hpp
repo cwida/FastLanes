@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/encoder/single_col_decoder.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_SINGLE_COL_DECODER_HPP
 #define FLS_ENCODER_SINGLE_COL_DECODER_HPP
 

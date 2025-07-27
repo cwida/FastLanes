@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/x86_64/sse_intrinsic_uf1/unffor.cmake
+# ────────────────────────────────────────────────────────
 add_library(x86_64_sse_intrinsic_1024_uf1_unffor OBJECT
             x86_64_sse_intrinsic_1024_uf1_unffor_src.cpp)
 target_compile_definitions(x86_64_sse_intrinsic_1024_uf1_unffor PRIVATE IS_SCALAR)

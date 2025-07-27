@@ -1,4 +1,8 @@
-
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/encoder/ccc_encoder.cpp
+// ────────────────────────────────────────────────────────
 namespace fastlanes {
 
 // for (const auto& sub_plan : plan_up->sub_plan_vec) {

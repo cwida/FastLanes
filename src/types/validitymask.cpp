@@ -1,6 +1,13 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/types/validitymask.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/types/validitymask.hpp"
+#include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
-#include <bit>     // std::popcount (C++20)
+#include <bit> // std::popcount (C++20)
+#include <cstdint>
 #include <cstring> // std::memset / memcpy
 
 namespace fastlanes {

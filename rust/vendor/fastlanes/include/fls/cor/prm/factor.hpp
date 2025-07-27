@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/prm/factor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_FACTOR_HPP
 #define FLS_COR_PRM_FACTOR_HPP
 

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/include/fls_gen/rsum/rsum.hpp
+// ────────────────────────────────────────────────────────
 #ifndef RSUM_HPP
 #define RSUM_HPP
 

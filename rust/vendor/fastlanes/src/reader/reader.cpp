@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/reader/reader.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/reader/reader.hpp"                  //
 #include "fls/connection.hpp"                     // for Connector (ptr only)
 #include "fls/cor/lyt/buf.hpp"                    // for Buf

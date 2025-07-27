@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/vectorwise/primitives.cpp
+// ────────────────────────────────────────────────────────
 #include "vectorwise/Primitives.hpp"
 #include "common/runtime/Hash.hpp"
 #include "common/runtime/Hashmap.hpp"

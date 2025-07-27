@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/minireflect.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

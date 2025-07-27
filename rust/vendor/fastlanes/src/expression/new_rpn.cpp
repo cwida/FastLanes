@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/expression/new_rpn.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/common/assert.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/rpn.hpp"

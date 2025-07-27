@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/file_manager.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2023 Google Inc. All rights reserved.
  *

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/exp/fsst12/fsst12_exp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_EXP_FSST12_FSST12_EXP_HPP
 #define FLS_COR_EXP_FSST12_FSST12_EXP_HPP
 

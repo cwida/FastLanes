@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// python/bindings/table_reader_binding.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/footer/table_descriptor.hpp"
 #include "fls/reader/table_reader.hpp"
 #include <pybind11/pybind11.h>

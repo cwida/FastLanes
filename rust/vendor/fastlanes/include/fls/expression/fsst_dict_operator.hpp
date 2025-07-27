@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/expression/fsst_dict_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_FSST_DICT_OPERATOR_HPP
 #define FLS_EXPRESSION_FSST_DICT_OPERATOR_HPP
 

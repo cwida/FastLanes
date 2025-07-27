@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/exp/alp/alp_exp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_EXP_ALP_ALP_EXP_HPP
 #define FLS_COR_EXP_ALP_ALP_EXP_HPP
 

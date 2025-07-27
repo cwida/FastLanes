@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/ccc/thomas.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_CCC_THOMAS_HPP
 #define FLS_CCC_THOMAS_HPP
 

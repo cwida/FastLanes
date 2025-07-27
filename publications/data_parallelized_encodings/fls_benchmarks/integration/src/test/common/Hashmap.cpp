@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/common/Hashmap.cpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Hashmap.hpp"
 #include "common/runtime/Types.hpp"
 #include <functional>

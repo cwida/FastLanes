@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/benchmarks/ssb/Queries.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 
 #include <memory>

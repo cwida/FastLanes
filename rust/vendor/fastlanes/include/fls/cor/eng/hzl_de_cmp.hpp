@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/eng/hzl_de_cmp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_ENG_HZL_DE_CMP_HPP
 #define FLS_COR_ENG_HZL_DE_CMP_HPP
 

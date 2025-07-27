@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/rle/rle_decompress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/common.hpp"
 #include "fls/cor/eng/decompressor.hpp"

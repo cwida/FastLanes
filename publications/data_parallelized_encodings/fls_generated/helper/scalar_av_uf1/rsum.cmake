@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/helper/scalar_av_uf1/rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(helper_scalar_av_1024_uf1_rsum OBJECT
             helper_scalar_av_1024_uf1_rsum_src.cpp)
 target_compile_definitions(helper_scalar_av_1024_uf1_rsum PRIVATE IS_SCALAR)

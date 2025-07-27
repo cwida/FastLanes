@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/test/tpch_expected.hpp
+// ────────────────────────────────────────────────────────
 #include "common/runtime/Types.hpp"
 #include <map>
 #include <tuple>

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/connection.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/connection.hpp"
 #include "fls/cor/lyt/buf.hpp"     // for Buf
 #include "fls/encoder/encoder.hpp" // for Encoder

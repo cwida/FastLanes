@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/cor/prm/fsst12/libfsst12.cpp
+// ────────────────────────────────────────────────────────
 // this software is distributed under the MIT License (http://www.opensource.org/licenses/MIT):
 //
 // Copyright 2018-2019, CWI, TU Munich

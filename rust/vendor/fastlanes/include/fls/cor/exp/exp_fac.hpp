@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/exp/exp_fac.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_EXP_EXP_FAC_HPP
 #define FLS_COR_EXP_EXP_FAC_HPP
 

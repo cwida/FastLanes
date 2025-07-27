@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/primitive/fls_memset/fls_memset.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_PRIMITIVE_FLS_MEMSET_FLS_FLS_MEMSET_HPP
 #define FLS_PRIMITIVE_FLS_MEMSET_FLS_FLS_MEMSET_HPP
 

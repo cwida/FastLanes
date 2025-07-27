@@ -1,7 +1,14 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/std/filesystem.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/std/filesystem.hpp"
-#include <cerrno> // errno
+#include <cerrno>     // errno
+#include <filesystem> // std::filesystem::path, exists, is_directory, is_regular_file
 #include <fstream>
-#include <string>
+#include <ios>          // std::ios::binary
+#include <stdexcept>    // std::runtime_error
 #include <system_error> // NEW – std::system_error / std::error_code
 
 namespace fastlanes {

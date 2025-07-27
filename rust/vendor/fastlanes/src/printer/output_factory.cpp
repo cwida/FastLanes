@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/printer/output_factory.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/printer/output_factory.hpp"
 #include "fls/printer/output.hpp"
 

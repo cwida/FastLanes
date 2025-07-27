@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/verify_seed_bump.py
+# ────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """
 CI helper: ensure the PR's base_seed is exactly +1 over dev's base_seed.

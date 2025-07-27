@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/std/vector.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_STD_VECTOR_HPP
 #define FLS_STD_VECTOR_HPP
 

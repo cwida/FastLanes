@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/page/page_param.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/page/page_param.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/cor/lyt/page/page.hpp"

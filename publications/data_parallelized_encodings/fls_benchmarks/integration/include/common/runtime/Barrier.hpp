@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/runtime/Barrier.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "Util.hpp"
 #include "common/Compat.hpp"

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/fls/macros.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_MACROS_H
 #define FLS_MACROS_H
 

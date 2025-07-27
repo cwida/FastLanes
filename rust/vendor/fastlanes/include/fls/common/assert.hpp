@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/assert.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_ASSERT_HPP
 #define FLS_COMMON_ASSERT_HPP
 

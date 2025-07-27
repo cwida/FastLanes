@@ -3,6 +3,7 @@ add_library(fls_expression
         alp_expression.cpp
         analyze_operator.cpp
         # CMakeLists.txt
+        data_parallelize_patch_operator.cpp
         cross_rle_operator.cpp
         data_type.cpp
         decoding_operator.cpp

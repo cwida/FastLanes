@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/fallback/scalar_av_uf1/unffor.cmake
+# ────────────────────────────────────────────────────────
 add_library(fallback_scalar_av_1024_uf1_unffor OBJECT
             fallback_scalar_av_1024_uf1_unffor_src.cpp)
 target_compile_definitions(fallback_scalar_av_1024_uf1_unffor PRIVATE IS_SCALAR)

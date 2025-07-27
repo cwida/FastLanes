@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/logger/logger.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_LOGGER_LOGGER_HPP
 #define FLS_LOGGER_LOGGER_HPP
 

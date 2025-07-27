@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/arm64v8/scalar_av_uf1/normal_rsum.cmake
+# ────────────────────────────────────────────────────────
 add_library(arm64v8_scalar_av_1024_uf1_normal_rsum OBJECT
             arm64v8_scalar_av_1024_uf1_normal_rsum_src.cpp)
 target_compile_definitions(arm64v8_scalar_av_1024_uf1_normal_rsum PRIVATE IS_SCALAR)

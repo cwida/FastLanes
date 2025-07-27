@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/vectorwise/Primitives.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/defs.hpp"
 #include "common/runtime/HashmapSmall.hpp"

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/arm64v8/scalar_av_uf1/arm64v8_scalar_av_1024_uf1_normal_rsum_test.cpp
+// ────────────────────────────────────────────────────────
 #include "gtest/gtest.h"
 #include "fls_gen/normal_rsum/normal_rsum.hpp"
 #include "arm64v8_scalar_av_1024_uf1_normal_rsum_helper.hpp"

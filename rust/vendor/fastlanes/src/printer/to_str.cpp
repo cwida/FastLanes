@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/printer/to_str.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/to_str.hpp"
 #include "fls/cfg/cfg.hpp"
 #include <iomanip>

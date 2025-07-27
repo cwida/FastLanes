@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/flatbuffers/flatbuffers.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/flatbuffers/flatbuffers.hpp"
 #include "fls/connection.hpp"
 #include "fls/footer/table_descriptor.hpp"

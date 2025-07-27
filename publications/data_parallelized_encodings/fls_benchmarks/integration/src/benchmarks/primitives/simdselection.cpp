@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/primitives/simdselection.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarks/Primitives.hpp"
 #include "immintrin.h"
 

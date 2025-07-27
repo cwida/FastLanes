@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/fls/x86_64_avx512bw_intrinsic_1024_uf1_unpack_bench.cpp
+// ────────────────────────────────────────────────────────
 #include <iostream>
 #include "fls_bench.hpp"
 #include "x86_64_avx512bw_intrinsic_1024_uf1_unpack_helper.hpp"

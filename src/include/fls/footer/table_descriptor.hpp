@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/footer/table_descriptor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FOOTER_TABLE_DESCRIPTOR_HPP
 #define FLS_FOOTER_TABLE_DESCRIPTOR_HPP
 

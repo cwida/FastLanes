@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/vectorwise/Operations.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "Primitives.hpp"
 #include <experimental/tuple>

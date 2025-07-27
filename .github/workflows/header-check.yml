@@ -1,0 +1,32 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# .github/workflows/header-check.yml
+# ────────────────────────────────────────────────────────
+name: Header-check
+
+run-name: >-
+  ${{ github.workflow }} on ${{ github.ref_name }} (#${{ github.run_number }})
+  — ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  push:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  check-header:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Set up virtual environment
+        run: python -m venv .venv
+
+      - name: Check FastLanes file headers
+        run: make check-header

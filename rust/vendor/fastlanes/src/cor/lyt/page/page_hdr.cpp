@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/page/page_hdr.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/page/page_hdr.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/assert.hpp"

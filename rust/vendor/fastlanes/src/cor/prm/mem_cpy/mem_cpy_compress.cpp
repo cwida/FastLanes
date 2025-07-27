@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/mem_cpy/mem_cpy_compress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/eng/compressor.hpp"
 #include "fls/cor/lyt/vec.hpp"
 #include "fls/cor/prm/mem_cpy_prm.hpp"

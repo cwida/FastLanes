@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/prm/fsst12/libfsst12.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_FSST12_LIBFSST12_HPP
 #define FLS_COR_PRM_FSST12_LIBFSST12_HPP
 

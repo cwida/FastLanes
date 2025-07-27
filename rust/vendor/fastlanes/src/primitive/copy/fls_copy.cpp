@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/primitive/copy/fls_copy.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/primitive/copy/fls_copy.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"

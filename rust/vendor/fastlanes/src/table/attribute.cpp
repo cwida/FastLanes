@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/table/attribute.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/table/attribute.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/decimal.hpp"

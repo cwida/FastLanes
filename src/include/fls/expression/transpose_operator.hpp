@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/transpose_operator.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_TRANSPOSE_OPERATOR_HPP
 #define FLS_EXPRESSION_TRANSPOSE_OPERATOR_HPP
 

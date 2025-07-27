@@ -1,6 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/cor/lyt/buf.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/buf.hpp"
-#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/io/external_memory.hpp"
+#include "fls/std/span.hpp"
+#include <cstddef> // for std::byte
+#include <cstdint>
 #include <cstring>
 #include <stdexcept>
 

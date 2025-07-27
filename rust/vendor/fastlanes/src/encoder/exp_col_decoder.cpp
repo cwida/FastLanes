@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/encoder/exp_col_decoder.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/exp_col_decoder.hpp"
 #include "fls/api/engine.hpp"
 #include "fls/encoder/col_encoder.hpp"

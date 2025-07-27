@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/footer/rowgroup_descriptor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_FOOTER_ROWGROUP_DESCRIPTOR_HPP
 #define FLS_FOOTER_ROWGROUP_DESCRIPTOR_HPP
 

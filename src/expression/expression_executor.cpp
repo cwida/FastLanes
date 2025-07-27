@@ -1,6 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/expression_executor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/expression_executor.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_parallelize_patch_operator.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/frequency_operator.hpp"
@@ -15,6 +24,8 @@
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
+#include "fls/std/variant.hpp"
+#include <variant> // for std::monostate
 
 namespace fastlanes {
 
@@ -219,6 +230,9 @@ struct operator_visitor {
 		opr->to_validitymask();
 	}
 	//
+	template <typename PT>
+	void operator()(sp<enc_data_parallel_patch_opr<PT>>& opr) {
+	}
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
 	}

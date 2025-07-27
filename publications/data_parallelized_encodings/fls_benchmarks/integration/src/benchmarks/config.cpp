@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/config.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarks/tpch/Queries.hpp"
 #include "vectorwise/Primitives.hpp"
 

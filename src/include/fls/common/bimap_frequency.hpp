@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/common/bimap_frequency.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_BIMAP_FREQUENCY_HPP
 #define FLS_COMMON_BIMAP_FREQUENCY_HPP
 

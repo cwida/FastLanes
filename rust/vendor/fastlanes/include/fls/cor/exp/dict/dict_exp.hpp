@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/exp/dict/dict_exp.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_EXP_DICT_DICT_EXP_HPP
 #define FLS_COR_EXP_DICT_DICT_EXP_HPP
 

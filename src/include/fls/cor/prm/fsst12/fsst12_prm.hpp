@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/cor/prm/fsst12/fsst12_prm.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_FSST12_FSST12_PRM_HPP
 #define FLS_COR_PRM_FSST12_FSST12_PRM_HPP
 

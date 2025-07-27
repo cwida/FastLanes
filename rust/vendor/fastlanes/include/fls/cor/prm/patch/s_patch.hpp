@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/prm/patch/s_patch.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_PATCH_S_PATCH_HPP
 #define FLS_COR_PRM_PATCH_S_PATCH_HPP
 

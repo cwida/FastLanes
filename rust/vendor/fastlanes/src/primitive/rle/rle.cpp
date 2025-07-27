@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/primitive/rle/rle.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/primitive/rle/rle.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/string.hpp"

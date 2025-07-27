@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/x86_64/avx2_intrinsic_uf1/unpack.cmake
+# ────────────────────────────────────────────────────────
 add_library(x86_64_avx2_intrinsic_1024_uf1_unpack OBJECT
             x86_64_avx2_intrinsic_1024_uf1_unpack_src.cpp)
 target_compile_definitions(x86_64_avx2_intrinsic_1024_uf1_unpack PRIVATE IS_SCALAR)

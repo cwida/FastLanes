@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/common/algebra/Pipeline.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "common/algebra/Operators.hpp"
 #include <ostream>

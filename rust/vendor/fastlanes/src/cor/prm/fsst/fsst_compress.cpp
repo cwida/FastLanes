@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/fsst/fsst_compress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/eng/analyzer.hpp"
 #include "fls/cor/eng/compressor.hpp"
 #include "fls/cor/eng/engine.hpp"

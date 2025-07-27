@@ -1,4 +1,8 @@
-# .github/actions/generate_dataset/action.yml
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# .github/actions/generate-dataset/action.yml
+# ────────────────────────────────────────────────────────
 name: Generate Synthetic Dataset
 description: Generate synthetic data and embeddings using Makefile targets
 
@@ -25,14 +29,12 @@ runs:
     # 3️⃣  Generate the synthetic data
     # ─────────────────────────────────────────────────────────────
     - name: Generate synthetic data
-      working-directory: mk
       shell: bash
-      run: make -f data.mk generate_synthetic_data
+      run: make generate_synthetic_data
 
     # ─────────────────────────────────────────────────────────────
     # 4️⃣  Generate the sentence embeddings
     # ─────────────────────────────────────────────────────────────
     - name: Generate embeddings
-      working-directory: mk
       shell: bash
-      run: make -f embeddings.mk generate
+      run: make generate-embeddings

@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/flatbuffers/detached_buffer.h
+// ────────────────────────────────────────────────────────
 /*
  * Copyright 2021 Google Inc. All rights reserved.
  *

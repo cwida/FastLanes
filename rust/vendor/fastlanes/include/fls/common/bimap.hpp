@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/bimap.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_BIMAP_HPP
 #define FLS_COMMON_BIMAP_HPP
 

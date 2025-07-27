@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/include/vectorwise/QueryBuilder.hpp
+// ────────────────────────────────────────────────────────
 #pragma once
 #include "Operators.hpp"
 #include "common/runtime/Database.hpp"

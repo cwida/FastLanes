@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/3rdparty/jevents/jsession.h
+// ────────────────────────────────────────────────────────
 #ifndef JSESSION_H
 #define JSESSION_H 1
 

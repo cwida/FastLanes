@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/rle/generator.hpp
+// ────────────────────────────────────────────────────────
 #include <cstdint>
 #include <iostream>
 

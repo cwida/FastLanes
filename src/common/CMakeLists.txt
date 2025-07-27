@@ -4,7 +4,6 @@ add_library(fls_common
         assert.cpp
         bimap.cpp
         bimap_frequency.cpp
-        byte_c.cpp
         #[[]]
         common.cpp
         decimal.cpp

@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/bump_fuzz_seed.py
+# ────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """
 Bump the `base_seed` in test/src/quick_fuzz_tests/fuzz_config.json by +1.

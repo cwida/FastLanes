@@ -1,8 +1,14 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/include/fls/expression/alp_expression.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_EXPRESSION_ALP_EXPRESSION_HPP
 #define FLS_EXPRESSION_ALP_EXPRESSION_HPP
 
 #include "alp.hpp"
 #include "fls/cfg/cfg.hpp"
+#include "fls/cuda/common.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/table/chunk.hpp"
 #include "fls/table/rowgroup.hpp"
@@ -42,6 +48,10 @@ public:
 	alignas(64) uint16_t pos_arr[CFG::VEC_SZ];
 	alignas(64) PT exc_arr[CFG::VEC_SZ];
 
+	//
+	bool data_parallelize {false};
+
+	// cuda
 	up<Segment> ffor_segment;
 	up<Segment> base_segment;
 	up<Segment> bw_segment;
@@ -50,6 +60,16 @@ public:
 	up<Segment> exp_segment;
 	up<Segment> pos_segment;
 	up<Segment> n_exp_segment;
+
+	//
+	// arrays
+	alignas(64) uint8_t out_count[cuda::get_n_lanes<PT>()];
+	alignas(64) uint16_t out_offset[cuda::get_n_lanes<PT>()];
+	alignas(64) uint16_t out_pos_arr[CFG::VEC_SZ];
+	alignas(64) PT out_exc_arr[CFG::VEC_SZ];
+
+	up<Segment> out_count_segment;
+	up<Segment> out_offset_segment;
 };
 
 /*--------------------------------------------------------------------------------------------------------------------*\

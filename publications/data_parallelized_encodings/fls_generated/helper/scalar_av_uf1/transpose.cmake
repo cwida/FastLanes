@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# publications/data_parallelized_encodings/fls_generated/helper/scalar_av_uf1/transpose.cmake
+# ────────────────────────────────────────────────────────
 add_library(helper_scalar_av_1024_uf1_transpose OBJECT
             helper_scalar_av_1024_uf1_transpose_src.cpp)
 target_compile_definitions(helper_scalar_av_1024_uf1_transpose PRIVATE IS_SCALAR)

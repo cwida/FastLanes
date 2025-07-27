@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/jpeg_generator.py
+# ────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """
 jpeg_generator.py – Dump Daisy JPEGs to a **pipe‑delimited** CSV with metadata

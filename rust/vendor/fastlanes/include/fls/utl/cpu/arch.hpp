@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/utl/cpu/arch.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_UTL_CPU_ARCH_HPP
 #define FLS_UTL_CPU_ARCH_HPP
 

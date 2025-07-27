@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/std/filesystem.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/std/filesystem.hpp"
 #include <cerrno> // errno
 #include <fstream>

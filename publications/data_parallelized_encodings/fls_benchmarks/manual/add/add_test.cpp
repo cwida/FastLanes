@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/add/add_test.cpp
+// ────────────────────────────────────────────────────────
 #include "add_helper.hpp"
 #include "gtest/gtest.h"
 

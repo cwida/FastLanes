@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/lyt/page/type.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cor/lyt/page/type.hpp"
 #include "fls/common/common.hpp"
 #include <string>

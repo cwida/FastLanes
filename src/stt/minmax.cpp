@@ -1,5 +1,14 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/stt/minmax.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/stt/minmax.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/macros.hpp"
+#include <cstdint>
 #include <limits>
+#include <type_traits>
 
 namespace fastlanes {
 template <typename T>

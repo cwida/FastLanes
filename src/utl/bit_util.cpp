@@ -1,4 +1,11 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/utl/bit_util.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/utl/bit_util.hpp"
+#include "fls/common/alias.hpp"
+#include <cstdint>
 
 namespace fastlanes {
 void bit::set(uint64_t& unit, uint16_t pos) {

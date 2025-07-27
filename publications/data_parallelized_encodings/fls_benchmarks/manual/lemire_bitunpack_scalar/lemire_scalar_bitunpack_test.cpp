@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/lemire_bitunpack_scalar/lemire_scalar_bitunpack_test.cpp
+// ────────────────────────────────────────────────────────
 #include "lemire_scalar_bitunpack_helper.hpp"
 #include "gtest/gtest.h"
 

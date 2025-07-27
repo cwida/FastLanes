@@ -34,3 +34,15 @@ CompactNamespaces: true
 BinPackArguments: false
 BinPackParameters: false
 
+# CUDA-specific additions
+AttributeMacros:
+  - "__global__"
+  - "__device__"
+  - "__host__"
+  - "__constant__"
+  - "__shared__"
+  - "__managed__"
+  - "__restrict__"
+  - "__launch_bounds__"
+  - "__forceinline__"
+  - "__noinline__"

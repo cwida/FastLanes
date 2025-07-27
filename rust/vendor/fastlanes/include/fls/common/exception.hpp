@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/common/exception.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COMMON_EXCEPTION_HPP
 #define FLS_COMMON_EXCEPTION_HPP
 

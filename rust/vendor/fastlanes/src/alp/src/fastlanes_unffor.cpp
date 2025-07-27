@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/alp/src/fastlanes_unffor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/unffor.hpp"
 
 namespace fastlanes::generated::unffor::fallback::scalar {

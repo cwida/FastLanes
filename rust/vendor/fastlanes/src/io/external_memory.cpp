@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/io/external_memory.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/io/external_memory.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include <cstring>

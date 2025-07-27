@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/primitives/fls_generated/fallback/scalar_aav_uf1/fallback_scalar_aav_1024_uf1_untranspose_test.cpp
+// ────────────────────────────────────────────────────────
 // generated!
 // NOLINTBEGIN
 #include "fallback_scalar_aav_1024_uf1_untranspose_helper.hpp"
@@ -37,3 +42,5 @@ public:
 		delete[] untransposed64;
 	}
 };
+
+// NOLINTEND

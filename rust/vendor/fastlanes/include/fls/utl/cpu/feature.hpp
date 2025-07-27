@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/utl/cpu/feature.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_UTL_CPU_FEATURE_HPP
 #define FLS_UTL_CPU_FEATURE_HPP
 

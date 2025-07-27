@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/common/algebra/Operators.cpp
+// ────────────────────────────────────────────────────────
 #include "common/algebra/Operators.hpp"
 #include <ostream>
 

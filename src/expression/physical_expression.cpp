@@ -1,8 +1,17 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/expression/physical_expression.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/expression/physical_expression.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
+#include "fls/common/common.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/expression/alp_expression.hpp"
 #include "fls/expression/analyze_operator.hpp"
 #include "fls/expression/cross_rle_operator.hpp"
+#include "fls/expression/data_parallelize_patch_operator.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/dict_expression.hpp"
 #include "fls/expression/encoding_operator.hpp"
@@ -19,6 +28,10 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/reader/segment.hpp"
+#include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
+#include <cstdint>
+#include <utility>
 
 namespace fastlanes {
 
@@ -218,6 +231,10 @@ struct point_to_visitor {
 	template <typename PT>
 	void operator()(const sp<dec_cross_rle_opr<PT>>& opr) {
 	}
+	//
+	template <typename PT>
+	void operator()(const sp<enc_data_parallel_patch_opr<PT>>& opr) {
+	}
 	void operator()(const auto& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg)
 	}
@@ -360,7 +377,10 @@ struct flush_segments_visitor {
 	void operator()(const sp<enc_validitymask_opr>& opr) {
 		opr->MoveSegments(segments);
 	}
-
+	//
+	template <typename PT>
+	void operator()(const sp<enc_data_parallel_patch_opr<PT>>& opr) {
+	}
 	void operator()(const auto& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg)
 	}
@@ -514,6 +534,10 @@ struct extract_segments_visitor {
 		opr->MoveSegments(segments);
 	}
 	//
+	template <typename PT>
+	void operator()(const sp<enc_data_parallel_patch_opr<PT>>& opr) {
+	}
+	//
 	void operator()(const auto& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg)
 	}
@@ -649,6 +673,10 @@ struct finalize_operators_visitor {
 	}
 	//
 	void operator()(const sp<enc_validitymask_opr>& opr) {
+	}
+	//
+	template <typename PT>
+	void operator()(const sp<enc_data_parallel_patch_opr<PT>>& opr) {
 	}
 	//
 	void operator()(const auto& arg) {

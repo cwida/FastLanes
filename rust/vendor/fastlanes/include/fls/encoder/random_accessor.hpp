@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/encoder/random_accessor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_ENCODER_RANDOM_ACCESSOR_HPP
 #define FLS_ENCODER_RANDOM_ACCESSOR_HPP
 

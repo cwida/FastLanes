@@ -1,6 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/io/external_memory.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/io/external_memory.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/assert.hpp"
 #include "fls/cor/lyt/buf.hpp"
+#include <cstddef> // for std::byte
 #include <cstring>
+#include <span>
 #include <stdexcept>
 
 namespace fastlanes {

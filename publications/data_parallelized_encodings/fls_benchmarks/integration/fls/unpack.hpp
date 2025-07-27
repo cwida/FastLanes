@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/fls/unpack.hpp
+// ────────────────────────────────────────────────────────
 #ifndef BITPACK_BITPACK_HPP
 #define BITPACK_BITPACK_HPP
 

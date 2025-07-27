@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/encoder/verifier.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/encoder/verifier.hpp"
 
 namespace fastlanes {

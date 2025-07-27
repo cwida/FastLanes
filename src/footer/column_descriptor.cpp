@@ -1,4 +1,12 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/footer/column_descriptor.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/footer/column_descriptor.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/footer/column_descriptor_generated.h"
+#include "fls/std/vector.hpp"
 
 namespace fastlanes {
 

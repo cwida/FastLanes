@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/cor/prm/mem_cpy_prm.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_COR_PRM_MEM_CPY_PRM_HPP
 #define FLS_COR_PRM_MEM_CPY_PRM_HPP
 

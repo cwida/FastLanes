@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/primitives/fls/double_scalar_transpose.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/transpose/transpose.hpp"
 
 // todo {clang-tidy}

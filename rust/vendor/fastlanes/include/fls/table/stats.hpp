@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/include/fls/table/stats.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_STATS_HPP
 #define FLS_TABLE_STATS_HPP
 

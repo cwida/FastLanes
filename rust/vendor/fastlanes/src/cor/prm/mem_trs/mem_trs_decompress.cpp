@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// rust/vendor/fastlanes/src/cor/prm/mem_trs/mem_trs_decompress.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/common.hpp"
 #include "fls/cor/eng/decompressor.hpp"

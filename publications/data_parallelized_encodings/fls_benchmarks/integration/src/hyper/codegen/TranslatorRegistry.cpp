@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/hyper/codegen/TranslatorRegistry.cpp
+// ────────────────────────────────────────────────────────
 #include "hyper/codegen/TranslatorRegistry.hpp"
 
 namespace hyper {

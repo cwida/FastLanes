@@ -1,5 +1,15 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// src/io/io.cpp
+// ────────────────────────────────────────────────────────
 #include "fls/io/io.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/common/common.hpp"
 #include "fls/cor/lyt/buf.hpp"
+#include "fls/io/external_memory.hpp"
+#include "fls/io/file.hpp"
+#include "fls/std/variant.hpp"
 
 namespace fastlanes {
 

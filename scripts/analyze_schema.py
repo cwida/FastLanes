@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/analyze_schema.py
+# ────────────────────────────────────────────────────────
 import json
 from collections import Counter
 from dataset_lib.public_bi import PublicBI

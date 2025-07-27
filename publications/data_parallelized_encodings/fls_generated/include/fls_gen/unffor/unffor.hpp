@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/include/fls_gen/unffor/unffor.hpp
+// ────────────────────────────────────────────────────────
 #ifndef FFOR_FFOR_HPP
 #define FFOR_FFOR_HPP
 

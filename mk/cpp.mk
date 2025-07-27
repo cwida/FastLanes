@@ -1,3 +1,8 @@
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# mk/cpp.mk
+# ────────────────────────────────────────────────────────
 # mk/cpp.mk — C++ CMake rules (Release build, verbose output, parallelized via NUM_JOBS)
 
 # 1) Load colored‐echo macros, REPO_ROOT/CRATE_ROOT and NUM_JOBS

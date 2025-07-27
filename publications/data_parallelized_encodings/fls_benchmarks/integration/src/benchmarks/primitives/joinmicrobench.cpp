@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/benchmarks/primitives/joinmicrobench.cpp
+// ────────────────────────────────────────────────────────
 #include "benchmarks/Primitives.hpp"
 #include "vectorwise/Operators.hpp"
 #include "common/runtime/Hashmap.hpp"

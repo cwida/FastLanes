@@ -1,13 +1,13 @@
-"""
-Module: scripts/generator_helpers/u08_generator.py
-Description: Generates synthetic **unsigned** 8-bit integer (U08) data values and writes them to CSV files with accompanying schema definitions.
-"""
-
+# ────────────────────────────────────────────────────────
+# |                      FastLanes                       |
+# ────────────────────────────────────────────────────────
+# scripts/generator_helpers/u08_generator.py
+# ────────────────────────────────────────────────────────
 from pathlib import Path
 from typing import Callable, List, Any
 import json
 
-from .write_helpers import write_csv
+from .write_helpers import write_csv, write_schema
 from .common import ROW_GROUP_SIZE, VEC_SIZE
 
 
@@ -31,12 +31,12 @@ def write_fls_u08_to_file(
 ) -> None:
     """Write *size* rows to *data/generated/<sub_path>/generated.csv* plus *schema.json*."""
     # Target directory where generated.csv and schema.json will reside
-    dir_path = Path.cwd().parent / "data" / "generated" / sub_path
+    dir_path = Path.cwd() / "data" / "generated" / sub_path
 
     # Let *write_csv* create the directory and CSV
     write_csv(dir_path, generator, size)
 
-    # Emit schema.json (with trailing newline for POSIX friendliness)
+    # Prepare schema for unsigned 8-bit data
     schema = {
         "columns": [
             {
@@ -45,7 +45,8 @@ def write_fls_u08_to_file(
             }
         ]
     }
-    (dir_path / "schema.json").write_text(json.dumps(schema, indent=2) + "\n")
+    # Emit schema.json (with trailing newline for POSIX friendliness)
+    write_schema(dir_path, schema)
 
 
 # ----------------------------------------------------------------------

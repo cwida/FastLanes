@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/rsum/rsum_bench.cpp
+// ────────────────────────────────────────────────────────
 #include "rsum_bench.hpp"
 #include "rsum_helper.hpp"
 #include <iostream>

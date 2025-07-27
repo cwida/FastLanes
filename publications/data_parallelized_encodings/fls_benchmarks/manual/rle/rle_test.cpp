@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/manual/rle/rle_test.cpp
+// ────────────────────────────────────────────────────────
 #include "generator.hpp"
 #include "rle_helper.hpp"
 #include "gtest/gtest.h"

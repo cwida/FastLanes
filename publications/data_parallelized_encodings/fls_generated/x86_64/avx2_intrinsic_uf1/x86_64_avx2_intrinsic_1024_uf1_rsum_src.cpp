@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_generated/x86_64/avx2_intrinsic_uf1/x86_64_avx2_intrinsic_1024_uf1_rsum_src.cpp
+// ────────────────────────────────────────────────────────
 #include "fls_gen/rsum/rsum.hpp"
 #include "fls_gen/macros.hpp"
 #include <immintrin.h>

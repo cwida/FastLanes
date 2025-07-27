@@ -1,3 +1,8 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// publications/data_parallelized_encodings/fls_benchmarks/integration/src/lemire/bitpacking.cpp
+// ────────────────────────────────────────────────────────
 #include "lemire/bitpacking.hpp"
 
 #include <cstdint>
