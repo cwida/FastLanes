@@ -1,0 +1,44 @@
+{
+  "columns": [
+    {
+      "name": "Column_1",
+      "type": "BIGINT",
+      "index": "0"
+    },
+    {
+      "name": "Column_2",
+      "type": "TIMESTAMP",
+      "index": "1"
+    },
+    {
+      "name": "Column_3",
+      "type": "BIGINT",
+      "index": "2"
+    },
+    {
+      "name": "Column_4",
+      "type": "BIGINT",
+      "index": "3"
+    },
+    {
+      "name": "Column_5",
+      "type": "BIGINT",
+      "index": "4"
+    },
+    {
+      "name": "Column_6",
+      "type": "BIGINT",
+      "index": "5"
+    },
+    {
+      "name": "Column_7",
+      "type": "DOUBLE",
+      "index": "6"
+    },
+    {
+      "name": "Column_7",
+      "type": "BIGINT",
+      "index": "6"
+    }
+  ]
+}

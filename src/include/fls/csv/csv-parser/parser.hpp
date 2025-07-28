@@ -6,7 +6,8 @@
 // https://github.com/AriaFallah/csv-parser
 
 // FLS_CHG
-// ADD LAST_FIELD_EMPTY for cases like ||\n
+// Handle empty last field at row end without a separate LAST_FIELD_EMPTY state,
+// and ensure pending ROW_END is emitted before CSV_END at EOF.
 //
 // NOLINTBEGIN
 
@@ -62,7 +63,6 @@ private:
 	// CSV state for state machine
 	enum class State {
 		START_OF_FIELD, //
-		LAST_FIELD_EMPTY,
 		IN_FIELD,
 		IN_QUOTED_FIELD,
 		IN_ESCAPED_QUOTE,
@@ -136,6 +136,12 @@ public:
 
 	// Reads a single field from the CSV
 	Field next_field() {
+		// If we just finished a row previously, emit its ROW_END now
+		if (m_state == State::END_OF_ROW) {
+			m_state = State::START_OF_FIELD;
+			return Field(FieldType::ROW_END);
+		}
+
 		if (empty()) {
 			return Field(FieldType::CSV_END);
 		}
@@ -158,16 +164,13 @@ public:
 			switch (m_state) {
 			case State::START_OF_FIELD:
 				m_cursor++;
-				// FLS_CHG
-				// if (c == m_terminator) {
-				// 	handle_crlf(c);
-				// 	return Field(FieldType::ROW_END);
-				// }
 				// Handles multiline strings. Disabled by default, but we enable it as we have multiline strings.
 				if (c == m_quote) { // && false) { // forget about quoting, our csv input is not legal anyway
 					m_state = State::IN_QUOTED_FIELD;
 				} else if (c == m_terminator) {
-					m_state = State::LAST_FIELD_EMPTY;
+					// Empty last field at end of row
+					handle_crlf(c);
+					m_state = State::END_OF_ROW;
 					return Field(m_fieldbuf);
 				} else if (c == m_delimiter) {
 					return Field(m_fieldbuf);
@@ -227,10 +230,9 @@ public:
 				break;
 
 			case State::END_OF_ROW:
+				// Normally unreachable because we emit ROW_END early at the top,
+				// but keep the fallback for safety.
 				m_state = State::START_OF_FIELD;
-				return Field(FieldType::ROW_END);
-
-			case State::LAST_FIELD_EMPTY:
 				return Field(FieldType::ROW_END);
 
 			case State::EMPTY:
