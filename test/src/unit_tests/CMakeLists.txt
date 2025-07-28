@@ -1,4 +1,5 @@
 add_executable(unit_test
+        csv_parser_trailing_delimiter_test.cpp
         csv_reader_test.cpp
         double_test.cpp
         json_test.cpp
