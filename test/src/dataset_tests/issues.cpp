@@ -24,5 +24,4 @@ TEST_F(FastLanesReaderTester, issue_055) {
 	TestCorrectness(issues::ISSUE_055);
 }
 
-
 } // namespace fastlanes
