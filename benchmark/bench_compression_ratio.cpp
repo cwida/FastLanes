@@ -183,7 +183,7 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 
 int main() {
 	// run_compression_ratio_benchmark(public_bi_case);
-	// run_compression_ratio_benchmark(time_series_case);
-	run_compression_ratio_benchmark(mnist_case);
+	run_compression_ratio_benchmark(time_series_case);
+	// run_compression_ratio_benchmark(mnist_case);
 	return EXIT_SUCCESS;
 }
