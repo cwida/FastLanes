@@ -1,0 +1,324 @@
+{
+  "columns": [
+    {
+      "name": "Column_1",
+      "type": "FLS_I16",
+      "index": "0"
+    },
+    {
+      "name": "Column_2",
+      "type": "FLS_I16",
+      "index": "1"
+    },
+    {
+      "name": "Column_3",
+      "type": "FLS_I16",
+      "index": "2"
+    },
+    {
+      "name": "Column_4",
+      "type": "FLS_I16",
+      "index": "3"
+    },
+    {
+      "name": "Column_5",
+      "type": "FLS_I16",
+      "index": "4"
+    },
+    {
+      "name": "Column_6",
+      "type": "FLS_I16",
+      "index": "5"
+    },
+    {
+      "name": "Column_7",
+      "type": "FLS_I16",
+      "index": "6"
+    },
+    {
+      "name": "Column_8",
+      "type": "FLS_I16",
+      "index": "7"
+    },
+    {
+      "name": "Column_9",
+      "type": "FLS_I16",
+      "index": "8"
+    },
+    {
+      "name": "Column_10",
+      "type": "FLS_I16",
+      "index": "9"
+    },
+    {
+      "name": "Column_11",
+      "type": "FLS_I16",
+      "index": "10"
+    },
+    {
+      "name": "Column_12",
+      "type": "FLS_I16",
+      "index": "11"
+    },
+    {
+      "name": "Column_13",
+      "type": "FLS_I16",
+      "index": "12"
+    },
+    {
+      "name": "Column_14",
+      "type": "FLS_I16",
+      "index": "13"
+    },
+    {
+      "name": "Column_15",
+      "type": "FLS_I16",
+      "index": "14"
+    },
+    {
+      "name": "Column_16",
+      "type": "FLS_I16",
+      "index": "15"
+    },
+    {
+      "name": "Column_17",
+      "type": "FLS_I16",
+      "index": "16"
+    },
+    {
+      "name": "Column_18",
+      "type": "FLS_I16",
+      "index": "17"
+    },
+    {
+      "name": "Column_19",
+      "type": "FLS_I16",
+      "index": "18"
+    },
+    {
+      "name": "Column_20",
+      "type": "FLS_I16",
+      "index": "19"
+    },
+    {
+      "name": "Column_21",
+      "type": "FLS_I16",
+      "index": "20"
+    },
+    {
+      "name": "Column_22",
+      "type": "FLS_I16",
+      "index": "21"
+    },
+    {
+      "name": "Column_23",
+      "type": "FLS_I16",
+      "index": "22"
+    },
+    {
+      "name": "Column_24",
+      "type": "FLS_I16",
+      "index": "23"
+    },
+    {
+      "name": "Column_25",
+      "type": "FLS_I16",
+      "index": "24"
+    },
+    {
+      "name": "Column_26",
+      "type": "FLS_I16",
+      "index": "25"
+    },
+    {
+      "name": "Column_27",
+      "type": "FLS_I16",
+      "index": "26"
+    },
+    {
+      "name": "Column_28",
+      "type": "FLS_I16",
+      "index": "27"
+    },
+    {
+      "name": "Column_29",
+      "type": "FLS_I16",
+      "index": "28"
+    },
+    {
+      "name": "Column_30",
+      "type": "FLS_I16",
+      "index": "29"
+    },
+    {
+      "name": "Column_31",
+      "type": "FLS_I16",
+      "index": "30"
+    },
+    {
+      "name": "Column_32",
+      "type": "FLS_I16",
+      "index": "31"
+    },
+    {
+      "name": "Column_33",
+      "type": "FLS_I16",
+      "index": "32"
+    },
+    {
+      "name": "Column_34",
+      "type": "FLS_I16",
+      "index": "33"
+    },
+    {
+      "name": "Column_35",
+      "type": "FLS_I16",
+      "index": "34"
+    },
+    {
+      "name": "Column_36",
+      "type": "FLS_I16",
+      "index": "35"
+    },
+    {
+      "name": "Column_37",
+      "type": "FLS_I16",
+      "index": "36"
+    },
+    {
+      "name": "Column_38",
+      "type": "FLS_I16",
+      "index": "37"
+    },
+    {
+      "name": "Column_39",
+      "type": "FLS_I16",
+      "index": "38"
+    },
+    {
+      "name": "Column_40",
+      "type": "FLS_I16",
+      "index": "39"
+    },
+    {
+      "name": "Column_41",
+      "type": "FLS_I16",
+      "index": "40"
+    },
+    {
+      "name": "Column_42",
+      "type": "FLS_I16",
+      "index": "41"
+    },
+    {
+      "name": "Column_43",
+      "type": "FLS_I16",
+      "index": "42"
+    },
+    {
+      "name": "Column_44",
+      "type": "FLS_I16",
+      "index": "43"
+    },
+    {
+      "name": "Column_45",
+      "type": "FLS_I16",
+      "index": "44"
+    },
+    {
+      "name": "Column_46",
+      "type": "FLS_I16",
+      "index": "45"
+    },
+    {
+      "name": "Column_47",
+      "type": "FLS_I16",
+      "index": "46"
+    },
+    {
+      "name": "Column_48",
+      "type": "FLS_I16",
+      "index": "47"
+    },
+    {
+      "name": "Column_49",
+      "type": "FLS_I16",
+      "index": "48"
+    },
+    {
+      "name": "Column_50",
+      "type": "FLS_I16",
+      "index": "49"
+    },
+    {
+      "name": "Column_51",
+      "type": "FLS_I16",
+      "index": "50"
+    },
+    {
+      "name": "Column_52",
+      "type": "FLS_I16",
+      "index": "51"
+    },
+    {
+      "name": "Column_53",
+      "type": "FLS_I16",
+      "index": "52"
+    },
+    {
+      "name": "Column_54",
+      "type": "FLS_I16",
+      "index": "53"
+    },
+    {
+      "name": "Column_55",
+      "type": "FLS_I16",
+      "index": "54"
+    },
+    {
+      "name": "Column_56",
+      "type": "FLS_I16",
+      "index": "55"
+    },
+    {
+      "name": "Column_57",
+      "type": "FLS_I16",
+      "index": "56"
+    },
+    {
+      "name": "Column_58",
+      "type": "FLS_I16",
+      "index": "57"
+    },
+    {
+      "name": "Column_59",
+      "type": "FLS_I16",
+      "index": "58"
+    },
+    {
+      "name": "Column_60",
+      "type": "FLS_I16",
+      "index": "59"
+    },
+    {
+      "name": "Column_61",
+      "type": "FLS_I16",
+      "index": "60"
+    },
+    {
+      "name": "Column_62",
+      "type": "FLS_I16",
+      "index": "61"
+    },
+    {
+      "name": "Column_63",
+      "type": "FLS_I16",
+      "index": "62"
+    },
+    {
+      "name": "Column_64",
+      "type": "FLS_I16",
+      "index": "63"
+    }
+  ]
+}

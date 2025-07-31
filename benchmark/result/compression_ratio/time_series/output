@@ -1,0 +1,5 @@
+-- Table Computer_Monitor bench in "/home/tangyuxin/cleanFastlanes/FastLanes/data/fls/123988191721024", FLS size=57529, CSV size=917528
+-- Table Smart_Gird bench in "/home/tangyuxin/cleanFastlanes/FastLanes/data/fls/123988208506432", FLS size=250929, CSV size=918847
+-- Table AMPds bench in "/home/tangyuxin/cleanFastlanes/FastLanes/data/fls/123988225291840", FLS size=363719, CSV size=2540627
+-- Table Linear_Road bench in "/home/tangyuxin/cleanFastlanes/FastLanes/data/fls/123988200113728", FLS size=253407, CSV size=1290067
+segmentation fault (core dumped)

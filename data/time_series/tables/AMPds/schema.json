@@ -1,0 +1,59 @@
+{
+  "columns": [
+    {
+      "name": "Column_1",
+      "type": "DOUBLE",
+      "index": "0"
+    },
+    {
+      "name": "Column_2",
+      "type": "DOUBLE",
+      "index": "1"
+    },
+    {
+      "name": "Column_3",
+      "type": "DOUBLE",
+      "index": "2"
+    },
+    {
+      "name": "Column_4",
+      "type": "DOUBLE",
+      "index": "3"
+    },
+    {
+      "name": "Column_5",
+      "type": "DOUBLE",
+      "index": "4"
+    },
+    {
+      "name": "Column_6",
+      "type": "BIGINT",
+      "index": "5"
+    },
+    {
+      "name": "Column_7",
+      "type": "BIGINT",
+      "index": "6"
+    },
+    {
+      "name": "Column_8",
+      "type": "BIGINT",
+      "index": "7"
+    },
+    {
+      "name": "Column_9",
+      "type": "BIGINT",
+      "index": "8"
+    },
+    {
+      "name": "Column_10",
+      "type": "BIGINT",
+      "index": "9"
+    },
+    {
+      "name": "Column_11",
+      "type": "BIGINT",
+      "index": "10"
+    }
+  ]
+}
