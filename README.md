@@ -190,6 +190,13 @@ This project is released under the [MIT License](LICENSE).
 
 ---
 
+## Contributing
+
+We welcome contributions to FastLanes!  
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+
+---
+
 ## Join Our Community
 
 Come discuss FastLanes, share feedback, and help shape the future of data formats on Discord:
