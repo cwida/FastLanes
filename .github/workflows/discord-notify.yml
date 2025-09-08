@@ -33,16 +33,16 @@ jobs:
                 "${{ github.event.action }}" == "closed" && \
                 "${{ github.event.pull_request.merged }}" == "true" ]]; then
             # merged PR metadata
-            MERGER=$(jq -r '.pull_request.merged_by.login' < "$GITHUB_EVENT_PATH")
             PR_NUMBER=$(jq -r '.pull_request.number'       < "$GITHUB_EVENT_PATH")
             PR_TITLE=$(jq -r '.pull_request.title'         < "$GITHUB_EVENT_PATH")
             PR_URL=$(jq -r '.pull_request.html_url'        < "$GITHUB_EVENT_PATH")
             BASE_REF=$(jq -r '.pull_request.base.ref'      < "$GITHUB_EVENT_PATH")
-            PR_BODY=$(jq -r '.pull_request.body'           < "$GITHUB_EVENT_PATH")
+            PR_BODY=$(jq -r '.pull_request.body // ""'     < "$GITHUB_EVENT_PATH")
+            OPENER=$(jq -r '.pull_request.user.login'      < "$GITHUB_EVENT_PATH")
 
-            # assemble a 4-line message: header / title / URL / body
+            # header / title / URL / body
             printf -v MSG '%s\n%s\n%s\n\n%s' \
-              "📦 PR #${PR_NUMBER} merged into **${BASE_REF}** by **${MERGER}**" \
+              "📦 PR #${PR_NUMBER} merged into **${BASE_REF}** — credit goes to [@${OPENER}](https://github.com/${OPENER})" \
               "**${PR_TITLE}**" \
               "${PR_URL}" \
               "${PR_BODY}"
