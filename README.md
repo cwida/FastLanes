@@ -148,7 +148,7 @@ If you use FastLanes in your research or projects, please cite:
     publisher = {VLDB Endowment}
 }
 
-@inproceedings{afroozeh2024accelerating,
+@inproceedings{afroozeh2024gpu,
     author = {Afroozeh, Azim and Felius, Lotte and Boncz, Peter},
     title = {Accelerating GPU Data Processing Using FastLanes Compression},
     booktitle = {DaMoN ’24: Proceedings of the 20th International Workshop on Data Management on New Hardware},
@@ -180,6 +180,25 @@ If you use FastLanes in your research or projects, please cite:
     organization = {ACM},
     url = {https://dl.acm.org/doi/pdf/10.1145/3736227.3736242}
 }
+
+@article{afroozeh2025fastlanes,
+    author = {Afroozeh, Azim and Boncz, Peter},
+    title = {The FastLanes File Format},
+    year = {2025},
+    issue_date = {July 2025},
+    publisher = {VLDB Endowment},
+    volume = {18},
+    number = {11},
+    issn = {2150-8097},
+    url = {https://doi.org/10.14778/3749646.3749718},
+    doi = {10.14778/3749646.3749718},
+    abstract = {This paper introduces a new open-source big data file format, called FastLanes. It is designed for modern data-parallel execution (SIMD or GPU), and evolves the features of previous data formats such as Parquet, which are the foundation of data lakes, and which increasingly are used in AI pipelines. It does so by avoiding generic compression methods (e.g. Snappy) in favor of lightweight encodings, that are fully data-parallel. To enhance compression ratio, it cascades encodings using a flexible expression encoding mechanism. This mechanism also enables multi-column compression (MCC), enhancing compression by exploiting correlations between columns, a long-time weakness of columnar storage. We contribute a 2-phase algorithm to find encodings expressions during compression.FastLanes also innovates in its API, providing flexible support for partial decompression, facilitating engines to execute queries on compressed data. FastLanes is designed for fine-grained access, at the level of small batches rather than rowgroups; in order to limit the decompression memory footprint to fit CPU and GPU caches.We contribute an open-source implementation of FastLanes in portable (auto-vectorizing) C++. Our evaluation on a corpus of real-world data shows that FastLanes improves compression ratio over Parquet, while strongly accelerating decompression, making it a win-win over the state-of-the-art.},
+    journal = {Proc. VLDB Endow.},
+    month = sep,
+    pages = {4629–4643},
+    numpages = {15}
+}
+
 ```
 
 ---
