@@ -6,7 +6,6 @@ add_executable(
         issues.cpp
         nextiajd_test.cpp
         timeseries_test.cpp
-        mnist.cpp
         public_bi.cpp
         test_fc_bench.cpp
         tpch.cpp

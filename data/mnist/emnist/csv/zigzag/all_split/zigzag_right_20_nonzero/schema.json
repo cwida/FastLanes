@@ -1,9 +1,0 @@
-{
-    "columns": [
-      {
-        "name": "Column_1",
-        "type": "FLS_I16",
-        "index": "0"
-      }
-    ]
-}
