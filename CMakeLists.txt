@@ -248,12 +248,12 @@ if (FLS_BUILD_TESTING OR
         message("-- FLS : Using FASTLANES_DATA_DIR from environment: ${data_SOURCE_DIR}")
     else ()
         include(FetchContent)
-        # FetchContent_Declare(
-        #         data
-        #         GIT_REPOSITORY https://github.com/cwida/FastLanes_Data.git
-        #         GIT_TAG main
-        # )
-        # FetchContent_MakeAvailable(data)
+        FetchContent_Declare(
+                data
+                GIT_REPOSITORY https://github.com/cwida/FastLanes_Data.git
+                GIT_TAG main
+        )
+        FetchContent_MakeAvailable(data)
         set(data_SOURCE_DIR "${data_SOURCE_DIR}")  # from FetchContent
         message("-- FLS : Fetched FastLanes_Data into: ${data_SOURCE_DIR}")
     endif ()
