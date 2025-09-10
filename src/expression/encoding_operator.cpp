@@ -283,7 +283,7 @@ enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
                                ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state) {
 
-	VisitorFunctor functor {this, &expr};
+	VisitorFunctor<PT> functor {this, &expr};
 
 	if (!expr.operators.empty()) {
 		visit(functor, expr.operators.back());
