@@ -29,17 +29,13 @@ define echo_start
 endef
 
 # ── Root paths ──────────────────────────────────────────
-# Determine the directory of this file via MAKEFILE_LIST
 MKFILE_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-
-# If this file lives in a directory named "mk", repo root is its parent
 ifeq ($(notdir $(MKFILE_DIR)),mk)
   REPO_ROOT ?= $(abspath $(MKFILE_DIR)/..)
 else
   REPO_ROOT ?= $(MKFILE_DIR)
 endif
 
-# CRATE_ROOT always under repo
 CRATE_ROOT ?= $(REPO_ROOT)/rust
 
 # ── Parallelism ─────────────────────────────────────────
@@ -55,8 +51,8 @@ NUM_JOBS ?= $(shell                                      \
 # ── Exports & Info ──────────────────────────────────────
 export REPO_ROOT CRATE_ROOT NUM_JOBS
 
-# only print during normal runs
-ifneq ($(MAKECMDGOALS),detect-cpu)
+# only print when VERBOSE=1
+ifeq ($(VERBOSE),1)
 $(info REPO_ROOT:   $(REPO_ROOT))
 $(info CRATE_ROOT:  $(CRATE_ROOT))
 $(info NUM_JOBS:    $(NUM_JOBS))
