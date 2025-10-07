@@ -13,6 +13,10 @@ CARGO        ?= $(shell command -v cargo 2>/dev/null)
 CTEST        ?= $(shell command -v ctest 2>/dev/null)
 NUM_JOBS     ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
 
+# Test-specific config (separate build dir and build type)
+TEST_BUILD_DIR  ?= $(BUILD_DIR)/tests
+TEST_BUILD_TYPE ?= Release
+
 # Includes
 include mk/preamble.mk     # colors + root paths
 include mk/python.mk       # Python bindings
@@ -28,7 +32,8 @@ include mk/header_check.mk # Header checks
 
 .DEFAULT_GOAL := help
 
-.PHONY: all build install help help-main
+.PHONY: all build install test test-cpp help help-main \
+        configure-cpp-tests build-cpp-tests
 
 # Build
 all: build
@@ -41,16 +46,18 @@ install: install-cpp
 help: help-main
 help-main:
 	@echo "Targets:"
-	@echo "  make build        - Build C++ components"
-	@echo "  make install      - Install C++ artefacts"
-	@echo "  make check-header - Verify file headers"
-	@echo "  make fix-header   - Automatically fix headers"
-	@echo "  make help         - Show this message"
+	@echo "  make build                    - Build C++ components"
+	@echo "  make install                  - Install C++ artefacts"
+	@echo "  make test [TEST_BUILD_TYPE=]  - Configure+build+run tests in a separate tree (Debug by default)"
+	@echo "  make check-header             - Verify file headers"
+	@echo "  make fix-header               - Automatically fix headers"
+	@echo "  make help                     - Show this message"
 	@echo
 	@echo "Variables (override via CLI):"
 	@echo "  BUILD_DIR=$(BUILD_DIR)"
+	@echo "  TEST_BUILD_DIR=$(TEST_BUILD_DIR)"
+	@echo "  TEST_BUILD_TYPE=$(TEST_BUILD_TYPE)"
 	@echo "  PREFIX=$(PREFIX)"
 	@echo "  CRATE_ROOT=$(CRATE_ROOT)"
 	@echo "  NUM_JOBS=$(NUM_JOBS)"
 	@echo "  VERBOSE=$(VERBOSE)"
-
