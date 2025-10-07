@@ -3,13 +3,12 @@
 # ────────────────────────────────────────────────────────
 # mk/embeddings.mk
 # ────────────────────────────────────────────────────────
-# mk/embeddings.mk — Generate sentence embeddings
 # -----------------------------------------------------------
 # Targets:
-#   make install      – create .venv & install deps
-#   make generate     – run generate_embedding.py
-#   make clean        – delete __pycache__
-#   make venv-clean   – remove .venv entirely
+#   make install-embeddings-python – create .venv & install deps
+#   make generate-embeddings       – run generate_embedding.py
+#   make clean-embeddings          – delete __pycache__
+#   make venv-clean                – remove .venv entirely
 # -----------------------------------------------------------
 
 include mk/venv.mk
@@ -26,17 +25,17 @@ else
 endif
 
 .DEFAULT_GOAL := help
-.PHONY: help install generate clean-embeddings venv-clean
+.PHONY: help install-embeddings-python generate-embeddings clean-embeddings venv-clean
 
 help:
 	@echo "Targets:"
-	@echo "  make install     – create .venv & install deps"
-	@echo "  make generate    – run generate_embedding.py"
-	@echo "  make clean       – delete __pycache__"
-	@echo "  make venv-clean  – remove .venv"
+	@echo "  make install-embeddings-python  – create .venv & install deps"
+	@echo "  make generate-embeddings        – run generate_embedding.py"
+	@echo "  make clean-embeddings           – delete __pycache__"
+	@echo "  make venv-clean                 – remove .venv"
 
 # 1️⃣  Install deps (and auto-repair if venv was built with Python 3.13)
-install: venv
+install-embeddings-python: venv
 	@if [ -f "$(VENV_DIR)/pyvenv.cfg" ] && \
 	    grep -qE '^version = 3\.13' "$(VENV_DIR)/pyvenv.cfg"; then \
 	    echo "⚠️  .venv uses Python 3.13 — recreating with ‘python’ on PATH"; \
@@ -55,11 +54,11 @@ install: venv
 	              --extra-index-url https://download.pytorch.org/whl/cpu
 
 # 2️⃣  Generate embeddings
-generate-embeddings: install
+generate-embeddings: install-embeddings-python
 	@echo "Running generate_embedding.py with $$($(VENV_PY) --version) …"
 	"$(VENV_PY)" "$(SCRIPT)"
 
-# 3️⃣  House‑keeping helpers
+# 3️⃣  House-keeping helpers
 clean-embeddings:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 
