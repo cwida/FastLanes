@@ -55,6 +55,8 @@ help-main:
 	@echo "  make install                  - Install C++ artefacts"
 	@echo "  make test [TEST_BUILD_TYPE=]  - Configure+build+run tests in a separate tree (Debug by default)"
 	@echo "  make format                   - Run clang-format on all source directories"
+	@echo "  make bump                     - Bump fuzz seed version"
+	@echo "  make verify                   - Verify fuzz seed bump correctness"
 	@echo "  make check-header             - Verify file headers"
 	@echo "  make fix-header               - Automatically fix headers"
 	@echo "  make help                     - Show this message"

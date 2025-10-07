@@ -1,6 +1,6 @@
 {
   "num_cases": 10,
-  "base_seed": 10,
+  "base_seed": 11,
   "delimiter": "|",
   "min_cols": 1,
   "max_cols": 2,
