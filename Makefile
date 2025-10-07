@@ -3,7 +3,6 @@
 # ────────────────────────────────────────────────────────
 # Makefile
 # ────────────────────────────────────────────────────────
-
 SHELL        := /bin/bash
 VERBOSE      ?= 0
 REPO_ROOT    ?= $(CURDIR)
@@ -44,6 +43,8 @@ help-main:
 	@echo "Targets:"
 	@echo "  make build        - Build C++ components"
 	@echo "  make install      - Install C++ artefacts"
+	@echo "  make check-header - Verify file headers"
+	@echo "  make fix-header   - Automatically fix headers"
 	@echo "  make help         - Show this message"
 	@echo
 	@echo "Variables (override via CLI):"
@@ -52,3 +53,4 @@ help-main:
 	@echo "  CRATE_ROOT=$(CRATE_ROOT)"
 	@echo "  NUM_JOBS=$(NUM_JOBS)"
 	@echo "  VERBOSE=$(VERBOSE)"
+
