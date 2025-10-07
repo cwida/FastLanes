@@ -3,23 +3,43 @@
 # ────────────────────────────────────────────────────────
 # Makefile
 # ────────────────────────────────────────────────────────
+
+# Defaults (override via CLI: make BUILD_DIR=out PREFIX=/usr/local)
+SHELL        := /bin/bash
+REPO_ROOT    ?= $(CURDIR)
+BUILD_DIR    ?= build
+CRATE_ROOT   ?= $(REPO_ROOT)/rust
+PREFIX       ?= $(REPO_ROOT)/build/install
+CARGO        ?= $(shell command -v cargo 2>/dev/null)
+CTEST        ?= $(shell command -v ctest 2>/dev/null)
+NUM_JOBS     ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+
+# Include modules
 include mk/preamble.mk
-include mk/python.mk
-include mk/format.mk
 include mk/cpp.mk
-include mk/rust.mk
-include mk/data.mk
-include mk/scripts.mk
-include mk/embeddings.mk
-include mk/flatbuffers.mk
-include mk/quick_fuzz.mk
-include mk/header_check.mk
 
-.PHONY: all clean clang-format format-check rust-format-check format
+.DEFAULT_GOAL := help
 
-all: build-cpp build-rust
+.PHONY: all build install help help-main
 
-clean:
-	$(MAKE) clean-cpp clean-rust clean-python
+# Aggregate builds
+all: build
+build: build-cpp
 
-format: clang-format
+# Install (C++ only)
+install: install-cpp
+
+# Help
+help: help-main
+
+help-main:
+	@echo "Primary targets:"
+	@echo "  make build        - Build C++ components"
+	@echo "  make install      - Install C++ artefacts"
+	@echo "  make help         - Show this message"
+	@echo
+	@echo "Variables (override via CLI):"
+	@echo "  BUILD_DIR=$(BUILD_DIR)"
+	@echo "  PREFIX=$(PREFIX)"
+	@echo "  CRATE_ROOT=$(CRATE_ROOT)"
+	@echo "  NUM_JOBS=$(NUM_JOBS)"
