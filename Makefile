@@ -42,6 +42,11 @@ build: build-cpp
 # Install
 install: install-cpp
 
+# Format
+.PHONY: format
+format: clang-format
+	@echo "✅ Formatting complete (clang-format)."
+
 # Help
 help: help-main
 help-main:
@@ -49,6 +54,7 @@ help-main:
 	@echo "  make build                    - Build C++ components"
 	@echo "  make install                  - Install C++ artefacts"
 	@echo "  make test [TEST_BUILD_TYPE=]  - Configure+build+run tests in a separate tree (Debug by default)"
+	@echo "  make format                   - Run clang-format on all source directories"
 	@echo "  make check-header             - Verify file headers"
 	@echo "  make fix-header               - Automatically fix headers"
 	@echo "  make help                     - Show this message"
