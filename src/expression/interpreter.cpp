@@ -1392,7 +1392,7 @@ void make_dec_equality_expr(PhysicalExpr&                        physical_expr,
                             RowgroupReader&                      reader,
                             const flatbuffers::Vector<uint64_t>* operand_tokens) {
 	FLS_ASSERT_NOT_NULL_POINTER(operand_tokens);
-	FLS_ASSERT(!operand_tokens->empty());
+	FLS_ASSERT_FB_NOT_EMPTY(operand_tokens);
 
 	const auto idx = static_cast<size_t>(operand_tokens->Get(0));
 	physical_expr.operators.emplace_back(reader.m_expressions[idx]->operators.back());
@@ -1426,7 +1426,6 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 	const auto* operand_tokens  = rpn->operand_tokens();
 
 	FLS_ASSERT_NOT_NULL_POINTER(operator_tokens);
-	FLS_ASSERT_NOT_NULL_POINTER(operand_tokens);
 
 	using enum OperatorToken; // if you already use this in the switch
 
