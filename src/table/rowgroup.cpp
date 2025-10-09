@@ -108,9 +108,8 @@ void init_logical_columns(const ColumnDescriptors& footer, rowgroup_pt& columns)
 		columns.emplace_back(init_logical_columns(*col_descriptor));
 	}
 }
-
 Rowgroup::Rowgroup(const RowgroupDescriptorT& footer, const Connection& connection)
-    : m_descriptor(footer)
+    : m_descriptor(footer) // RowgroupDescriptor -> RowgroupDescriptorT
     , n_tup(footer.m_n_tuples)
     , m_connection(connection)
     , capacity(connection.m_config->n_vector_per_rowgroup * CFG::VEC_SZ) {

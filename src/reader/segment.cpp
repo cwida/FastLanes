@@ -235,17 +235,18 @@ template u08_pt* Segment::GetFixedSizeArray<u08_pt>(n_t length);
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_segment_view
 \*--------------------------------------------------------------------------------------------------------------------*/
-SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptorT& segment_descriptor) {
-	auto segment_span = column_span.subspan(segment_descriptor.entrypoint_offset, segment_descriptor.entrypoint_size);
+SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptor& segment_descriptor) {
+	auto segment_span =
+	    column_span.subspan(segment_descriptor.entrypoint_offset(), segment_descriptor.entrypoint_size());
 
-	switch (segment_descriptor.entry_point_t) {
+	switch (segment_descriptor.entry_point_t()) {
 	case EntryPointType::UINT8: {
 		const auto entry_point_span =
 		    std::span<uint8_t>(reinterpret_cast<uint8_t*>(segment_span.data()), segment_span.size() / sizeof(uint8_t));
 
 		auto entry_point_view = EntryPointView<uint8_t>(entry_point_span);
 
-		const auto data_span = column_span.subspan(segment_descriptor.data_offset, segment_descriptor.data_size);
+		const auto data_span = column_span.subspan(segment_descriptor.data_offset(), segment_descriptor.data_size());
 		return SegmentView {entry_point_view, data_span};
 	}
 	case EntryPointType::UINT16: {
@@ -254,7 +255,7 @@ SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescript
 
 		auto entry_point_view = EntryPointView<uint16_t>(entry_point_span);
 
-		const auto data_span = column_span.subspan(segment_descriptor.data_offset, segment_descriptor.data_size);
+		const auto data_span = column_span.subspan(segment_descriptor.data_offset(), segment_descriptor.data_size());
 		return SegmentView {entry_point_view, data_span};
 	}
 	case EntryPointType::UINT32: {
@@ -263,7 +264,7 @@ SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescript
 
 		auto entry_point_view = EntryPointView<uint32_t>(entry_point_span);
 
-		const auto data_span = column_span.subspan(segment_descriptor.data_offset, segment_descriptor.data_size);
+		const auto data_span = column_span.subspan(segment_descriptor.data_offset(), segment_descriptor.data_size());
 		return SegmentView {entry_point_view, data_span};
 	}
 	case EntryPointType::UINT64:

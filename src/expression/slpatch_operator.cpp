@@ -98,8 +98,8 @@ struct SLPatchExprVisitor {
 		this_opr.data = opr->unffored_data;
 	}
 	template <typename T = PT>
-	requires(!std::is_same_v<T, make_unsigned_t<T>>) void
-	operator()(const sp<dec_unffor_opr<make_unsigned_t<PT>>>& opr) {
+	    requires(!std::is_same_v<T, make_unsigned_t<T>>)
+	void operator()(const sp<dec_unffor_opr<make_unsigned_t<PT>>>& opr) {
 		this_opr.data = reinterpret_cast<PT*>(opr->unffored_data);
 	}
 	void operator()(std::monostate& arg) {
@@ -116,13 +116,16 @@ template <typename PT>
 dec_slpatch_opr<PT>::dec_slpatch_opr(PhysicalExpr&     physical_expr,
                                      const ColumnView& column_view,
                                      InterpreterState& state)
-    : exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
-    , exceptions_position_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , n_exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 3;
+    : exceptions_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)])))
+    , exceptions_position_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , n_exceptions_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
+	state.cur_operand -= 3;
 
 	visit(SLPatchExprVisitor {*this}, physical_expr.operators.back());
 }
