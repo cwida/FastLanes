@@ -1430,12 +1430,7 @@ void Interpreter::Decoding::Interpret(const ColumnDescriptor& column_descriptor,
 
 	using enum OperatorToken; // if you already use this in the switch
 
-	// ❌ DELETE this:
-	// for (const auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn();
-	//      const auto& operator_token : operator_tokens) {
-
-	// ✅ REPLACE with this:
-	for (flatbuffers::uoffset_t i = 0; i < operator_tokens->size(); ++i) {
+	for (std::uint32_t i = 0; i < operator_tokens->size(); ++i) {
 		const auto operator_token = operator_tokens->Get(i);
 
 		switch (operator_token) {
