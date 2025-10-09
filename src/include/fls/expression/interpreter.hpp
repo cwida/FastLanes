@@ -38,10 +38,10 @@ public:
 	class Decoding {
 	public:
 		static void Interpret(const ColumnDescriptor& column_descriptor,
-		                      const ColumnView&        column_view,
-		                      PhysicalExpr&            physical_expr,
-		                      InterpreterState&        state,
-		                      RowgroupReader&          reader);
+		                      const ColumnView&       column_view,
+		                      PhysicalExpr&           physical_expr,
+		                      InterpreterState&       state,
+		                      RowgroupReader&         reader);
 	};
 };
 
