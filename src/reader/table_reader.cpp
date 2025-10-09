@@ -10,11 +10,13 @@
 #include "fls/file/file_footer.hpp"
 #include "fls/file/file_header.hpp"
 #include "fls/footer/table_descriptor.hpp"
+#include "fls/footer/table_descriptor_generated.h"
 #include "fls/reader/rowgroup_reader.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
-#include <filesystem> // std::filesystem::path, exists, is_directory, is_regular_file
-#include <utility>    // std::move
+#include <filesystem>                // std::filesystem::path, exists, is_directory, is_regular_file
+#include <flatbuffers/flatbuffers.h> // flatbuffers::uoffset_t
+#include <utility>                   // std::move
 
 namespace fastlanes {
 
