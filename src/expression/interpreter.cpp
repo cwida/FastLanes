@@ -4,7 +4,6 @@
 // src/expression/interpreter.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/interpreter.hpp"
-#include "flatbuffers/flatbuffers.h" // flatbuffers::uoffset_t
 #include "flatbuffers/vector.h"      // flatbuffers::Vector
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
