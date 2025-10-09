@@ -10,6 +10,7 @@
 #include "fls/reader/segment.hpp"
 #include "fls/std/span.hpp"
 #include <cstddef> // for std::byte
+#include <cstdint> // for std::uint32_t
 
 namespace fastlanes {
 
