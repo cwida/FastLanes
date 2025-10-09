@@ -4,6 +4,8 @@
 // src/footer/table_descriptor.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/footer/table_descriptor.hpp"
+#include "flatbuffers/flatbuffers.h" // flatbuffers::FlatBufferBuilder
+#include "flatbuffers/verifier.h"    // flatbuffers::Verifier
 #include "fls/common/alias.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"
@@ -12,10 +14,14 @@
 #include "fls/std/filesystem.hpp"
 #include "fls/std/vector.hpp"
 #include "fls/table/table.hpp"
+#include <cstddef> // std::size_t
+#include <cstdint> // uint8_t
 #include <cstring> // std::memcpy
 #include <fstream>
 #include <ios>
+#include <memory> // std::shared_ptr, std::make_shared
 #include <stdexcept>
+#include <utility> // std::move
 #include <vector>
 
 namespace fastlanes {
@@ -97,7 +103,7 @@ const TableDescriptor* TableDescriptorHandle::MakePtr(const std::shared_ptr<vect
 TableDescriptorHandle TableDescriptorHandle::FromBytes(vector<uint8_t> bytes, bool verify) {
 	auto sp  = std::make_shared<vector<uint8_t>>(std::move(bytes));
 	auto ptr = MakePtr(sp, verify);
-	return TableDescriptorHandle(std::move(sp), ptr);
+	return {std::move(sp), ptr};
 }
 
 TableDescriptorHandle TableDescriptorHandle::FromFile(const path& file_path, bool verify) {
@@ -156,4 +162,5 @@ up<TableDescriptorT> make_table_descriptor(const Table& table) {
 
 	return table_descriptor;
 }
+
 } // namespace fastlanes
