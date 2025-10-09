@@ -64,8 +64,9 @@ void bench_sampling() {
 
 				    auto size =
 				        benchmarker.bench_with_sample_size(file_path, thread_specific_fls_dir_path, sample_size);
-				    const auto& table_descriptor = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
-				    const auto& first_rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
+				    const auto& table_descriptor_handle = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
+				    const auto& first_rowgroup_descriptor =
+				        table_descriptor_handle->Unpack()->m_rowgroup_descriptors[0];
 
 				    // Store the main result (thread-safe)
 				    {

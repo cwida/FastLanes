@@ -4,6 +4,8 @@
 // src/expression/interpreter.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/expression/interpreter.hpp"
+#include "flatbuffers/flatbuffers.h" // flatbuffers::uoffset_t
+#include "flatbuffers/vector.h"      // flatbuffers::Vector
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
@@ -34,6 +36,8 @@
 #include "fls/reader/column_view.hpp"
 #include "fls/std/type_traits.hpp"
 #include "fls/table/rowgroup.hpp"
+#include <cstddef> // size_t
+#include <cstdint> // uint32_t, uint64_t
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
