@@ -13,19 +13,25 @@ COLOR ?= 1
 ifeq ($(COLOR),1)
   _Y := $(shell tput setaf 3 2>/dev/null || printf '\033[0;33m')
   _G := $(shell tput setaf 2 2>/dev/null || printf '\033[0;32m')
+  _E := $(shell tput setaf 1 2>/dev/null || printf '\033[0;31m')
   _R := $(shell tput sgr0   2>/dev/null || printf '\033[0m')
 else
   _Y :=
   _G :=
+  _E :=
   _R :=
 endif
 
 define echo_done
-	@printf '%s%s%s\n' '$(_G)' '$(1)' '$(_R)'
+	printf '%s%s%s\n' '$(_G)' '$(1)' '$(_R)'
 endef
 
 define echo_start
-	@printf '%s%s%s\n' '$(_Y)' '$(1)' '$(_R)'
+	printf '%s%s%s\n' '$(_Y)' '$(1)' '$(_R)'
+endef
+
+define echo_error
+	printf '%s%s%s\n' '$(_E)' '$(1)' '$(_R)'
 endef
 
 # ── Root paths ──────────────────────────────────────────

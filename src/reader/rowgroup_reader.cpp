@@ -21,6 +21,7 @@
 #include "fls/reader/rowgroup_view.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/table/chunk.hpp" // for Chunk
+#include <cstdint>             // for std::uint32_t
 #include <memory>              // for make_unique, uniqu...
 
 namespace fastlanes {
