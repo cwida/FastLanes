@@ -4,8 +4,8 @@
 // src/footer/table_descriptor.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/footer/table_descriptor.hpp"
-#include "flatbuffers/flatbuffers.h" // flatbuffers::FlatBufferBuilder
-#include "flatbuffers/verifier.h"    // flatbuffers::Verifier
+#include "flatbuffers/flatbuffer_builder.h"
+#include "flatbuffers/verifier.h" // flatbuffers::Verifier
 #include "fls/common/alias.hpp"
 #include "fls/cor/lyt/buf.hpp"
 #include "fls/footer/rowgroup_descriptor.hpp"

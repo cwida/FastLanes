@@ -1392,7 +1392,7 @@ void make_dec_equality_expr(PhysicalExpr&                        physical_expr,
                             RowgroupReader&                      reader,
                             const flatbuffers::Vector<uint64_t>* operand_tokens) {
 	FLS_ASSERT_NOT_NULL_POINTER(operand_tokens);
-	FLS_ASSERT_GE(operand_tokens->size(), 1);
+	FLS_ASSERT(!operand_tokens->empty());
 
 	const auto idx = static_cast<size_t>(operand_tokens->Get(0));
 	physical_expr.operators.emplace_back(reader.m_expressions[idx]->operators.back());
