@@ -14,9 +14,9 @@
 #include "fls/reader/rowgroup_reader.hpp"
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
-#include <filesystem>                // std::filesystem::path, exists, is_directory, is_regular_file
-#include <flatbuffers/flatbuffers.h> // flatbuffers::uoffset_t
-#include <utility>                   // std::move
+#include <filesystem>         // std::filesystem::path, exists, is_directory, is_regular_file
+#include <flatbuffers/base.h> // flatbuffers::uoffset_t
+#include <utility>            // std::move
 
 namespace fastlanes {
 
