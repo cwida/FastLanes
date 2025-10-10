@@ -1168,7 +1168,6 @@ void make_dec_ffor_slpatch_expr(PhysicalExpr& physical_expr, const ColumnView& c
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 void make_dec_alp_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	physical_expr.operators.emplace_back(make_shared<dec_alp_opr<PT>>(column_view, state));
 }
 
@@ -1186,7 +1185,6 @@ void make_dec_galp_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 void make_dec_alp_rd_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	physical_expr.operators.emplace_back(make_shared<dec_alp_rd_opr<PT>>(column_view, state));
 }
 
