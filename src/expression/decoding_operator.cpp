@@ -22,12 +22,14 @@ namespace fastlanes {
 template <typename PT>
 dec_unffor_opr<PT>::dec_unffor_opr(const ColumnView& column_view, InterpreterState& state)
     : bitpacked_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
-    , bw_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)]))
+    , bw_segment_view(column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                                   ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)]))
     , base_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 3;
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])) {
+	state.cur_operand -= 3;
 }
 
 template <typename PT>
@@ -93,15 +95,15 @@ template struct dec_uncompressed_opr<str_pt>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 dec_constant_opr<PT>::dec_constant_opr(const ColumnView& column_view) {
-	FLS_ASSERT_E(column_view.column_descriptor.max->binary_data.size(), sizeof(PT));
-	value = *reinterpret_cast<const PT*>(column_view.column_descriptor.max->binary_data.data());
+	FLS_ASSERT_E(column_view.column_descriptor.max()->binary_data()->size(), sizeof(PT));
+	value = *reinterpret_cast<const PT*>(column_view.column_descriptor.max()->binary_data()->data());
 }
 
 dec_constant_str_opr::dec_constant_str_opr(const ColumnView& column_view) {
-	bytes.resize(column_view.column_descriptor.max->binary_data.size());
+	bytes.resize(column_view.column_descriptor.max()->binary_data()->size());
 	memcpy(bytes.data(),
-	       column_view.column_descriptor.max->binary_data.data(),
-	       column_view.column_descriptor.max->binary_data.size());
+	       column_view.column_descriptor.max()->binary_data()->data(),
+	       column_view.column_descriptor.max()->binary_data()->size());
 };
 
 template struct dec_constant_opr<i64_pt>;
@@ -118,10 +120,10 @@ template struct dec_constant_opr<str_pt>;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_fls_str_uncompressed_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
-dec_fls_str_uncompressed_opr::dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPNT& rpn)
-    : byte_arr_segment(column_view.GetSegment(rpn.operand_tokens[0]))
-    , length_segment(column_view.GetSegment(rpn.operand_tokens[1])) {
-	FLS_ASSERT_EQUALITY(rpn.operand_tokens.size(), 2);
+dec_fls_str_uncompressed_opr::dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPN& rpn)
+    : byte_arr_segment(column_view.GetSegment((*rpn.operand_tokens())[0]))
+    , length_segment(column_view.GetSegment((*rpn.operand_tokens())[1])) {
+	FLS_ASSERT_EQUALITY(rpn.operand_tokens()->size(), 2);
 }
 
 void dec_fls_str_uncompressed_opr::PointTo(n_t vec_idx) {
@@ -140,18 +142,18 @@ len_t* dec_fls_str_uncompressed_opr::Length() const {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_struct_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
-dec_struct_opr::dec_struct_opr(const ColumnDescriptorT& column_descriptor,
-                               const ColumnView&        column_view,
+dec_struct_opr::dec_struct_opr(const ColumnDescriptor& column_descriptor,
+                               const ColumnView&       column_view,
                                InterpreterState&,
                                RowgroupReader& reader) {
-	auto& children = column_descriptor.children;
+	auto& children = *column_descriptor.children();
 
 	for (n_t children_idx {0}; children_idx < children.size(); ++children_idx) {
-		auto& child_column_descriptor = children[children_idx];
+		auto& child_column_descriptor = *children[static_cast<uint32_t>(children_idx)];
 
 		InterpreterState state;
 		auto             child_physical_expr =
-		    make_decoding_expression(*child_column_descriptor, column_view.children[children_idx], reader, state);
+		    make_decoding_expression(child_column_descriptor, column_view.children[children_idx], reader, state);
 
 		internal_exprs.push_back(child_physical_expr);
 	}

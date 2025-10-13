@@ -64,8 +64,9 @@ void bench_sampling() {
 
 				    auto size =
 				        benchmarker.bench_with_sample_size(file_path, thread_specific_fls_dir_path, sample_size);
-				    const auto& table_descriptor = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
-				    const auto& first_rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
+				    const auto& table_descriptor_handle = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
+				    const auto& table_descriptor_object = table_descriptor_handle->Unpack();
+				    const auto& first_rg_desc           = table_descriptor_object->m_rowgroup_descriptors[0];
 
 				    // Store the main result (thread-safe)
 				    {
@@ -76,9 +77,9 @@ void bench_sampling() {
 				    // Store the detailed results (thread-safe)
 				    {
 					    std::lock_guard<std::mutex> lock(results_mutex);
-					    for (const auto& column_descriptor : first_rowgroup_descriptor->m_column_descriptors) {
+					    for (const auto& column_descriptor : first_rg_desc->m_column_descriptors) {
 						    double bpt = static_cast<double>(column_descriptor->total_size) /
-						                 (static_cast<double>(first_rowgroup_descriptor->m_n_vec * CFG::VEC_SZ));
+						                 (static_cast<double>(first_rg_desc->m_n_vec * CFG::VEC_SZ));
 						    double Bpt = bpt / 8;
 
 						    detailed_results.emplace_back(table_name,

@@ -147,14 +147,16 @@ void enc_cross_rle_opr<fls_string_t>::MoveSegments(vector<up<Segment>>& segments
  * dec_cross_rle_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-dec_cross_rle_opr<PT>::dec_cross_rle_opr(PhysicalExpr&     physical_expr,
+dec_cross_rle_opr<PT>::dec_cross_rle_opr(PhysicalExpr& /*physical_expr*/,
                                          const ColumnView& column_view,
                                          InterpreterState& state)
-    : values_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , lengths_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 2;
+    : values_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , lengths_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
+	state.cur_operand -= 2;
 
 	values_segment.PointTo(0);
 	lengths_segment.PointTo(0);
@@ -227,16 +229,19 @@ template struct dec_cross_rle_opr<u16_pt>;
 template struct dec_cross_rle_opr<u32_pt>;
 template struct dec_cross_rle_opr<u64_pt>;
 
-dec_cross_rle_opr<fls_string_t>::dec_cross_rle_opr(PhysicalExpr&     physical_expr,
+dec_cross_rle_opr<fls_string_t>::dec_cross_rle_opr(PhysicalExpr& /*physical_expr*/,
                                                    const ColumnView& column_view,
                                                    InterpreterState& state)
-    : values_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
-    , values_offset_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , lengths_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 3;
+    : values_bytes_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)])))
+    , values_offset_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , lengths_segment(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
+	state.cur_operand -= 3;
 
 	values_bytes_seg.PointTo(0);
 	values_offset_seg.PointTo(0);

@@ -22,7 +22,7 @@ class Rowgroup;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class RowgroupReader {
 public:
-	explicit RowgroupReader(const path& file_path, const RowgroupDescriptorT& rowgroup_descriptor, Connection& fls);
+	explicit RowgroupReader(const path& file_path, const RowgroupDescriptor& rowgroup_descriptor, Connection& fls);
 
 public:
 	vector<sp<PhysicalExpr>>& get_chunk(n_t vec_idx);
@@ -33,7 +33,7 @@ public:
 	///
 	void to_csv(const path& dir_path);
 	///
-	[[nodiscard]] const RowgroupDescriptorT& get_descriptor() const;
+	[[nodiscard]] const RowgroupDescriptor& get_descriptor() const;
 	///!
 	[[nodiscard]] vector<string> get_column_names() const;
 	///
@@ -43,10 +43,10 @@ public:
 	vector<sp<PhysicalExpr>> m_expressions;
 
 private:
-	Connection&                m_connection;
-	const RowgroupDescriptorT& m_rowgroup_descriptor;
-	up<Buf>                    m_buf;
-	up<RowgroupView>           m_rowgroup_view;
+	Connection&               m_connection;
+	const RowgroupDescriptor& m_rowgroup_descriptor;
+	up<Buf>                   m_buf;
+	up<RowgroupView>          m_rowgroup_view;
 };
 
 } // namespace fastlanes

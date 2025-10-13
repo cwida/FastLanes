@@ -146,10 +146,11 @@ template <typename KEY_PT, typename INDEX_PT>
 dec_rle_map_opr<KEY_PT, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical_expr,
                                                    const ColumnView& column_view,
                                                    InterpreterState& state)
-    : rle_vals_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand])) {
+    : rle_vals_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand)]))) {
 	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
-	state.cur_operand = state.cur_operand - 1;
+	state.cur_operand -= 1;
 }
 
 template <typename KEY_PT, typename INDEX_PT>
@@ -177,13 +178,16 @@ template <typename INDEX_PT>
 dec_rle_map_opr<FlsString, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical_expr,
                                                       const ColumnView& column_view,
                                                       InterpreterState& state)
-    : rle_vals_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , rle_offset_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
+    : rle_vals_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , rle_offset_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
 	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
-	state.cur_operand = state.cur_operand - 2;
+	state.cur_operand -= 2;
 }
+
 template <typename INDEX_PT>
 void dec_rle_map_opr<FlsString, INDEX_PT>::PointTo(n_t vec_n) {
 	rle_vals_segment_view.PointTo(vec_n);

@@ -53,6 +53,13 @@
 #define FLS_ASSERT_CORRECT_IDX(Expr)            FLS_ASSERT(Expr != INVALID_N, " ", fastlanes::Assert::IDX);
 #define FLS_ASSERT_NOT_EMPTY_VEC(VEC)           FLS_ASSERT(!VEC.empty(), " ", fastlanes::Assert::EMPTY_VECTOR);
 #define FLS_ASSERT_CORRECT_VEC_INDEX(C)         FLS_ASSERT(C <= 1024 && C >= 0, " ", fastlanes::Assert::VEC_INDEX);
+// ── FlatBuffers helpers ──────────────────────────────────────────────────────
+#define FLS_ASSERT_FB_PTR(PTR)                  FLS_ASSERT((PTR) != nullptr, " ", fastlanes::Assert::NULL_POINTER)
+#define FLS_ASSERT_FB_NOT_EMPTY(PTR)                                                                                   \
+	FLS_ASSERT(((PTR) != nullptr) && !((PTR)->empty()), " ", fastlanes::Assert::EMPTY_VECTOR)
+#define FLS_ASSERT_FB_IDX_IN_RANGE(PTR, IDX)                                                                           \
+	FLS_ASSERT(                                                                                                        \
+	    ((PTR) != nullptr) && (static_cast<size_t>(IDX) < (PTR)->size()), " ", fastlanes::Assert::OUT_OF_RANGE_INDEX)
 
 #include <cstdint>
 

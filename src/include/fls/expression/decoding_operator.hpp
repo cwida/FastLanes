@@ -52,7 +52,7 @@ public:
  * dec_uncompressed_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct dec_fls_str_uncompressed_opr {
-	explicit dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPNT& rpn);
+	explicit dec_fls_str_uncompressed_opr(const ColumnView& column_view, const RPN& rpn);
 
 public:
 	void       PointTo(n_t vec_idx);
@@ -78,10 +78,10 @@ public:
 };
 
 struct dec_struct_opr {
-	dec_struct_opr(const ColumnDescriptorT& column_descriptor,
-	               const ColumnView&        column_view,
-	               InterpreterState&        state,
-	               RowgroupReader&          reader);
+	dec_struct_opr(const ColumnDescriptor& column_descriptor,
+	               const ColumnView&       column_view,
+	               InterpreterState&       state,
+	               RowgroupReader&         reader);
 
 	vector<sp<class PhysicalExpr>> internal_exprs;
 };

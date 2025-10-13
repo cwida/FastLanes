@@ -170,21 +170,26 @@ void enc_frequency_str_opr::MoveSegments(vector<up<Segment>>& segments) {
  * dec_frequency_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-dec_frequency_opr<PT>::dec_frequency_opr(PhysicalExpr&     physical_expr,
+dec_frequency_opr<PT>::dec_frequency_opr(PhysicalExpr& /*physical_expr*/,
                                          const ColumnView& column_view,
                                          InterpreterState& state)
     : frequent_value_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 3]))
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 3)]))
     , exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)]))
     , exceptions_position_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)]))
     , n_exceptions_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 4;
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])) {
+	state.cur_operand -= 4;
 
 	frequent_value_seg.PointTo(0);
-	frequent_val = *reinterpret_cast<PT*>(frequent_value_seg.data);
+	const auto* fv_ptr = reinterpret_cast<const PT*>(frequent_value_seg.data);
+	frequent_val       = *fv_ptr;
 }
 
 template <typename PT>
@@ -232,27 +237,36 @@ template struct dec_frequency_opr<u16_pt>;
 template struct dec_frequency_opr<u32_pt>;
 template struct dec_frequency_opr<u64_pt>;
 
-dec_frequency_str_opr::dec_frequency_str_opr(PhysicalExpr&     physical_expr,
+dec_frequency_str_opr::dec_frequency_str_opr(PhysicalExpr& /*physical_expr*/,
                                              const ColumnView& column_view,
                                              InterpreterState& state)
-    : frequent_value_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 5]))
-    , frequent_value_size_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 4]))
-    , n_exceptions_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 3]))
-    , exception_positions_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
-    , exception_values_bytes_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , exception_values_offset_seg(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 6;
+    : frequent_value_bytes_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 5)])))
+    , frequent_value_size_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 4)])))
+    , n_exceptions_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 3)])))
+    , exception_positions_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)])))
+    , exception_values_bytes_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , exception_values_offset_seg(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
+	state.cur_operand -= 6;
 
 	frequent_value_bytes_seg.PointTo(0);
 	frequent_value_size_seg.PointTo(0);
-	frequent_val = fls_string_t(reinterpret_cast<uint8_t*>(frequent_value_bytes_seg.data),
-	                            *reinterpret_cast<len_t*>(frequent_value_size_seg.data));
+
+	auto*      bytes = reinterpret_cast<uint8_t*>(frequent_value_bytes_seg.data);
+	const auto len   = *reinterpret_cast<const len_t*>(frequent_value_size_seg.data);
+
+	frequent_val = fls_string_t(bytes, len);
 }
 
 void dec_frequency_str_opr::PointTo(n_t vec_idx) {

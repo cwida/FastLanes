@@ -22,7 +22,7 @@ public:
 
 		auto start = benchmark::cycleclock::Now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			for (n_t vec_idx {0}; vec_idx < rowgroup_reader->get_descriptor().m_n_vec; vec_idx++) {
+			for (n_t vec_idx {0}; vec_idx < rowgroup_reader->get_descriptor().m_n_vec(); vec_idx++) {
 				rowgroup_reader->get_chunk(vec_idx);
 			};
 		}
@@ -30,7 +30,7 @@ public:
 		auto       elapsed_cycles = end - start;
 
 		return static_cast<double>(elapsed_cycles) /
-		       (static_cast<double>(rowgroup_reader->get_descriptor().m_n_vec * CFG::VEC_SZ * n_repetitions));
+		       (static_cast<double>(rowgroup_reader->get_descriptor().m_n_vec() * CFG::VEC_SZ * n_repetitions));
 	}
 
 public:

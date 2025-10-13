@@ -105,8 +105,9 @@ void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 				main_results.emplace_back(table_name, fls_size, csv_size);
 			}
 
-			const auto& tbl_desc = benchmarker.GetTableDescriptor(fls_dir);
-			const auto& rg_desc  = tbl_desc->m_rowgroup_descriptors[0];
+			const auto& table_descriptor_handle = benchmarker.GetTableDescriptor(fls_dir);
+			const auto& table_descriptor_object = table_descriptor_handle->Unpack();
+			const auto& rg_desc                 = table_descriptor_object->m_rowgroup_descriptors[0];
 			{
 				std::lock_guard<std::mutex> lk(results_mutex);
 				for (const auto& col : rg_desc->m_column_descriptors) {

@@ -8,48 +8,63 @@ PREAMBLE_MK_INCLUDED := yes
 
 # mk/preamble.mk — Helpers for colored echo + root paths
 
+# ── Coloring (portable; disable with COLOR=0) ───────────
+COLOR ?= 1
+ifeq ($(COLOR),1)
+  _Y := $(shell tput setaf 3 2>/dev/null || printf '\033[0;33m')
+  _G := $(shell tput setaf 2 2>/dev/null || printf '\033[0;32m')
+  _E := $(shell tput setaf 1 2>/dev/null || printf '\033[0;31m')
+  _R := $(shell tput sgr0   2>/dev/null || printf '\033[0m')
+else
+  _Y :=
+  _G :=
+  _E :=
+  _R :=
+endif
+
 define echo_done
-	@echo "\033[0;32m$(1)\033[0m"
+	printf '%s%s%s\n' '$(_G)' '$(1)' '$(_R)'
 endef
 
 define echo_start
-	@echo "\033[0;33m$(1)\033[0m"
+	printf '%s%s%s\n' '$(_Y)' '$(1)' '$(_R)'
 endef
 
-# ── Root paths ─────────────────────────────────────────────────────
+define echo_error
+	printf '%s%s%s\n' '$(_E)' '$(1)' '$(_R)'
+endef
 
-# if that directory’s name is “mk”, repo-root is its parent; else it is itself
-ifeq ($(notdir $(MKFILE_PATH)),mk)
-REPO_ROOT := $(abspath $(MKFILE_PATH)/..)
+# ── Root paths ──────────────────────────────────────────
+MKFILE_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+ifeq ($(notdir $(MKFILE_DIR)),mk)
+  REPO_ROOT ?= $(abspath $(MKFILE_DIR)/..)
 else
-REPO_ROOT := $(MKFILE_PATH)
+  REPO_ROOT ?= $(MKFILE_DIR)
 endif
 
-# CRATE_ROOT always under repo
-CRATE_ROOT := $(REPO_ROOT)/rust
+CRATE_ROOT ?= $(REPO_ROOT)/rust
 
-# ── Parallelism ────────────────────────────────────────────────────
-NUM_JOBS := $(shell                            \
-	if command -v nproc >/dev/null 2>&1; then  \
-	  nproc --all;                           \
-	elif command -v sysctl >/dev/null 2>&1; then \
-	  sysctl -n hw.logicalcpu;              \
-	else                                      \
-	  echo $${NUMBER_OF_PROCESSORS:-1};     \
+# ── Parallelism ─────────────────────────────────────────
+NUM_JOBS ?= $(shell                                      \
+	if command -v nproc >/dev/null 2>&1; then           \
+	  nproc --all;                                      \
+	elif command -v sysctl >/dev/null 2>&1; then        \
+	  sysctl -n hw.logicalcpu;                          \
+	else                                                \
+	  echo $${NUMBER_OF_PROCESSORS:-1};                 \
 	fi)
 
-# ── Exports & Info ─────────────────────────────────────────────────
-
+# ── Exports & Info ──────────────────────────────────────
 export REPO_ROOT CRATE_ROOT NUM_JOBS
 
-# only print during normal runs
-ifneq ($(MAKECMDGOALS),detect-cpu)
+# only print when VERBOSE=1
+ifeq ($(VERBOSE),1)
 $(info REPO_ROOT:   $(REPO_ROOT))
 $(info CRATE_ROOT:  $(CRATE_ROOT))
 $(info NUM_JOBS:    $(NUM_JOBS))
 endif
 
-# ── CI helper ─────────────────────────────────────────────────────
+# ── CI helper ───────────────────────────────────────────
 .PHONY: detect-cpu
 detect-cpu:
 	@echo "BUILD_THREADS=$(NUM_JOBS)"
