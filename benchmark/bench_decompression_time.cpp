@@ -37,7 +37,7 @@ public:
 
 void bench_decompression(dataset_view_t dataset_view) {
 	const std::string result_file_path =
-	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/decompression_time/time_series/fastlanes.csv";
+	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/decompression_time/public_bi/fastlanes.csv";
 
 	// Ensure the output directory exists
 	create_directories(std::filesystem::path(result_file_path).parent_path());
