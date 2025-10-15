@@ -3,6 +3,7 @@
 // ────────────────────────────────────────────────────────
 // test/src/fls_reader_tests/rowgroup_size_test.cpp
 // ────────────────────────────────────────────────────────
+#include "fls/json/fls_json.hpp"
 #include "fls_tester.hpp"
 
 namespace fastlanes {

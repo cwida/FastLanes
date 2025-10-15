@@ -141,11 +141,11 @@ template <typename KEY_PT, typename INDEX_PT>
 dec_dict_opr<KEY_PT, INDEX_PT>::dec_dict_opr(const PhysicalExpr& physical_expr,
                                              const ColumnView&   column_view,
                                              InterpreterState&   state)
-    : key_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0]))
+    : key_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])))
     , index_arr(nullptr) {
-
-	state.cur_operand = state.cur_operand - 1;
+	state.cur_operand -= 1;
 	visit(DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 }
 

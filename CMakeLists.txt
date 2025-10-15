@@ -166,7 +166,7 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARK
     # Gtest: -----------------------------------------------------------------------------------------------------------
     FetchContent_Declare(googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
+            GIT_TAG v1.15.2
     )
     # For Windows: Prevent overriding the parent project's compiler/linker settings
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -174,21 +174,41 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARK
 
     enable_testing()
 
-    # Silence clang-tidy warnings from googletest
-    set_target_properties(gtest PROPERTIES CXX_CLANG_TIDY "")
-    set_target_properties(gtest_main PROPERTIES CXX_CLANG_TIDY "")
-    set_target_properties(gmock PROPERTIES CXX_CLANG_TIDY "")
-    set_target_properties(gmock_main PROPERTIES CXX_CLANG_TIDY "")
+    # Silence clang-tidy warnings from googletest (we don't want to lint third-party code)
+    foreach (_t gtest gtest_main gmock gmock_main)
+        if (TARGET ${_t})
+            set_target_properties(${_t} PROPERTIES CXX_CLANG_TIDY "")
+        endif ()
+    endforeach ()
 
     # On Windows, GoogleTest uses Microsoft-specific language extensions like `__try`
-    # that trigger Clang's `-Wlanguage-extension-token` warning.
-    # Since we build with `-Werror`, this causes the build to fail.
-    # This block selectively disables that warning (and suppresses all warnings with `-w`)
-    # only for GoogleTest targets, avoiding global suppression across the project.
+    # that trigger Clang's -Wlanguage-extension-token warning. Since we build with -Werror,
+    # selectively disable that warning (and suppress all warnings with -w) ONLY for GoogleTest.
     if (MSVC OR WIN32)
-        foreach (target gtest gtest_main gmock gmock_main)
-            if (TARGET ${target})
-                target_compile_options(${target} PRIVATE -Wno-language-extension-token -w)
+        foreach (_t gtest gtest_main gmock gmock_main)
+            if (TARGET ${_t})
+                # Skip alias targets (defensive; these names are real targets when fetched)
+                get_target_property(_aliased ${_t} ALIASED_TARGET)
+                if (NOT _aliased)
+                    target_compile_options(${_t} PRIVATE -Wno-language-extension-token -w)
+                endif ()
+            endif ()
+        endforeach ()
+    endif ()
+
+    # On Linux with Clang or GCC, libstdc++ deprecates get_temporary_buffer (used by stable_sort),
+    # which triggers -Wdeprecated-declarations; with -Werror that breaks the build.
+    # Relax ONLY this warning for GoogleTest targets.
+    if (UNIX AND NOT APPLE)
+        foreach (_t gtest gtest_main gmock gmock_main)
+            if (TARGET ${_t})
+                get_target_property(_aliased ${_t} ALIASED_TARGET)
+                if (NOT _aliased)
+                    target_compile_options(${_t} PRIVATE
+                            $<$<COMPILE_LANG_AND_ID:CXX,Clang,GNU>:
+                            -Wno-error=deprecated-declarations
+                            -Wno-deprecated-declarations>)
+                endif ()
             endif ()
         endforeach ()
     endif ()

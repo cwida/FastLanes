@@ -126,13 +126,18 @@ template <typename INDEX_PT>
 dec_fsst12_dict_opr<INDEX_PT>::dec_fsst12_dict_opr(const PhysicalExpr& physical_expr,
                                                    const ColumnView&   column_view,
                                                    InterpreterState&   state)
-    : fsst12_header_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
-    , fsst12_bytes_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , fsst12_offset_segment_view(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0]))
+    : fsst12_header_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)])))
+    , fsst12_bytes_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)])))
+    , fsst12_offset_segment_view(column_view.GetSegment(
+          static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
+                                      ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])))
     , index_arr(nullptr) {
+	// consume three operands
+	state.cur_operand -= 3;
 
 	visit(FSST12DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 	tmp_string.resize(CFG::String::max_bytes_per_string);
@@ -144,7 +149,7 @@ dec_fsst12_dict_opr<INDEX_PT>::dec_fsst12_dict_opr(const PhysicalExpr& physical_
 	[[maybe_unused]] auto symbol_table_size =
 	    fsst12_import(&fsst12_decoder, reinterpret_cast<uint8_t*>(fsst12_header_segment_view.data));
 
-	FLS_ASSERT_E(symbol_table_size, fsst12_header_segment_view.data_span.size())
+	FLS_ASSERT_E(symbol_table_size, fsst12_header_segment_view.data_span.size());
 }
 
 template <typename INDEX_PT>

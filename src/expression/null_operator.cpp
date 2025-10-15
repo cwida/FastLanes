@@ -75,17 +75,18 @@ template struct enc_null_opr<i16_pt>;
 template struct enc_null_opr<i32_pt>;
 
 /*--------------------------------------------------------------------------------------------------------------------*\
- * dec slpatch opr
+ * dec null opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-dec_null_opr<PT>::dec_null_opr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state)
-    : vals_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 2]))
+dec_null_opr<PT>::dec_null_opr(PhysicalExpr& /*physical_expr*/, const ColumnView& column_view, InterpreterState& state)
+    : vals_segment(column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                                ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 2)]))
     , vals_position_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 1]))
-    , n_vals_segment(
-          column_view.GetSegment(column_view.column_descriptor.encoding_rpn->operand_tokens[state.cur_operand - 0])) {
-	state.cur_operand = state.cur_operand - 3;
+          column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 1)]))
+    , n_vals_segment(column_view.GetSegment((*column_view.column_descriptor.encoding_rpn()
+                                                  ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])) {
+	state.cur_operand -= 3;
 }
 
 template <typename PT>

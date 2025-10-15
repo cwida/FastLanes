@@ -88,9 +88,10 @@ void bench_accuracy_over_rowgroups() {
 				    }
 
 				    // Run the benchmark
-				    auto        size      = benchmarker.bench(file_path, thread_specific_fls_dir_path);
-				    const auto& footer_up = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
-				    const auto& first_rowgroup_descriptor = footer_up->m_rowgroup_descriptors[0];
+				    auto        size                    = benchmarker.bench(file_path, thread_specific_fls_dir_path);
+				    const auto& table_descriptor_handle = benchmarker.GetTableDescriptor(thread_specific_fls_dir_path);
+				    const auto& first_rowgroup_descriptor =
+				        table_descriptor_handle->Unpack()->m_rowgroup_descriptors[0];
 
 				    {
 					    // Lock and store the main result

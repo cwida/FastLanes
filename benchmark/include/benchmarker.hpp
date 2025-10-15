@@ -102,7 +102,7 @@ public:
 	}
 
 	// Method to get the footer for the thread-specific directory
-	[[nodiscard]] up<TableDescriptorT> GetTableDescriptor(const path& thread_specific_fls_dir_path) const {
+	[[nodiscard]] up<TableDescriptorHandle> GetTableDescriptor(const path& thread_specific_fls_dir_path) const {
 		return make_table_descriptor(thread_specific_fls_dir_path / TABLE_DESCRIPTOR_FILE_NAME);
 	}
 
@@ -133,12 +133,12 @@ public:
 		Write(table_path, thread_specific_fls_dir_path);
 		vector<OperatorToken> result;
 		auto                  table_descriptor    = GetTableDescriptor(thread_specific_fls_dir_path);
-		auto&                 rowgroup_descriptor = table_descriptor->m_rowgroup_descriptors[0];
+		auto&                 rowgroup_descriptor = *(*table_descriptor->Get()->m_rowgroup_descriptors())[0];
 
 		// Store the detailed results (thread-safe)
 		{
-			for (const auto& column_descriptor : rowgroup_descriptor->m_column_descriptors) {
-				result.emplace_back(column_descriptor->encoding_rpn->operator_tokens[0]);
+			for (const auto& column_descriptor : *rowgroup_descriptor.m_column_descriptors()) {
+				result.emplace_back((*column_descriptor->encoding_rpn()->operator_tokens())[0]);
 			}
 		}
 

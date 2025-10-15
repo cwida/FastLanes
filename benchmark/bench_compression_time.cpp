@@ -21,7 +21,7 @@ public:
 
 		auto start = std::chrono::high_resolution_clock::now();
 		for (n_t repetition_idx {0}; repetition_idx < n_repetitions; repetition_idx++) {
-			for (n_t vec_idx {0}; vec_idx < first_rowgroup_reader->get_descriptor().m_n_vec; vec_idx++) {
+			for (n_t vec_idx {0}; vec_idx < first_rowgroup_reader->get_descriptor().m_n_vec(); vec_idx++) {
 				first_rowgroup_reader->get_chunk(vec_idx);
 			};
 		}

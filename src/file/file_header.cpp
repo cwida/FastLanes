@@ -29,7 +29,7 @@ void FileHeader::Write(const Connection& connection, const path& file_path) {
 }
 
 Status FileHeader::Load(FileHeader& file_header, const path& file_path) {
-	io io = make_unique<File>(file_path); // todo[IO]
+	const io io = make_unique<File>(file_path); // todo[IO]
 
 	if (const auto file_size = IO::get_size(io); file_size < sizeof(FileHeader) + sizeof(FileFooter)) {
 		return Status::Error(Status::ErrorCode::ERR_1_SMALL_FILE_SIZE);
