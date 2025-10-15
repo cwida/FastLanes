@@ -54,8 +54,7 @@ public:
 
 void bench_compression(dataset_view_t dataset_view) {
 	const std::string result_file_path =
-	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_time/time_series/fastlanes.csv";
-	    // std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_time/public_bi/fastlanes.csv";
+	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_time/public_bi/fastlanes.csv";
 
 	// Ensure the output directory exists
 	create_directories(std::filesystem::path(result_file_path).parent_path());
@@ -115,8 +114,7 @@ void bench_compression(dataset_view_t dataset_view) {
 
 int main() {
 	const auto start = std::chrono::high_resolution_clock::now();
-	// bench_compression(public_bi::dataset);
-	bench_compression(TimeSeries::dataset);
+	bench_compression(public_bi::dataset);
 	auto                                            end     = std::chrono::high_resolution_clock::now();
 	const std::chrono::duration<double, std::milli> elapsed = end - start; // in milliseconds
 	az_printer::bold_magenta_cout << "-- The whole benchmark time (ms): " << elapsed.count() << '\n';

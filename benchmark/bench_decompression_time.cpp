@@ -38,7 +38,6 @@ public:
 void bench_decompression(dataset_view_t dataset_view) {
 	const std::string result_file_path =
 	    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/decompression_time/time_series/fastlanes.csv";
-	    // std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/decompression_time/public_bi/fastlanes.csv";
 
 	// Ensure the output directory exists
 	create_directories(std::filesystem::path(result_file_path).parent_path());
@@ -101,8 +100,7 @@ void bench_decompression(dataset_view_t dataset_view) {
 
 int main() {
 	const auto start = std::chrono::high_resolution_clock::now();
-	// bench_decompression(public_bi::dataset);
-	bench_decompression(TimeSeries::dataset);
+	bench_decompression(public_bi::dataset);
 	auto                                            end     = std::chrono::high_resolution_clock::now();
 	const std::chrono::duration<double, std::milli> elapsed = end - start; // in milliseconds
 	az_printer::bold_magenta_cout << "-- The whole benchmark time (ms): " << elapsed.count() << '\n';
