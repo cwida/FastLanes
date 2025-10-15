@@ -24,7 +24,7 @@ public:
     static constexpr timeseries_dataset_t dataset = {{
         { "AMPds",                           AMPds },
         { "Weather_Forcast",                 WEATHER_FORCAST },
-        { "Smart_Gird",                      SMART_GRID },
+        { "Smart_Grid",                      SMART_GRID },
         { "Linear_Road",                     LINEAR_ROEAD },
         { "Computer_Monitor",                COMPUTER_MONITOR }
     }};
