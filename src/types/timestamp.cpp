@@ -6,9 +6,9 @@
 // src/types/timestamp.cpp
 #include "fls/types/timestamp.hpp"
 #include "fls/std/string.hpp"
+#include "fls/std/chrono.hpp"
 #include <cctype>
 #include <charconv>
-#include <chrono>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib> // for std::llabs

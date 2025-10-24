@@ -5,6 +5,13 @@
 // ────────────────────────────────────────────────────────
 #include "fls_tester.hpp"
 
+#ifdef COMPATIABLE_CXX17_HEADER
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wkeyword-macro"
+#define constexpr const
+#pragma GCC diagnostic pop
+#endif
+
 namespace fastlanes {
 
 // Public BI

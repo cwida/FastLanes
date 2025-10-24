@@ -126,9 +126,16 @@ option(FLS_ENABLE_VERBOSE_OUTPUT "Enable verbose output" OFF)
 option(FLS_ENABLE_DATA "Enable Data" OFF)
 option(FLS_ENABLE_FSST_TESTING_AND_BENCHMARKING "Build FSST" OFF)
 option(FLS_ENABLE_GALP_TESTING_AND_BENCHMARKING "Build GALP" OFF)
+option(FLS_ENABLE_COMPATIABLE_CXX17_HEADER "Enable compatible with c++17 header, provides tcb_span for missing <span> and hh_data.h for enhanced chrono etc. Turn on if building FastLanes with std c++17 header" OFF)
 
 # Definitions: ---------------------------------------------------------------------------------------------------------
 add_compile_definitions(FLS_CMAKE_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+
+if (FLS_ENABLE_COMPATIABLE_CXX17_HEADER)
+    message("---------------------------------------------------------------------------------------------------------")
+    message("-- FLS: Enable COMPATIABLE_CXX17_HEADER.")
+    add_compile_definitions(COMPATIABLE_CXX17_HEADER=1)
+endif ()
 
 if (FLS_ENABLE_CLANG_TIDY)
     message("---------------------------------------------------------------------------------------------------------")

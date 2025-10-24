@@ -9,7 +9,7 @@
 #include "fls/cor/lyt/buf.hpp"
 #include <cstddef> // for std::byte
 #include <cstring>
-#include <span>
+#include "fls/std/span.hpp"
 #include <stdexcept>
 
 namespace fastlanes {

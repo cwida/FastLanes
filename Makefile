@@ -69,3 +69,4 @@ help-main:
 	@echo "  CRATE_ROOT=$(CRATE_ROOT)"
 	@echo "  NUM_JOBS=$(NUM_JOBS)"
 	@echo "  VERBOSE=$(VERBOSE)"
+	@echo "  CMAKE_EXTRA_FLAGS=$(CMAKE_EXTRA_FLAGS)"

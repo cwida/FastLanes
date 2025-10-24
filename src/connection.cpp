@@ -146,7 +146,11 @@ Status Connection::verify_fls(const path& file_path) {
 	}
 
 	if (constexpr auto versions = Info::get_all_versions();
+#ifdef COMPATIABLE_CXX17_HEADER
+	    !std::any_of(versions.begin(), versions.end(), [&](uint64_t v) { return file_header.version == v; })) {
+#else
 	    std::ranges::none_of(versions, [&](uint64_t v) { return file_header.version == v; })) {
+#endif
 		return Status::Error(Status::ErrorCode::ERR_6_INVALID_VERSION_BYTES);
 	}
 

@@ -6,7 +6,10 @@
 #include "fls/types/validitymask.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
+#ifdef COMPATIABLE_CXX17_HEADER
+#else
 #include <bit> // std::popcount (C++20)
+#endif
 #include <cstdint>
 #include <cstring> // std::memset / memcpy
 
@@ -59,7 +62,11 @@ void ValidityMask::fill() noexcept {
 n_t ValidityMask::count() const noexcept {
 	n_t total = 0;
 	for (uint64_t w : m_data) {
+#ifdef COMPATIABLE_CXX17_HEADER
+		total += static_cast<n_t>(__builtin_popcountll(w));
+#else
 		total += static_cast<n_t>(std::popcount(w));
+#endif
 	}
 	return total;
 }

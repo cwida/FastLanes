@@ -22,7 +22,8 @@ CMAKE        ?= cmake
 CMAKE_FLAGS  ?= \
   -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
   -DCMAKE_BUILD_TYPE=Release \
-  -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+  -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+	$(CMAKE_EXTRA_FLAGS)
 
 # Build in parallel using all available jobs
 CMAKE_BUILD  ?= $(CMAKE) --build $(PROJECT_ROOT)/$(BUILD_DIR) --parallel $(NUM_JOBS)
@@ -53,17 +54,18 @@ clean-cpp:
 configure-cpp-tests:
 	$(call echo_start,Configuring C++ tests in $(TEST_BUILD_DIR) [$(TEST_BUILD_TYPE)]…)
 	@mkdir -p "$(TEST_BUILD_DIR)"
-	@cd "$(TEST_BUILD_DIR)" && cmake \
+	@cd "$(TEST_BUILD_DIR)" && $(CMAKE) \
 	  -DCMAKE_INSTALL_PREFIX="$(PREFIX)" \
 	  -DCMAKE_BUILD_TYPE="$(TEST_BUILD_TYPE)" \
 	  -DFLS_BUILD_TESTING=ON \
 	  -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+		$(CMAKE_EXTRA_FLAGS) \
 	  "$(REPO_ROOT)"
 	$(call echo_done,Test configuration complete.)
 
 build-cpp-tests: configure-cpp-tests
 	$(call echo_start,Building C++ tests…)
-	@cmake --build "$(TEST_BUILD_DIR)" --parallel $(NUM_JOBS)
+	$(CMAKE) --build "$(TEST_BUILD_DIR)" --parallel $(NUM_JOBS)
 	$(call echo_done,C++ tests built.)
 
 test-cpp: build-cpp-tests

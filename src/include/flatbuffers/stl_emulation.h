@@ -58,7 +58,7 @@
 
 #if defined(FLATBUFFERS_USE_STD_SPAN)
   #include <array>
-  #include <span>
+  #include "fls/std/span.hpp"
 #else
   // Disable non-trivial ctors if FLATBUFFERS_SPAN_MINIMAL defined.
   #if !defined(FLATBUFFERS_TEMPLATES_ALIASES)

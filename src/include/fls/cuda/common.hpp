@@ -6,6 +6,7 @@
 #ifndef FLS_CUDA_COMMON_HPP
 #define FLS_CUDA_COMMON_HPP
 
+#include <climits> // For CHAR_BIT
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/cuda/config.hpp"

@@ -379,7 +379,11 @@ bool is_1_to_1(const OperatorToken token) {
 	    OperatorToken::EXP_FSST12_DICT_STR_U08,
 	};
 
+#ifdef COMPATIABLE_CXX17_HEADER
+	return one_to_one_set.find(token) != one_to_one_set.end();
+#else
 	return one_to_one_set.contains(token);
+#endif
 }
 
 } // namespace fastlanes

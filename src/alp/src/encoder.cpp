@@ -66,6 +66,11 @@ void encoder<PT, is_null>::encode(const PT*      input_vector,
 	encode_simdized(input_vector, exceptions, exceptions_positions, encoded_integers, stt, null_map);
 }
 
+#ifdef COMPATIABLE_CXX17_HEADER
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpass-failed"
+#endif
+
 template <typename PT, bool IS_NULL>
 void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
                                            PT*            exceptions,
@@ -175,6 +180,10 @@ void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
 
 	stt.n_exceptions = current_exceptions_count;
 }
+
+#ifdef COMPATIABLE_CXX17_HEADER
+#pragma clang diagnostic pop
+#endif
 
 template <typename PT, bool is_null>
 void encoder<PT, is_null>::init(const PT*      rowgroup_data_p,

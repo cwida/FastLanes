@@ -29,7 +29,11 @@ namespace fastlanes {
 DataType TypeLookUp(const string& str) {
 	// 1) Normalize to uppercase
 	std::string s = str;
+#ifdef COMPATIABLE_CXX17_HEADER
+	std::transform(s.cbegin(), s.cend(), s.begin(), [](unsigned char c) { return std::toupper(c); });
+#else
 	std::ranges::transform(s, s.begin(), [](unsigned char c) { return std::toupper(c); });
+#endif
 
 	// 2) Regex for DECIMAL(p,s)
 	static const std::regex decimal_re(R"(DECIMAL\(\d+,\s*\d+\))");
