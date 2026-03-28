@@ -223,7 +223,9 @@ jobs:
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
           )
-          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+          else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}")
           fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
@@ -326,7 +328,9 @@ jobs:
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
           )
-          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+          else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
@@ -399,7 +403,9 @@ jobs:
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=ON
           )
-          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+          else
             CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
