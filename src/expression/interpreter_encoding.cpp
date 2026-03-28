@@ -3,9 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/expression/interpreter_encoding.cpp
 // ────────────────────────────────────────────────────────
-#include "flatbuffers/vector.h" // flatbuffers::Vector
 #include "fls/common/alias.hpp"
-#include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/exception.hpp"
 #include "fls/common/string.hpp"
@@ -33,8 +31,6 @@
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/std/type_traits.hpp"
 #include "fls/table/rowgroup.hpp"
-#include <cstddef> // size_t
-#include <cstdint> // uint32_t, uint64_t
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*\
