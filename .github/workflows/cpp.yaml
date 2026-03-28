@@ -173,17 +173,9 @@ jobs:
         compiler: [ clang ]
         shared_lib: [ false, true ]
         include:
+          # MSVC: static only — explicit template instantiations strip __restrict
+          # from mangling, causing LNK2019 in shared (DLL) builds.
           - platform: windows-latest
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: false
-          - platform: windows-latest
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: true
-          - platform: windows-11-arm
             build_type: Release
             cxx: cl
             compiler: msvc
@@ -192,7 +184,7 @@ jobs:
             build_type: Release
             cxx: cl
             compiler: msvc
-            shared_lib: true
+            shared_lib: false
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -276,18 +268,10 @@ jobs:
             build_type: Release
             compiler: msvc
             shared_lib: false
-          - platform: windows-latest
-            build_type: Release
-            compiler: msvc
-            shared_lib: true
           - platform: windows-11-arm
             build_type: Release
             compiler: msvc
             shared_lib: false
-          - platform: windows-11-arm
-            build_type: Release
-            compiler: msvc
-            shared_lib: true
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -378,15 +362,9 @@ jobs:
           - os: windows-latest
             compiler: msvc
             shared_lib: false
-          - os: windows-latest
-            compiler: msvc
-            shared_lib: true
           - os: windows-11-arm
             compiler: msvc
             shared_lib: false
-          - os: windows-11-arm
-            compiler: msvc
-            shared_lib: true
     runs-on: ${{ matrix.os }}
 
     steps:
