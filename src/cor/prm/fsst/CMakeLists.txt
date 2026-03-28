@@ -16,7 +16,9 @@ set(FASTLANES_OBJECT_FILES
         PARENT_SCOPE)
 
 
-target_compile_options(fls_fsst_prm PRIVATE -Wno-macro-redefined)
+if (NOT MSVC)
+    target_compile_options(fls_fsst_prm PRIVATE -Wno-macro-redefined)
+endif ()
 
 target_link_libraries(fls_fsst_prm
         PUBLIC

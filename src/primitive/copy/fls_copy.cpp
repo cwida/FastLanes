@@ -3,6 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/primitive/copy/fls_copy.cpp
 // ────────────────────────────────────────────────────────
+#include "fls/compiler.hpp"
 #include "fls/primitive/copy/fls_copy.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/restrict.hpp"
@@ -155,7 +156,7 @@ static void unpack_32bw_32ow_32crw_1uf(const uint32_t* FLS_RESTRICT a_in_p, uint
 static void unpack_64bw_64ow_64crw_1uf(const uint64_t* FLS_RESTRICT in, uint64_t* FLS_RESTRICT out) {
 	[[maybe_unused]] uint64_t register_0;
 	[[maybe_unused]] uint64_t tmp_0;
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0                          = *(in + (0 * 16) + (i * 1) + 0);
 		out[(i * 1) + (0 * 16) + (16 * 0)]  = register_0;

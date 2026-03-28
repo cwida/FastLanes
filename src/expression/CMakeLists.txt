@@ -16,6 +16,8 @@ add_library(fls_expression
         fsst_dict_operator.cpp
         fsst_expression.cpp
         interpreter.cpp
+        interpreter_encoding.cpp
+        interpreter_decoding.cpp
         rpn.cpp
         null_operator.cpp
         physical_expression.cpp
@@ -38,7 +40,9 @@ set(FASTLANES_OBJECT_FILES
         PARENT_SCOPE)
 
 
-target_compile_options(fls_expression PRIVATE -Wno-macro-redefined)
+if (NOT MSVC)
+    target_compile_options(fls_expression PRIVATE -Wno-macro-redefined)
+endif ()
 
 target_link_libraries(fls_expression
         PUBLIC

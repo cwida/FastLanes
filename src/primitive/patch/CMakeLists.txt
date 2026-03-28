@@ -12,7 +12,9 @@ if (ENABLE_IWYU)
     set_property(TARGET fls_primitive_patch PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-target_compile_options(fls_primitive_patch PRIVATE -Wno-macro-redefined)
+if (NOT MSVC)
+    target_compile_options(fls_primitive_patch PRIVATE -Wno-macro-redefined)
+endif ()
 
 target_link_libraries(fls_primitive_patch
         PUBLIC

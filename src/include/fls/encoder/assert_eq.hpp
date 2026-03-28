@@ -6,7 +6,8 @@
 #ifndef FLS_ENCODER_ASSERT_EQ_HPP
 #define FLS_ENCODER_ASSERT_EQ_HPP
 
-#pragma clang diagnostic ignored "-Wconversion"
+#include "fls/compiler.hpp"
+FLS_DIAG_IGNORE_CONVERSION
 
 #include "fls/common/string.hpp"
 #include "fls/cor/exp/exp.hpp"

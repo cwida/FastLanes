@@ -6,6 +6,7 @@
 #ifndef FLS_FFOR_UTIL_HPP
 #define FLS_FFOR_UTIL_HPP
 
+#include "fls/compiler.hpp"
 #include <cstdint>
 #include <type_traits>
 
@@ -23,13 +24,13 @@ uint8_t count_bits(PT max, PT min) {
 		return 0;
 
 	if constexpr (std::is_same_v<UT, uint64_t>) {
-		return static_cast<uint8_t>(64 - __builtin_clzll(delta));
+		return static_cast<uint8_t>(64 - fls_clzll(delta));
 	} else if constexpr (std::is_same_v<UT, uint32_t>) {
-		return static_cast<uint8_t>(32 - __builtin_clz(delta));
+		return static_cast<uint8_t>(32 - fls_clz(delta));
 	} else if constexpr (std::is_same_v<UT, uint16_t>) {
-		return static_cast<uint8_t>(16 - (__builtin_clz(static_cast<uint32_t>(delta)) - 16));
+		return static_cast<uint8_t>(16 - (fls_clz(static_cast<uint32_t>(delta)) - 16));
 	} else if constexpr (std::is_same_v<UT, uint8_t>) {
-		return static_cast<uint8_t>(8 - (__builtin_clz(static_cast<uint32_t>(delta)) - 24));
+		return static_cast<uint8_t>(8 - (fls_clz(static_cast<uint32_t>(delta)) - 24));
 	}
 	return 0;
 }

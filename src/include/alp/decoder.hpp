@@ -9,10 +9,11 @@
 #include "alp/common.hpp"
 #include "alp/config.hpp"
 #include "alp/state.hpp"
+#include "fls/compiler.hpp"
 #include <cstdint>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
+FLS_DIAG_PUSH
+FLS_DIAG_IGNORE_INT_FLOAT_CONV
 
 namespace alp {
 
@@ -135,6 +136,6 @@ struct decoder {
 
 } // namespace alp
 
-#pragma GCC diagnostic pop
+FLS_DIAG_POP
 
 #endif // ALP_DECODER_HPP

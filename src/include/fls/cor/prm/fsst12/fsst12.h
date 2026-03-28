@@ -62,6 +62,10 @@
 #ifndef FSST12_INCLUDED_H
 #define FSST12_INCLUDED_H
 
+#ifdef _MSC_VER
+#include "fls/compiler.hpp"
+#endif
+
 #include "assert.h"
 using ulong = unsigned long;
 

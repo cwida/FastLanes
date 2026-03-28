@@ -12,7 +12,9 @@ if (FLS_ENABLE_IWYU)
     set_property(TARGET fls_detail PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-target_compile_options(fls_detail PRIVATE -Wno-macro-redefined)
+if (NOT MSVC)
+    target_compile_options(fls_detail PRIVATE -Wno-macro-redefined)
+endif ()
 
 target_link_libraries(fls_detail
         PUBLIC

@@ -7,8 +7,9 @@
 #define FLS_COR_PRM_FSST12_LIBFSST12_HPP
 
 // NOLINTBEGIN
-#pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#include "fls/compiler.hpp"
+FLS_DIAG_IGNORE_CONVERSION
+FLS_DIAG_IGNORE_SHORTEN_64_32
 
 // this software is distributed under the MIT License (http://www.opensource.org/licenses/MIT):
 //

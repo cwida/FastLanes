@@ -3,6 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/primitive/fls_memset/fls_memset.cpp
 // ────────────────────────────────────────────────────────
+#include "fls/compiler.hpp"
 #include "fls/primitive/fls_memset/fls_memset.hpp"
 #include "fls/common/common.hpp"
 #include "fls/common/restrict.hpp"
@@ -98,7 +99,7 @@ static void unffor_0bw_64ow_64crw_1uf(const uint64_t* FLS_RESTRICT base_p, uint6
 	[[maybe_unused]] uint64_t register_0;
 	[[maybe_unused]] uint64_t tmp_0;
 	[[maybe_unused]] uint64_t base_0 = *(base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		*(out + (i * 1) + (0 * 16) + (16 * 0))  = base_0;
 		*(out + (i * 1) + (0 * 16) + (16 * 1))  = base_0;
