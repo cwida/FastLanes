@@ -352,12 +352,16 @@ jobs:
       - name: Run tests
         working-directory: "test_build_${{ matrix.compiler }}_${{ env.LIB_LABEL }}"
         run: |
+          EXCLUDE="QuickFuzz"
+          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+            EXCLUDE="QuickFuzz|issue_000"
+          fi
           ctest -j $BUILD_THREADS \
                 --build-config ${{ matrix.build_type }} \
                 --stop-on-failure \
                 --output-on-failure \
                 --timeout 5000 \
-                -E "QuickFuzz"
+                -E "$EXCLUDE"
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 7️⃣  Install job

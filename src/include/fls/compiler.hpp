@@ -44,6 +44,9 @@ static __forceinline int __builtin_ctzl(unsigned long long x) {
 }
 #elif defined(_MSC_VER) && defined(__clang__)
 #include <intrin.h>
+#ifndef __restrict__
+#define __restrict__
+#endif
 #endif
 
 // ── Count Leading Zeros ─────────────────────────────────
