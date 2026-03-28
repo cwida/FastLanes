@@ -15,15 +15,15 @@
 #endif
 #endif
 
-#ifndef FLS_RESTRICT // GNU / Clang (all platforms, incl. macOS)
-#if defined(__GNUC__) || defined(__clang__)
-#define FLS_RESTRICT __restrict__
+#ifndef FLS_RESTRICT // MSVC (not clang-cl): __restrict mangles inconsistently
+#if defined(_MSC_VER) && !defined(__clang__)
+#define FLS_RESTRICT
 #endif
 #endif
 
-#ifndef FLS_RESTRICT // Microsoft Visual C++
-#if defined(_MSC_VER)
-#define FLS_RESTRICT __restrict
+#ifndef FLS_RESTRICT // GNU / Clang (all platforms, incl. clang-cl)
+#if defined(__GNUC__) || defined(__clang__)
+#define FLS_RESTRICT __restrict__
 #endif
 #endif
 
