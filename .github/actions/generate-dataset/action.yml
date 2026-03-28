@@ -21,9 +21,11 @@ runs:
     # 2️⃣  Remove any .venv that might have been created earlier
     #     with Python 3.13, so we always recreate it with 3.12.
     # ─────────────────────────────────────────────────────────────
-    - name: Remove stale virtual-env
+    - name: Recreate virtual-env with the correct Python
       shell: bash
-      run: rm -rf "$GITHUB_WORKSPACE/.venv"
+      run: |
+        rm -rf "$GITHUB_WORKSPACE/.venv"
+        python3 -m venv "$GITHUB_WORKSPACE/.venv"
 
     # ─────────────────────────────────────────────────────────────
     # 3️⃣  Generate the synthetic data

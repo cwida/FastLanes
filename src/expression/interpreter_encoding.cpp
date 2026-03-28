@@ -450,12 +450,6 @@ void make_enc_alp_rd_expr(PhysicalExpr&      physical_expr,
  * Interpreter::Encoding
 \*--------------------------------------------------------------------------------------------------------------------*/
 
-InterpreterState::InterpreterState()
-    : cur_operator(0)
-    , cur_operand(0)
-    , n_segments(0) {
-}
-
 sp<PhysicalExpr> Interpreter::Encoding::Interpret(ColumnDescriptorT& column_descriptor,
                                                   const rowgroup_pt& physical_rowgroup,
                                                   InterpreterState&  state) {
