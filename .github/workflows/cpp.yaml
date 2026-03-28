@@ -246,9 +246,7 @@ jobs:
         shell: bash
         run: |
           BUILD_DIR="build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
-          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            ./${BUILD_DIR}/${{ matrix.build_type }}/examples/cpp_example.exe
-          elif [[ "${{ runner.os }}" == "Windows" ]]; then
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
             ./${BUILD_DIR}/examples/cpp_example.exe
           else
             ./${BUILD_DIR}/examples/cpp_example
