@@ -6,7 +6,7 @@
 #ifndef FLS_PRIMITIVE_PREDICATE_EQUAL_HPP
 #define FLS_PRIMITIVE_PREDICATE_EQUAL_HPP
 
-#include "fls/api/api.hpp"
+#include "fls/common/restrict.hpp"
 #include "fls/expression/data_type.hpp"
 
 namespace fastlanes {
@@ -14,19 +14,19 @@ namespace fastlanes {
 class SelectionDS;
 /*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-FLS_API void eq_vector_constant_func(const PT* __restrict array_pointer, PT value, SelectionDS& selection_ds);
+void eq_vector_constant_func(const PT* FLS_RESTRICT array_pointer, PT value, SelectionDS& selection_ds);
 
 template <typename PT>
-FLS_API void ge_tvec_tvec(const PT* __restrict array_pointer, const PT* value, SelectionDS& selection_ds);
+void ge_tvec_tvec(const PT* FLS_RESTRICT array_pointer, const PT* value, SelectionDS& selection_ds);
 template <typename PT>
-FLS_API void ge_tvec_cvec(const PT* __restrict array_pointer, const PT* value, SelectionDS& selection_ds);
+void ge_tvec_cvec(const PT* FLS_RESTRICT array_pointer, const PT* value, SelectionDS& selection_ds);
 
 template <typename PT>
-FLS_API void lessthan_func(const PT* __restrict array_pointer, PT value, SelectionDS& selection_ds);
+void lessthan_func(const PT* FLS_RESTRICT array_pointer, PT value, SelectionDS& selection_ds);
 
-FLS_API void and_selection_ds_func(const SelectionDS& selection_ds_1,
-                                   const SelectionDS& selection_ds_2,
-                                   SelectionDS&       selection_ds_3);
+void and_selection_ds_func(const SelectionDS& selection_ds_1,
+                           const SelectionDS& selection_ds_2,
+                           SelectionDS&       selection_ds_3);
 
 template <typename PT>
 using predicate_func_p = void (*)(const PT* __restrict left_vec,
