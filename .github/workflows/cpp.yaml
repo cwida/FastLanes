@@ -212,6 +212,10 @@ jobs:
         if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
+      - name: Set up MSVC environment
+        if: matrix.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Configure example
         run: |
           CMAKE_ARGS=(
@@ -224,7 +228,7 @@ jobs:
             -DFLS_ENABLE_INSTALL=OFF
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
           else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}")
           fi
@@ -316,6 +320,10 @@ jobs:
         if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
+      - name: Set up MSVC environment
+        if: matrix.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Configure tests
         run: |
           BUILD_DIR="test_build_${{ matrix.compiler }}_${LIB_LABEL}"
@@ -329,7 +337,7 @@ jobs:
             -DFLS_ENABLE_INSTALL=OFF
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
           else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
@@ -392,6 +400,10 @@ jobs:
         if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
+      - name: Set up MSVC environment
+        if: matrix.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Configure + build + install
         shell: bash
         run: |
@@ -404,7 +416,7 @@ jobs:
             -DFLS_ENABLE_INSTALL=ON
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            CMAKE_ARGS+=(-G "Visual Studio 17 2022")
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
           else
             CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
