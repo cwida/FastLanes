@@ -6,15 +6,13 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Requirements : -------------------------------------------------------------------------------------------------------
-# On non-Windows platforms, prefer Clang if no compiler is explicitly set.
+# On non-Windows platforms, require Clang.
 # On Windows, let CMake use the default compiler (MSVC from vcvars).
-if (NOT CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows" AND NOT DEFINED ENV{CC})
-    find_program(CLANG_CXX NAMES clang++)
-    find_program(CLANG_C NAMES clang)
-    if (CLANG_CXX AND CLANG_C)
-        set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
-        set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
-    endif ()
+if (NOT CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+    find_program(CLANG_CXX NAMES clang++ REQUIRED)
+    find_program(CLANG_C NAMES clang REQUIRED)
+    set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
+    set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
 endif ()
 
 

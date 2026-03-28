@@ -28,7 +28,7 @@
 #endif
 
 // ── MSVC compat for __restrict__ and __builtin_ctzl ─────
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
 #include <intrin.h>
 #ifndef __restrict__
 #define __restrict__
@@ -42,6 +42,8 @@ static __forceinline int __builtin_ctzl(unsigned long long x) {
 	_BitScanForward64(&ret, x);
 	return (int)ret;
 }
+#elif defined(_MSC_VER) && defined(__clang__)
+#include <intrin.h>
 #endif
 
 // ── Count Leading Zeros ─────────────────────────────────
@@ -66,16 +68,9 @@ static inline int fls_clz(uint32_t x) {
 #endif
 
 // ── Diagnostic push / pop / ignore ──────────────────────
-#if defined(_MSC_VER)
-#define FLS_DIAG_PUSH              __pragma(warning(push))
-#define FLS_DIAG_POP               __pragma(warning(pop))
-#define FLS_DIAG_IGNORE_SIGN_CONV  __pragma(warning(disable : 4245 4365))
-#define FLS_DIAG_IGNORE_FLOAT_CONV __pragma(warning(disable : 4244))
-#define FLS_DIAG_IGNORE_CONVERSION __pragma(warning(disable : 4244 4267))
-#define FLS_DIAG_IGNORE_SHORTEN_64_32
-#define FLS_DIAG_IGNORE_INT_FLOAT_CONV __pragma(warning(disable : 4244))
-#define FLS_DIAG_IGNORE_INT_CONV       __pragma(warning(disable : 4244 4267))
-#elif defined(__clang__)
+// Check __clang__ before _MSC_VER because clang-cl defines both,
+// but uses clang-style diagnostics, not MSVC warning numbers.
+#if defined(__clang__)
 #define FLS_DIAG_PUSH                  _Pragma("clang diagnostic push")
 #define FLS_DIAG_POP                   _Pragma("clang diagnostic pop")
 #define FLS_DIAG_IGNORE_SIGN_CONV      _Pragma("clang diagnostic ignored \"-Wsign-conversion\"")
@@ -84,6 +79,15 @@ static inline int fls_clz(uint32_t x) {
 #define FLS_DIAG_IGNORE_SHORTEN_64_32  _Pragma("clang diagnostic ignored \"-Wshorten-64-to-32\"")
 #define FLS_DIAG_IGNORE_INT_FLOAT_CONV _Pragma("clang diagnostic ignored \"-Wimplicit-int-float-conversion\"")
 #define FLS_DIAG_IGNORE_INT_CONV       _Pragma("clang diagnostic ignored \"-Wimplicit-int-conversion\"")
+#elif defined(_MSC_VER)
+#define FLS_DIAG_PUSH              __pragma(warning(push))
+#define FLS_DIAG_POP               __pragma(warning(pop))
+#define FLS_DIAG_IGNORE_SIGN_CONV  __pragma(warning(disable : 4245 4365))
+#define FLS_DIAG_IGNORE_FLOAT_CONV __pragma(warning(disable : 4244))
+#define FLS_DIAG_IGNORE_CONVERSION __pragma(warning(disable : 4244 4267))
+#define FLS_DIAG_IGNORE_SHORTEN_64_32
+#define FLS_DIAG_IGNORE_INT_FLOAT_CONV __pragma(warning(disable : 4244))
+#define FLS_DIAG_IGNORE_INT_CONV       __pragma(warning(disable : 4244 4267))
 #elif defined(__GNUC__)
 #define FLS_DIAG_PUSH              _Pragma("GCC diagnostic push")
 #define FLS_DIAG_POP               _Pragma("GCC diagnostic pop")
