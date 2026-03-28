@@ -112,6 +112,13 @@ else ()
     # Flags for warnings and errors:
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Winconsistent-missing-override -Wshadow -Wconversion -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual -Wshorten-64-to-32")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wshadow -Wconversion")
+
+    # On Windows (Clang, not MSVC), vectorize-width pragmas may not be honoured
+    # because the CI runners lack AVX-512.  Demote the transform-warning to a
+    # non-fatal warning so -Werror does not reject advisory hints.
+    if (WIN32)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pass-failed")
+    endif ()
 endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
