@@ -59,6 +59,11 @@ if (FLS_BUILD_SHARED_LIBS)
             connection.cpp
             ${FASTLANES_OBJECT_FILES}
     )
+    if (MSVC)
+        set_target_properties(FastLanes PROPERTIES
+                WINDOWS_EXPORT_ALL_SYMBOLS ON
+        )
+    endif ()
     target_compile_definitions(FastLanes
             PRIVATE
             FLS_BUILD_DLL
