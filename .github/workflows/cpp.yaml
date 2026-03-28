@@ -54,23 +54,14 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - ubuntu-22.04-arm
+          - macos-26
           - macos-15
-          - macos-14
-          - macos-13
         build_type: [ Debug, Release ]
         cxx: [ clang++ ]
         shared_lib: [ false, true ]
 
-        # 🛑 Skip the flaky public-preview runner (arm64 Debug + shared)
-        # GitHub’s ubuntu-24.04-arm image is still in public beta (burstable capacity),
-        # which can terminate long jobs with “The runner has received a shutdown signal”
-        # → exit-code 143. See:
-        # https://github.blog/changelog/2024-06-24-github-actions-ubuntu-24-04-image-now-available-for-arm64-runners/
-        # See also Issue #11541: “Intermittent segmentation faults on Ubuntu 24.04 ARM”
-        # — ~15% of runs on ubuntu-24.04-arm see segfaults or pre-emptions mid-build
         exclude:
-          - platform: ubuntu-24.04-arm
-            build_type: Debug
+          - build_type: Debug
             shared_lib: true
 
     runs-on: ${{ matrix.platform }}
@@ -154,9 +145,8 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - ubuntu-22.04-arm
+          - macos-26
           - macos-15
-          - macos-14
-          - macos-13
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -175,11 +165,34 @@ jobs:
   example:
 #    needs: build
     strategy:
+      fail-fast: false
       matrix:
         platform: [ ubuntu-latest, macos-latest, windows-latest ]
         build_type: [ Release ]
         cxx: [ clang++ ]
+        compiler: [ clang ]
         shared_lib: [ false, true ]
+        include:
+          - platform: windows-latest
+            build_type: Release
+            cxx: cl
+            compiler: msvc
+            shared_lib: false
+          - platform: windows-latest
+            build_type: Release
+            cxx: cl
+            compiler: msvc
+            shared_lib: true
+          - platform: windows-11-arm
+            build_type: Release
+            cxx: cl
+            compiler: msvc
+            shared_lib: false
+          - platform: windows-11-arm
+            build_type: Release
+            cxx: cl
+            compiler: msvc
+            shared_lib: true
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -196,37 +209,43 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
+        if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
       - name: Configure example
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B "build_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
+            -B "build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
             -DFLS_BUILD_EXAMPLES=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
             -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
           )
-          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}")
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
-        run: cmake --build "build_${{ matrix.build_type }}_${{ matrix.shared_lib }}" --parallel
+        run: |
+          cmake --build "build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}" \
+                --config ${{ matrix.build_type }} --parallel
 
       - name: Run cpp_example
         shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            ./build_${{ matrix.build_type }}_${{ matrix.shared_lib }}/examples/cpp_example.exe
+          BUILD_DIR="build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
+          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+            ./${BUILD_DIR}/${{ matrix.build_type }}/examples/cpp_example.exe
+          elif [[ "${{ runner.os }}" == "Windows" ]]; then
+            ./${BUILD_DIR}/examples/cpp_example.exe
           else
-            ./build_${{ matrix.build_type }}_${{ matrix.shared_lib }}/examples/cpp_example
+            ./${BUILD_DIR}/examples/cpp_example
           fi
 
   # ──────────────────────────────────────────────────────────────────────────────
@@ -234,24 +253,42 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   test:
 #    needs: build
-    name: test (${{ matrix.platform }}, ${{ matrix.build_type }}, ${{ matrix.shared_lib && 'shared' || 'static' }})
+    name: test (${{ matrix.platform }}, ${{ matrix.compiler }}, ${{ matrix.build_type }}, ${{ matrix.shared_lib && 'shared' || 'static' }})
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - ubuntu-24.04
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - ubuntu-22.04-arm
+          - macos-26
           - macos-15
-          - macos-14
-          - macos-13
         build_type: [ Release ]
+        compiler: [ clang ]
         shared_lib: [ false, true ]
+        include:
+          - platform: windows-latest
+            build_type: Release
+            compiler: msvc
+            shared_lib: false
+          - platform: windows-latest
+            build_type: Release
+            compiler: msvc
+            shared_lib: true
+          - platform: windows-11-arm
+            build_type: Release
+            compiler: msvc
+            shared_lib: false
+          - platform: windows-11-arm
+            build_type: Release
+            compiler: msvc
+            shared_lib: true
     runs-on: ${{ matrix.platform }}
 
     defaults:
       run:
-        shell: bash  # Use bash on all platforms to avoid PowerShell issues on Windows
+        shell: bash
 
     steps:
       - uses: actions/checkout@v4
@@ -274,12 +311,12 @@ jobs:
         uses: ./.github/actions/generate-dataset
 
       - name: Install LLVM
+        if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
       - name: Configure tests
         run: |
-          # Build directory uses our human-friendly label
-          BUILD_DIR="test_build_${LIB_LABEL}"
+          BUILD_DIR="test_build_${{ matrix.compiler }}_${LIB_LABEL}"
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
             -B "${BUILD_DIR}"
@@ -288,10 +325,10 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER=clang++
           )
-          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN mismatch
+          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
@@ -299,14 +336,14 @@ jobs:
 
       - name: Build tests
         run: |
-          # Use the same labeled build directory
-          cmake --build "test_build_${LIB_LABEL}" -j $BUILD_THREADS
+          cmake --build "test_build_${{ matrix.compiler }}_${LIB_LABEL}" \
+                --config ${{ matrix.build_type }} -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: "test_build_${{ env.LIB_LABEL }}"
+        working-directory: "test_build_${{ matrix.compiler }}_${{ env.LIB_LABEL }}"
         run: |
-          # Exclude Quick-Fuzz tests from the normal suite
           ctest -j $BUILD_THREADS \
+                --build-config ${{ matrix.build_type }} \
                 --stop-on-failure \
                 --output-on-failure \
                 --timeout 5000 \
@@ -318,9 +355,24 @@ jobs:
   install:
     needs: test
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
+        compiler: [ clang ]
         shared_lib: [ false, true ]
+        include:
+          - os: windows-latest
+            compiler: msvc
+            shared_lib: false
+          - os: windows-latest
+            compiler: msvc
+            shared_lib: true
+          - os: windows-11-arm
+            compiler: msvc
+            shared_lib: false
+          - os: windows-11-arm
+            compiler: msvc
+            shared_lib: true
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -332,8 +384,8 @@ jobs:
         shell: bash
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
-      # Use the same LLVM toolchain as the other jobs
       - name: Install LLVM toolchain
+        if: matrix.compiler != 'msvc'
         uses: ./.github/actions/install-llvm
 
       - name: Configure + build + install
@@ -341,21 +393,21 @@ jobs:
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B build_${{ matrix.shared_lib }}
-            -G "${CMAKE_GENERATOR}"
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER=clang++
+            -B build_${{ matrix.compiler }}_${{ matrix.shared_lib }}
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.shared_lib }}/install
+            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.compiler }}_${{ matrix.shared_lib }}/install
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
             -DFLS_ENABLE_INSTALL=ON
           )
-          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ matrix.compiler }}" != "msvc" ]]; then
+            CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
           cmake "${CMAKE_ARGS[@]}"
-          cmake --build build_${{ matrix.shared_lib }} --target install -j $BUILD_THREADS
+          cmake --build build_${{ matrix.compiler }}_${{ matrix.shared_lib }} \
+                --config Release --target install -j $BUILD_THREADS
 
       - name: Verify installed header files
         shell: bash
@@ -363,7 +415,7 @@ jobs:
           set -euo pipefail
 
           SOURCE_INCLUDE=src/include
-          INSTALL_INCLUDE=build_${{ matrix.shared_lib }}/install/include
+          INSTALL_INCLUDE=build_${{ matrix.compiler }}_${{ matrix.shared_lib }}/install/include
 
           # 1) fail fast if the install tree isn't there
           if [[ ! -d "$INSTALL_INCLUDE" ]]; then
