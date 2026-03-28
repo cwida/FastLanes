@@ -10,7 +10,11 @@ PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 -include $(PROJECT_ROOT)/mk/python.mk           # non-fatal if missing
 
 VENV   ?= $(PROJECT_ROOT)/.venv
-PYTHON ?= $(VENV)/bin/python3                   # python.exe on Win via python.mk
+ifeq ($(OS),Windows_NT)
+PYTHON ?= $(VENV)/Scripts/python.exe
+else
+PYTHON ?= $(VENV)/bin/python3
+endif
 PIP    ?= $(PYTHON) -m pip
 
 DATA_DIR    := $(PROJECT_ROOT)/data
