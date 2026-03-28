@@ -3,7 +3,6 @@
 // ────────────────────────────────────────────────────────
 // src/alp/src/encoder.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/compiler.hpp"
 #include "alp/encoder.hpp"
 #include "alp/common.hpp"
 #include "alp/config.hpp"
@@ -12,6 +11,7 @@
 #include "alp/sampler.hpp"
 #include "alp/state.hpp"
 #include "fls/common/assert.hpp" // fix me
+#include "fls/compiler.hpp"
 #include "fls/ffor_util.hpp"
 #include <algorithm>
 #include <cmath> // for std::ceil

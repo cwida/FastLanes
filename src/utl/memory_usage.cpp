@@ -13,8 +13,8 @@
 #include <fstream>
 #include <unistd.h>
 #elif defined(_WIN32)
-#include <windows.h>
 #include <psapi.h>
+#include <windows.h>
 #endif
 
 namespace fastlanes {
