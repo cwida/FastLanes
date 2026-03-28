@@ -30,11 +30,9 @@
 // ── MSVC compat for __restrict__ and __builtin_ctzl ─────
 #if defined(_MSC_VER) && !defined(__clang__)
 #include <intrin.h>
-// MSVC strips __restrict/__restrict__ from the mangling of explicit template
-// instantiations but keeps them in call-site references, causing LNK2019.
-// Define both to nothing so mangling is consistent.
-#define __restrict
+#ifndef __restrict__
 #define __restrict__
+#endif
 #ifndef __BYTE_ORDER__
 #define __BYTE_ORDER__          __ORDER_LITTLE_ENDIAN__
 #define __ORDER_LITTLE_ENDIAN__ 2

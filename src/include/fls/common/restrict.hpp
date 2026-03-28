@@ -15,18 +15,15 @@
 #endif
 #endif
 
-#ifndef FLS_RESTRICT // GNU / Clang (all platforms, incl. macOS and clang-cl)
+#ifndef FLS_RESTRICT // GNU / Clang (all platforms, incl. macOS)
 #if defined(__GNUC__) || defined(__clang__)
 #define FLS_RESTRICT __restrict__
 #endif
 #endif
 
-#ifndef FLS_RESTRICT // Microsoft Visual C++ (pure MSVC, not clang-cl)
+#ifndef FLS_RESTRICT // Microsoft Visual C++
 #if defined(_MSC_VER)
-// MSVC strips __restrict from the mangling of explicit template
-// instantiations but keeps it in call-site references, causing LNK2019.
-// Define FLS_RESTRICT to nothing on pure MSVC to avoid the mismatch.
-#define FLS_RESTRICT
+#define FLS_RESTRICT __restrict
 #endif
 #endif
 
