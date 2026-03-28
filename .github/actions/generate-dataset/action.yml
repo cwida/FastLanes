@@ -38,5 +38,6 @@ runs:
     # 4️⃣  Generate the sentence embeddings
     # ─────────────────────────────────────────────────────────────
     - name: Generate embeddings
+      if: runner.os != 'Windows'
       shell: bash
       run: make generate-embeddings
