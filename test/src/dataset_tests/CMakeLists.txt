@@ -11,6 +11,9 @@ add_executable(
         wrong_schema.cpp)
 
 target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes)
+if (MSVC)
+    target_link_options(dataset_tests PRIVATE /WHOLEARCHIVE:FastLanes.lib)
+endif ()
 gtest_discover_tests(dataset_tests DISCOVERY_TIMEOUT 60)
 fls_enable_sanitizers(dataset_tests)
 
