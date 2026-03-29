@@ -60,8 +60,8 @@ struct Constants<float> {
 	                                                  1000000000.0f,
 	                                                  10000000000.0f};
 
-	static constexpr std::array<int64_t, 11> FACT_ARR = {
-	    1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000};
+	static constexpr std::array<int32_t, 10> FACT_ARR = {
+	    1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 };
 
 template <>

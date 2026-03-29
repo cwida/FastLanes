@@ -16,23 +16,23 @@ TEST_F(FastLanesReaderTester, Arade) {
 }
 
 TEST_F(FastLanesReaderTester, Bimbo) {
-	const vector<n_t>     constant_cols                 = {6};
+	const vector<n_t> constant_cols                 = {6};
 	const vector<n_t> equal_cols                    = {}; // No equal columns found
-	const vector<n_t>     one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
+	const vector<n_t> one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
 	AllTest(public_bi::Bimbo, constant_cols, equal_cols, one_to_one_mapped_col_indexes);
 }
 
 TEST_F(FastLanesReaderTester, CMSprovider) {
-	const vector<n_t>     constant_cols                 = {20};
+	const vector<n_t> constant_cols                 = {20};
 	const vector<n_t> equal_cols                    = {}; // No equal columns found
-	const vector<n_t>     one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
+	const vector<n_t> one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
 	AllTest(public_bi::CMSprovider, constant_cols, equal_cols, one_to_one_mapped_col_indexes);
 }
 
 TEST_F(FastLanesReaderTester, CityMaxCapita) {
-	const vector<n_t>     constant_cols                 = {10, 19};
+	const vector<n_t> constant_cols                 = {10, 19};
 	const vector<n_t> equal_cols                    = {}; // No equal columns found
-	const vector<n_t>     one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
+	const vector<n_t> one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
 	AllTest(public_bi::CityMaxCapita, constant_cols, equal_cols, one_to_one_mapped_col_indexes);
 }
 
@@ -67,7 +67,7 @@ TEST_F(FastLanesReaderTester, Eixo) {
 }
 
 TEST_F(FastLanesReaderTester, Euro2016) {
-	const vector<n_t>     constant_cols = {0};
+	const vector<n_t> constant_cols = {0};
 	const vector<n_t> equal_cols    = {};
 	// -- one-to-one mapped columns: [(3, 4)]
 	const vector<n_t> one_to_one_mapped_col_indexes = {4};
@@ -75,9 +75,9 @@ TEST_F(FastLanesReaderTester, Euro2016) {
 }
 
 TEST_F(FastLanesReaderTester, Food) {
-	const vector<n_t>     constant_cols                 = {0};
+	const vector<n_t> constant_cols                 = {0};
 	const vector<n_t> equal_cols                    = {}; // No equal columns found
-	const vector<n_t>     one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
+	const vector<n_t> one_to_one_mapped_col_indexes = {}; // No one-to-one mapped columns found
 	AllTest(public_bi::Food, constant_cols, equal_cols, one_to_one_mapped_col_indexes);
 }
 
