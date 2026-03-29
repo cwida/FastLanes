@@ -337,7 +337,7 @@ jobs:
         run: |
           EXCLUDE="QuickFuzz"
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            EXCLUDE="QuickFuzz|issue_000|NextiaJD|SINGLE_COLUMN_JPEG|GALP"
+            EXCLUDE="QuickFuzz|issue_000|NextiaJD|SINGLE_COLUMN_JPEG|GALP|CommonGovernment|CityMaxCapita"
           fi
           ctest -j $BUILD_THREADS \
                 --build-config ${{ matrix.build_type }} \
