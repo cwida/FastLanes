@@ -32,8 +32,12 @@ up<RowgroupReader> TableReader::get_rowgroup_reader(const n_t rowgroup_idx) cons
 up<Table> TableReader::materialize() const {
 	auto table_up = make_unique<Table>(m_connection);
 
-	const TableDescriptor* td    = m_table_descriptor_handle->Get();
-	const auto             n_rgs = td->m_rowgroup_descriptors()->size(); // uoffset_t
+	const TableDescriptor* td     = m_table_descriptor_handle->Get();
+	const auto*            rg_vec = td->m_rowgroup_descriptors();
+	if (!rg_vec) {
+		return table_up;
+	}
+	const auto n_rgs = rg_vec->size();
 
 	for (flatbuffers::uoffset_t i = 0; i < n_rgs; ++i) {
 		auto rowgroup_up = get_rowgroup_reader(static_cast<n_t>(i))->materialize();
@@ -44,8 +48,12 @@ up<Table> TableReader::materialize() const {
 }
 
 void TableReader::to_csv(const path& file_path) const {
-	const TableDescriptor* td    = m_table_descriptor_handle->Get();
-	const auto             n_rgs = td->m_rowgroup_descriptors()->size();
+	const TableDescriptor* td     = m_table_descriptor_handle->Get();
+	const auto*            rg_vec = td->m_rowgroup_descriptors();
+	if (!rg_vec) {
+		return;
+	}
+	const auto n_rgs = rg_vec->size();
 
 	for (flatbuffers::uoffset_t i = 0; i < n_rgs; ++i) {
 		auto rowgroup_up = get_rowgroup_reader(static_cast<n_t>(i))->materialize();
