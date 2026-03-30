@@ -487,7 +487,7 @@ struct rowgroup_equality_visitor {
 		for (idx_t idx {0}; idx < org_col->data.size(); ++idx) {
 			const auto& original_val = org_col->data[idx];
 			const auto& decoded_val  = decoded_col->data[idx];
-			if (org_col->null_map_arr[idx]) {
+			if (!org_col->null_map_arr.empty() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 
@@ -519,7 +519,7 @@ struct rowgroup_equality_visitor {
 		}
 
 		for (idx_t idx {0}; idx < org_col->length_arr.size(); ++idx) {
-			if (org_col->null_map_arr[idx]) {
+			if (!org_col->null_map_arr.empty() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 			const fls_string_t org_fls_string {org_col->str_p_arr[idx], org_col->length_arr[idx]};
