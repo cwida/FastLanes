@@ -21,7 +21,7 @@ SCRIPT       := $(abspath $(SCRIPTS_DIR)/generate_embedding.py)
 ifeq ($(OS),Windows_NT)
   VENV_PY := $(VENV_DIR)/Scripts/python.exe
 else
-  VENV_PY ?= $(VENV_DIR)/bin/python
+  VENV_PY := $(VENV_DIR)/bin/python
 endif
 
 .DEFAULT_GOAL := help
