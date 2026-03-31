@@ -16,6 +16,7 @@
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include <algorithm> // for std::min
+#include <cstddef>   // for size_t
 #include <cstdint>   // for uint8_t
 #include <utility>
 

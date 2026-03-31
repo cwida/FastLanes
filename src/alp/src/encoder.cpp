@@ -278,7 +278,9 @@ void encoder<PT, is_null>::find_top_k_combinations(const PT* smp_arr, state<PT>&
 
 		// We try all combinations in search for the one which minimize the compression size
 		for (int8_t exponent_idx = Constants<PT>::MAX_EXPONENT; exponent_idx >= 0; --exponent_idx) {
-			for (int8_t factor_idx = exponent_idx - 1; factor_idx >= 0; --factor_idx) {
+			for (int8_t factor_idx = std::min(exponent_idx, static_cast<int8_t>(Constants<PT>::FACT_ARR.size() - 1));
+			     factor_idx >= 0;
+			     --factor_idx) {
 				uint16_t exceptions_count           = {0};
 				uint16_t non_exceptions_count       = {0};
 				uint32_t estimated_bits_per_value   = {0};
