@@ -201,7 +201,8 @@ void dec_fsst_dict_opr<INDEX_PT>::Decode(vector<uint8_t>& byte_arr_vec, vector<o
 
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
 			byte_arr_vec.reserve(
-			    std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), tmp_string.begin(), tmp_string.begin() + decoded_size);
 	}

@@ -296,7 +296,8 @@ void dec_frequency_str_opr::Materialize(n_t vec_idx, FLSStrColumn& typed_col) {
 	for (n_t idx {0}; idx < CFG::VEC_SZ; ++idx) {
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
 			byte_arr_vec.reserve(
-			    std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 
 		exception_position = exception_positions[exception_idx];

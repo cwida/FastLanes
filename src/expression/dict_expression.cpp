@@ -228,7 +228,8 @@ void dec_dict_opr<fls_string_t, INDEX_PT>::Decode(vector<uint8_t>& byte_arr_vec,
 
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
 			byte_arr_vec.reserve(
-			    std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), Bytes() + offset, Bytes() + offset_next);
 	}
