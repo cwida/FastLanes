@@ -17,6 +17,8 @@
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility>
 #include <variant> // for std::monostate
