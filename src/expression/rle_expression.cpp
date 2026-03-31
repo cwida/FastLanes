@@ -213,7 +213,8 @@ void dec_rle_map_opr<FlsString, INDEX_PT>::Decode(n_t              vec_idx,
 		length_pointer[val_idx] = next_offset - cur_ofs;
 
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
+			byte_arr_vec.reserve(
+			    std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), bytes + cur_ofs, bytes + next_offset);
 	}

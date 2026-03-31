@@ -34,7 +34,9 @@ up<Table> TableReader::materialize() const {
 
 	const TableDescriptor* td     = m_table_descriptor_handle->Get();
 	const auto*            rg_vec = td->m_rowgroup_descriptors();
-	if (!rg_vec) { return table_up; }
+	if (!rg_vec) {
+		return table_up;
+	}
 	const auto n_rgs = rg_vec->size();
 
 	for (flatbuffers::uoffset_t i = 0; i < n_rgs; ++i) {
