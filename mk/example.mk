@@ -132,7 +132,7 @@ clean-examples:
 # ─────────────────────────────────────────────────────────────
 
 VENV_DIR    := $(EXAMPLES_DIR)/.venv
-PYTHON      ?= $(VENV_DIR)/bin/python
+PYTHON      := $(VENV_DIR)/bin/python
 PIP         := $(VENV_DIR)/bin/pip
 PDF_SCRIPT  := $(PROJECT_DIR)/data/example/extract_sentences.py
 CSV_OUTPUT  := $(PROJECT_DIR)/data/example/papers.csv

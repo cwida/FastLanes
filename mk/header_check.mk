@@ -5,7 +5,7 @@
 # ────────────────────────────────────────────────────────
 include mk/venv.mk
 
-PYTHON ?= $(VENV_DIR)/bin/python3
+PYTHON := $(VENV_DIR)/bin/python3
 SCRIPT := scripts/header_check.py
 
 .PHONY: check-header fix-header
