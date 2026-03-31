@@ -258,7 +258,7 @@ struct col_cast_visitor {
 		for (n_t val_idx {0}; val_idx < n_tup; val_idx++) {
 			std::string str(reinterpret_cast<const char*>(&str_col->byte_arr[cur_offset]),
 			                str_col->length_arr[val_idx]);
-			auto        casted_string = std::stol(str);
+			auto        casted_string = std::stoll(str);
 			casted_col->data[val_idx] = static_cast<i32_pt>(casted_string);
 			cur_offset += str_col->length_arr[val_idx];
 		}

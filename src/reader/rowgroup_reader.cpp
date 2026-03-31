@@ -86,7 +86,6 @@ up<Rowgroup> RowgroupReader::materialize() {
 		materializer.Materialize(expressions, vec_idx);
 	}
 
-	// materializer.rowgroup.Cast();
 	materializer.rowgroup.Finalize();
 	materializer.rowgroup.GetStatistics();
 

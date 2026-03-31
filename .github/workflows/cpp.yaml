@@ -336,9 +336,6 @@ jobs:
         working-directory: "test_build_${{ matrix.compiler }}_${{ env.LIB_LABEL }}"
         run: |
           EXCLUDE="QuickFuzz"
-          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
-            EXCLUDE="QuickFuzz|NextiaJD|CommonGovernment|CityMaxCapita|Eixo|Generico|Motos|Hatred|HashTags"  
-          fi
           ctest -j $BUILD_THREADS \
                 --build-config ${{ matrix.build_type }} \
                 --stop-on-failure \

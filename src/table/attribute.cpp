@@ -338,7 +338,7 @@ bool isValidUint32(const std::string& str) {
 	}
 
 	try {
-		u64_pt value = std::stoul(str);
+		u64_pt value = std::stoull(str);
 		return value <= std::numeric_limits<uint32_t>::max();
 	} catch (const std::exception&) { return false; }
 }
@@ -362,7 +362,7 @@ bool isValidInt32(const std::string& str) {
 
 	try {
 		// Convert string to long and check the range
-		const int64_t value = std::stol(str);
+		const int64_t value = std::stoll(str);
 		return value >= std::numeric_limits<int32_t>::min() && value <= std::numeric_limits<int32_t>::max();
 	} catch (const std::exception&) {
 		return false; // Overflow or invalid conversion
@@ -381,7 +381,7 @@ bool isValidUint16(const std::string& str) {
 
 	try {
 		// Convert string to uint64_t and check the range
-		uint64_t value = std::stoul(str);
+		uint64_t value = std::stoull(str);
 		return value <= std::numeric_limits<uint16_t>::max();
 	} catch (const std::exception&) {
 		return false; // Overflow or invalid conversion

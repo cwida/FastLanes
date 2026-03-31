@@ -145,7 +145,7 @@ fsst12_decompress(fsst12_decoder_t* decoder, /* IN: use this dictionary for comp
                   unsigned char*    output   /* OUT: memory buffer to put the decompressed string in. */
 ) {
 	unsigned char* __restrict__ len    = (unsigned char* __restrict__)decoder->len;
-	unsigned long* __restrict__ symbol = (unsigned long* __restrict__)decoder->symbol;
+	unsigned long long* __restrict__ symbol = (unsigned long long* __restrict__)decoder->symbol;
 	unsigned char* __restrict__ strOut = (unsigned char* __restrict__)output;
 	unsigned long posOut = 0, posIn = 0;
 #define FSST12_UNALIGNED_STORE(dst, src) memcpy((unsigned long long*)(dst), &(src), sizeof(unsigned long long))

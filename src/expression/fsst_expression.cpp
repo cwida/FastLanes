@@ -159,7 +159,7 @@ void dec_fsst_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length_v
 		in_byte_arr += encoded_size;
 		length_pointer[i] = decoded_size;
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+			byte_arr_vec.reserve(std::max(byte_arr_vec.capacity() * 2, byte_arr_vec.size() + CFG::String::max_bytes_per_string));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), tmp_string.begin(), tmp_string.begin() + decoded_size);
 	}
