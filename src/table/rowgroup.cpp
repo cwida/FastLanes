@@ -723,13 +723,17 @@ template class TypedColumnView<flt_pt>;
 
 NullMapView::NullMapView(const col_pt& column) {
 	static const uint8_t zero_null_map[65536] = {};
-	visit(overloaded {
-	          [&]<typename PT>(const up<TypedCol<PT>>& typed_col) { m_null_map = typed_col->null_map_arr.empty() ? zero_null_map : typed_col->null_map_arr.data(); },
-	          [&](const up<FLSStrColumn>& fls_str_column) { m_null_map = fls_str_column->null_map_arr.empty() ? zero_null_map : fls_str_column->null_map_arr.data(); },
-	          [&](const std::monostate&) { FLS_UNREACHABLE() },
-	          [&](const auto& arg) {
-		          FLS_UNREACHABLE_WITH_TYPE(arg)
-	          }},
+	visit(overloaded {[&]<typename PT>(const up<TypedCol<PT>>& typed_col) {
+		                  m_null_map = typed_col->null_map_arr.empty() ? zero_null_map : typed_col->null_map_arr.data();
+	                  },
+	                  [&](const up<FLSStrColumn>& fls_str_column) {
+		                  m_null_map = fls_str_column->null_map_arr.empty() ? zero_null_map
+		                                                                    : fls_str_column->null_map_arr.data();
+	                  },
+	                  [&](const std::monostate&) { FLS_UNREACHABLE() },
+	                  [&](const auto& arg) {
+		                  FLS_UNREACHABLE_WITH_TYPE(arg)
+	                  }},
 	      column);
 }
 const uint8_t* NullMapView::NullMap() const {
