@@ -375,7 +375,7 @@ using physical_operator = variant<std::monostate,
 using physical_operators = vector<physical_operator>;
 using physical_operands  = vector<fls_vec>;
 
-class PhysicalExpr {
+class FLS_API PhysicalExpr {
 public:
 	physical_operators operators;
 	physical_operands  operands;

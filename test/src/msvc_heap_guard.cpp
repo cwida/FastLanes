@@ -20,32 +20,32 @@
 #include <windows.h>
 
 static LONG WINAPI heap_guard_page_handler(EXCEPTION_POINTERS* ep) {
-    if (ep->ExceptionRecord->ExceptionCode != EXCEPTION_ACCESS_VIOLATION) {
-        return EXCEPTION_CONTINUE_SEARCH;
-    }
+	if (ep->ExceptionRecord->ExceptionCode != EXCEPTION_ACCESS_VIOLATION) {
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
 
-    // Only handle *read* AVs (ExceptionInformation[0] == 0).
-    if (ep->ExceptionRecord->ExceptionInformation[0] != 0) {
-        return EXCEPTION_CONTINUE_SEARCH;
-    }
+	// Only handle *read* AVs (ExceptionInformation[0] == 0).
+	if (ep->ExceptionRecord->ExceptionInformation[0] != 0) {
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
 
-    const auto faulting_addr = reinterpret_cast<void*>(ep->ExceptionRecord->ExceptionInformation[1]);
+	const auto faulting_addr = reinterpret_cast<void*>(ep->ExceptionRecord->ExceptionInformation[1]);
 
-    // Try to commit the faulting page.  If it succeeds the page was a
-    // reserved-but-uncommitted guard region inside the heap — resume.
-    void* result = VirtualAlloc(faulting_addr, 1, MEM_COMMIT, PAGE_READWRITE);
-    if (result != nullptr) {
-        return EXCEPTION_CONTINUE_EXECUTION;   // page committed — retry the instruction
-    }
+	// Try to commit the faulting page.  If it succeeds the page was a
+	// reserved-but-uncommitted guard region inside the heap — resume.
+	void* result = VirtualAlloc(faulting_addr, 1, MEM_COMMIT, PAGE_READWRITE);
+	if (result != nullptr) {
+		return EXCEPTION_CONTINUE_EXECUTION; // page committed — retry the instruction
+	}
 
-    // Not a committable page — let something else handle it.
-    return EXCEPTION_CONTINUE_SEARCH;
+	// Not a committable page — let something else handle it.
+	return EXCEPTION_CONTINUE_SEARCH;
 }
 
 struct HeapGuardInstaller {
-    HeapGuardInstaller() {
-        AddVectoredExceptionHandler(1 /* first */, heap_guard_page_handler);
-    }
+	HeapGuardInstaller() {
+		AddVectoredExceptionHandler(1 /* first */, heap_guard_page_handler);
+	}
 };
 
 static HeapGuardInstaller g_heap_guard;

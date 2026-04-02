@@ -6,6 +6,7 @@
 #ifndef FLS_READER_CSV_READER_HPP
 #define FLS_READER_CSV_READER_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp" // for up, idx_t
 #include "fls/std/filesystem.hpp"
 
@@ -19,7 +20,7 @@ class Connection;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * CsvReader
 \*--------------------------------------------------------------------------------------------------------------------*/
-class CsvReader {
+class FLS_API CsvReader {
 public:
 	static up<Table> Read(const path& dir_path, const Connection& connection);
 };

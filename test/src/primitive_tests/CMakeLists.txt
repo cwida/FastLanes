@@ -9,6 +9,7 @@ target_link_libraries(primitive_test
         FastLanes      # your library second
         msvc_heap_guard
 )
+fls_msvc_test_setup(primitive_test)
 
 fls_enable_sanitizers(primitive_test)
 

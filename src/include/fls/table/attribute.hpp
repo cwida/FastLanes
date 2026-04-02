@@ -6,6 +6,7 @@
 #ifndef FLS_TABLE_ATTRIBUTE_HPP
 #define FLS_TABLE_ATTRIBUTE_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/common.hpp"
 #include "fls/std/string.hpp"
 #include "fls/table/rowgroup.hpp"
@@ -16,7 +17,7 @@ template <typename PT>
 class TypedCol;
 enum class DataType : uint8_t;
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Attribute {
+class FLS_API Attribute {
 public:
 	Attribute() = delete;
 

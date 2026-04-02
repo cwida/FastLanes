@@ -6,11 +6,12 @@
 #ifndef FOR_NOW_ERROR_HPP
 #define FOR_NOW_ERROR_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/std/string.hpp"
 
 namespace fastlanes {
 
-class Status {
+class FLS_API Status {
 public:
 	enum class ErrorCode {
 		Ok,

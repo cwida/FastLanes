@@ -6,6 +6,7 @@
 #ifndef FLS_READER_SEGMENT_HPP
 #define FLS_READER_SEGMENT_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/common.hpp"
 #include "fls/std/span.hpp"
 #include "fls/std/variant.hpp"
@@ -40,14 +41,14 @@ public:
 using entry_point_view_t =
     variant<std::monostate, EntryPointView<uint8_t>, EntryPointView<uint16_t>, EntryPointView<uint32_t>>;
 
-n_t get_offset(const entry_point_view_t& entry_point_view, n_t vex_idx);
+FLS_API n_t get_offset(const entry_point_view_t& entry_point_view, n_t vex_idx);
 
-n_t get_size(const entry_point_view_t& entry_point_view);
+FLS_API n_t get_size(const entry_point_view_t& entry_point_view);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
 * SegmentView
 \*--------------------------------------------------------------------------------------------------------------------*/
-class SegmentView {
+class FLS_API SegmentView {
 public:
 	explicit SegmentView(entry_point_view_t entry_point_view, span<std::byte> data_span);
 
@@ -65,12 +66,12 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_segment_view
 \*--------------------------------------------------------------------------------------------------------------------*/
-SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptor& segment_descriptor);
+FLS_API SegmentView make_segment_view(span<std::byte> column_span, const SegmentDescriptor& segment_descriptor);
 
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Segment
 \*--------------------------------------------------------------------------------------------------------------------*/
-class Segment {
+class FLS_API Segment {
 public:
 	explicit Segment();
 

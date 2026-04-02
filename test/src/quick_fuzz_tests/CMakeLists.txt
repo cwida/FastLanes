@@ -8,6 +8,7 @@ target_link_libraries(quick_fuzz_test
         GTest::gtest_main
         FastLanes
         msvc_heap_guard)
+fls_msvc_test_setup(quick_fuzz_test)
 
 fls_enable_sanitizers(quick_fuzz_test)
 

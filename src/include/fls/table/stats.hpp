@@ -6,6 +6,7 @@
 #ifndef FLS_TABLE_STATS_HPP
 #define FLS_TABLE_STATS_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/bimap.hpp"
 #include "fls/common/bimap_frequency.hpp"
@@ -44,7 +45,7 @@ public:
 	bool is_double_castable;
 };
 
-class FlsStringStats {
+class FLS_API FlsStringStats {
 public:
 	FlsStringStats();
 

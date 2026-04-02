@@ -6,6 +6,7 @@
 #ifndef FLS_READER_READER_HPP
 #define FLS_READER_READER_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"                   // for up, n_t
 #include "fls/cor/lyt/buf.hpp"                    // for Buf
 #include "fls/expression/physical_expression.hpp" // for PhysicalExpr
@@ -20,7 +21,7 @@ class Connection;
 class RowgroupView;
 class Rowgroup;
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Reader {
+class FLS_API Reader {
 public:
 	explicit Reader(const path& dir_path, Connection& fls);
 
