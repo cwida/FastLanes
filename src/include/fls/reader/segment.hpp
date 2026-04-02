@@ -8,13 +8,13 @@
 
 #include "fls/api/api.hpp"
 #include "fls/common/common.hpp"
+#include "fls/cor/lyt/buf.hpp"
 #include "fls/std/span.hpp"
 #include "fls/std/variant.hpp"
 #include "fls/std/vector.hpp"
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Buf;
 struct SegmentDescriptor;
 struct SegmentDescriptorT;
 
@@ -74,6 +74,12 @@ FLS_API SegmentView make_segment_view(span<std::byte> column_span, const Segment
 class FLS_API Segment {
 public:
 	explicit Segment();
+
+	~Segment();
+	Segment(const Segment&)            = delete;
+	Segment& operator=(const Segment&) = delete;
+	Segment(Segment&&) noexcept;
+	Segment& operator=(Segment&&) noexcept;
 
 public:
 	void Flush(const void* pointer, n_t size);

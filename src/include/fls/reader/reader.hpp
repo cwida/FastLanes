@@ -11,19 +11,25 @@
 #include "fls/cor/lyt/buf.hpp"                    // for Buf
 #include "fls/expression/physical_expression.hpp" // for PhysicalExpr
 #include "fls/reader/fls_rowgroup.hpp"
-#include "fls/std/filesystem.hpp" // for path
-#include "fls/std/vector.hpp"     // for vector
-#include "fls/table/chunk.hpp"    // for Chunk
+#include "fls/reader/rowgroup_view.hpp"           // for RowgroupView (complete type needed for dllexport)
+#include "fls/std/filesystem.hpp"                 // for path
+#include "fls/std/vector.hpp"                     // for vector
+#include "fls/table/chunk.hpp"                    // for Chunk
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Connection;
-class RowgroupView;
 class Rowgroup;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class FLS_API Reader {
 public:
 	explicit Reader(const path& dir_path, Connection& fls);
+
+	~Reader();
+	Reader(const Reader&)            = delete;
+	Reader& operator=(const Reader&) = delete;
+	Reader(Reader&&) noexcept;
+	Reader& operator=(Reader&&) noexcept;
 
 public:
 	vector<sp<PhysicalExpr>>& get_chunk(n_t vec_idx);

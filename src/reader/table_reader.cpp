@@ -69,6 +69,8 @@ void TableReader::to_csv(const char* file_path) const {
 	to_csv(path(file_path));
 }
 
+TableReader::~TableReader()                                       = default;
+
 TableReader::TableReader(const path& file_path, Connection& connection)
     : m_connection(connection)
     , m_file_path(file_path) {

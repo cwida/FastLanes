@@ -11,6 +11,8 @@
 
 namespace fastlanes {
 
+Table::~Table()                                     = default;
+
 Table::Table(const Connection& connection)
     : m_connection(connection) {
 }

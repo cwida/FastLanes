@@ -171,6 +171,13 @@ using rowgroup_pt = vector<col_pt>;
 
 class FLS_API List : public VariableSizeCol {
 public:
+	List()                           = default;
+	List(const List&)                = delete;
+	List& operator=(const List&)     = delete;
+	List(List&&)                     = default;
+	List& operator=(List&&)          = default;
+
+public:
 	col_pt child;
 };
 
@@ -187,6 +194,13 @@ public:
 };
 
 class FLS_API Struct : public BaseCol {
+public:
+	Struct()                             = default;
+	Struct(const Struct&)                = delete;
+	Struct& operator=(const Struct&)     = delete;
+	Struct(Struct&&)                     = default;
+	Struct& operator=(Struct&&)          = default;
+
 public:
 	rowgroup_pt internal_rowgroup;
 };

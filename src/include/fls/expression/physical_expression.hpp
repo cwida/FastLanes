@@ -384,6 +384,11 @@ public:
 	~PhysicalExpr();
 	PhysicalExpr();
 
+	PhysicalExpr(const PhysicalExpr&)            = delete;
+	PhysicalExpr& operator=(const PhysicalExpr&) = delete;
+	PhysicalExpr(PhysicalExpr&&)                 = default;
+	PhysicalExpr& operator=(PhysicalExpr&&)      = default;
+
 public:
 	//
 	void PointTo(n_t vec_idx) const;

@@ -21,6 +21,19 @@ target_include_directories(fls_headers
 
 add_library(FastLanes::headers ALIAS fls_headers)
 
+
+###########################################################################
+# Propagate the shared/static build mode to all object-library targets.
+# add_compile_definitions is directory-scoped, so only targets under src/
+# will pick up FLS_BUILD_DLL — test targets won't, so FLS_API correctly
+# expands to __declspec(dllimport) for consumers.
+###########################################################################
+if (FLS_BUILD_SHARED_LIBS)
+    add_compile_definitions(FLS_BUILD_DLL)
+else ()
+    add_compile_definitions(FLS_STATIC)
+endif ()
+
 ###########################################################################
 # 2. Sub-directories that build individual components
 ###########################################################################
@@ -59,18 +72,10 @@ if (FLS_BUILD_SHARED_LIBS)
             connection.cpp
             ${FASTLANES_OBJECT_FILES}
     )
-    target_compile_definitions(FastLanes
-            PRIVATE
-            FLS_BUILD_DLL
-    )
 else ()
     add_library(FastLanes STATIC
             connection.cpp
             ${FASTLANES_OBJECT_FILES}
-    )
-    target_compile_definitions(FastLanes
-            PUBLIC
-            FLS_STATIC
     )
 endif ()
 

@@ -9,11 +9,11 @@
 #include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include <fls/std/string.hpp>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Rowgroup;
 class Connection;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class FLS_API TableComparisonResult {
@@ -28,6 +28,12 @@ public:
 class FLS_API Table {
 public:
 	Table(const Connection& connection);
+
+	~Table();
+	Table(const Table&)            = delete;
+	Table& operator=(const Table&) = delete;
+	Table(Table&&)                 = delete;
+	Table& operator=(Table&&)      = delete;
 
 public:
 	n_t get_n_rowgroups() const;

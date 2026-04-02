@@ -131,6 +131,13 @@ using fls_chunk = vector<fls_vec>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 class FLS_API ListVector : public VariableSizeVector {
 public:
+	ListVector()                               = default;
+	ListVector(const ListVector&)              = delete;
+	ListVector& operator=(const ListVector&)   = delete;
+	ListVector(ListVector&&)                   = default;
+	ListVector& operator=(ListVector&&)        = default;
+
+public:
 	fls_vec child;
 };
 
@@ -138,6 +145,13 @@ public:
  * struct vector
 \*--------------------------------------------------------------------------------------------------------------------*/
 class FLS_API StructVector : public BaseVector {
+public:
+	StructVector()                                 = default;
+	StructVector(const StructVector&)              = delete;
+	StructVector& operator=(const StructVector&)   = delete;
+	StructVector(StructVector&&)                   = default;
+	StructVector& operator=(StructVector&&)        = default;
+
 public:
 	fls_chunk table;
 };
