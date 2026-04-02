@@ -5,8 +5,8 @@
 // ────────────────────────────────────────────────────────
 #ifndef FLS_TABLE_VECTOR_HPP
 #define FLS_TABLE_VECTOR_HPP
-#include "fls/api/api.hpp"
 #include "chunk.hpp"
+#include "fls/api/api.hpp"
 
 namespace fastlanes {
 class FLS_API Vector {
