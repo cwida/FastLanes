@@ -20,6 +20,8 @@
 #include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility> // for std::move
 #include <variant> // for std::monostate

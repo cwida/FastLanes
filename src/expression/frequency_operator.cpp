@@ -18,6 +18,8 @@
 #include "fls/reader/segment.hpp"
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility>
 
