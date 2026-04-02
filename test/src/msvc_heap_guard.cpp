@@ -1,3 +1,9 @@
+// ────────────────────────────────────────────────────────
+// |                      FastLanes                       |
+// ────────────────────────────────────────────────────────
+// test/src/msvc_heap_guard.cpp
+// ────────────────────────────────────────────────────────
+
 // ---------------------------------------------------------------------------
 // On Windows with the static CRT (/MT), large heap allocations (common when
 // processing JPEG base64 data) may touch a heap-internal guard page, causing a
