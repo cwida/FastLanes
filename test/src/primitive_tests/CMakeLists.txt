@@ -7,6 +7,7 @@ target_link_libraries(primitive_test
         PRIVATE
         gtest_main     # GoogleTest’s main first
         FastLanes      # your library second
+        msvc_heap_guard
 )
 
 fls_enable_sanitizers(primitive_test)

@@ -430,12 +430,15 @@ void fill_in(col_pt& col, n_t how_many_to_fill) {
 	          [&](up<FLSStrColumn>& string_col) {
 		          const auto last_value_length = string_col->length_arr.back();
 
+		          // Copy the last value once to avoid iterator invalidation during push_back.
+		          // push_back can reallocate the vector, invalidating references into it.
+		          const auto last_value_offset = string_col->byte_arr.size() - last_value_length;
+		          vector<uint8_t> last_value(string_col->byte_arr.begin() + static_cast<ptrdiff_t>(last_value_offset),
+		                                     string_col->byte_arr.end());
+
 		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
-			          const auto size = string_col->byte_arr.size();
-			          for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
-				          string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-				          string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-			          }
+			          string_col->byte_arr.insert(string_col->byte_arr.end(), last_value.begin(), last_value.end());
+			          string_col->fsst_byte_arr.insert(string_col->fsst_byte_arr.end(), last_value.begin(), last_value.end());
 			          string_col->length_arr.push_back(last_value_length);
 			          string_col->fsst_length_arr.push_back(last_value_length);
 		          }

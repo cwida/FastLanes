@@ -1,6 +1,6 @@
 macro(fls_add_test NAME SRC)
     add_executable(test_${NAME} ${SRC})
-    target_link_libraries(test_${NAME} PUBLIC gtest_main gmock_main FastLanes)
+    target_link_libraries(test_${NAME} PUBLIC gtest_main gmock_main FastLanes msvc_heap_guard)
     if (MSVC)
         target_link_options(test_${NAME} PRIVATE /WHOLEARCHIVE:FastLanes.lib)
     endif ()
