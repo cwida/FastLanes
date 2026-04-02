@@ -10,7 +10,7 @@ add_executable(
         tpch.cpp
         wrong_schema.cpp)
 
-target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes)
+target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes msvc_heap_guard)
 if (MSVC)
     target_link_options(dataset_tests PRIVATE /WHOLEARCHIVE:FastLanes.lib)
 endif ()

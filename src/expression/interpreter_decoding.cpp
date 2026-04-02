@@ -158,7 +158,9 @@ void make_dec_alp_expr(PhysicalExpr& physical_expr, const ColumnView& column_vie
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 void make_dec_galp_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
+	// Note: dec_alp_opr uses hardcoded segment indices (0-7), so cur_operand is unused.
+	// Unlike other decoders, GALP/ALP encoding does not emit operand_tokens, so
+	// accessing operand_tokens() here would dereference a null pointer.
 	physical_expr.operators.emplace_back(make_shared<dec_alp_opr<PT>>(column_view, state));
 }
 

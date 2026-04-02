@@ -6,7 +6,8 @@ add_executable(quick_fuzz_test
 target_link_libraries(quick_fuzz_test
         PRIVATE
         GTest::gtest_main
-        FastLanes)
+        FastLanes
+        msvc_heap_guard)
 
 fls_enable_sanitizers(quick_fuzz_test)
 
