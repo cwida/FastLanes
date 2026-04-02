@@ -99,9 +99,9 @@ n_t SegmentView::Size() const {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Segment
 \*--------------------------------------------------------------------------------------------------------------------*/
-Segment::~Segment()                                    = default;
-Segment::Segment(Segment&&) noexcept                   = default;
-Segment& Segment::operator=(Segment&&) noexcept        = default;
+Segment::~Segment()                             = default;
+Segment::Segment(Segment&&) noexcept            = default;
+Segment& Segment::operator=(Segment&&) noexcept = default;
 
 Segment::Segment()
     : persistent(true)

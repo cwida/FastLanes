@@ -26,7 +26,7 @@
 
 namespace fastlanes {
 
-RowgroupReader::~RowgroupReader()                                           = default;
+RowgroupReader::~RowgroupReader() = default;
 
 RowgroupReader::RowgroupReader(const path&               file_path,
                                const RowgroupDescriptor& rowgroup_descriptor,

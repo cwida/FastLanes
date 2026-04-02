@@ -12,7 +12,7 @@
 
 namespace fastlanes {
 
-FLS_API int64_t          make_decimal(const std::string& value, n_t scale);
+FLS_API int64_t make_decimal(const std::string& value, n_t scale);
 FLS_API up<DecimalTypeT> make_decimal_t(const std::string& value);
 
 } // namespace fastlanes

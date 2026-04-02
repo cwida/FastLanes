@@ -13,9 +13,9 @@
 
 namespace fastlanes {
 
-RowgroupView::~RowgroupView()                                       = default;
-RowgroupView::RowgroupView(RowgroupView&&) noexcept                 = default;
-RowgroupView& RowgroupView::operator=(RowgroupView&&) noexcept      = default;
+RowgroupView::~RowgroupView()                                  = default;
+RowgroupView::RowgroupView(RowgroupView&&) noexcept            = default;
+RowgroupView& RowgroupView::operator=(RowgroupView&&) noexcept = default;
 
 RowgroupView::RowgroupView(span<std::byte> ptr, const RowgroupDescriptor& footer) {
 

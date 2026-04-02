@@ -26,9 +26,9 @@
 
 namespace fastlanes {
 
-Reader::~Reader()                                     = default;
-Reader::Reader(Reader&&) noexcept                     = default;
-Reader& Reader::operator=(Reader&&) noexcept          = default;
+Reader::~Reader()                            = default;
+Reader::Reader(Reader&&) noexcept            = default;
+Reader& Reader::operator=(Reader&&) noexcept = default;
 
 Reader::Reader(const path& dir_path, Connection& fls) {
 	// read footer

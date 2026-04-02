@@ -8,8 +8,8 @@
 
 namespace fastlanes {
 
-TableView::~TableView()                                     = default;
-TableView::TableView(TableView&&) noexcept                  = default;
-TableView& TableView::operator=(TableView&&) noexcept       = default;
+TableView::~TableView()                               = default;
+TableView::TableView(TableView&&) noexcept            = default;
+TableView& TableView::operator=(TableView&&) noexcept = default;
 
 } // namespace fastlanes
