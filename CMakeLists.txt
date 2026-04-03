@@ -6,13 +6,15 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Requirements : -------------------------------------------------------------------------------------------------------
-# On non-Windows platforms, require Clang.
-# On Windows, let CMake use the default compiler (MSVC from vcvars).
+# On non-Windows platforms, default to Clang unless the user explicitly sets a compiler
+# (e.g. -DCMAKE_CXX_COMPILER=g++).  On Windows, let CMake use the default (MSVC from vcvars).
 if (NOT CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
-    find_program(CLANG_CXX NAMES clang++ REQUIRED)
-    find_program(CLANG_C NAMES clang REQUIRED)
-    set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
-    set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
+    if (NOT DEFINED CMAKE_CXX_COMPILER)
+        find_program(CLANG_CXX NAMES clang++ REQUIRED)
+        find_program(CLANG_C NAMES clang REQUIRED)
+        set(CMAKE_C_COMPILER "${CLANG_C}" CACHE STRING "C Compiler" FORCE)
+        set(CMAKE_CXX_COMPILER "${CLANG_CXX}" CACHE STRING "C++ Compiler" FORCE)
+    endif ()
 endif ()
 
 
@@ -50,8 +52,13 @@ include(enable_sanitizer)
 # Checks : -------------------------------------------------------------------------------------------------------
 if (MSVC)
     message(STATUS "-- FLS: Building with MSVC ${CMAKE_CXX_COMPILER_VERSION}")
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+    message(STATUS "-- FLS: Building with GCC ${CMAKE_CXX_COMPILER_VERSION}")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11)
+        message(FATAL_ERROR "Only GCC >= 11 is supported (C++20 requirement)!")
+    endif ()
 elseif (NOT "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    message(FATAL_ERROR "Only Clang and MSVC are supported!")
+    message(FATAL_ERROR "Only Clang, GCC, and MSVC are supported!")
 elseif (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
     message(FATAL_ERROR "Only Clang >= 13 is supported!")
 endif ()
@@ -109,9 +116,18 @@ else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}")
     endif ()
 
-    # Flags for warnings and errors:
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Winconsistent-missing-override -Wshadow -Wconversion -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual -Wshorten-64-to-32")
+    # Flags for warnings and errors (common to Clang and GCC):
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wshadow -Wconversion -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wshadow -Wconversion")
+
+    # Clang-only warning flags:
+    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winconsistent-missing-override -Wshorten-64-to-32")
+    endif ()
+    # GCC-only warning flags:
+    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wsuggest-override")
+    endif ()
 
     # On Windows (Clang, not MSVC), vectorize-width pragmas may not be honoured
     # because the CI runners lack AVX-512.  Demote the transform-warning to a

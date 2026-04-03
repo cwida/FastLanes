@@ -15,6 +15,8 @@
 // its auto-vectorizer runs unconditionally at /O2.
 #if defined(__clang__)
 #define FLS_PRAGMA_VECTORIZE _Pragma("clang loop vectorize(enable)")
+#elif defined(__GNUC__)
+#define FLS_PRAGMA_VECTORIZE _Pragma("GCC ivdep")
 #else
 #define FLS_PRAGMA_VECTORIZE
 #endif
@@ -95,8 +97,8 @@ static inline int fls_clz(uint32_t x) {
 #define FLS_DIAG_IGNORE_FLOAT_CONV _Pragma("GCC diagnostic ignored \"-Wfloat-conversion\"")
 #define FLS_DIAG_IGNORE_CONVERSION _Pragma("GCC diagnostic ignored \"-Wconversion\"")
 #define FLS_DIAG_IGNORE_SHORTEN_64_32
-#define FLS_DIAG_IGNORE_INT_FLOAT_CONV _Pragma("GCC diagnostic ignored \"-Wimplicit-int-float-conversion\"")
-#define FLS_DIAG_IGNORE_INT_CONV       _Pragma("GCC diagnostic ignored \"-Wimplicit-int-conversion\"")
+#define FLS_DIAG_IGNORE_INT_FLOAT_CONV _Pragma("GCC diagnostic ignored \"-Wfloat-conversion\"")
+#define FLS_DIAG_IGNORE_INT_CONV       _Pragma("GCC diagnostic ignored \"-Wconversion\"")
 #endif
 
 #endif // FLS_COMPILER_HPP

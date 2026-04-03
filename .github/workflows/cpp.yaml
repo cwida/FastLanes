@@ -13,8 +13,9 @@ run-name: >-
 # ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
+    branches: [ main, dev ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ main, dev ]
 
 # Cancel in-flight runs on the same branch/PR so we do not waste minutes
 concurrency:
@@ -42,29 +43,19 @@ jobs:
         run: make format-check
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 2️⃣  Main build + clang-tidy (Linux + macOS + Windows)
+  # 2️⃣a  Clang-tidy (single fast platform — diagnostics are platform-independent)
   # ──────────────────────────────────────────────────────────────────────────────
-  build:
+  tidy:
     needs: check-format
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-26
-          - macos-15
         build_type: [ Debug, Release ]
-        cxx: [ clang++ ]
         shared_lib: [ false, true ]
-
         exclude:
           - build_type: Debug
             shared_lib: true
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -81,10 +72,7 @@ jobs:
           clang --version
           clang-tidy --version
 
-      # ----------------------------------------------------------------------
-      # Configure (runs clang-tidy via CMake)
-      # ----------------------------------------------------------------------
-      - name: Configure (with clang-tidy checks)
+      - name: Configure (with clang-tidy)
         shell: bash
         run: |
           cmake -S "${{ github.workspace }}" \
@@ -95,10 +83,51 @@ jobs:
                 -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }} \
                 -DFLS_ENABLE_INSTALL=OFF \
                 -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+                -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build (clang-tidy runs automatically)
         run: cmake --build build_${{ matrix.build_type }}_${{ matrix.shared_lib }} -j $BUILD_THREADS
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # 2️⃣b  Compile-check (remaining platforms, Release only, no tidy)
+  # ──────────────────────────────────────────────────────────────────────────────
+  build:
+    needs: check-format
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04-arm
+          - macos-26
+          - macos-15
+        cxx: [ clang++ ]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Install LLVM
+        uses: ./.github/actions/install-llvm
+
+      - name: Configure
+        shell: bash
+        run: |
+          cmake -S "${{ github.workspace }}" \
+                -B build_Release \
+                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DFLS_ENABLE_INSTALL=OFF \
+                -DCMAKE_C_COMPILER=clang \
+                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+
+      - name: Build
+        run: cmake --build build_Release -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
@@ -137,17 +166,8 @@ jobs:
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
   generate_dataset:
-    needs: build
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-26
-          - macos-15
-    runs-on: ${{ matrix.platform }}
+    needs: tidy
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -167,32 +187,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
-        build_type: [ Release ]
-        cxx: [ clang++ ]
-        compiler: [ clang ]
-        shared_lib: [ false, true ]
+        # GCC on ubuntu; Clang on macOS/Windows; shared on one representative per OS
         include:
-          - platform: windows-latest
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: false
-          - platform: windows-latest
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: true
-          - platform: windows-11-arm
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: false
-          - platform: windows-11-arm
-            build_type: Release
-            cxx: cl
-            compiler: msvc
-            shared_lib: true
+          # GCC — static + shared
+          - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: false }
+          - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: true }
+          # Clang — macOS static + shared
+          - { platform: macos-latest,   compiler: clang, cxx: clang++, shared_lib: false }
+          - { platform: macos-latest,   compiler: clang, cxx: clang++, shared_lib: true }
+          # Clang — Windows static + shared
+          - { platform: windows-latest, compiler: clang, cxx: clang++, shared_lib: false }
+          - { platform: windows-latest, compiler: clang, cxx: clang++, shared_lib: true }
+          # MSVC — static + shared on windows-latest only
+          - { platform: windows-latest, compiler: msvc,  cxx: cl,      shared_lib: false }
+          - { platform: windows-latest, compiler: msvc,  cxx: cl,      shared_lib: true }
+          # MSVC ARM — static only
+          - { platform: windows-11-arm, compiler: msvc,  cxx: cl,      shared_lib: false }
+        build_type: [ Release ]
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -209,7 +220,7 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
-        if: matrix.compiler != 'msvc'
+        if: matrix.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
@@ -229,6 +240,8 @@ jobs:
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}")
           fi
@@ -261,33 +274,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-26
-          - macos-15
-        build_type: [ Release ]
-        compiler: [ clang ]
-        shared_lib: [ false, true ]
+        # GCC on ubuntu; Clang on macOS; MSVC on Windows; shared on one per OS family
         include:
-          - platform: windows-latest
-            build_type: Release
-            compiler: msvc
-            shared_lib: false
-          - platform: windows-latest
-            build_type: Release
-            compiler: msvc
-            shared_lib: true
-          - platform: windows-11-arm
-            build_type: Release
-            compiler: msvc
-            shared_lib: false
-          - platform: windows-11-arm
-            build_type: Release
-            compiler: msvc
-            shared_lib: true
+          # GCC — static (half of ubuntu platforms)
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false }
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: false }
+          # Clang — static (other half)
+          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: false }
+          - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: false }
+          # GCC — shared (one ubuntu)
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true }
+          # Clang — macOS static (all platforms)
+          - { platform: macos-26,         compiler: clang, shared_lib: false }
+          - { platform: macos-15,         compiler: clang, shared_lib: false }
+          # Clang — macOS shared (one)
+          - { platform: macos-15,         compiler: clang, shared_lib: true }
+          # MSVC — static + shared on windows-latest; static on ARM
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: false }
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: true }
+          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: false }
+        build_type: [ Release ]
     runs-on: ${{ matrix.platform }}
 
     defaults:
@@ -315,7 +321,7 @@ jobs:
         uses: ./.github/actions/generate-dataset
 
       - name: Install LLVM
-        if: matrix.compiler != 'msvc'
+        if: matrix.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
@@ -336,6 +342,8 @@ jobs:
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
@@ -368,22 +376,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        compiler: [ clang ]
-        shared_lib: [ false, true ]
+        # GCC on ubuntu; Clang on macOS; MSVC on Windows; static + shared per OS
         include:
-          - os: windows-latest
-            compiler: msvc
-            shared_lib: false
-          - os: windows-latest
-            compiler: msvc
-            shared_lib: true
-          - os: windows-11-arm
-            compiler: msvc
-            shared_lib: false
-          - os: windows-11-arm
-            compiler: msvc
-            shared_lib: true
+          - { os: ubuntu-latest,  compiler: gcc,   shared_lib: false }
+          - { os: ubuntu-latest,  compiler: gcc,   shared_lib: true }
+          - { os: macos-latest,   compiler: clang, shared_lib: false }
+          - { os: macos-latest,   compiler: clang, shared_lib: true }
+          - { os: windows-latest, compiler: msvc,  shared_lib: false }
+          - { os: windows-latest, compiler: msvc,  shared_lib: true }
+          - { os: windows-11-arm, compiler: msvc,  shared_lib: false }
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -396,7 +397,7 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM toolchain
-        if: matrix.compiler != 'msvc'
+        if: matrix.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
@@ -416,6 +417,8 @@ jobs:
           )
           if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
             CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
           fi
