@@ -43,7 +43,6 @@ void unrsum(const uint8_t* a_in_p, uint8_t* a_out_p) {
 		register_0_1                   = in[(0 * 128) + (i * 1) + (128 * 7)];
 		out[(i * 1) + (0 * 128) + 768] = tmp_0;
 		tmp_0                          = register_0_1 - register_0_0;
-		register_0_0                   = in[(0 * 128) + (i * 1) + (128 * 7)];
 		out[(i * 1) + (0 * 128) + 896] = tmp_0;
 	}
 }
@@ -85,7 +84,7 @@ void unrsum(const uint16_t* a_in_p, uint16_t* a_out_p) {
 		register_0_1                  = in[(0 * 64) + (i * 1) + (128 * 7)];
 		out[(i * 1) + (0 * 64) + 768] = tmp_0;
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[(0 * 64) + (i * 1) + (128 * 7)];
+		register_0_0                  = register_0_1;
 		out[(i * 1) + (0 * 64) + 896] = tmp_0;
 		register_0_1                  = in[64 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -159,7 +158,7 @@ void unrsum(const uint32_t* a_in_p, uint32_t* a_out_p) {
 		register_0_1                  = in[(0 * 32) + (i * 1) + (128 * 7)];
 		out[(i * 1) + (0 * 32) + 768] = tmp_0;
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[(0 * 32) + (i * 1) + (128 * 7)];
+		register_0_0                  = register_0_1;
 		out[(i * 1) + (0 * 32) + 896] = tmp_0;
 		register_0_1                  = in[64 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -191,7 +190,7 @@ void unrsum(const uint32_t* a_in_p, uint32_t* a_out_p) {
 		a_out_p[64 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[64 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[64 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[64 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[32 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -223,7 +222,7 @@ void unrsum(const uint32_t* a_in_p, uint32_t* a_out_p) {
 		a_out_p[32 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[32 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[32 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[32 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[96 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -297,7 +296,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		register_0_1                  = in[(0 * 16) + (i * 1) + (128 * 7)];
 		out[(i * 1) + (0 * 16) + 768] = tmp_0;
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[(0 * 16) + (i * 1) + (128 * 7)];
+		register_0_0                  = register_0_1;
 		out[(i * 1) + (0 * 16) + 896] = tmp_0;
 		register_0_1                  = in[64 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -329,7 +328,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		a_out_p[64 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[64 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[64 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[64 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[32 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -361,7 +360,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		a_out_p[32 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[32 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[32 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[32 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[96 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -393,7 +392,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		a_out_p[96 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[96 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[96 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[96 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[16 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -425,7 +424,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		a_out_p[16 + (128 * 6) + i]   = tmp_0;
 		register_0_1                  = in[16 + (128 * 7) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[16 + (128 * 7) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[16 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[80 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
@@ -461,7 +460,7 @@ void unrsum(const uint64_t* a_in_p, uint64_t* a_out_p) {
 		a_out_p[80 + (128 * 7) + i]   = tmp_0;
 		register_0_1                  = in[48 + (128 * 0) + i];
 		tmp_0                         = register_0_1 - register_0_0;
-		register_0_0                  = in[48 + (128 * 0) + i];
+		register_0_0                  = register_0_1;
 		a_out_p[48 + (128 * 0) + i]   = tmp_0;
 		register_0_1                  = in[48 + (128 * 1) + i];
 		tmp_0                         = register_0_1 - register_0_0;
