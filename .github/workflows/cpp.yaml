@@ -269,28 +269,33 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   test:
 #    needs: build
-    name: test (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, Release, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
+    name: test (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.build_type }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
       fail-fast: false
       matrix:
         cfg:
-          # GCC — static (half of ubuntu platforms)
-          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false }
-          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: false }
-          # Clang — static (other half)
-          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: false }
-          - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: false }
-          # GCC — shared (one ubuntu)
-          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true }
-          # Clang — macOS static (all platforms)
-          - { platform: macos-26,         compiler: clang, shared_lib: false }
-          - { platform: macos-15,         compiler: clang, shared_lib: false }
-          # Clang — macOS shared (one)
-          - { platform: macos-15,         compiler: clang, shared_lib: true }
-          # MSVC — static + shared on windows-latest; static on ARM
-          - { platform: windows-latest,   compiler: msvc,  shared_lib: false }
-          - { platform: windows-latest,   compiler: msvc,  shared_lib: true }
-          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: false }
+          # GCC on ubuntu-24.04
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false, build_type: Release }
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true,  build_type: Debug }
+          # GCC on ubuntu-24.04-arm
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: false, build_type: Debug }
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: true,  build_type: Release }
+          # Clang on ubuntu-22.04
+          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: false, build_type: Release }
+          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: true,  build_type: Debug }
+          # Clang on ubuntu-22.04-arm
+          - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: false, build_type: Debug }
+          - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: true,  build_type: Release }
+          # Clang on macOS
+          - { platform: macos-26,         compiler: clang, shared_lib: false, build_type: Release }
+          - { platform: macos-26,         compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: macos-15,         compiler: clang, shared_lib: false, build_type: Debug }
+          - { platform: macos-15,         compiler: clang, shared_lib: true,  build_type: Release }
+          # MSVC on Windows
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: false, build_type: Release }
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: true,  build_type: Debug }
+          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: false, build_type: Debug }
+          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: true,  build_type: Release }
     runs-on: ${{ matrix.cfg.platform }}
 
     defaults:
@@ -333,7 +338,7 @@ jobs:
             -B "${BUILD_DIR}"
             -DFLS_BUILD_TESTING=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }}
             -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
           )
@@ -352,14 +357,14 @@ jobs:
       - name: Build tests
         run: |
           cmake --build "test_build_${{ matrix.cfg.compiler }}_${LIB_LABEL}" \
-                --config Release -j $BUILD_THREADS
+                --config ${{ matrix.cfg.build_type }} -j $BUILD_THREADS
 
       - name: Run tests
         working-directory: "test_build_${{ matrix.cfg.compiler }}_${{ env.LIB_LABEL }}"
         run: |
           EXCLUDE="QuickFuzz"
           ctest -j $BUILD_THREADS \
-                --build-config Release \
+                --build-config ${{ matrix.cfg.build_type }} \
                 --stop-on-failure \
                 --output-on-failure \
                 --timeout 5000 \

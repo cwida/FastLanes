@@ -97,7 +97,8 @@ static inline int fls_clz(uint32_t x) {
 #define FLS_DIAG_IGNORE_FLOAT_CONV _Pragma("GCC diagnostic ignored \"-Wfloat-conversion\"")
 #define FLS_DIAG_IGNORE_CONVERSION _Pragma("GCC diagnostic ignored \"-Wconversion\"")
 #define FLS_DIAG_IGNORE_SHORTEN_64_32
-#define FLS_DIAG_IGNORE_INT_FLOAT_CONV _Pragma("GCC diagnostic ignored \"-Wfloat-conversion\"")
+#define FLS_DIAG_IGNORE_INT_FLOAT_CONV \
+	_Pragma("GCC diagnostic ignored \"-Wfloat-conversion\"") _Pragma("GCC diagnostic ignored \"-Wconversion\"")
 #define FLS_DIAG_IGNORE_INT_CONV       _Pragma("GCC diagnostic ignored \"-Wconversion\"")
 #endif
 
