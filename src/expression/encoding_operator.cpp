@@ -201,23 +201,13 @@ void enc_fls_str_uncompressed_op::Copy() const {
  * enc struct opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 enc_struct_opr::enc_struct_opr(const col_pt& column, ColumnDescriptorT& column_descriptor) {
-
-	auto visitor = overloaded {[&](std::monostate&) { FLS_UNREACHABLE(); },
-	                           [&](const up<Struct>& struct_col) {
-		                           for (auto& child_column_descriptor : column_descriptor.children) {
-			                           InterpreterState state;
-
-			                           auto child_physical_expr = Interpreter::Encoding::Interpret(
-			                               *child_column_descriptor, struct_col->internal_rowgroup, state);
-			                           internal_exprs.emplace_back(child_physical_expr);
-		                           }
-	                           },
-	                           //
-	                           [&](const auto&) {
-		                           FLS_UNREACHABLE()
-	                           }};
-
-	visit(visitor, column);
+	const auto& struct_col = get<up<Struct>>(column);
+	for (auto& child_column_descriptor : column_descriptor.children) {
+		InterpreterState state;
+		auto             child_physical_expr =
+		    Interpreter::Encoding::Interpret(*child_column_descriptor, struct_col->internal_rowgroup, state);
+		internal_exprs.emplace_back(child_physical_expr);
+	}
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
