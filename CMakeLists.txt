@@ -117,12 +117,13 @@ else ()
     endif ()
 
     # Flags for warnings and errors (common to Clang and GCC):
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wshadow -Wconversion -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wshadow -Wconversion")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wnon-virtual-dtor -Wunused -Wpedantic -Woverloaded-virtual")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror")
 
-    # Clang-only warning flags:
+    # Clang-only warning flags (GCC equivalents are covered by clang-tidy):
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winconsistent-missing-override -Wshorten-64-to-32")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wshadow -Wconversion -Winconsistent-missing-override -Wshorten-64-to-32")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshadow -Wconversion")
     endif ()
     # GCC-only warning flags:
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
