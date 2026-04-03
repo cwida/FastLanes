@@ -86,6 +86,12 @@ target_link_libraries(FastLanes
         FastLanes::headers
 )
 
+# Let consumers know whether they are linking against a static or shared build.
+# FLS_STATIC makes FLS_API expand to nothing; without it MSVC defaults to dllimport.
+if (NOT FLS_BUILD_SHARED_LIBS)
+    target_compile_definitions(FastLanes PUBLIC FLS_STATIC)
+endif ()
+
 add_library(FastLanes::core ALIAS FastLanes)
 
 # Optional IWYU integration

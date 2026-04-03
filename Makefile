@@ -15,7 +15,7 @@ NUM_JOBS     ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || ec
 
 # Test-specific config (separate build dir and build type)
 TEST_BUILD_DIR  ?= $(BUILD_DIR)/tests
-TEST_BUILD_TYPE ?= Release
+TEST_BUILD_TYPE ?= Debug
 
 # Includes
 include mk/preamble.mk     # colors + root paths
