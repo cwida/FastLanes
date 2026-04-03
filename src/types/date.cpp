@@ -80,7 +80,7 @@ string date_formatter(const int32_t days_since_epoch) {
 	unsigned m = static_cast<unsigned>(ymd.month());
 	unsigned d = static_cast<unsigned>(ymd.day());
 
-	char buf[11]; // "YYYY-MM-DD" + '\0'
+	char buf[16]; // "YYYY-MM-DD" + '\0' (extra space for negative years)
 	std::snprintf(buf, sizeof(buf), "%04d-%02u-%02u", y, m, d);
 	return buf;
 }

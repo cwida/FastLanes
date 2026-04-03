@@ -37,6 +37,18 @@ static LONG WINAPI heap_guard_page_handler(EXCEPTION_POINTERS* ep) {
 
 	const auto faulting_addr = reinterpret_cast<void*>(ep->ExceptionRecord->ExceptionInformation[1]);
 
+	// Query the page state before committing.  We only want to handle
+	// reserved-but-uncommitted heap pages (state == MEM_RESERVE).
+	// Stack guard pages have state MEM_COMMIT + PAGE_GUARD; committing
+	// those would remove the stack guard and cause STATUS_STACK_BUFFER_OVERRUN.
+	MEMORY_BASIC_INFORMATION mbi;
+	if (VirtualQuery(faulting_addr, &mbi, sizeof(mbi)) == 0) {
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+	if (mbi.State != MEM_RESERVE) {
+		return EXCEPTION_CONTINUE_SEARCH; // not a reserved page — leave it alone
+	}
+
 	// Try to commit the faulting page.  If it succeeds the page was a
 	// reserved-but-uncommitted guard region inside the heap — resume.
 	void* result = VirtualAlloc(faulting_addr, 1, MEM_COMMIT, PAGE_READWRITE);
