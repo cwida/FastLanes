@@ -184,11 +184,11 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   example:
 #    needs: build
+    name: example (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
       fail-fast: false
       matrix:
-        # GCC on ubuntu; Clang on macOS/Windows; shared on one representative per OS
-        include:
+        cfg:
           # GCC — static + shared
           - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: false }
           - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: true }
@@ -203,8 +203,7 @@ jobs:
           - { platform: windows-latest, compiler: msvc,  cxx: cl,      shared_lib: true }
           # MSVC ARM — static only
           - { platform: windows-11-arm, compiler: msvc,  cxx: cl,      shared_lib: false }
-        build_type: [ Release ]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.cfg.platform }}
 
     defaults:
       run:
@@ -220,30 +219,30 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
-        if: matrix.compiler == 'clang'
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
-        if: matrix.compiler == 'msvc'
+        if: matrix.cfg.compiler == 'msvc'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure example
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B "build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
+            -B "build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}"
             -DFLS_BUILD_EXAMPLES=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_BUILD_TYPE=Release
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
           )
-          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
-          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
-            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}")
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cfg.cxx }}")
           fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
@@ -252,13 +251,13 @@ jobs:
 
       - name: Build example
         run: |
-          cmake --build "build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}" \
-                --config ${{ matrix.build_type }} --parallel
+          cmake --build "build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}" \
+                --config Release --parallel
 
       - name: Run cpp_example
         shell: bash
         run: |
-          BUILD_DIR="build_${{ matrix.compiler }}_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
+          BUILD_DIR="build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}"
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             ./${BUILD_DIR}/examples/cpp_example.exe
           else
@@ -270,12 +269,11 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   test:
 #    needs: build
-    name: test (${{ matrix.platform }}, ${{ matrix.compiler }}, ${{ matrix.build_type }}, ${{ matrix.shared_lib && 'shared' || 'static' }})
+    name: test (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, Release, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
       fail-fast: false
       matrix:
-        # GCC on ubuntu; Clang on macOS; MSVC on Windows; shared on one per OS family
-        include:
+        cfg:
           # GCC — static (half of ubuntu platforms)
           - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false }
           - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: false }
@@ -293,8 +291,7 @@ jobs:
           - { platform: windows-latest,   compiler: msvc,  shared_lib: false }
           - { platform: windows-latest,   compiler: msvc,  shared_lib: true }
           - { platform: windows-11-arm,   compiler: msvc,  shared_lib: false }
-        build_type: [ Release ]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.cfg.platform }}
 
     defaults:
       run:
@@ -308,7 +305,7 @@ jobs:
       # Map the boolean shared_lib into a human-friendly label
       - name: Determine lib label
         run: |
-          if [[ "${{ matrix.shared_lib }}" == "true" ]]; then
+          if [[ "${{ matrix.cfg.shared_lib }}" == "true" ]]; then
             echo "LIB_LABEL=shared" >> $GITHUB_ENV
           else
             echo "LIB_LABEL=static" >> $GITHUB_ENV
@@ -321,28 +318,28 @@ jobs:
         uses: ./.github/actions/generate-dataset
 
       - name: Install LLVM
-        if: matrix.compiler == 'clang'
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
-        if: matrix.compiler == 'msvc'
+        if: matrix.cfg.compiler == 'msvc'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure tests
         run: |
-          BUILD_DIR="test_build_${{ matrix.compiler }}_${LIB_LABEL}"
+          BUILD_DIR="test_build_${{ matrix.cfg.compiler }}_${LIB_LABEL}"
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
             -B "${BUILD_DIR}"
             -DFLS_BUILD_TESTING=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_BUILD_TYPE=Release
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
           )
-          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
-          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
             CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
@@ -354,15 +351,15 @@ jobs:
 
       - name: Build tests
         run: |
-          cmake --build "test_build_${{ matrix.compiler }}_${LIB_LABEL}" \
-                --config ${{ matrix.build_type }} -j $BUILD_THREADS
+          cmake --build "test_build_${{ matrix.cfg.compiler }}_${LIB_LABEL}" \
+                --config Release -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: "test_build_${{ matrix.compiler }}_${{ env.LIB_LABEL }}"
+        working-directory: "test_build_${{ matrix.cfg.compiler }}_${{ env.LIB_LABEL }}"
         run: |
           EXCLUDE="QuickFuzz"
           ctest -j $BUILD_THREADS \
-                --build-config ${{ matrix.build_type }} \
+                --build-config Release \
                 --stop-on-failure \
                 --output-on-failure \
                 --timeout 5000 \
@@ -373,11 +370,11 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   install:
     needs: test
+    name: install (${{ matrix.cfg.os }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && ‘shared’ || ‘static’ }})
     strategy:
       fail-fast: false
       matrix:
-        # GCC on ubuntu; Clang on macOS; MSVC on Windows; static + shared per OS
-        include:
+        cfg:
           - { os: ubuntu-latest,  compiler: gcc,   shared_lib: false }
           - { os: ubuntu-latest,  compiler: gcc,   shared_lib: true }
           - { os: macos-latest,   compiler: clang, shared_lib: false }
@@ -385,7 +382,7 @@ jobs:
           - { os: windows-latest, compiler: msvc,  shared_lib: false }
           - { os: windows-latest, compiler: msvc,  shared_lib: true }
           - { os: windows-11-arm, compiler: msvc,  shared_lib: false }
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.cfg.os }}
 
     steps:
       - uses: actions/checkout@v4
@@ -397,11 +394,11 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM toolchain
-        if: matrix.compiler == 'clang'
+        if: matrix.cfg.compiler == ‘clang’
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
-        if: matrix.compiler == 'msvc'
+        if: matrix.cfg.compiler == ‘msvc’
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure + build + install
@@ -409,15 +406,15 @@ jobs:
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B build_${{ matrix.compiler }}_${{ matrix.shared_lib }}
+            -B build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.compiler }}_${{ matrix.shared_lib }}/install
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}/install
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=ON
           )
-          if [[ "${{ matrix.compiler }}" == "msvc" ]]; then
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
             : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
-          elif [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
             CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
           else
             CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
@@ -426,7 +423,7 @@ jobs:
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
           cmake "${CMAKE_ARGS[@]}"
-          cmake --build build_${{ matrix.compiler }}_${{ matrix.shared_lib }} \
+          cmake --build build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }} \
                 --config Release --target install -j $BUILD_THREADS
 
       - name: Verify installed header files
@@ -435,11 +432,11 @@ jobs:
           set -euo pipefail
 
           SOURCE_INCLUDE=src/include
-          INSTALL_INCLUDE=build_${{ matrix.compiler }}_${{ matrix.shared_lib }}/install/include
+          INSTALL_INCLUDE=build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}/install/include
 
-          # 1) fail fast if the install tree isn't there
+          # 1) fail fast if the install tree isn’t there
           if [[ ! -d "$INSTALL_INCLUDE" ]]; then
-            echo "❌ Error: '$INSTALL_INCLUDE' directory not found"
+            echo "❌ Error: ‘$INSTALL_INCLUDE’ directory not found"
             exit 1
           fi
 
@@ -449,14 +446,14 @@ jobs:
 
           # 3) walk every .h/.hpp under your source include/, check its counterpart
           missing=()
-          while IFS= read -r -d '' src; do
+          while IFS= read -r -d ‘’ src; do
             rel="${src#./}"
             if [[ ! -f "$INSTALL_INCLUDE/$rel" ]]; then
               missing+=("$rel")
             fi
           done < <(
             cd "$SOURCE_INCLUDE"
-            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0
+            find . -type f \( -name ‘*.h’ -o -name ‘*.hpp’ \) -print0
           )
 
           # 4) report & fail if anything’s missing
@@ -473,5 +470,5 @@ jobs:
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
         with:
-          name: fastlanes-cpp-install-${{ matrix.os }}-shared-${{ matrix.shared_lib }}
-          path: build_${{ matrix.shared_lib }}/install
+          name: fastlanes-cpp-install-${{ matrix.cfg.os }}-shared-${{ matrix.cfg.shared_lib }}
+          path: build_${{ matrix.cfg.shared_lib }}/install
