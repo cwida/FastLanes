@@ -370,7 +370,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   install:
     needs: test
-    name: install (${{ matrix.cfg.os }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && ‘shared’ || ‘static’ }})
+    name: install (${{ matrix.cfg.os }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
       fail-fast: false
       matrix:
@@ -394,11 +394,11 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM toolchain
-        if: matrix.cfg.compiler == ‘clang’
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
 
       - name: Set up MSVC environment
-        if: matrix.cfg.compiler == ‘msvc’
+        if: matrix.cfg.compiler == 'msvc'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure + build + install
@@ -434,9 +434,9 @@ jobs:
           SOURCE_INCLUDE=src/include
           INSTALL_INCLUDE=build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}/install/include
 
-          # 1) fail fast if the install tree isn’t there
+          # 1) fail fast if the install tree isn't there
           if [[ ! -d "$INSTALL_INCLUDE" ]]; then
-            echo "❌ Error: ‘$INSTALL_INCLUDE’ directory not found"
+            echo "❌ Error: '$INSTALL_INCLUDE' directory not found"
             exit 1
           fi
 
@@ -446,17 +446,17 @@ jobs:
 
           # 3) walk every .h/.hpp under your source include/, check its counterpart
           missing=()
-          while IFS= read -r -d ‘’ src; do
+          while IFS= read -r -d '' src; do
             rel="${src#./}"
             if [[ ! -f "$INSTALL_INCLUDE/$rel" ]]; then
               missing+=("$rel")
             fi
           done < <(
             cd "$SOURCE_INCLUDE"
-            find . -type f \( -name ‘*.h’ -o -name ‘*.hpp’ \) -print0
+            find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0
           )
 
-          # 4) report & fail if anything’s missing
+          # 4) report & fail if anything's missing
           if (( ${#missing[@]} > 0 )); then
             echo "❌ Missing expected header(s):"
             for hdr in "${missing[@]}"; do
