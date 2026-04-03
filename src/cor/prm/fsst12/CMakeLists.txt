@@ -13,8 +13,11 @@ set(FASTLANES_OBJECT_FILES
     ${FASTLANES_OBJECT_FILES} $<TARGET_OBJECTS:fls_fsst12_prm>
     PARENT_SCOPE)
 
-if (NOT MSVC)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     target_compile_options(fls_fsst12_prm PRIVATE -Wno-macro-redefined)
+endif ()
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+    target_compile_options(fls_fsst12_prm PRIVATE -Wno-array-bounds)
 endif ()
 
 target_link_libraries(fls_fsst12_prm

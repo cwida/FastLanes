@@ -12,7 +12,7 @@ if (ENABLE_IWYU)
     set_property(TARGET fls_primitive_fsst12 PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-if (NOT MSVC)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     target_compile_options(fls_primitive_fsst12 PRIVATE -Wno-macro-redefined)
 endif ()
 

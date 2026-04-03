@@ -40,7 +40,7 @@ set(FASTLANES_OBJECT_FILES
         PARENT_SCOPE)
 
 
-if (NOT MSVC)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     target_compile_options(fls_expression PRIVATE -Wno-macro-redefined)
 endif ()
 
