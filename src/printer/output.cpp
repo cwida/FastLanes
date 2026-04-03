@@ -105,7 +105,7 @@ string TerminalOutput::repeat(unsigned int times, const string& c) {
 
 unsigned TerminalOutput::glyph_length(const string& s) const {
 	auto        byte_length  = s.length();
-	int         u            = 0;
+	size_t      u            = 0;
 	const char* c_str        = s.c_str();
 	unsigned    glyph_length = 0;
 	while (u < byte_length) {
