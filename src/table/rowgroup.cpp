@@ -337,13 +337,15 @@ col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptorT& column_descrip
 template <typename PT>
 DataType getSmallestSignedType(PT min, PT max) {
 	if constexpr (!std::is_same_v<PT, string> && !std::is_same_v<PT, bool>) {
-		if (min >= std::numeric_limits<int8_t>::min() && max <= std::numeric_limits<int8_t>::max()) {
+		auto smin = static_cast<int64_t>(min);
+		auto smax = static_cast<int64_t>(max);
+		if (smin >= std::numeric_limits<int8_t>::min() && smax <= std::numeric_limits<int8_t>::max()) {
 			return DataType::INT8;
 		}
-		if (min >= std::numeric_limits<int16_t>::min() && max <= std::numeric_limits<int16_t>::max()) {
+		if (smin >= std::numeric_limits<int16_t>::min() && smax <= std::numeric_limits<int16_t>::max()) {
 			return DataType::INT16;
 		}
-		if (min >= std::numeric_limits<int32_t>::min() && max <= std::numeric_limits<int32_t>::max()) {
+		if (smin >= std::numeric_limits<int32_t>::min() && smax <= std::numeric_limits<int32_t>::max()) {
 			return DataType::INT32;
 		}
 		return DataType::INT64;

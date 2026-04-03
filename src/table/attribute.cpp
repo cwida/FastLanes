@@ -241,7 +241,7 @@ void TypedIngest(TypedCol<PT>& typed_column, const string& val_str, const Column
 
 	// ingest
 	typed_column.null_map_arr.push_back(is_null);
-	PT current_val;
+	PT current_val {};
 	if (!is_null && column_descriptor.data_type == DataType::DECIMAL) {
 		if constexpr (std::is_same_v<PT, int64_t>) { // fix me
 			current_val                        = make_decimal(val_str, column_descriptor.fix_me_decimal_type->scale);
