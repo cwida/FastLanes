@@ -147,7 +147,7 @@ struct get_statistics_visitor {
 		auto& length_arr  = str_col->length_arr;
 
 		// check constness
-		for (auto val_idx {0}; val_idx < str_col->length_arr.size(); ++val_idx) {
+		for (size_t val_idx {0}; val_idx < str_col->length_arr.size(); ++val_idx) {
 			if (val_idx != 0) {
 				is_constant = is_constant && Str::Equal(*str_col, *str_col, val_idx, val_idx - 1);
 			}

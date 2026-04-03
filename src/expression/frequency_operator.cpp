@@ -213,7 +213,7 @@ void dec_frequency_opr<PT>::Decode(n_t vec_idx) {
 
 	FLS_ASSERT_CORRECT_POS(n_exceptions)
 
-	for (auto val_idx {0}; val_idx < n_exceptions; ++val_idx) {
+	for (n_t val_idx {0}; val_idx < n_exceptions; ++val_idx) {
 		auto next_pos  = exc_pos_arr[val_idx];
 		auto val       = exc_arr[val_idx];
 		data[next_pos] = val;

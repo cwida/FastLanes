@@ -139,7 +139,7 @@ void dec_fsst12_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length
 
 	FLS_ASSERT_NOT_NULL_POINTER(length_pointer)
 
-	for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+	for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 		generated::untranspose::fallback::scalar::untranspose_i(offset_arr, untrasposed_offset);
 
 		len_t encoded_size {0};

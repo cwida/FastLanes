@@ -167,7 +167,7 @@ void dec_rle_map_opr<KEY_PT, INDEX_PT>::Decode(const n_t vec_idx, vector<KEY_PT>
 
 	auto* rle_vals = reinterpret_cast<KEY_PT*>(rle_vals_segment_view.data);
 
-	for (auto val_idx {0}; val_idx < CFG::VEC_SZ; val_idx++) {
+	for (n_t val_idx {0}; val_idx < CFG::VEC_SZ; val_idx++) {
 		temporary_tranposed_arr[val_idx] = rle_vals[idxs[val_idx]];
 	}
 
