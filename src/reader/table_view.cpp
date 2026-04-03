@@ -4,7 +4,6 @@
 // src/reader/table_view.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/reader/table_view.hpp"
-#include "fls/reader/rowgroup_view.hpp"
 
 namespace fastlanes {
 
