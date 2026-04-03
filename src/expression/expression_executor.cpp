@@ -79,11 +79,12 @@ struct operator_visitor {
 
 	// decoding
 	template <typename PT>
-	void operator()(sp<dec_uncompressed_opr<PT>>& op) {};
+	void operator()(sp<dec_uncompressed_opr<PT>>& op) {
+	}
 	template <typename PT>
 	void operator()(sp<dec_unffor_opr<PT>>& op) {
 		op->Unffor(vec_idx);
-	};
+	}
 	template <typename PT>
 	void operator()(sp<dec_constant_opr<PT>>& op) {
 	}
@@ -313,11 +314,12 @@ struct operator_counter_visitor {
 
 	// decoding
 	template <typename PT>
-	void operator()(sp<dec_uncompressed_opr<PT>>& op) {};
+	void operator()(sp<dec_uncompressed_opr<PT>>& op) {
+	}
 	template <typename PT>
 	void operator()(sp<dec_unffor_opr<PT>>& op) {
 		physical_expr.n_active_operators++;
-	};
+	}
 	template <typename PT>
 	void operator()(sp<dec_constant_opr<PT>>& op) {
 	}
