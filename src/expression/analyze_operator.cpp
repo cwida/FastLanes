@@ -87,22 +87,14 @@ bool is_exception(Option<T>& option, T val) {
 	FLS_ASSERT_CORRECT_N(option.n_exceptions)
 	FLS_ASSERT_CORRECT_SZ(option.size())
 
-	// When bw covers the full type width, all values fit — nothing is an exception.
 	if (option.bw >= sizeof(make_unsigned_t<T>) * CHAR_BIT) {
 		return false;
 	}
 
-	make_unsigned_t<T> a          = *reinterpret_cast<make_unsigned_t<T>*>(&option.base);
-	make_unsigned_t<T> b          = a + pow2<make_unsigned_t<T>>(option.bw);
-	T                  real_upper = *reinterpret_cast<T*>(&b);
-
-	if (val < option.base) {
-		return true;
-	}
-	if (val >= real_upper) {
-		return true;
-	}
-	return false;
+	// Use unsigned delta to correctly handle base + 2^bw overflow/wraparound.
+	make_unsigned_t<T> uval  = *reinterpret_cast<make_unsigned_t<T>*>(&val);
+	make_unsigned_t<T> ubase = *reinterpret_cast<make_unsigned_t<T>*>(&option.base);
+	return static_cast<make_unsigned_t<T>>(uval - ubase) >= pow2<make_unsigned_t<T>>(option.bw);
 }
 
 template <typename T>
