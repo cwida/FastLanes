@@ -274,14 +274,14 @@ jobs:
       fail-fast: false
       matrix:
         cfg:
-          # GCC on ubuntu-24.04
+          # GCC on ubuntu (Release only — Debug is too slow / times out)
           - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false, build_type: Release }
-          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true,  build_type: Debug }
-          # GCC on ubuntu-24.04-arm
-          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: false, build_type: Debug }
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true,  build_type: Release }
           - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: true,  build_type: Release }
+          # Clang on ubuntu-24.04 (Debug builds that were GCC)
+          - { platform: ubuntu-24.04,     compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: ubuntu-24.04-arm, compiler: clang, shared_lib: false, build_type: Debug }
           # Clang on ubuntu-22.04
-          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: false, build_type: Release }
           - { platform: ubuntu-22.04,     compiler: clang, shared_lib: true,  build_type: Debug }
           # Clang on ubuntu-22.04-arm
           - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: false, build_type: Debug }

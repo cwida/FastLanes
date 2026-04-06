@@ -30,6 +30,13 @@ add_library(FastLanes::headers ALIAS fls_headers)
 ###########################################################################
 if (FLS_BUILD_SHARED_LIBS)
     add_compile_definitions(FLS_BUILD_DLL)
+    # Hide all symbols by default; only FLS_API-marked symbols are exported.
+    # This prevents template instantiations from leaking across the DSO boundary
+    # and avoids symbol interposition issues (e.g. broken std::visit dispatch
+    # when GCC's linker merges variant vtables from the library and consumer).
+    if (NOT MSVC)
+        add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
+    endif ()
 else ()
     add_compile_definitions(FLS_STATIC)
 endif ()
