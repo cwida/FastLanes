@@ -251,7 +251,10 @@ struct populate_bimap_visitor {
 			const auto current_val = typed_column->data[val_idx];
 			if (!bimap_frequency.contains_value(current_val)) {
 				n_t current_idx = bimap_frequency.size();
-				bimap_frequency.insert(current_idx, {current_val});
+				bimap_frequency.insert(current_idx, current_val);
+			} else {
+				n_t existing_key = bimap_frequency.get_key(current_val);
+				bimap_frequency.insert(existing_key, current_val);
 			}
 
 			min = std::min(min, current_val);
