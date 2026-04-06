@@ -187,20 +187,13 @@ struct finalize_visitor {
 
 	template <typename PT>
 	void operator()(up<TypedCol<PT>>& typed_column) const {
-		auto& min             = typed_column->m_stats.min;
-		auto& max             = typed_column->m_stats.max;
-		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+		auto& min = typed_column->m_stats.min;
+		auto& max = typed_column->m_stats.max;
 
-		// into the dictionary
 		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
 			const auto current_val = typed_column->data[val_idx];
-			if (!bimap_frequency.contains_value(current_val)) {
-				n_t current_idx = bimap_frequency.size();
-				bimap_frequency.insert(current_idx, {current_val});
-			}
-
-			min = std::min(min, current_val);
-			max = std::max(max, current_val);
+			min                    = std::min(min, current_val);
+			max                    = std::max(max, current_val);
 		}
 	}
 
@@ -239,6 +232,51 @@ struct finalize_visitor {
 void Rowgroup::Finalize() {
 	for (auto& col : internal_rowgroup) {
 		visit(finalize_visitor {}, col);
+	}
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * PopulateBiMap
+\*--------------------------------------------------------------------------------------------------------------------*/
+struct populate_bimap_visitor {
+	explicit populate_bimap_visitor() = default;
+
+	template <typename PT>
+	void operator()(up<TypedCol<PT>>& typed_column) const {
+		auto& min             = typed_column->m_stats.min;
+		auto& max             = typed_column->m_stats.max;
+		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+
+		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
+			const auto current_val = typed_column->data[val_idx];
+			if (!bimap_frequency.contains_value(current_val)) {
+				n_t current_idx = bimap_frequency.size();
+				bimap_frequency.insert(current_idx, {current_val});
+			}
+
+			min = std::min(min, current_val);
+			max = std::max(max, current_val);
+		}
+	}
+
+	void operator()(up<FLSStrColumn>& str_col) const {
+		// string bimap is handled by GetStatistics
+	}
+
+	void operator()(up<Struct>& struct_col) const {
+		for (auto& col : struct_col->internal_rowgroup) {
+			visit(populate_bimap_visitor {}, col);
+		}
+	}
+
+	void operator()(auto& col) const {
+		FLS_UNREACHABLE();
+	}
+};
+
+void Rowgroup::PopulateBiMap() {
+	for (auto& col : internal_rowgroup) {
+		visit(populate_bimap_visitor {}, col);
 	}
 }
 

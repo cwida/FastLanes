@@ -240,6 +240,8 @@ public:
 	///
 	void Cast();
 	///
+	void PopulateBiMap();
+	///
 	void Init();
 	///
 	void FillMissingValues(n_t how_many_to_fill);

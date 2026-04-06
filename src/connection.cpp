@@ -62,14 +62,17 @@ void prepare_rowgroup(Rowgroup& rowgroup, const Config& config) {
 	// init
 	rowgroup.Init();
 
+	rowgroup.Finalize();
+	rowgroup.GetStatistics();
+
 	// Only cast if schema wasn’t forced
 	const bool shouldCast = !config.is_forced_schema && !config.is_forced_schema_pool;
 	if (shouldCast) {
 		rowgroup.Cast();
 	}
 
-	rowgroup.Finalize();
-	rowgroup.GetStatistics();
+	// Populate bimap after Cast, so it reflects the final (possibly cast) column types
+	rowgroup.PopulateBiMap();
 }
 
 void Connection::prepare_table() const {

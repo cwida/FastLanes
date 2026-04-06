@@ -211,7 +211,7 @@ void dec_frequency_opr<PT>::Decode(n_t vec_idx) {
 	auto* exc_pos_arr  = reinterpret_cast<uint16_t*>(exceptions_position_segment.data);
 	auto  n_exceptions = *reinterpret_cast<uint16_t*>(n_exceptions_segment.data);
 
-	FLS_ASSERT_CORRECT_POS(n_exceptions)
+	FLS_ASSERT_LE(n_exceptions, CFG::VEC_SZ)
 
 	for (n_t val_idx {0}; val_idx < n_exceptions; ++val_idx) {
 		auto next_pos  = exc_pos_arr[val_idx];
