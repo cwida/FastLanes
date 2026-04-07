@@ -35,7 +35,7 @@ public:
 };
 
 template <typename PT>
-void Histogram<PT>::Cal(PT* data) {
+void AnalyzeHistogram<PT>::Cal(PT* data) {
 	val_vec.clear();
 	rep_vec.clear();
 
@@ -146,7 +146,7 @@ Option<T> find_best_option(Histogram<T>& histogram, vec_idx_t first_base_idx, ve
 }
 
 template <typename PT>
-void Histogram<PT>::Reset() {
+void AnalyzeHistogram<PT>::Reset() {
 	val_vec.clear();
 	rep_vec.clear();
 } //

@@ -113,7 +113,7 @@ n_t count_exceptions(const T                 lower_bound,
 }
 
 template <typename T>
-Option<T> find_best_option(Histogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
+Option<T> find_best_option(AnalyzeHistogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
 	/* Initialize */
 	Option<T> result;
 

@@ -11,7 +11,7 @@
 namespace fastlanes {
 
 template <typename PT>
-void Histogram<PT>::Cal(PT* data) {
+void AnalyzeHistogram<PT>::Cal(PT* data) {
 	val_vec.clear();
 	rep_vec.clear();
 
@@ -37,19 +37,19 @@ void Histogram<PT>::Cal(PT* data) {
 }
 
 template <typename PT>
-void Histogram<PT>::Reset() {
+void AnalyzeHistogram<PT>::Reset() {
 	val_vec.clear();
 	rep_vec.clear();
 } //
 
-template class Histogram<u08_pt>;
-template class Histogram<u16_pt>;
-template class Histogram<u32_pt>;
-template class Histogram<u64_pt>;
-template class Histogram<i08_pt>;
-template class Histogram<i16_pt>;
-template class Histogram<i32_pt>;
-template class Histogram<i64_pt>;
+template class AnalyzeHistogram<u08_pt>;
+template class AnalyzeHistogram<u16_pt>;
+template class AnalyzeHistogram<u32_pt>;
+template class AnalyzeHistogram<u64_pt>;
+template class AnalyzeHistogram<i08_pt>;
+template class AnalyzeHistogram<i16_pt>;
+template class AnalyzeHistogram<i32_pt>;
+template class AnalyzeHistogram<i64_pt>;
 
 template struct enc_analyze_opr<i64_pt, false>;
 template struct enc_analyze_opr<i32_pt, false>;
