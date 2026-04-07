@@ -122,7 +122,7 @@ n_t count_exceptions(const T                      lower_bound,
 }
 
 template <typename T>
-Option<T> find_best_option(Histogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
+Option<T> find_best_option(AnalyzeHistogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
 	/* Initialize */
 	Option<T> result;
 
@@ -151,12 +151,14 @@ void AnalyzeHistogram<PT>::Reset() {
 	rep_vec.clear();
 } //
 
-template class Histogram<u16_pt>;
-template class Histogram<u32_pt>;
-template class Histogram<u64_pt>;
-template class Histogram<i16_pt>;
-template class Histogram<i32_pt>;
-template class Histogram<i64_pt>;
+template class AnalyzeHistogram<u08_pt>;
+template class AnalyzeHistogram<u16_pt>;
+template class AnalyzeHistogram<u32_pt>;
+template class AnalyzeHistogram<u64_pt>;
+template class AnalyzeHistogram<i08_pt>;
+template class AnalyzeHistogram<i16_pt>;
+template class AnalyzeHistogram<i32_pt>;
+template class AnalyzeHistogram<i64_pt>;
 
 template <typename PT, bool IS_PATCHED>
 enc_analyze_opr<PT, IS_PATCHED>::enc_analyze_opr(const PhysicalExpr& expr,

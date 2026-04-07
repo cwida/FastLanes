@@ -7,9 +7,10 @@
 // The template definitions live in analyze_operator.cpp.
 // This file exists solely to parallelize compilation.
 // ────────────────────────────────────────────────────────
-#include "analyze_operator_impl.hpp"
+#include "analyze_operator_impl.hpp" // NOLINT(misc-include-cleaner) — template definitions needed for explicit instantiations below
 #include "fls/common/alias.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_type.hpp"
 
 namespace fastlanes {
 

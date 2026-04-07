@@ -7,9 +7,10 @@
 // Unsigned-type instantiations are in analyze_operator_unsigned.cpp.
 // ────────────────────────────────────────────────────────
 #include "fls/expression/analyze_operator.hpp"
-#include "analyze_operator_impl.hpp"
+#include "analyze_operator_impl.hpp" // NOLINT(misc-include-cleaner) — template definitions needed for explicit instantiations below
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
+#include "fls/expression/data_type.hpp"
 
 namespace fastlanes {
 
