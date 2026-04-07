@@ -8,6 +8,8 @@
 // This file exists solely to parallelize compilation.
 // ────────────────────────────────────────────────────────
 #include "analyze_operator_impl.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/expression/analyze_operator.hpp"
 
 namespace fastlanes {
 

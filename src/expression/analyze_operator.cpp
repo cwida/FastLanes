@@ -7,6 +7,9 @@
 // Unsigned-type instantiations are in analyze_operator_unsigned.cpp.
 // ────────────────────────────────────────────────────────
 #include "analyze_operator_impl.hpp"
+#include "fls/cfg/cfg.hpp"
+#include "fls/common/alias.hpp"
+#include "fls/expression/analyze_operator.hpp"
 
 namespace fastlanes {
 
