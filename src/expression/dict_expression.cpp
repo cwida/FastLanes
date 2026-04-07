@@ -39,7 +39,7 @@ struct DictExprVisitor {
 		index_arr = opr->Data();
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(DictExprVisitor {index_arr}, expr->operators[0]);
+		visit_dec(DictExprVisitor {index_arr}, expr->operators[0]);
 	}
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
@@ -148,7 +148,7 @@ dec_dict_opr<KEY_PT, INDEX_PT>::dec_dict_opr(const PhysicalExpr& physical_expr,
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])))
     , index_arr(nullptr) {
 	state.cur_operand -= 1;
-	visit(DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
+	visit_dec(DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 }
 
 template <typename KEY_PT, typename INDEX_PT>
@@ -187,7 +187,7 @@ dec_dict_opr<fls_string_t, INDEX_PT>::dec_dict_opr(const PhysicalExpr& physical_
     , index_arr(nullptr) {
 
 	state.cur_operand = state.cur_operand - 1;
-	visit(DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
+	visit_dec(DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 }
 
 template <typename INDEX_PT>

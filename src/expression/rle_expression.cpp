@@ -134,7 +134,7 @@ struct RLEExprVisitor {
 		idxs = opr->idxs;
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(RLEExprVisitor {idxs}, expr->operators[0]);
+		visit_dec(RLEExprVisitor {idxs}, expr->operators[0]);
 	}
 	void operator()(std::monostate& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
@@ -151,7 +151,7 @@ dec_rle_map_opr<KEY_PT, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical_ex
     : rle_vals_segment_view(column_view.GetSegment(
           static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand)]))) {
-	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
+	visit_dec(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand -= 1;
 }
 
@@ -186,7 +186,7 @@ dec_rle_map_opr<FlsString, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical
     , rle_offset_segment_view(column_view.GetSegment(
           static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
-	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
+	visit_dec(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand -= 2;
 }
 

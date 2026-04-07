@@ -115,7 +115,7 @@ dec_fsst12_opr::dec_fsst12_opr(PhysicalExpr& physical_expr, const ColumnView& co
     , fsst12_bytes_segment_view(column_view.GetSegment(1))
     , offset_arr(nullptr) {
 
-	visit(FSST12ExprVisitor {*this}, physical_expr.operators.back());
+	visit_dec(FSST12ExprVisitor {*this}, physical_expr.operators.back());
 	FLS_ASSERT_NOT_NULL_POINTER(offset_arr)
 
 	fsst12_header_segment_view.PointTo(0);

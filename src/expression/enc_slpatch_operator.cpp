@@ -27,16 +27,16 @@ enc_slpatch_opr<PT>::enc_slpatch_opr(const PhysicalExpr& expr,
                                      ColumnDescriptorT&  column_descriptor,
                                      InterpreterState&   state) {
 
-	visit(overloaded {
-	          [&](const sp<enc_analyze_opr<PT, true>>& opr) {
-		          n_exceptions_p    = &opr->n_exceptions;
-		          exceptions        = opr->exceptions;
-		          exception_pos_arr = opr->exception_pos_arr;
+	visit_enc(overloaded {
+	              [&](const sp<enc_analyze_opr<PT, true>>& opr) {
+		              n_exceptions_p    = &opr->n_exceptions;
+		              exceptions        = opr->exceptions;
+		              exception_pos_arr = opr->exception_pos_arr;
+	              },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
 	          },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators.back());
+	          expr.operators.back());
 
 	n_exceptions_segment        = make_unique<Segment>();
 	exceptions_position_segment = make_unique<Segment>();

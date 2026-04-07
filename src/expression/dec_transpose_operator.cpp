@@ -45,7 +45,7 @@ dec_transpose_opr<PT>::dec_transpose_opr(PhysicalExpr&     physical_expr,
                                          InterpreterState& state)
     : transposed_data(nullptr) {
 
-	visit(TransposeExprVisitor<PT> {*this}, physical_expr.operators.back());
+	visit_dec(TransposeExprVisitor<PT> {*this}, physical_expr.operators.back());
 }
 
 template <typename PT>

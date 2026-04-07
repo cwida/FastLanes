@@ -37,7 +37,7 @@ struct RsumExprVisitor {
 		idxs = reinterpret_cast<const PT*>(opr->data);
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(RsumExprVisitor {idxs}, expr->operators[0]);
+		visit_dec(RsumExprVisitor {idxs}, expr->operators[0]);
 	}
 	void operator()(std::monostate& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
@@ -52,7 +52,7 @@ dec_rsum_opr<PT>::dec_rsum_opr(PhysicalExpr& physical_expr, const ColumnView& co
     : bases_segment_view(column_view.GetSegment(state.cur_operand))
     , deltas(nullptr) {
 
-	visit(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
+	visit_dec(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
 	state.cur_operand = state.cur_operand - 1;
 	state.cur_operator++;
 }

@@ -250,7 +250,7 @@ PhysicalExpr::PhysicalExpr()
 
 void PhysicalExpr::PointTo(n_t vec_idx) const {
 	for (const auto& opr : operators) {
-		visit(point_to_visitor {vec_idx}, opr);
+		visit_physical(point_to_visitor {vec_idx}, opr);
 	}
 }
 
@@ -400,7 +400,7 @@ void PhysicalExpr::Flush(Buf& buf, ColumnDescriptorT& column_descriptor, uint8_t
 
 	vector<up<Segment>> segments;
 	for (const auto& op : operators) {
-		visit(flush_segments_visitor {segments, buf, column_descriptor, helper_buffer}, op);
+		visit_enc(flush_segments_visitor {segments, buf, column_descriptor, helper_buffer}, op);
 	}
 
 	n_t current_offset = column_descriptor.column_offset;
@@ -480,7 +480,7 @@ struct extract_segments_visitor {
 	void operator()(const sp<enc_struct_opr>& opr) {
 		for (const auto& op : opr->internal_exprs) {
 			for (const auto& child_operator : op->operators) {
-				visit(extract_segments_visitor {segments}, child_operator);
+				visit_enc(extract_segments_visitor {segments}, child_operator);
 			}
 		}
 	}
@@ -553,7 +553,7 @@ n_t ScaleDownTheSize(n_t segment_size, n_t sample_size, n_t n_vecs) {
 n_t PhysicalExpr::Size(n_t sample_size, n_t n_vecs) const {
 	vector<up<Segment>> segments;
 	for (const auto& op : operators) {
-		visit(extract_segments_visitor {segments}, op);
+		visit_enc(extract_segments_visitor {segments}, op);
 	}
 
 	n_t ttl_size {0};
@@ -686,7 +686,7 @@ struct finalize_operators_visitor {
 
 void PhysicalExpr::Finalize() const {
 	for (const auto& op : operators) {
-		visit(finalize_operators_visitor {}, op);
+		visit_enc(finalize_operators_visitor {}, op);
 	}
 }
 } // namespace fastlanes

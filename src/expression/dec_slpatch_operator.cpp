@@ -63,7 +63,7 @@ dec_slpatch_opr<PT>::dec_slpatch_opr(PhysicalExpr&     physical_expr,
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
 	state.cur_operand -= 3;
 
-	visit(SLPatchExprVisitor {*this}, physical_expr.operators.back());
+	visit_dec(SLPatchExprVisitor {*this}, physical_expr.operators.back());
 }
 
 template <typename PT>

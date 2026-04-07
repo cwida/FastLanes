@@ -25,12 +25,12 @@ enc_data_parallel_patch_opr<PT>::enc_data_parallel_patch_opr(const PhysicalExpr&
                                                              const col_pt&       column,
                                                              ColumnDescriptorT&  column_descriptor,
                                                              InterpreterState&   state) {
-	visit(overloaded {
-	          [&](const sp<enc_alp_opr<PT>>& opr) { opr->data_parallelize = true; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators[state.cur_operator++]);
+	visit_enc(overloaded {
+	              [&](const sp<enc_alp_opr<PT>>& opr) { opr->data_parallelize = true; },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
+	          },
+	          expr.operators[state.cur_operator++]);
 }
 
 template struct enc_data_parallel_patch_opr<dbl_pt>;

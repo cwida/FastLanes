@@ -28,13 +28,13 @@ enc_rsum_opr<PT>::enc_rsum_opr(const PhysicalExpr& expr,
                                ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state) {
 
-	visit(overloaded {
-	          [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
-	          [&](const sp<enc_transpose_opr<PT>>& opr) { data = opr->transposed_data; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators[state.cur_operator++]);
+	visit_enc(overloaded {
+	              [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
+	              [&](const sp<enc_transpose_opr<PT>>& opr) { data = opr->transposed_data; },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
+	          },
+	          expr.operators[state.cur_operator++]);
 
 	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);
