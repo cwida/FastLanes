@@ -476,14 +476,13 @@ void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_tabl
 struct rowgroup_equality_visitor {
 	template <typename PT>
 	bool operator()(const up<TypedCol<PT>>& org_col, const up<TypedCol<PT>>& decoded_col) const {
-		// FLS_ASSERT_E(org_col->data.size(), org_col->null_map_arr.size())
 		for (idx_t idx {0}; idx < org_col->data.size(); ++idx) {
-			const auto& original_val = org_col->data[idx];
-			const auto& decoded_val  = decoded_col->data[idx];
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 
+			const auto& original_val = org_col->data[idx];
+			const auto& decoded_val  = decoded_col->data[idx];
 			if (original_val != decoded_val) {
 				return false;
 			}
@@ -512,7 +511,7 @@ struct rowgroup_equality_visitor {
 		}
 
 		for (idx_t idx {0}; idx < org_col->length_arr.size(); ++idx) {
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 			const fls_string_t org_fls_string {org_col->str_p_arr[idx], org_col->length_arr[idx]};
