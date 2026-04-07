@@ -2,6 +2,7 @@ add_library(fls_expression
         OBJECT
         alp_expression.cpp
         analyze_operator.cpp
+        analyze_operator_unsigned.cpp
         # CMakeLists.txt
         data_parallelize_patch_operator.cpp
         cross_rle_operator.cpp
@@ -23,11 +24,14 @@ add_library(fls_expression
         physical_expression.cpp
         predicate_operator.cpp
         rle_expression.cpp
-        rsum_operator.cpp
+        enc_rsum_operator.cpp
+        dec_rsum_operator.cpp
         scan_operator.cpp
         selection_ds.cpp
-        slpatch_operator.cpp
-        transpose_operator.cpp
+        enc_slpatch_operator.cpp
+        dec_slpatch_operator.cpp
+        enc_transpose_operator.cpp
+        dec_transpose_operator.cpp
         validitymask_operator.cpp
 )
 
