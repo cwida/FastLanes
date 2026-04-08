@@ -7,6 +7,7 @@
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
@@ -15,7 +16,6 @@
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/type_traits.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include <cstdint>
 #include <variant>
@@ -63,7 +63,7 @@ dec_slpatch_opr<PT>::dec_slpatch_opr(PhysicalExpr&     physical_expr,
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
 	state.cur_operand -= 3;
 
-	visit(SLPatchExprVisitor {*this}, physical_expr.operators.back());
+	visit_dec(SLPatchExprVisitor {*this}, physical_expr.operators.back());
 }
 
 template <typename PT>

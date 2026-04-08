@@ -245,14 +245,14 @@ struct VisitorFunctor {
 	void operator()(const sp<enc_slpatch_opr<PT>>&) {
 		// Safely step backward to [expr.size() - 2], if it exists
 		if (expression->operators.size() >= 2) {
-			visit(*this, expression->operators[expression->operators.size() - 2]);
+			visit_enc(*this, expression->operators[expression->operators.size() - 2]);
 		}
 	}
 
 	void operator()(const sp<enc_slpatch_opr<make_signed_t<PT>>>&) {
 		// Safely step backward to [expr.size() - 2], if it exists
 		if (expression->operators.size() >= 2) {
-			visit(*this, expression->operators[expression->operators.size() - 2]);
+			visit_enc(*this, expression->operators[expression->operators.size() - 2]);
 		}
 	}
 
@@ -276,7 +276,7 @@ enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
 	VisitorFunctor<PT> functor {this, &expr};
 
 	if (!expr.operators.empty()) {
-		visit(functor, expr.operators.back());
+		visit_enc(functor, expr.operators.back());
 	}
 
 	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;

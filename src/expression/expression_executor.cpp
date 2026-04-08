@@ -24,7 +24,6 @@
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
-#include "fls/std/variant.hpp"
 #include <variant> // for std::monostate
 
 namespace fastlanes {
@@ -246,7 +245,7 @@ struct operator_visitor {
 
 void ExprExecutor::execute(PhysicalExpr& expr, n_t vec_idx) {
 	for (auto& expr_operator : expr.operators) {
-		visit(operator_visitor {vec_idx}, expr_operator);
+		visit_physical(operator_visitor {vec_idx}, expr_operator);
 	}
 }
 
@@ -255,7 +254,7 @@ void ExprExecutor::smart_execute(PhysicalExpr& expr, n_t vec_idx) {
 	FLS_ASSERT_LE(n_operators, expr.operators.size());
 
 	for (n_t operator_idx {0}; operator_idx < n_operators; operator_idx++) {
-		visit(operator_visitor {vec_idx}, expr.operators[operator_idx]);
+		visit_physical(operator_visitor {vec_idx}, expr.operators[operator_idx]);
 	}
 }
 
@@ -478,7 +477,7 @@ struct operator_counter_visitor {
 
 void ExprExecutor::CountOperator(PhysicalExpr& expr) {
 	for (auto& expr_operator : expr.operators) {
-		visit(operator_counter_visitor {expr}, expr_operator);
+		visit_physical(operator_counter_visitor {expr}, expr_operator);
 	}
 }
 

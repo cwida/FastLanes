@@ -33,6 +33,7 @@
 #include "fls/std/type_traits.hpp"
 #include <cstddef> // size_t
 #include <cstdint> // uint32_t, uint64_t
+#include <memory>  // std::make_shared
 
 namespace fastlanes {
 
@@ -53,7 +54,8 @@ void make_dec_uncompressed_expr(PhysicalExpr&     physical_expr,
 
 	const uint64_t last = operands->Get(operands->size() - 1);
 
-	physical_expr.operators.emplace_back(std::make_shared<dec_uncompressed_opr<PT>>(column_view, last));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {std::make_shared<dec_uncompressed_opr<PT>>(column_view, last)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -71,7 +73,8 @@ void make_dec_validitymask_expr(PhysicalExpr&     physical_expr,
 	FLS_ASSERT_E(operands->size(), 1);
 
 	const uint64_t last = operands->Get(operands->size() - 1);
-	physical_expr.operators.emplace_back(std::make_shared<dec_validitymask_opr>(column_view, last));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {std::make_shared<dec_validitymask_opr>(column_view, last)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -83,7 +86,8 @@ void make_dec_fls_str_uncompressed_expr(PhysicalExpr&     physical_expr,
 	const auto* rpn = column_view.column_descriptor.encoding_rpn();
 	FLS_ASSERT_NOT_NULL_POINTER(rpn);
 
-	physical_expr.operators.emplace_back(std::make_shared<dec_fls_str_uncompressed_opr>(column_view, *rpn));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {std::make_shared<dec_fls_str_uncompressed_opr>(column_view, *rpn)});
 
 	state.cur_operator += 1;
 }
@@ -94,8 +98,9 @@ void make_dec_fls_str_uncompressed_expr(PhysicalExpr&     physical_expr,
 template <typename FSSTDecoder>
 void make_dec_fsst_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_scan_opr<ofs_t>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<FSSTDecoder>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_scan_opr<ofs_t>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSSTDecoder>(physical_expr, column_view, state)});
 	state.cur_operator = state.cur_operator + 2;
 }
 
@@ -105,9 +110,12 @@ void make_dec_fsst_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 template <typename FSSTDecoder>
 void make_dec_fsst_delta_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<ofs_t>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_rsum_opr<ofs_t>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<FSSTDecoder>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<ofs_t>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rsum_opr<ofs_t>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSSTDecoder>(physical_expr, column_view, state)});
 	state.cur_operator = state.cur_operator + 3;
 }
 
@@ -119,10 +127,14 @@ void make_dec_fsst_delta_slpatch_expr(PhysicalExpr&     physical_expr,
                                       const ColumnView& column_view,
                                       InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<ofs_t>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_slpatch_opr<ofs_t>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_rsum_opr<ofs_t>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<FSSTDecoder>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<ofs_t>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_slpatch_opr<ofs_t>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rsum_opr<ofs_t>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSSTDecoder>(physical_expr, column_view, state)});
 	state.cur_operator = state.cur_operator + 3;
 }
 
@@ -132,7 +144,8 @@ void make_dec_fsst_delta_slpatch_expr(PhysicalExpr&     physical_expr,
 template <typename PT>
 void make_dec_ffor_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -141,8 +154,10 @@ void make_dec_ffor_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 template <typename PT>
 void make_dec_ffor_slpatch_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_slpatch_opr<PT>>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_slpatch_opr<PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -150,7 +165,7 @@ void make_dec_ffor_slpatch_expr(PhysicalExpr& physical_expr, const ColumnView& c
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 void make_dec_alp_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	physical_expr.operators.emplace_back(make_shared<dec_alp_opr<PT>>(column_view, state));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_alp_opr<PT>>(column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -161,7 +176,7 @@ void make_dec_galp_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 	// Note: dec_alp_opr uses hardcoded segment indices (0-7), so cur_operand is unused.
 	// Unlike other decoders, GALP/ALP encoding does not emit operand_tokens, so
 	// accessing operand_tokens() here would dereference a null pointer.
-	physical_expr.operators.emplace_back(make_shared<dec_alp_opr<PT>>(column_view, state));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_alp_opr<PT>>(column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -169,7 +184,7 @@ void make_dec_galp_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
 void make_dec_alp_rd_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	physical_expr.operators.emplace_back(make_shared<dec_alp_rd_opr<PT>>(column_view, state));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_alp_rd_opr<PT>>(column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -178,9 +193,10 @@ void make_dec_alp_rd_expr(PhysicalExpr& physical_expr, const ColumnView& column_
 template <typename KEY_PT, typename INDEX_PT>
 void make_dec_dict_ffor_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
 	physical_expr.operators.emplace_back(
-	    make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state));
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -189,7 +205,8 @@ void make_dec_dict_ffor_expr(PhysicalExpr& physical_expr, const ColumnView& colu
 template <typename PT>
 void make_dec_null_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_null_opr<PT>>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_null_opr<PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -198,7 +215,8 @@ void make_dec_null_expr(PhysicalExpr& physical_expr, const ColumnView& column_vi
 template <typename PT>
 void make_dec_frequency_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_frequency_opr<PT>>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_frequency_opr<PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -206,7 +224,8 @@ void make_dec_frequency_expr(PhysicalExpr& physical_expr, const ColumnView& colu
 \*--------------------------------------------------------------------------------------------------------------------*/
 void make_dec_frequency_str_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_frequency_str_opr>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_frequency_str_opr>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -215,7 +234,8 @@ void make_dec_frequency_str_expr(PhysicalExpr& physical_expr, const ColumnView& 
 template <typename PT>
 void make_dec_cross_rle_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_cross_rle_opr<PT>>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_cross_rle_opr<PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -226,10 +246,12 @@ void make_dec_dict_ffor_slpatch_expr(PhysicalExpr&     physical_expr,
                                      const ColumnView& column_view,
                                      InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state));
 	physical_expr.operators.emplace_back(
-	    make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state));
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -238,8 +260,10 @@ void make_dec_dict_ffor_slpatch_expr(PhysicalExpr&     physical_expr,
 template <typename FSST_DICT_DECODER_T, typename INDEX_PT>
 void make_dec_fsst_dict_ffor_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<FSST_DICT_DECODER_T>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSST_DICT_DECODER_T>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -250,9 +274,12 @@ void make_dec_fsst_dict_ffor_slpatch_expr(PhysicalExpr&     physical_expr,
                                           const ColumnView& column_view,
                                           InterpreterState& state) {
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<FSSTDictDecoder>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSSTDictDecoder>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -269,7 +296,8 @@ void make_dec_fsst_dict_expr(RowgroupReader&   reader,
 
 	state.cur_operand = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	physical_expr.operators.emplace_back(reader.m_expressions[static_cast<size_t>(operand_tokens->Get(0))]);
-	physical_expr.operators.emplace_back(make_shared<FSSTDictTypeDecoder>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<FSSTDictTypeDecoder>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -285,7 +313,7 @@ void make_dec_dict_expr(RowgroupReader&   reader,
 	physical_expr.operators.emplace_back(
 	    reader.m_expressions[static_cast<size_t>(operand_tokens->Get(static_cast<uint32_t>(state.cur_operand++)))]);
 	physical_expr.operators.emplace_back(
-	    make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state));
+	    dec_physical_operator {make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -299,10 +327,12 @@ void make_dec_rle_expr(RowgroupReader&   reader,
 	state.cur_operand  = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	state.cur_operator = 0;
 
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_rsum_opr<INDEX_PT>>(physical_expr, column_view, state));
 	physical_expr.operators.emplace_back(
-	    make_shared<dec_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state));
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rsum_opr<INDEX_PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -316,11 +346,14 @@ void make_dec_rle_slpatch_expr(RowgroupReader&   reader,
 	state.cur_operand  = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	state.cur_operator = 0;
 
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_rsum_opr<INDEX_PT>>(physical_expr, column_view, state));
 	physical_expr.operators.emplace_back(
-	    make_shared<dec_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state));
+	    dec_physical_operator {make_shared<dec_unffor_opr<INDEX_PT>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_slpatch_opr<INDEX_PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rsum_opr<INDEX_PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -334,9 +367,12 @@ void make_dec_delta_expr(RowgroupReader&   reader,
 	state.cur_operand  = column_view.column_descriptor.encoding_rpn()->operand_tokens()->size() - 1;
 	state.cur_operator = 0;
 
-	physical_expr.operators.emplace_back(make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_rsum_opr<PT>>(physical_expr, column_view, state));
-	physical_expr.operators.emplace_back(make_shared<dec_transpose_opr<PT>>(physical_expr, column_view, state));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_unffor_opr<make_unsigned_t<PT>>>(column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_rsum_opr<PT>>(physical_expr, column_view, state)});
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_transpose_opr<PT>>(physical_expr, column_view, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -345,7 +381,8 @@ void make_dec_delta_expr(RowgroupReader&   reader,
 template <typename KEY_PT, typename INDEX_PT>
 void make_dec_expr(PhysicalExpr& physical_expr, ColumnView& column_view, InterpreterState& state) {
 
-	physical_expr.operators.emplace_back(make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(column_view));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_dict_opr<KEY_PT, INDEX_PT>>(column_view)});
 	state.cur_operator = state.cur_operator + 1;
 }
 
@@ -355,7 +392,7 @@ void make_dec_expr(PhysicalExpr& physical_expr, ColumnView& column_view, Interpr
 template <typename PT>
 void make_dec_constant_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
 
-	physical_expr.operators.emplace_back(make_shared<dec_constant_opr<PT>>(column_view));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_constant_opr<PT>>(column_view)});
 	state.cur_operator = state.cur_operator + 1;
 }
 
@@ -363,7 +400,7 @@ void make_dec_constant_expr(PhysicalExpr& physical_expr, const ColumnView& colum
  * make_dec_constant_str_expr
 \*--------------------------------------------------------------------------------------------------------------------*/
 void make_dec_constant_str_expr(PhysicalExpr& physical_expr, const ColumnView& column_view, InterpreterState& state) {
-	physical_expr.operators.emplace_back(make_shared<dec_constant_str_opr>(column_view));
+	physical_expr.operators.emplace_back(dec_physical_operator {make_shared<dec_constant_str_opr>(column_view)});
 	state.cur_operator = state.cur_operator + 1;
 }
 
@@ -389,7 +426,8 @@ void make_dec_struct_expr(const ColumnDescriptor& column_descriptor,
                           InterpreterState&       state,
                           RowgroupReader&         reader) {
 
-	physical_expr.operators.emplace_back(make_shared<dec_struct_opr>(column_descriptor, column_view, state, reader));
+	physical_expr.operators.emplace_back(
+	    dec_physical_operator {make_shared<dec_struct_opr>(column_descriptor, column_view, state, reader)});
 	state.cur_operator = state.cur_operator + 1;
 }
 

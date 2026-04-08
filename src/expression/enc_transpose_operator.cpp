@@ -3,9 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/expression/enc_transpose_operator.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
-#include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"
@@ -32,38 +30,38 @@ enc_transpose_opr<PT>::enc_transpose_opr(const PhysicalExpr& expr,
                                          ColumnDescriptorT&  column_descriptor,
                                          InterpreterState&   state) {
 
-	visit(overloaded {
-	          [&](const sp<enc_uncompressed_opr<PT>>& opr) {
-		          data = opr->data;
-		          opr->segment->MakeTemporary();
+	visit_enc(overloaded {
+	              [&](const sp<enc_uncompressed_opr<PT>>& opr) {
+		              data = opr->data;
+		              opr->segment->MakeTemporary();
+	              },
+	              [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
+	              [&](const sp<enc_fsst_opr>& opr) {
+		              if constexpr (std::is_same_v<PT, ofs_t>) {
+			              data = opr->fsst_encoded_offset_arr + 1;
+			              opr->fsst_offset_segment->MakeTemporary();
+			              column_descriptor.encoding_rpn->operand_tokens.pop_back();
+			              state.cur_operand -= 1;
+		              } else {
+			              FLS_UNREACHABLE();
+		              }
+	              },
+	              [&](const sp<enc_fsst12_opr>& opr) {
+		              if constexpr (std::is_same_v<PT, ofs_t>) {
+			              data = opr->fsst12_encoded_offset_arr + 1;
+			              opr->fsst12_offset_segment->MakeTemporary();
+			              column_descriptor.encoding_rpn->operand_tokens.pop_back();
+			              state.cur_operand -= 1;
+		              } else {
+			              FLS_UNREACHABLE();
+		              }
+	              },
+	              [&]<typename VALUE_PT>(const sp<enc_dict_map_opr<VALUE_PT, PT>>& opr) { data = opr->index_arr; },
+	              [&]<typename VALUE_PT>(const sp<enc_rle_map_opr<VALUE_PT, PT>>& opr) { data = opr->rle_idxs; },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
 	          },
-	          [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
-	          [&](const sp<enc_fsst_opr>& opr) {
-		          if constexpr (std::is_same_v<PT, ofs_t>) {
-			          data = opr->fsst_encoded_offset_arr + 1;
-			          opr->fsst_offset_segment->MakeTemporary();
-			          column_descriptor.encoding_rpn->operand_tokens.pop_back();
-			          state.cur_operand -= 1;
-		          } else {
-			          FLS_UNREACHABLE();
-		          }
-	          },
-	          [&](const sp<enc_fsst12_opr>& opr) {
-		          if constexpr (std::is_same_v<PT, ofs_t>) {
-			          data = opr->fsst12_encoded_offset_arr + 1;
-			          opr->fsst12_offset_segment->MakeTemporary();
-			          column_descriptor.encoding_rpn->operand_tokens.pop_back();
-			          state.cur_operand -= 1;
-		          } else {
-			          FLS_UNREACHABLE();
-		          }
-	          },
-	          [&]<typename VALUE_PT>(const sp<enc_dict_map_opr<VALUE_PT, PT>>& opr) { data = opr->index_arr; },
-	          [&]<typename VALUE_PT>(const sp<enc_rle_map_opr<VALUE_PT, PT>>& opr) { data = opr->rle_idxs; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators[state.cur_operator++]);
+	          expr.operators[state.cur_operator++]);
 }
 
 template <typename PT>

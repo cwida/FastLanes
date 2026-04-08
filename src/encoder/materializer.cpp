@@ -93,20 +93,20 @@ struct material_visitor {
 		auto visitor = [this, &typed_col](auto&& arg) {
 			(*this)(std::forward<decltype(arg)>(arg), typed_col);
 		};
-		visit(visitor, expr->operators[expr->operators.size() - 1]);
+		visit_dec(visitor, expr->operators[expr->operators.size() - 1]);
 	}
 	void operator()(const sp<PhysicalExpr>& expr, up<FLSStrColumn>& typed_col) const {
 		auto visitor = [this, &typed_col](auto&& arg) {
 			(*this)(std::forward<decltype(arg)>(arg), typed_col);
 		};
-		visit(visitor, expr->operators[0]);
+		visit_dec(visitor, expr->operators[0]);
 	}
 	void operator()(const sp<dec_struct_opr>& struct_expr, up<Struct>& struct_col) const {
 		for (n_t expr_idx {0}; expr_idx < struct_expr->internal_exprs.size(); ++expr_idx) {
-			visit(material_visitor {vec_idx},
-			      struct_expr->internal_exprs[expr_idx]
-			          ->operators[struct_expr->internal_exprs[expr_idx]->operators.size() - 1],
-			      struct_col->internal_rowgroup[expr_idx]);
+			visit_dec(material_visitor {vec_idx},
+			          struct_expr->internal_exprs[expr_idx]
+			              ->operators[struct_expr->internal_exprs[expr_idx]->operators.size() - 1],
+			          struct_col->internal_rowgroup[expr_idx]);
 		}
 	}
 	void operator()(const sp<dec_fls_str_uncompressed_opr>& opr, up<FLSStrColumn>& str_col) const {
@@ -201,7 +201,7 @@ void Materializer::Materialize(const vector<sp<PhysicalExpr>>& expressions, n_t 
 		FLS_ASSERT_NOT_EMPTY_VEC(expr->operators);
 
 		expr->PointTo(vec_idx);
-		visit(material_visitor {vec_idx}, expr->operators[expr->operators.size() - 1], col);
+		visit_dec(material_visitor {vec_idx}, expr->operators[expr->operators.size() - 1], col);
 	}
 
 	// rowgroup.n_tup = rowgroup.n_tup + CFG::VEC_SZ;

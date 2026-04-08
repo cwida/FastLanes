@@ -144,17 +144,17 @@ enc_analyze_opr<PT, IS_PATCHED>::enc_analyze_opr(const PhysicalExpr& expr,
     : null_map_view(col) {
 
 	is_rsum = false;
-	visit(overloaded {
-	          [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
-	          [&](const sp<enc_rsum_opr<PT>>& opr) {
-		          data    = opr->deltas;
-		          is_rsum = true;
+	visit_enc(overloaded {
+	              [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
+	              [&](const sp<enc_rsum_opr<PT>>& opr) {
+		              data    = opr->deltas;
+		              is_rsum = true;
+	              },
+	              [&]<typename VALUE_PT>(const sp<enc_dict_map_opr<VALUE_PT, PT>>& opr) { data = opr->index_arr; },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto&) { FLS_UNREACHABLE(); },
 	          },
-	          [&]<typename VALUE_PT>(const sp<enc_dict_map_opr<VALUE_PT, PT>>& opr) { data = opr->index_arr; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto&) { FLS_UNREACHABLE(); },
-	      },
-	      expr.operators.back());
+	          expr.operators.back());
 }
 
 template <typename PT, bool USE_PATCH>

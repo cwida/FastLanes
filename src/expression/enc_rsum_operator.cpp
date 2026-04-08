@@ -6,6 +6,7 @@
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
@@ -13,6 +14,7 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/unrsum/unrsum.hpp"
 #include <utility>
@@ -28,13 +30,13 @@ enc_rsum_opr<PT>::enc_rsum_opr(const PhysicalExpr& expr,
                                ColumnDescriptorT&  column_descriptor,
                                InterpreterState&   state) {
 
-	visit(overloaded {
-	          [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
-	          [&](const sp<enc_transpose_opr<PT>>& opr) { data = opr->transposed_data; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators[state.cur_operator++]);
+	visit_enc(overloaded {
+	              [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
+	              [&](const sp<enc_transpose_opr<PT>>& opr) { data = opr->transposed_data; },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
+	          },
+	          expr.operators[state.cur_operator++]);
 
 	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
 	operand_tokens.emplace_back(state.cur_operand++);

@@ -3,9 +3,9 @@
 // ────────────────────────────────────────────────────────
 // src/expression/dec_rsum_operator.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
@@ -14,7 +14,6 @@
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/type_traits.hpp"
-#include "fls/std/variant.hpp"
 #include "fls_gen/rsum/rsum.hpp"
 #include <variant>
 
@@ -37,7 +36,7 @@ struct RsumExprVisitor {
 		idxs = reinterpret_cast<const PT*>(opr->data);
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(RsumExprVisitor {idxs}, expr->operators[0]);
+		visit_dec(RsumExprVisitor {idxs}, expr->operators[0]);
 	}
 	void operator()(std::monostate& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
@@ -52,7 +51,7 @@ dec_rsum_opr<PT>::dec_rsum_opr(PhysicalExpr& physical_expr, const ColumnView& co
     : bases_segment_view(column_view.GetSegment(state.cur_operand))
     , deltas(nullptr) {
 
-	visit(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
+	visit_dec(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
 	state.cur_operand = state.cur_operand - 1;
 	state.cur_operator++;
 }

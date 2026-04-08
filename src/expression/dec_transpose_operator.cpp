@@ -7,10 +7,10 @@
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/expression/rsum_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
 #include <variant>
@@ -45,7 +45,7 @@ dec_transpose_opr<PT>::dec_transpose_opr(PhysicalExpr&     physical_expr,
                                          InterpreterState& state)
     : transposed_data(nullptr) {
 
-	visit(TransposeExprVisitor<PT> {*this}, physical_expr.operators.back());
+	visit_dec(TransposeExprVisitor<PT> {*this}, physical_expr.operators.back());
 }
 
 template <typename PT>

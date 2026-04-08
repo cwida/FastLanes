@@ -47,7 +47,7 @@ void make_enc_uncompressed_expr(PhysicalExpr&      physical_expr,
 
 	const auto& column = rowgroup[column_descriptor.idx];
 	physical_expr.operators.emplace_back(
-	    make_shared<enc_uncompressed_opr<PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_uncompressed_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -63,7 +63,7 @@ void make_enc_validitymask_expr(PhysicalExpr&      physical_expr,
 
 	const auto& column = rowgroup[column_descriptor.idx];
 	physical_expr.operators.emplace_back(
-	    make_shared<enc_validitymask_opr>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_validitymask_opr>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -76,7 +76,7 @@ void make_enc_struct_expr(PhysicalExpr&      physical_expr,
 
 	const auto& col = rowgroup[column_descriptor.idx];
 
-	physical_expr.operators.emplace_back(make_shared<enc_struct_opr>(col, column_descriptor));
+	physical_expr.operators.emplace_back(enc_physical_operator {make_shared<enc_struct_opr>(col, column_descriptor)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -92,7 +92,7 @@ void make_fls_str_uncompressed_expr(PhysicalExpr&      physical_expr,
 	operand_tokens.emplace_back(1);
 
 	const auto& column = rowgroup[column_descriptor.idx];
-	physical_expr.operators.emplace_back(make_shared<enc_fls_str_uncompressed_op>(column));
+	physical_expr.operators.emplace_back(enc_physical_operator {make_shared<enc_fls_str_uncompressed_op>(column)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -104,7 +104,8 @@ void make_fsst_expr(PhysicalExpr&      physical_expr,
                     ColumnDescriptorT& column_descriptor,
                     InterpreterState&  state) {
 	const auto& column = rowgroup[column_descriptor.idx];
-	physical_expr.operators.emplace_back(make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state));
+	physical_expr.operators.emplace_back(
+	    enc_physical_operator {make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -119,11 +120,16 @@ void make_fsst_delta_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_transpose_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_rsum_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_transpose_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_rsum_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_analyze_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_ffor_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -138,12 +144,18 @@ void make_enc_fsst_delta_slpatch_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_transpose_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_rsum_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<ofs_t, true>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_slpatch_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<ofs_t>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<FSSTOperator>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_transpose_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_rsum_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<ofs_t, true>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_slpatch_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_ffor_opr<ofs_t>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -157,10 +169,12 @@ void make_enc_ffor_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_analyze_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -174,11 +188,14 @@ void make_enc_ffor_slpatch_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<PT, true>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_slpatch_opr<PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<PT, true>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_slpatch_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -192,7 +209,8 @@ void make_enc_null_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_null_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_null_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -206,7 +224,8 @@ void make_enc_frequency_expr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_frequency_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_frequency_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -219,7 +238,8 @@ void make_enc_frequency_str_opr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_frequency_str_opr>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_frequency_str_opr>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -233,7 +253,8 @@ void make_enc_cross_rle_opr(PhysicalExpr&      physical_expr,
 	const auto& column    = rowgroup[column_descriptor.idx];
 	auto&       operators = physical_expr.operators;
 
-	operators.emplace_back(make_shared<enc_cross_rle_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_cross_rle_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -247,11 +268,14 @@ void make_enc_dict_ffor_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -265,13 +289,16 @@ void make_enc_dict_ffor_slpatch_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 	operators.emplace_back(
-	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -285,11 +312,14 @@ void make_enc_fsst_dict_ffor_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<FSST_DICT_ENCODER_T>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<FSST_DICT_ENCODER_T>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -303,13 +333,16 @@ void make_enc_fsst_dict_ffor_slpatch_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<FSSTDictEncoder>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<FSSTDictEncoder>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_dict_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 	operators.emplace_back(
-	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -323,7 +356,8 @@ void make_enc_fsst_dict_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<FSSTDictTypeEncoder>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<FSSTDictTypeEncoder>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -337,7 +371,8 @@ void make_enc_dict_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_dict_opr<KEY_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -351,7 +386,8 @@ void make_enc_alp_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_alp_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_alp_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -365,9 +401,10 @@ void make_enc_galp_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_alp_opr<PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_data_parallel_patch_opr<PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_alp_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_data_parallel_patch_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -381,12 +418,16 @@ void make_enc_rle_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_transpose_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 	operators.emplace_back(
-	    make_shared<enc_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_transpose_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_rsum_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_rsum_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -400,14 +441,18 @@ void make_enc_rle_slpatch_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_transpose_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 	operators.emplace_back(
-	    make_shared<enc_rle_map_opr<KEY_PT, INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_transpose_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_rsum_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_rsum_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 	operators.emplace_back(
-	    make_shared<enc_analyze_opr<INDEX_PT, true>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_slpatch_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_ffor_opr<INDEX_PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -421,12 +466,16 @@ void make_enc_delta_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_transpose_opr<PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_rsum_opr<PT>>(physical_expr, column, column_descriptor, state));
-	operators.emplace_back(make_shared<enc_analyze_opr<PT>>(physical_expr, column, column_descriptor, state));
 	operators.emplace_back(
-	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state));
+	    enc_physical_operator {make_shared<enc_scan_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_transpose_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_rsum_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_analyze_opr<PT>>(physical_expr, column, column_descriptor, state)});
+	operators.emplace_back(enc_physical_operator {
+	    make_shared<enc_ffor_opr<make_unsigned_t<PT>>>(physical_expr, column, column_descriptor, state)});
 }
 /*--------------------------------------------------------------------------------------------------------------------*\
  * make_alp_expr
@@ -439,7 +488,8 @@ void make_enc_alp_rd_expr(PhysicalExpr&      physical_expr,
 	auto&       operators = physical_expr.operators;
 	const auto& column    = rowgroup[column_descriptor.idx];
 
-	operators.emplace_back(make_shared<enc_alp_rd_opr<PT>>(physical_expr, column, column_descriptor, state));
+	operators.emplace_back(
+	    enc_physical_operator {make_shared<enc_alp_rd_opr<PT>>(physical_expr, column, column_descriptor, state)});
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\

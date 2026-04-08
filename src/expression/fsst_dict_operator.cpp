@@ -38,7 +38,7 @@ struct FSSTDictExprVisitor {
 		index_arr = opr->Data();
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(FSSTDictExprVisitor {index_arr}, expr->operators[0]);
+		visit_dec(FSSTDictExprVisitor {index_arr}, expr->operators[0]);
 	}
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
@@ -138,7 +138,7 @@ dec_fsst_dict_opr<INDEX_PT>::dec_fsst_dict_opr(const PhysicalExpr& physical_expr
           static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)])))
     , index_arr(nullptr) {
-	visit(FSSTDictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
+	visit_dec(FSSTDictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 	tmp_string.resize(CFG::String::max_bytes_per_string);
 
 	fsst_header_segment_view.PointTo(0);

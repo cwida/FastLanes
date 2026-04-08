@@ -17,7 +17,6 @@
 #include "fls/primitive/fsst/fsst.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
 #include <algorithm> // for std::max
@@ -115,7 +114,7 @@ dec_fsst_opr::dec_fsst_opr(PhysicalExpr& physical_expr, const ColumnView& column
     , fsst_bytes_segment_view(column_view.GetSegment(1))
     , offset_arr(nullptr) {
 
-	visit(FSSTExprVisitor {*this}, physical_expr.operators.back());
+	visit_dec(FSSTExprVisitor {*this}, physical_expr.operators.back());
 	FLS_ASSERT_NOT_NULL_POINTER(offset_arr)
 
 	fsst_header_segment_view.PointTo(0);

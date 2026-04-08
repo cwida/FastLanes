@@ -3,17 +3,18 @@
 // ────────────────────────────────────────────────────────
 // src/expression/enc_slpatch_operator.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/analyze_operator.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/variant.hpp"
 #include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include <utility>
 #include <variant>
 
@@ -27,16 +28,16 @@ enc_slpatch_opr<PT>::enc_slpatch_opr(const PhysicalExpr& expr,
                                      ColumnDescriptorT&  column_descriptor,
                                      InterpreterState&   state) {
 
-	visit(overloaded {
-	          [&](const sp<enc_analyze_opr<PT, true>>& opr) {
-		          n_exceptions_p    = &opr->n_exceptions;
-		          exceptions        = opr->exceptions;
-		          exception_pos_arr = opr->exception_pos_arr;
+	visit_enc(overloaded {
+	              [&](const sp<enc_analyze_opr<PT, true>>& opr) {
+		              n_exceptions_p    = &opr->n_exceptions;
+		              exceptions        = opr->exceptions;
+		              exception_pos_arr = opr->exception_pos_arr;
+	              },
+	              [&](std::monostate&) { FLS_UNREACHABLE(); },
+	              [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
 	          },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators.back());
+	          expr.operators.back());
 
 	n_exceptions_segment        = make_unique<Segment>();
 	exceptions_position_segment = make_unique<Segment>();
