@@ -13,7 +13,7 @@ function(fls_msvc_test_setup TARGET)
         return()
     endif ()
     if (NOT FLS_BUILD_SHARED_LIBS)
-        target_link_options(${TARGET} PRIVATE /WHOLEARCHIVE:FastLanes.lib)
+        target_link_options(${TARGET} PRIVATE /WHOLEARCHIVE:$<TARGET_FILE:FastLanes>)
     else ()
         add_custom_command(
                 TARGET ${TARGET} POST_BUILD
