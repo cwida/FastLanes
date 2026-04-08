@@ -96,14 +96,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-26
-          - macos-15
-        cxx: [ clang++ ]
-    runs-on: ${{ matrix.platform }}
+        cfg:
+          # Clang Release — platforms not fully covered by test
+          - { platform: ubuntu-22.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-22.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-24.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-24.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-24.04-arm, compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-24.04-arm, compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-22.04-arm, compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: true }
+          - { platform: macos-15,         compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          # GCC ARM Debug
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   cxx: g++,     build_type: Debug,   shared_lib: false }
+          # Clang on Windows — configs not covered by test
+          - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
+          - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
+          - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          # MSVC x64 — configs not covered by test
+          - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Debug,   shared_lib: false }
+          - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Release, shared_lib: true }
+    runs-on: ${{ matrix.cfg.platform }}
 
     steps:
       - uses: actions/checkout@v4
@@ -113,21 +126,38 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
+
+      - name: Set up MSVC environment
+        if: matrix.cfg.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure
         shell: bash
         run: |
-          cmake -S "${{ github.workspace }}" \
-                -B build_Release \
-                -DFLS_ENABLE_VERBOSE_OUTPUT=ON \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DFLS_ENABLE_INSTALL=OFF \
-                -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+          CMAKE_ARGS=(
+            -S "${{ github.workspace }}"
+            -B build
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+            -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }}
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
+            -DFLS_ENABLE_INSTALL=OFF
+          )
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+          else
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=${{ matrix.cfg.cxx }})
+          fi
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+          fi
+          cmake "${CMAKE_ARGS[@]}"
 
       - name: Build
-        run: cmake --build build_Release -j $BUILD_THREADS
+        run: cmake --build build -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
@@ -291,6 +321,11 @@ jobs:
           - { platform: macos-26,         compiler: clang, shared_lib: true,  build_type: Debug }
           - { platform: macos-15,         compiler: clang, shared_lib: false, build_type: Debug }
           - { platform: macos-15,         compiler: clang, shared_lib: true,  build_type: Release }
+          # Clang on Windows
+          - { platform: windows-latest,   compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: windows-latest,   compiler: clang, shared_lib: false, build_type: Release }
+          - { platform: windows-11-arm,   compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: windows-11-arm,   compiler: clang, shared_lib: false, build_type: Release }
           # MSVC on Windows
           - { platform: windows-latest,   compiler: msvc,  shared_lib: false, build_type: Release }
           - { platform: windows-latest,   compiler: msvc,  shared_lib: true,  build_type: Debug }
