@@ -33,6 +33,7 @@
 #include "fls/std/type_traits.hpp"
 #include <cstddef> // size_t
 #include <cstdint> // uint32_t, uint64_t
+#include <memory>  // std::make_shared
 
 namespace fastlanes {
 

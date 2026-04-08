@@ -24,7 +24,6 @@
 #include "fls/expression/slpatch_operator.hpp"
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
-#include "fls/std/variant.hpp"
 #include <variant> // for std::monostate
 
 namespace fastlanes {

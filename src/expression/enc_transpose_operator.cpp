@@ -3,9 +3,7 @@
 // ────────────────────────────────────────────────────────
 // src/expression/enc_transpose_operator.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
-#include "fls/common/assert.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"

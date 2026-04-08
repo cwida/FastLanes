@@ -17,7 +17,6 @@
 #include "fls/primitive/fsst/fsst.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
 #include <algorithm> // for std::max

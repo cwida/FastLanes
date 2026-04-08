@@ -28,7 +28,6 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/expression/validitymask_operator.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/std/vector.hpp"
 #include <cstdint>
 #include <utility>

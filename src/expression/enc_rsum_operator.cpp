@@ -6,6 +6,7 @@
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/common.hpp"
+#include "fls/expression/data_type.hpp"
 #include "fls/expression/encoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
@@ -13,6 +14,7 @@
 #include "fls/expression/transpose_operator.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/variant.hpp"
+#include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/unrsum/unrsum.hpp"
 #include <utility>
