@@ -5,16 +5,16 @@
 # On non-MSVC toolchains the source compiles to an empty translation unit.
 add_library(msvc_heap_guard OBJECT msvc_heap_guard.cpp)
 
-# Helper: apply MSVC-specific linker/runtime settings to a test target.
-#  - Static builds:  /WHOLEARCHIVE so all symbols are pulled in.
-#  - Shared builds:  copy the DLL next to the test executable.
+# Helper: apply Windows linker/runtime settings to a test target.
+#  - Static builds (MSVC/clang-cl): /WHOLEARCHIVE so all symbols are pulled in.
+#  - Shared builds (any Windows compiler): copy the DLL next to the test executable.
 function(fls_msvc_test_setup TARGET)
-    if (NOT MSVC)
+    if (NOT WIN32)
         return()
     endif ()
-    if (NOT FLS_BUILD_SHARED_LIBS)
+    if (NOT FLS_BUILD_SHARED_LIBS AND MSVC)
         target_link_options(${TARGET} PRIVATE /WHOLEARCHIVE:$<TARGET_FILE:FastLanes>)
-    else ()
+    elseif (FLS_BUILD_SHARED_LIBS)
         add_custom_command(
                 TARGET ${TARGET} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
