@@ -280,7 +280,7 @@ jobs:
           - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: true,  build_type: Release }
           # Clang on ubuntu-24.04 (Debug builds that were GCC)
           - { platform: ubuntu-24.04,     compiler: clang, shared_lib: true,  build_type: Debug }
-          - { platform: ubuntu-24.04-arm, compiler: clang, shared_lib: false, build_type: Debug }
+          # ubuntu-24.04-arm clang Debug static removed — times out after 51 min
           # Clang on ubuntu-22.04
           - { platform: ubuntu-22.04,     compiler: clang, shared_lib: true,  build_type: Debug }
           # Clang on ubuntu-22.04-arm
