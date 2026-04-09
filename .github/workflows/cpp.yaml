@@ -111,8 +111,9 @@ jobs:
           # Clang on Windows — configs not covered by test
           - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
           - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
-          - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
-          - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          # windows-11-arm + clang disabled: choco installs x64 LLVM, causing target mismatch
+          # - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
+          # - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
           # MSVC x64 — configs not covered by test
           - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Debug,   shared_lib: false }
           - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Release, shared_lib: true }
@@ -323,8 +324,9 @@ jobs:
           # Clang on Windows
           - { platform: windows-latest,   compiler: clang, shared_lib: true,  build_type: Debug }
           - { platform: windows-latest,   compiler: clang, shared_lib: false, build_type: Release }
-          - { platform: windows-11-arm,   compiler: clang, shared_lib: true,  build_type: Debug }
-          - { platform: windows-11-arm,   compiler: clang, shared_lib: false, build_type: Release }
+          # windows-11-arm + clang disabled: choco installs x64 LLVM, causing target mismatch
+          # - { platform: windows-11-arm,   compiler: clang, shared_lib: true,  build_type: Debug }
+          # - { platform: windows-11-arm,   compiler: clang, shared_lib: false, build_type: Release }
           # MSVC on Windows
           - { platform: windows-latest,   compiler: msvc,  shared_lib: false, build_type: Release }
           - { platform: windows-latest,   compiler: msvc,  shared_lib: true,  build_type: Debug }
