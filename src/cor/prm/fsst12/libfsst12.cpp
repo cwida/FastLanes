@@ -257,25 +257,25 @@ static inline ulong compressBulk(
 			}
 			cur += (code >> 12);
 			res |= (code & FSST12_CODE_MASK) << 12;
-			memcpy(out, &res, sizeof(u64));
+			memcpy(out, &res, sizeof(u32));
 			out += 3;
 		}
 		while (cur < end) {
 			ulong code = symbolMap.findExpansion(Symbol12(cur, end));
 			u32   res  = (code & FSST12_CODE_MASK);
 			if (out + 8 > lim) {
-				return curLine; // u32 write would be out of bounds (out of output memory)
+				return curLine; // u64 write would be out of bounds (out of output memory)
 			}
 			cur += code >> 12;
 			if (cur >= end) {
-				memcpy(out, &res, sizeof(u64));
+				memcpy(out, &res, sizeof(u32));
 				out += 2;
 				break;
 			}
 			code = symbolMap.findExpansion(Symbol12(cur, end));
 			res |= (code & FSST12_CODE_MASK) << 12;
 			cur += code >> 12;
-			memcpy(out, &res, sizeof(u64));
+			memcpy(out, &res, sizeof(u32));
 			out += 3;
 		}
 		lenOut[curLine] = out - strOut[curLine];

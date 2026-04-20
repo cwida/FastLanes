@@ -23,9 +23,9 @@ struct InterpreterState;
  * Histogram
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-class Histogram {
+class AnalyzeHistogram {
 public:
-	Histogram() = default; //
+	AnalyzeHistogram() = default; //
 public:
 	void Cal(PT* data);
 	void Reset();
@@ -49,16 +49,16 @@ public:
 	void PointTo(n_t vec_idx);
 
 public:
-	PT            copy_of_data[CFG::VEC_SZ];
-	PT*           data;
-	PT            base;
-	vec_idx_t     n_exceptions;
-	alp::exp_p_t  exception_pos_arr[CFG::VEC_SZ];
-	PT            exceptions[CFG::VEC_SZ];
-	bw_t          bw;
-	Histogram<PT> histogram;
-	NullMapView   null_map_view;
-	bool          is_rsum;
+	PT                   copy_of_data[CFG::VEC_SZ];
+	PT*                  data;
+	PT                   base;
+	vec_idx_t            n_exceptions;
+	alp::exp_p_t         exception_pos_arr[CFG::VEC_SZ];
+	PT                   exceptions[CFG::VEC_SZ];
+	bw_t                 bw;
+	AnalyzeHistogram<PT> histogram;
+	NullMapView          null_map_view;
+	bool                 is_rsum;
 };
 
 } // namespace fastlanes

@@ -13,8 +13,9 @@ run-name: >-
 # ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
+    branches: [ main, dev ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ main, dev ]
 
 # Cancel in-flight runs on the same branch/PR so we do not waste minutes
 concurrency:

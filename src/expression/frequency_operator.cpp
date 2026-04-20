@@ -18,6 +18,8 @@
 #include "fls/reader/segment.hpp"
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility>
 
@@ -209,9 +211,9 @@ void dec_frequency_opr<PT>::Decode(n_t vec_idx) {
 	auto* exc_pos_arr  = reinterpret_cast<uint16_t*>(exceptions_position_segment.data);
 	auto  n_exceptions = *reinterpret_cast<uint16_t*>(n_exceptions_segment.data);
 
-	FLS_ASSERT_CORRECT_POS(n_exceptions)
+	FLS_ASSERT_LE(n_exceptions, CFG::VEC_SZ)
 
-	for (auto val_idx {0}; val_idx < n_exceptions; ++val_idx) {
+	for (n_t val_idx {0}; val_idx < n_exceptions; ++val_idx) {
 		auto next_pos  = exc_pos_arr[val_idx];
 		auto val       = exc_arr[val_idx];
 		data[next_pos] = val;
@@ -295,7 +297,9 @@ void dec_frequency_str_opr::Materialize(n_t vec_idx, FLSStrColumn& typed_col) {
 	vec_idx_t exception_position {0};
 	for (n_t idx {0}; idx < CFG::VEC_SZ; ++idx) {
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+			byte_arr_vec.reserve(
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 
 		exception_position = exception_positions[exception_idx];

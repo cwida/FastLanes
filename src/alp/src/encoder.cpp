@@ -11,6 +11,7 @@
 #include "alp/sampler.hpp"
 #include "alp/state.hpp"
 #include "fls/common/assert.hpp" // fix me
+#include "fls/compiler.hpp"
 #include "fls/ffor_util.hpp"
 #include <algorithm>
 #include <cmath> // for std::ceil
@@ -97,10 +98,7 @@ void encoder<PT, IS_NULL>::encode_simdized(const PT*      data_p,
 		}
 	}
 
-#if !defined(_WIN32)
-	// Only non-Windows platforms will see this pragma
-#pragma clang loop vectorize_width(64)
-#endif
+	FLS_PRAGMA_VECTORIZE_WIDTH(64)
 	for (uint64_t i {0}; i < config::VECTOR_SIZE; i++) {
 		auto const actual_value = VALUE_ARR_WITHOUT_SPECIALS[i];
 
@@ -280,7 +278,9 @@ void encoder<PT, is_null>::find_top_k_combinations(const PT* smp_arr, state<PT>&
 
 		// We try all combinations in search for the one which minimize the compression size
 		for (int8_t exponent_idx = Constants<PT>::MAX_EXPONENT; exponent_idx >= 0; --exponent_idx) {
-			for (int8_t factor_idx = exponent_idx; factor_idx >= 0; --factor_idx) {
+			for (int8_t factor_idx = std::min(exponent_idx, static_cast<int8_t>(Constants<PT>::FACT_ARR.size() - 1));
+			     factor_idx >= 0;
+			     --factor_idx) {
 				uint16_t exceptions_count           = {0};
 				uint16_t non_exceptions_count       = {0};
 				uint32_t estimated_bits_per_value   = {0};

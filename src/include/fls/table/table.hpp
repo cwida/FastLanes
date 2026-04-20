@@ -6,16 +6,17 @@
 #ifndef FLS_TABLE_TABLE_HPP
 #define FLS_TABLE_TABLE_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/std/vector.hpp"
+#include "fls/table/rowgroup.hpp"
 #include <fls/std/string.hpp>
 
 namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
-class Rowgroup;
 class Connection;
 /*--------------------------------------------------------------------------------------------------------------------*/
-class TableComparisonResult {
+class FLS_API TableComparisonResult {
 public:
 	bool   is_equal {true};
 	n_t    first_failed_rowgroup_idx {0};
@@ -24,9 +25,15 @@ public:
 	string description;
 };
 
-class Table {
+class FLS_API Table {
 public:
 	Table(const Connection& connection);
+
+	~Table();
+	Table(const Table&)            = delete;
+	Table& operator=(const Table&) = delete;
+	Table(Table&&)                 = delete;
+	Table& operator=(Table&&)      = delete;
 
 public:
 	n_t get_n_rowgroups() const;

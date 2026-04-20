@@ -6,6 +6,7 @@
 #ifndef FLS_READER_COLUMN_VIEW_HPP
 #define FLS_READER_COLUMN_VIEW_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/std/span.hpp"
 #include "fls/std/vector.hpp"
@@ -19,7 +20,7 @@ class SegmentView;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * ColumnView
 \*--------------------------------------------------------------------------------------------------------------------*/
-class ColumnView {
+class FLS_API ColumnView {
 public:
 	explicit ColumnView(span<std::byte>           column_span,
 	                    const ColumnDescriptor&   column_descriptor,

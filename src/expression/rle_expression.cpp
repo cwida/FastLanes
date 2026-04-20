@@ -17,6 +17,8 @@
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility>
 #include <variant> // for std::monostate
@@ -132,7 +134,7 @@ struct RLEExprVisitor {
 		idxs = opr->idxs;
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(RLEExprVisitor {idxs}, expr->operators[0]);
+		visit_dec(RLEExprVisitor {idxs}, expr->operators[0]);
 	}
 	void operator()(std::monostate& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
@@ -149,7 +151,7 @@ dec_rle_map_opr<KEY_PT, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical_ex
     : rle_vals_segment_view(column_view.GetSegment(
           static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand)]))) {
-	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
+	visit_dec(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand -= 1;
 }
 
@@ -165,7 +167,7 @@ void dec_rle_map_opr<KEY_PT, INDEX_PT>::Decode(const n_t vec_idx, vector<KEY_PT>
 
 	auto* rle_vals = reinterpret_cast<KEY_PT*>(rle_vals_segment_view.data);
 
-	for (auto val_idx {0}; val_idx < CFG::VEC_SZ; val_idx++) {
+	for (n_t val_idx {0}; val_idx < CFG::VEC_SZ; val_idx++) {
 		temporary_tranposed_arr[val_idx] = rle_vals[idxs[val_idx]];
 	}
 
@@ -184,7 +186,7 @@ dec_rle_map_opr<FlsString, INDEX_PT>::dec_rle_map_opr(PhysicalExpr&     physical
     , rle_offset_segment_view(column_view.GetSegment(
           static_cast<uint32_t>((*column_view.column_descriptor.encoding_rpn()
                                       ->operand_tokens())[static_cast<uint32_t>(state.cur_operand - 0)]))) {
-	visit(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
+	visit_dec(RLEExprVisitor<INDEX_PT> {idxs}, physical_expr.operators.back());
 	state.cur_operand -= 2;
 }
 
@@ -213,7 +215,9 @@ void dec_rle_map_opr<FlsString, INDEX_PT>::Decode(n_t              vec_idx,
 		length_pointer[val_idx] = next_offset - cur_ofs;
 
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+			byte_arr_vec.reserve(
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), bytes + cur_ofs, bytes + next_offset);
 	}

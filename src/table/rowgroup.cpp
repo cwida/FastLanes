@@ -23,6 +23,7 @@
 #include "fls/table/attribute.hpp"
 #include "fls/table/chunk.hpp"
 #include <cassert>     // if you use asserts, or your macros depend on it
+#include <cstddef>     // ptrdiff_t
 #include <cstdint>     // int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, uint64_t
 #include <fstream>     // std::ifstream
 #include <limits>      // std::numeric_limits
@@ -146,7 +147,7 @@ struct get_statistics_visitor {
 		auto& length_arr  = str_col->length_arr;
 
 		// check constness
-		for (auto val_idx {0}; val_idx < str_col->length_arr.size(); ++val_idx) {
+		for (size_t val_idx {0}; val_idx < str_col->length_arr.size(); ++val_idx) {
 			if (val_idx != 0) {
 				is_constant = is_constant && Str::Equal(*str_col, *str_col, val_idx, val_idx - 1);
 			}
@@ -186,20 +187,13 @@ struct finalize_visitor {
 
 	template <typename PT>
 	void operator()(up<TypedCol<PT>>& typed_column) const {
-		auto& min             = typed_column->m_stats.min;
-		auto& max             = typed_column->m_stats.max;
-		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+		auto& min = typed_column->m_stats.min;
+		auto& max = typed_column->m_stats.max;
 
-		// into the dictionary
 		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
 			const auto current_val = typed_column->data[val_idx];
-			if (!bimap_frequency.contains_value(current_val)) {
-				n_t current_idx = bimap_frequency.size();
-				bimap_frequency.insert(current_idx, {current_val});
-			}
-
-			min = std::min(min, current_val);
-			max = std::max(max, current_val);
+			min                    = std::min(min, current_val);
+			max                    = std::max(max, current_val);
 		}
 	}
 
@@ -242,6 +236,54 @@ void Rowgroup::Finalize() {
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
+ * PopulateBiMap
+\*--------------------------------------------------------------------------------------------------------------------*/
+struct populate_bimap_visitor {
+	explicit populate_bimap_visitor() = default;
+
+	template <typename PT>
+	void operator()(up<TypedCol<PT>>& typed_column) const {
+		auto& min             = typed_column->m_stats.min;
+		auto& max             = typed_column->m_stats.max;
+		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+
+		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
+			const auto current_val = typed_column->data[val_idx];
+			if (!bimap_frequency.contains_value(current_val)) {
+				n_t current_idx = bimap_frequency.size();
+				bimap_frequency.insert(current_idx, current_val);
+			} else {
+				n_t existing_key = bimap_frequency.get_key(current_val);
+				bimap_frequency.insert(existing_key, current_val);
+			}
+
+			min = std::min(min, current_val);
+			max = std::max(max, current_val);
+		}
+	}
+
+	void operator()(up<FLSStrColumn>& str_col) const {
+		// string bimap is handled by GetStatistics
+	}
+
+	void operator()(up<Struct>& struct_col) const {
+		for (auto& col : struct_col->internal_rowgroup) {
+			visit(populate_bimap_visitor {}, col);
+		}
+	}
+
+	void operator()(auto& col) const {
+		FLS_UNREACHABLE();
+	}
+};
+
+void Rowgroup::PopulateBiMap() {
+	for (auto& col : internal_rowgroup) {
+		visit(populate_bimap_visitor {}, col);
+	}
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
  * Cast Check
 \*--------------------------------------------------------------------------------------------------------------------*/
 struct col_cast_visitor {
@@ -258,7 +300,7 @@ struct col_cast_visitor {
 		for (n_t val_idx {0}; val_idx < n_tup; val_idx++) {
 			std::string str(reinterpret_cast<const char*>(&str_col->byte_arr[cur_offset]),
 			                str_col->length_arr[val_idx]);
-			auto        casted_string = std::stol(str);
+			auto        casted_string = std::stoll(str);
 			casted_col->data[val_idx] = static_cast<i32_pt>(casted_string);
 			cur_offset += str_col->length_arr[val_idx];
 		}
@@ -336,13 +378,15 @@ col_pt cast_visit(rowgroup_pt& rowgroup, const ColumnDescriptorT& column_descrip
 template <typename PT>
 DataType getSmallestSignedType(PT min, PT max) {
 	if constexpr (!std::is_same_v<PT, string> && !std::is_same_v<PT, bool>) {
-		if (min >= std::numeric_limits<int8_t>::min() && max <= std::numeric_limits<int8_t>::max()) {
+		auto smin = static_cast<int64_t>(min);
+		auto smax = static_cast<int64_t>(max);
+		if (smin >= std::numeric_limits<int8_t>::min() && smax <= std::numeric_limits<int8_t>::max()) {
 			return DataType::INT8;
 		}
-		if (min >= std::numeric_limits<int16_t>::min() && max <= std::numeric_limits<int16_t>::max()) {
+		if (smin >= std::numeric_limits<int16_t>::min() && smax <= std::numeric_limits<int16_t>::max()) {
 			return DataType::INT16;
 		}
-		if (min >= std::numeric_limits<int32_t>::min() && max <= std::numeric_limits<int32_t>::max()) {
+		if (smin >= std::numeric_limits<int32_t>::min() && smax <= std::numeric_limits<int32_t>::max()) {
 			return DataType::INT32;
 		}
 		return DataType::INT64;
@@ -430,12 +474,16 @@ void fill_in(col_pt& col, n_t how_many_to_fill) {
 	          [&](up<FLSStrColumn>& string_col) {
 		          const auto last_value_length = string_col->length_arr.back();
 
+		          // Copy the last value once to avoid iterator invalidation during push_back.
+		          // push_back can reallocate the vector, invalidating references into it.
+		          const auto      last_value_offset = string_col->byte_arr.size() - last_value_length;
+		          vector<uint8_t> last_value(string_col->byte_arr.begin() + static_cast<ptrdiff_t>(last_value_offset),
+		                                     string_col->byte_arr.end());
+
 		          for (n_t val_idx {0}; val_idx < how_many_to_fill; val_idx++) {
-			          const auto size = string_col->byte_arr.size();
-			          for (n_t byte_index {last_value_length}; byte_index > 0; byte_index--) {
-				          string_col->byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-				          string_col->fsst_byte_arr.push_back(string_col->byte_arr[size - byte_index]);
-			          }
+			          string_col->byte_arr.insert(string_col->byte_arr.end(), last_value.begin(), last_value.end());
+			          string_col->fsst_byte_arr.insert(
+			              string_col->fsst_byte_arr.end(), last_value.begin(), last_value.end());
 			          string_col->length_arr.push_back(last_value_length);
 			          string_col->fsst_length_arr.push_back(last_value_length);
 		          }
@@ -483,14 +531,13 @@ void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_tabl
 struct rowgroup_equality_visitor {
 	template <typename PT>
 	bool operator()(const up<TypedCol<PT>>& org_col, const up<TypedCol<PT>>& decoded_col) const {
-		// FLS_ASSERT_E(org_col->data.size(), org_col->null_map_arr.size())
 		for (idx_t idx {0}; idx < org_col->data.size(); ++idx) {
-			const auto& original_val = org_col->data[idx];
-			const auto& decoded_val  = decoded_col->data[idx];
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 
+			const auto& original_val = org_col->data[idx];
+			const auto& decoded_val  = decoded_col->data[idx];
 			if (original_val != decoded_val) {
 				return false;
 			}
@@ -519,7 +566,7 @@ struct rowgroup_equality_visitor {
 		}
 
 		for (idx_t idx {0}; idx < org_col->length_arr.size(); ++idx) {
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 			const fls_string_t org_fls_string {org_col->str_p_arr[idx], org_col->length_arr[idx]};
@@ -658,13 +705,14 @@ n_t Rowgroup::ColCount() const {
 template <typename PT>
 TypedColumnView<PT>::TypedColumnView(const col_pt& column)
     : m_vec_idx(INVALID_N) {
+	static const uint8_t zero_null_map[65536] = {};
 	visit(overloaded {//
 	                  [&](const up<TypedCol<PT>>& typed_col) {
 		                  //
 		                  m_data    = typed_col->data.data();
 		                  m_stats_p = &typed_col->m_stats;
 		                  n_vals    = typed_col->data.size();
-		                  m_bools   = typed_col->null_map_arr.data();
+		                  m_bools   = typed_col->null_map_arr.empty() ? zero_null_map : typed_col->null_map_arr.data();
 		                  n_tuples  = typed_col->data.size();
 	                  },
 	                  [&](const std::monostate&) { FLS_UNREACHABLE() },
@@ -721,13 +769,18 @@ template class TypedColumnView<flt_pt>;
 \*--------------------------------------------------------------------------------------------------------------------*/
 
 NullMapView::NullMapView(const col_pt& column) {
-	visit(overloaded {
-	          [&]<typename PT>(const up<TypedCol<PT>>& typed_col) { m_null_map = typed_col->null_map_arr.data(); },
-	          [&](const up<FLSStrColumn>& fls_str_column) { m_null_map = fls_str_column->null_map_arr.data(); },
-	          [&](const std::monostate&) { FLS_UNREACHABLE() },
-	          [&](const auto& arg) {
-		          FLS_UNREACHABLE_WITH_TYPE(arg)
-	          }},
+	static const uint8_t zero_null_map[65536] = {};
+	visit(overloaded {[&]<typename PT>(const up<TypedCol<PT>>& typed_col) {
+		                  m_null_map = typed_col->null_map_arr.empty() ? zero_null_map : typed_col->null_map_arr.data();
+	                  },
+	                  [&](const up<FLSStrColumn>& fls_str_column) {
+		                  m_null_map = fls_str_column->null_map_arr.empty() ? zero_null_map
+		                                                                    : fls_str_column->null_map_arr.data();
+	                  },
+	                  [&](const std::monostate&) { FLS_UNREACHABLE() },
+	                  [&](const auto& arg) {
+		                  FLS_UNREACHABLE_WITH_TYPE(arg)
+	                  }},
 	      column);
 }
 const uint8_t* NullMapView::NullMap() const {

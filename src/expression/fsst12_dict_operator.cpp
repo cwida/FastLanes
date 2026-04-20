@@ -19,6 +19,8 @@
 #include "fls/reader/segment.hpp"
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility> // for std::move
 #include <variant> // for std::monostate
@@ -36,7 +38,7 @@ struct FSST12DictExprVisitor {
 		index_arr = opr->Data();
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(FSST12DictExprVisitor {index_arr}, expr->operators[0]);
+		visit_dec(FSST12DictExprVisitor {index_arr}, expr->operators[0]);
 	}
 	void operator()(std::monostate&) {
 		FLS_UNREACHABLE();
@@ -139,7 +141,7 @@ dec_fsst12_dict_opr<INDEX_PT>::dec_fsst12_dict_opr(const PhysicalExpr& physical_
 	// consume three operands
 	state.cur_operand -= 3;
 
-	visit(FSST12DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
+	visit_dec(FSST12DictExprVisitor<INDEX_PT> {index_arr}, physical_expr.operators[0]);
 	tmp_string.resize(CFG::String::max_bytes_per_string);
 
 	fsst12_header_segment_view.PointTo(0);
@@ -200,7 +202,9 @@ void dec_fsst12_dict_opr<INDEX_PT>::Decode(vector<uint8_t>& byte_arr_vec, vector
 		length_pointer[idx] = decoded_size;
 
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+			byte_arr_vec.reserve(
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), tmp_string.begin(), tmp_string.begin() + decoded_size);
 	}

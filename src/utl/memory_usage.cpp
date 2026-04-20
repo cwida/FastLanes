@@ -12,8 +12,9 @@
 #elif defined(__linux__)
 #include <fstream>
 #include <unistd.h>
-#else
-#error "Unsupported platform"
+#elif defined(_WIN32)
+#include <psapi.h>
+#include <windows.h>
 #endif
 
 namespace fastlanes {
@@ -38,6 +39,13 @@ uint64_t memoryUsageBytes() {
 
 	long page_size = sysconf(_SC_PAGESIZE);
 	return rss_pages * static_cast<uint64_t>(page_size);
+
+#elif defined(_WIN32)
+	PROCESS_MEMORY_COUNTERS pmc;
+	if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+		return static_cast<uint64_t>(pmc.WorkingSetSize);
+	}
+	return 0;
 
 #endif
 }

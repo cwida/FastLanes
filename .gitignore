@@ -126,3 +126,8 @@ rust/target/
 skbuild-*/
 .idea/
 .venv/
+
+# Windows build artifacts
+build_win.bat
+cmake_output.txt
+build_win/

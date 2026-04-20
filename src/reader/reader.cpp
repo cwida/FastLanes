@@ -25,6 +25,11 @@
 #include <string>              // for basic_string
 
 namespace fastlanes {
+
+Reader::~Reader()                            = default;
+Reader::Reader(Reader&&) noexcept            = default;
+Reader& Reader::operator=(Reader&&) noexcept = default;
+
 Reader::Reader(const path& dir_path, Connection& fls) {
 	// read footer
 	{ m_footer = make_rowgroup_descriptor(dir_path / FOOTER_FILE_NAME); }

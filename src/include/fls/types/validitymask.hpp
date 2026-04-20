@@ -11,10 +11,11 @@
  * @brief Fixed‑size ValidityMask
  */
 
+#include "fls/api/api.hpp"
 #include "fls/cfg/cfg.hpp"
 
 namespace fastlanes {
-class ValidityMask {
+class FLS_API ValidityMask {
 public:
 	// ───────────────────────────────────── configuration
 	static constexpr n_t BIT_COUNT  = CFG::VEC_SZ;                  ///< Total bits (compile‑time configured).

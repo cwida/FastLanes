@@ -12,8 +12,10 @@ run-name: >-
 # Trigger on every push & PR, on all branches
 # ─────────────────────────────────────────────────────────────
 on:
-  push:     # no branches filter ⇒ every branch
-  pull_request:  # no branches filter ⇒ every target branch
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
 concurrency:
   group: flatbuffers-${{ github.ref }}
   cancel-in-progress: true

@@ -63,9 +63,12 @@ void prepare_rowgroup(Rowgroup& rowgroup) {
 
 	// could be combined
 	rowgroup.Init();
-	rowgroup.Cast();
 	rowgroup.Finalize();
 	rowgroup.GetStatistics();
+	rowgroup.Cast();
+
+	// Populate bimap after Cast, so it reflects the final (possibly cast) column types
+	rowgroup.PopulateBiMap();
 }
 
 void Connection::prepare_table() const {

@@ -6,6 +6,7 @@
 #ifndef FLS_TYPES_TIMESTAMP_HPP
 #define FLS_TYPES_TIMESTAMP_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/std/string.hpp"
 #include <cstdint>
 
@@ -33,7 +34,7 @@ namespace fastlanes {
  * @throws std::out_of_range
  *   If the resulting timestamp exceeds int64_t range
  */
-int64_t parse_timestamp(string_view ts_str);
+FLS_API int64_t parse_timestamp(string_view ts_str);
 
 /**
  * Formats a microseconds-since-epoch timestamp back into an ISO-8601 string:
@@ -48,7 +49,7 @@ int64_t parse_timestamp(string_view ts_str);
  * @throws std::runtime_error
  *   If the reconstructed date falls outside a valid range
  */
-string timestamp_formatter(int64_t microseconds_since_epoch);
+FLS_API string timestamp_formatter(int64_t microseconds_since_epoch);
 
 } // namespace fastlanes
 
