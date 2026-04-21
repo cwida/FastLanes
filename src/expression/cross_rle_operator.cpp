@@ -16,6 +16,7 @@
 #include "fls/std/vector.hpp"
 #include "fls/table/rowgroup.hpp"
 #include <algorithm> // for std::min
+#include <cstddef>   // for size_t
 #include <cstdint>   // for uint8_t
 #include <utility>
 
@@ -282,7 +283,9 @@ void decode_rle_range(const len_t*     rle_lengths,
 
 		for (n_t i = 0; i < to_copy; ++i) {
 			if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-				byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+				byte_arr_vec.reserve(
+				    std::max(byte_arr_vec.capacity() * 2,
+				             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 			}
 			byte_arr_vec.insert(byte_arr_vec.end(), rle_value_bytes + prev_offset, rle_value_bytes + cur_offset);
 			out_lengths[decoded_pos++] = length;

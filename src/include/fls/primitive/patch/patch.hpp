@@ -6,13 +6,14 @@
 #ifndef FLS_PRIMITIVE_PATCH_PATCH_HPP
 #define FLS_PRIMITIVE_PATCH_PATCH_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/common.hpp"
 
 namespace fastlanes {
 n_t calculate_bitpacked_vector_size(bw_t bw);
 
 template <typename PT>
-class Patch {
+class FLS_API Patch {
 public:
 	static void data_parallelize(const PT*       in_exc_arr,
 	                             const uint16_t* in_pos_arr,

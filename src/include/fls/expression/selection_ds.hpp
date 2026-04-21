@@ -6,6 +6,7 @@
 #ifndef FLS_EXPRESSION_SELECTION_DS_HPP
 #define FLS_EXPRESSION_SELECTION_DS_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/common.hpp"
 #include "fls/std/array.hpp"
@@ -15,7 +16,7 @@ namespace fastlanes {
 class LogicalExpr;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-class SelectionDS {
+class FLS_API SelectionDS {
 	using bitmap_unit_t = uint64_t;
 
 public:

@@ -8,6 +8,7 @@
 
 #include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
+#include "fls/footer/table_descriptor.hpp" // for TableDescriptorHandle (complete type needed for dllexport)
 #include "fls/std/filesystem.hpp"
 #include "fls/std/string.hpp"
 
@@ -15,12 +16,17 @@ namespace fastlanes {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class Connection;
 class RowgroupReader;
-class TableDescriptorHandle;
 class Table;
 /*--------------------------------------------------------------------------------------------------------------------*/
 class FLS_API TableReader {
 public:
 	explicit TableReader(const path& file_path, Connection& fls);
+
+	~TableReader();
+	TableReader(const TableReader&)            = delete;
+	TableReader& operator=(const TableReader&) = delete;
+	TableReader(TableReader&&)                 = delete;
+	TableReader& operator=(TableReader&&)      = delete;
 
 public:
 	up<RowgroupReader> operator[](n_t rowgroup_idx) const;

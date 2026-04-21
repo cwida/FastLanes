@@ -5,6 +5,7 @@
 // ────────────────────────────────────────────────────────
 // generated!
 // NOLINTBEGIN
+#include "fls/compiler.hpp"
 #include "fls_gen/macros.hpp"
 #include "fls_gen/unffor/unffor.hpp"
 namespace generated { namespace unffor::fallback { namespace scalar {
@@ -5917,7 +5918,7 @@ static void unffor_0bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		*(out + (i * 1) + (0 * 16) + (16 * 0))  = base_0;
 		*(out + (i * 1) + (0 * 16) + (16 * 1))  = base_0;
@@ -5993,7 +5994,7 @@ static void unffor_1bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 1) - 1);
@@ -6198,7 +6199,7 @@ static void unffor_2bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 2) - 1);
@@ -6404,7 +6405,7 @@ static void unffor_3bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 3) - 1);
@@ -6613,7 +6614,7 @@ static void unffor_4bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 4) - 1);
@@ -6821,7 +6822,7 @@ static void unffor_5bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 5) - 1);
@@ -7034,7 +7035,7 @@ static void unffor_6bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 6) - 1);
@@ -7248,7 +7249,7 @@ static void unffor_7bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 7) - 1);
@@ -7465,7 +7466,7 @@ static void unffor_8bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 8) - 1);
@@ -7677,7 +7678,7 @@ static void unffor_9bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 9) - 1);
@@ -7898,7 +7899,7 @@ static void unffor_10bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 10) - 1);
@@ -8120,7 +8121,7 @@ static void unffor_11bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 11) - 1);
@@ -8345,7 +8346,7 @@ static void unffor_12bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 12) - 1);
@@ -8569,7 +8570,7 @@ static void unffor_13bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 13) - 1);
@@ -8798,7 +8799,7 @@ static void unffor_14bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 14) - 1);
@@ -9028,7 +9029,7 @@ static void unffor_15bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 15) - 1);
@@ -9261,7 +9262,7 @@ static void unffor_16bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 16) - 1);
@@ -9481,7 +9482,7 @@ static void unffor_17bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 17) - 1);
@@ -9718,7 +9719,7 @@ static void unffor_18bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 18) - 1);
@@ -9956,7 +9957,7 @@ static void unffor_19bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 19) - 1);
@@ -10197,7 +10198,7 @@ static void unffor_20bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 20) - 1);
@@ -10437,7 +10438,7 @@ static void unffor_21bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 21) - 1);
@@ -10682,7 +10683,7 @@ static void unffor_22bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 22) - 1);
@@ -10928,7 +10929,7 @@ static void unffor_23bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 23) - 1);
@@ -11177,7 +11178,7 @@ static void unffor_24bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 24) - 1);
@@ -11421,7 +11422,7 @@ static void unffor_25bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 25) - 1);
@@ -11674,7 +11675,7 @@ static void unffor_26bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 26) - 1);
@@ -11928,7 +11929,7 @@ static void unffor_27bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 27) - 1);
@@ -12185,7 +12186,7 @@ static void unffor_28bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 28) - 1);
@@ -12441,7 +12442,7 @@ static void unffor_29bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 29) - 1);
@@ -12702,7 +12703,7 @@ static void unffor_30bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 30) - 1);
@@ -12964,7 +12965,7 @@ static void unffor_31bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 31) - 1);
@@ -13229,7 +13230,7 @@ static void unffor_32bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 32) - 1);
@@ -13465,7 +13466,7 @@ static void unffor_33bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 33) - 1);
@@ -13734,7 +13735,7 @@ static void unffor_34bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 34) - 1);
@@ -14004,7 +14005,7 @@ static void unffor_35bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 35) - 1);
@@ -14277,7 +14278,7 @@ static void unffor_36bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 36) - 1);
@@ -14549,7 +14550,7 @@ static void unffor_37bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 37) - 1);
@@ -14826,7 +14827,7 @@ static void unffor_38bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 38) - 1);
@@ -15104,7 +15105,7 @@ static void unffor_39bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 39) - 1);
@@ -15385,7 +15386,7 @@ static void unffor_40bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 40) - 1);
@@ -15661,7 +15662,7 @@ static void unffor_41bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 41) - 1);
@@ -15946,7 +15947,7 @@ static void unffor_42bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 42) - 1);
@@ -16232,7 +16233,7 @@ static void unffor_43bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 43) - 1);
@@ -16521,7 +16522,7 @@ static void unffor_44bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 44) - 1);
@@ -16809,7 +16810,7 @@ static void unffor_45bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 45) - 1);
@@ -17102,7 +17103,7 @@ static void unffor_46bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 46) - 1);
@@ -17396,7 +17397,7 @@ static void unffor_47bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 47) - 1);
@@ -17693,7 +17694,7 @@ static void unffor_48bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 48) - 1);
@@ -17977,7 +17978,7 @@ static void unffor_49bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 49) - 1);
@@ -18278,7 +18279,7 @@ static void unffor_50bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 50) - 1);
@@ -18580,7 +18581,7 @@ static void unffor_51bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 51) - 1);
@@ -18885,7 +18886,7 @@ static void unffor_52bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 52) - 1);
@@ -19189,7 +19190,7 @@ static void unffor_53bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 53) - 1);
@@ -19498,7 +19499,7 @@ static void unffor_54bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 54) - 1);
@@ -19808,7 +19809,7 @@ static void unffor_55bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 55) - 1);
@@ -20121,7 +20122,7 @@ static void unffor_56bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 56) - 1);
@@ -20429,7 +20430,7 @@ static void unffor_57bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 57) - 1);
@@ -20746,7 +20747,7 @@ static void unffor_58bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 58) - 1);
@@ -21064,7 +21065,7 @@ static void unffor_59bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 59) - 1);
@@ -21385,7 +21386,7 @@ static void unffor_60bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 60) - 1);
@@ -21705,7 +21706,7 @@ static void unffor_61bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 61) - 1);
@@ -22030,7 +22031,7 @@ static void unffor_62bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 62) - 1);
@@ -22356,7 +22357,7 @@ static void unffor_63bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0      = (register_0) & ((1ULL << 63) - 1);
@@ -22685,7 +22686,7 @@ static void unffor_64bw_64ow_64crw_1uf(const uint64_t* __restrict a_in_p,
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0 = *(a_base_p);
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0 = *(in + (0 * 16) + (i * 1) + 0);
 		register_0 += base_0;

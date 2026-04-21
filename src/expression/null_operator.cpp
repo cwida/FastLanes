@@ -105,9 +105,9 @@ void dec_null_opr<PT>::Materialize(n_t vec_idx, TypedCol<PT>& typed_col) {
 	auto* exc_pos_arr  = reinterpret_cast<uint16_t*>(vals_position_segment.data);
 	auto  n_exceptions = *reinterpret_cast<uint16_t*>(n_vals_segment.data);
 
-	FLS_ASSERT_CORRECT_POS(n_exceptions)
+	FLS_ASSERT_LE(n_exceptions, CFG::VEC_SZ)
 
-	for (auto val_idx {0}; val_idx < n_exceptions; ++val_idx) {
+	for (n_t val_idx {0}; val_idx < n_exceptions; ++val_idx) {
 		auto next_pos                 = exc_pos_arr[val_idx];
 		auto val                      = exc_arr[val_idx];
 		materialized_data_p[next_pos] = val;

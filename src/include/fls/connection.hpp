@@ -28,7 +28,7 @@ class Dir;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * Config
 \*--------------------------------------------------------------------------------------------------------------------*/
-class Config {
+class FLS_API Config {
 public:
 	Config();
 
@@ -61,6 +61,11 @@ public:
 public:
 	Connection();
 	explicit Connection(const Config& config);
+
+	Connection(const Connection&)            = delete;
+	Connection& operator=(const Connection&) = delete;
+	Connection(Connection&&)                 = default;
+	Connection& operator=(Connection&&)      = default;
 
 public:
 	/// READ CSV

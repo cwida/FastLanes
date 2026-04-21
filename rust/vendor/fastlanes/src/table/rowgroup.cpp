@@ -160,20 +160,13 @@ struct finalize_visitor {
 
 	template <typename PT>
 	void operator()(up<TypedCol<PT>>& typed_column) const {
-		auto& min             = typed_column->m_stats.min;
-		auto& max             = typed_column->m_stats.max;
-		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+		auto& min = typed_column->m_stats.min;
+		auto& max = typed_column->m_stats.max;
 
-		// into the dictionary
 		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
 			const auto current_val = typed_column->data[val_idx];
-			if (!bimap_frequency.contains_value(current_val)) {
-				n_t current_idx = bimap_frequency.size();
-				bimap_frequency.insert(current_idx, {current_val});
-			}
-
-			min = std::min(min, current_val);
-			max = std::max(max, current_val);
+			min                    = std::min(min, current_val);
+			max                    = std::max(max, current_val);
 		}
 	}
 
@@ -210,6 +203,54 @@ struct finalize_visitor {
 void Rowgroup::Finalize() {
 	for (auto& col : internal_rowgroup) {
 		visit(finalize_visitor {}, col);
+	}
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*\
+ * PopulateBiMap
+\*--------------------------------------------------------------------------------------------------------------------*/
+struct populate_bimap_visitor {
+	explicit populate_bimap_visitor() = default;
+
+	template <typename PT>
+	void operator()(up<TypedCol<PT>>& typed_column) const {
+		auto& min             = typed_column->m_stats.min;
+		auto& max             = typed_column->m_stats.max;
+		auto& bimap_frequency = typed_column->m_stats.bimap_frequency;
+
+		for (n_t val_idx {0}; val_idx < typed_column->data.size(); val_idx++) {
+			const auto current_val = typed_column->data[val_idx];
+			if (!bimap_frequency.contains_value(current_val)) {
+				n_t current_idx = bimap_frequency.size();
+				bimap_frequency.insert(current_idx, current_val);
+			} else {
+				n_t existing_key = bimap_frequency.get_key(current_val);
+				bimap_frequency.insert(existing_key, current_val);
+			}
+
+			min = std::min(min, current_val);
+			max = std::max(max, current_val);
+		}
+	}
+
+	void operator()(up<FLSStrColumn>& str_col) const {
+		// string bimap is handled by GetStatistics
+	}
+
+	void operator()(up<Struct>& struct_col) const {
+		for (auto& col : struct_col->internal_rowgroup) {
+			visit(populate_bimap_visitor {}, col);
+		}
+	}
+
+	void operator()(auto& col) const {
+		FLS_UNREACHABLE();
+	}
+};
+
+void Rowgroup::PopulateBiMap() {
+	for (auto& col : internal_rowgroup) {
+		visit(populate_bimap_visitor {}, col);
 	}
 }
 
@@ -435,14 +476,13 @@ void cast_from_logical_to_physical(const Rowgroup& old_table, Rowgroup& new_tabl
 struct rowgroup_equality_visitor {
 	template <typename PT>
 	bool operator()(const up<TypedCol<PT>>& org_col, const up<TypedCol<PT>>& decoded_col) const {
-		// FLS_ASSERT_E(org_col->data.size(), org_col->null_map_arr.size())
 		for (idx_t idx {0}; idx < org_col->data.size(); ++idx) {
-			const auto& original_val = org_col->data[idx];
-			const auto& decoded_val  = decoded_col->data[idx];
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 
+			const auto& original_val = org_col->data[idx];
+			const auto& decoded_val  = decoded_col->data[idx];
 			if (original_val != decoded_val) {
 				return false;
 			}
@@ -471,7 +511,7 @@ struct rowgroup_equality_visitor {
 		}
 
 		for (idx_t idx {0}; idx < org_col->length_arr.size(); ++idx) {
-			if (org_col->null_map_arr[idx]) {
+			if (idx < org_col->null_map_arr.size() && org_col->null_map_arr[idx]) {
 				continue;
 			}
 			const fls_string_t org_fls_string {org_col->str_p_arr[idx], org_col->length_arr[idx]};

@@ -6,11 +6,12 @@
 #ifndef FLS_COR_LYT_BUF_HPP
 #define FLS_COR_LYT_BUF_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/common.hpp"
 #include "fls/std/span.hpp"
 
 namespace fastlanes {
-class Buf {
+class FLS_API Buf {
 public:
 	// fixed size buffer;
 	explicit Buf();

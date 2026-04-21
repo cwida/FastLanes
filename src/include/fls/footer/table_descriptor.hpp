@@ -6,6 +6,7 @@
 #ifndef FLS_FOOTER_TABLE_DESCRIPTOR_HPP
 #define FLS_FOOTER_TABLE_DESCRIPTOR_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp" // n_t, up
 #include "fls/footer/table_descriptor_generated.h"
 #include "fls/std/filesystem.hpp" // path
@@ -18,7 +19,7 @@ namespace fastlanes {
 
 class Table;
 
-class TableDescriptorHandle {
+class FLS_API TableDescriptorHandle {
 public:
 	TableDescriptorHandle() = default;
 
@@ -81,7 +82,7 @@ private:
 │ By-pointer helpers (return up<...>)                                          │
 │ These heap-allocate the handle and return unique ownership (up<>).           │
 └──────────────────────────────────────────────────────────────────────────────*/
-up<TableDescriptorT> make_table_descriptor(const Table& table);
+FLS_API up<TableDescriptorT> make_table_descriptor(const Table& table);
 
 inline up<TableDescriptorHandle> make_table_descriptor(const path& file_path, bool verify = true) {
 	return std::make_unique<TableDescriptorHandle>(TableDescriptorHandle::FromFile(file_path, verify));

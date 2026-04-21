@@ -6,6 +6,7 @@
 #ifndef FLS_TABLE_ROWGROUP_HPP
 #define FLS_TABLE_ROWGROUP_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"
@@ -29,12 +30,12 @@ using byte_arr_t     = vector<uint8_t>;
 using ofs_arr_t      = vector<ofs_t>;
 using length_arr_t   = vector<len_t>;
 
-class BaseCol {
+class FLS_API BaseCol {
 public:
 	null_map_arr_t null_map_arr;
 };
 
-class VariableSizeCol : public BaseCol {
+class FLS_API VariableSizeCol : public BaseCol {
 public:
 	ofs_arr_t    ofs_arr;
 	length_arr_t length_arr;
@@ -114,7 +115,7 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*\
  * NullMapView
 \*--------------------------------------------------------------------------------------------------------------------*/
-class NullMapView {
+class FLS_API NullMapView {
 public:
 	explicit NullMapView(const col_pt& column);
 
@@ -136,7 +137,7 @@ constexpr n_t TypedColumnView<PT>::GetSizeOfOneVector() {
 /*--------------------------------------------------------------------------------------------------------------------*\
  * FLSStringView
 \*--------------------------------------------------------------------------------------------------------------------*/
-class FlsStrColumnView {
+class FLS_API FlsStrColumnView {
 public:
 	explicit FlsStrColumnView(const col_pt& column);
 
@@ -168,12 +169,19 @@ public:
 
 using rowgroup_pt = vector<col_pt>;
 
-class List : public VariableSizeCol {
+class FLS_API List : public VariableSizeCol {
+public:
+	List()                       = default;
+	List(const List&)            = delete;
+	List& operator=(const List&) = delete;
+	List(List&&)                 = default;
+	List& operator=(List&&)      = default;
+
 public:
 	col_pt child;
 };
 
-class FLSStrColumn : public VariableSizeCol {
+class FLS_API FLSStrColumn : public VariableSizeCol {
 public:
 	vector<uint8_t>  byte_arr;
 	vector<uint8_t*> str_p_arr;
@@ -185,12 +193,19 @@ public:
 	vector<fls_string_t> fls_str_arr;
 };
 
-class Struct : public BaseCol {
+class FLS_API Struct : public BaseCol {
+public:
+	Struct()                         = default;
+	Struct(const Struct&)            = delete;
+	Struct& operator=(const Struct&) = delete;
+	Struct(Struct&&)                 = default;
+	Struct& operator=(Struct&&)      = default;
+
 public:
 	rowgroup_pt internal_rowgroup;
 };
 
-class RowgroupComparisonResult {
+class FLS_API RowgroupComparisonResult {
 public:
 	bool   is_equal {true};
 	n_t    first_failed_column_idx {0};
@@ -198,7 +213,7 @@ public:
 	string description;
 };
 
-class Rowgroup {
+class FLS_API Rowgroup {
 public:
 	friend class LogicalExpr;
 	friend class column;
@@ -241,6 +256,8 @@ public:
 	///
 	void Cast();
 	///
+	void PopulateBiMap();
+	///
 	void Init();
 	///
 	void FillMissingValues(n_t how_many_to_fill);
@@ -253,7 +270,7 @@ public: /* Members */
 	const n_t           capacity;
 };
 
-std::ostream& operator<<(std::ostream& output, const Rowgroup& mini_arrow);
+FLS_API std::ostream& operator<<(std::ostream& output, const Rowgroup& mini_arrow);
 
 } // namespace fastlanes
 

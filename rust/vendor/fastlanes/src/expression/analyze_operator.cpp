@@ -35,7 +35,7 @@ public:
 };
 
 template <typename PT>
-void Histogram<PT>::Cal(PT* data) {
+void AnalyzeHistogram<PT>::Cal(PT* data) {
 	val_vec.clear();
 	rep_vec.clear();
 
@@ -77,17 +77,14 @@ bool is_exception(Option<T>& option, T val) {
 	FLS_ASSERT_CORRECT_N(option.n_exceptions)
 	FLS_ASSERT_CORRECT_SZ(option.size())
 
-	make_unsigned_t<T> a          = *reinterpret_cast<make_unsigned_t<T>*>(&option.base);
-	make_unsigned_t<T> b          = a + pow2<make_unsigned_t<T>>(option.bw);
-	T                  real_upper = *reinterpret_cast<T*>(&b);
+	if (option.bw >= sizeof(make_unsigned_t<T>) * CHAR_BIT) {
+		return false;
+	}
 
-	if (val < option.base) {
-		return true;
-	}
-	if (val >= real_upper) {
-		return true;
-	}
-	return false;
+	// Use unsigned delta to correctly handle base + 2^bw overflow/wraparound.
+	make_unsigned_t<T> uval  = *reinterpret_cast<make_unsigned_t<T>*>(&val);
+	make_unsigned_t<T> ubase = *reinterpret_cast<make_unsigned_t<T>*>(&option.base);
+	return static_cast<make_unsigned_t<T>>(uval - ubase) >= pow2<make_unsigned_t<T>>(option.bw);
 }
 
 template <typename T>
@@ -125,7 +122,7 @@ n_t count_exceptions(const T                      lower_bound,
 }
 
 template <typename T>
-Option<T> find_best_option(Histogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
+Option<T> find_best_option(AnalyzeHistogram<T>& histogram, vec_idx_t first_base_idx, vec_idx_t next_base_idx) {
 	/* Initialize */
 	Option<T> result;
 
@@ -149,17 +146,19 @@ Option<T> find_best_option(Histogram<T>& histogram, vec_idx_t first_base_idx, ve
 }
 
 template <typename PT>
-void Histogram<PT>::Reset() {
+void AnalyzeHistogram<PT>::Reset() {
 	val_vec.clear();
 	rep_vec.clear();
 } //
 
-template class Histogram<u16_pt>;
-template class Histogram<u32_pt>;
-template class Histogram<u64_pt>;
-template class Histogram<i16_pt>;
-template class Histogram<i32_pt>;
-template class Histogram<i64_pt>;
+template class AnalyzeHistogram<u08_pt>;
+template class AnalyzeHistogram<u16_pt>;
+template class AnalyzeHistogram<u32_pt>;
+template class AnalyzeHistogram<u64_pt>;
+template class AnalyzeHistogram<i08_pt>;
+template class AnalyzeHistogram<i16_pt>;
+template class AnalyzeHistogram<i32_pt>;
+template class AnalyzeHistogram<i64_pt>;
 
 template <typename PT, bool IS_PATCHED>
 enc_analyze_opr<PT, IS_PATCHED>::enc_analyze_opr(const PhysicalExpr& expr,

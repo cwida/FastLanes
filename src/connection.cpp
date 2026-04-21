@@ -62,14 +62,17 @@ void prepare_rowgroup(Rowgroup& rowgroup, const Config& config) {
 	// init
 	rowgroup.Init();
 
+	rowgroup.Finalize();
+	rowgroup.GetStatistics();
+
 	// Only cast if schema wasn’t forced
 	const bool shouldCast = !config.is_forced_schema && !config.is_forced_schema_pool;
 	if (shouldCast) {
 		rowgroup.Cast();
 	}
 
-	rowgroup.Finalize();
-	rowgroup.GetStatistics();
+	// Populate bimap after Cast, so it reflects the final (possibly cast) column types
+	rowgroup.PopulateBiMap();
 }
 
 void Connection::prepare_table() const {
@@ -146,7 +149,7 @@ Status Connection::verify_fls(const path& file_path) {
 	}
 
 	if (constexpr auto versions = Info::get_all_versions();
-	    std::ranges::none_of(versions, [&](uint64_t v) { return file_header.version == v; })) {
+	    std::none_of(versions.begin(), versions.end(), [&](uint64_t v) { return file_header.version == v; })) {
 		return Status::Error(Status::ErrorCode::ERR_6_INVALID_VERSION_BYTES);
 	}
 

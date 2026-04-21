@@ -5,6 +5,7 @@
 // ────────────────────────────────────────────────────────
 // generated!
 // NOLINTBEGIN
+#include "fls/compiler.hpp"
 #include "fls_gen/macros.hpp"
 #include "fls_gen/rsum/rsum.hpp"
 namespace generated { namespace rsum::fallback { namespace scalar {
@@ -216,7 +217,7 @@ void rsum(const uint64_t* __restrict a_in_p, uint64_t* __restrict a_out_p, const
 	[[maybe_unused]] uint64_t   register_0;
 	[[maybe_unused]] uint64_t   tmp_0;
 	[[maybe_unused]] uint64_t   base_0;
-#pragma clang loop vectorize(enable)
+FLS_PRAGMA_VECTORIZE
 	for (int i = 0; i < 16; ++i) {
 		register_0                     = *(in + (0 * 16) + (i * 1) + 0);
 		tmp_0                          = *(base + (0 * 16) + (i * 1));

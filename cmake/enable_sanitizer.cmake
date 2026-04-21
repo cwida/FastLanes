@@ -58,11 +58,13 @@ function(fls_enable_sanitizers target)
             -fsanitize=address
             -fsanitize=undefined
             -fsanitize=vptr
-            -fsanitize=function
             -fsanitize=null
             -fno-sanitize-recover=all
             -fno-omit-frame-pointer
     )
+    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+        list(APPEND _san_flags -fsanitize=function)
+    endif ()
 
     string(REPLACE ";" " " _san_flags_str "${_san_flags}")
     message(STATUS

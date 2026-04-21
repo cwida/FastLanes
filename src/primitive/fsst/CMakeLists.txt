@@ -11,7 +11,9 @@ if (ENABLE_IWYU)
     set_property(TARGET fls_primitive_fsst PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif ()
 
-target_compile_options(fls_primitive_fsst PRIVATE -Wno-macro-redefined)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    target_compile_options(fls_primitive_fsst PRIVATE -Wno-macro-redefined)
+endif ()
 
 target_link_libraries(fls_primitive_fsst
         PUBLIC

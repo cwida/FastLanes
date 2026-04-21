@@ -1,74 +1,23 @@
 // ────────────────────────────────────────────────────────
 // |                      FastLanes                       |
 // ────────────────────────────────────────────────────────
-// src/expression/rsum_operator.cpp
+// src/expression/dec_rsum_operator.cpp
 // ────────────────────────────────────────────────────────
-#include "fls/expression/rsum_operator.hpp"
-#include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/common.hpp"
 #include "fls/expression/data_type.hpp"
-#include "fls/expression/encoding_operator.hpp"
+#include "fls/expression/decoding_operator.hpp"
 #include "fls/expression/interpreter.hpp"
 #include "fls/expression/physical_expression.hpp"
+#include "fls/expression/rsum_operator.hpp"
 #include "fls/expression/slpatch_operator.hpp"
-#include "fls/expression/transpose_operator.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
 #include "fls/std/type_traits.hpp"
-#include "fls/std/variant.hpp"
-#include "fls/std/vector.hpp"
-#include "fls/table/rowgroup.hpp"
 #include "fls_gen/rsum/rsum.hpp"
-#include "fls_gen/unrsum/unrsum.hpp"
-#include <utility>
 #include <variant>
 
 namespace fastlanes {
-/*--------------------------------------------------------------------------------------------------------------------*\
- * enc rsum opr
-\*--------------------------------------------------------------------------------------------------------------------*/
-template <typename PT>
-enc_rsum_opr<PT>::enc_rsum_opr(const PhysicalExpr& expr,
-                               const col_pt&       col,
-                               ColumnDescriptorT&  column_descriptor,
-                               InterpreterState&   state) {
-
-	visit(overloaded {
-	          [&](const sp<enc_scan_opr<PT>>& opr) { data = opr->data; },
-	          [&](const sp<enc_transpose_opr<PT>>& opr) { data = opr->transposed_data; },
-	          [&](std::monostate&) { FLS_UNREACHABLE(); },
-	          [&](auto& arg) { FLS_UNREACHABLE_WITH_TYPE(arg); },
-	      },
-	      expr.operators[state.cur_operator++]);
-
-	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;
-	operand_tokens.emplace_back(state.cur_operand++);
-
-	bases_segment = make_unique<Segment>();
-}
-
-template <typename PT>
-void enc_rsum_opr<PT>::Rsum() {
-	::generated::unrsum::fallback::scalar::unrsum(data, deltas);
-
-	bases_segment->Flush(data, CFG::UNIFIED_TRANSPOSED::BASES_SIZE);
-};
-
-template <typename PT>
-void enc_rsum_opr<PT>::MoveSegments(vector<up<Segment>>& segments) {
-	segments.push_back(std::move(bases_segment));
-}
-
-template struct enc_rsum_opr<u08_pt>;
-template struct enc_rsum_opr<u16_pt>;
-template struct enc_rsum_opr<u32_pt>;
-template struct enc_rsum_opr<u64_pt>;
-template struct enc_rsum_opr<i08_pt>;
-template struct enc_rsum_opr<i16_pt>;
-template struct enc_rsum_opr<i32_pt>;
-template struct enc_rsum_opr<i64_pt>;
-
 /*--------------------------------------------------------------------------------------------------------------------*\
  * dec_rsum_opr
 \*--------------------------------------------------------------------------------------------------------------------*/
@@ -87,7 +36,7 @@ struct RsumExprVisitor {
 		idxs = reinterpret_cast<const PT*>(opr->data);
 	}
 	void operator()(const sp<PhysicalExpr>& expr) {
-		visit(RsumExprVisitor {idxs}, expr->operators[0]);
+		visit_dec(RsumExprVisitor {idxs}, expr->operators[0]);
 	}
 	void operator()(std::monostate& arg) {
 		FLS_UNREACHABLE_WITH_TYPE(arg);
@@ -102,7 +51,7 @@ dec_rsum_opr<PT>::dec_rsum_opr(PhysicalExpr& physical_expr, const ColumnView& co
     : bases_segment_view(column_view.GetSegment(state.cur_operand))
     , deltas(nullptr) {
 
-	visit(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
+	visit_dec(RsumExprVisitor<PT> {deltas}, physical_expr.operators.back());
 	state.cur_operand = state.cur_operand - 1;
 	state.cur_operator++;
 }

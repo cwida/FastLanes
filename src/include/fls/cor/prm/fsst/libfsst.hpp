@@ -7,7 +7,8 @@
 #define FLS_COR_PRM_FSST_LIBFSST_HPP
 
 // NOLINTBEGIN
-#pragma clang diagnostic ignored "-Wconversion"
+#include "fls/compiler.hpp"
+FLS_DIAG_IGNORE_CONVERSION
 
 // this software is distributed under the MIT License (http://www.opensource.org/licenses/MIT):
 //
