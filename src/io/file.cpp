@@ -48,7 +48,8 @@ void File::Read(Buf& buf) {
 	}
 
 	auto file_size = fs::file_size(m_path);
-	FLS_ASSERT_LE(file_size, buf.Capacity())
+	FLS_ASSERT_LE(file_size, buf.Capacity());
+	buf.UnsafeAdvance(file_size);
 
 	m_if_stream->read(reinterpret_cast<char*>(buf.mutable_data()), static_cast<int64_t>(file_size));
 }
@@ -61,6 +62,7 @@ void File::ReadRange(Buf& buf, const n_t offset, const n_t size) {
 	[[maybe_unused]] auto file_size = fs::file_size(m_path);
 	FLS_ASSERT_LE(offset + size, file_size);
 	FLS_ASSERT_LE(size, buf.Capacity());
+	buf.UnsafeAdvance(size);
 
 	m_if_stream->seekg(static_cast<std::streamoff>(offset), std::ios::beg);
 	m_if_stream->read(reinterpret_cast<char*>(buf.mutable_data()), static_cast<std::streamsize>(size));

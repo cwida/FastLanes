@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 import json
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 
@@ -34,7 +35,7 @@ def main() -> None:
     with tempfile.NamedTemporaryFile("w", delete=False) as tmp:
         json.dump(data, tmp, indent=2)
         tmp.write("\n")
-    Path(tmp.name).replace(CFG)
+    shutil.move(tmp.name, CFG) # Fix: Invalid cross-device link
 
     print(f"✅  base_seed bumped: {old} → {new}")
 

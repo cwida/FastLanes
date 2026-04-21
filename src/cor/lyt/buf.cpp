@@ -127,6 +127,7 @@ void Buf::Swap(const Buf& a_buf) {
 void Buf::UnsafeAdvance(const n_t byte_c) {
 	/**/
 	FLS_ASSERT_CORRECT_N(byte_c);
+	FLS_ASSERT_LE(m_off + byte_c, m_capacity);
 
 	m_off += byte_c;
 }
