@@ -17,9 +17,10 @@
 #include "fls/primitive/fsst12/fsst12.hpp"
 #include "fls/reader/column_view.hpp"
 #include "fls/reader/segment.hpp"
-#include "fls/std/variant.hpp"
 #include "fls/table/rowgroup.hpp"
 #include "fls_gen/untranspose/untranspose.hpp"
+#include <algorithm> // for std::max
+#include <cstddef>   // for size_t
 #include <cstdint>
 #include <utility>
 #include <variant> // for std::monostate
@@ -113,7 +114,7 @@ dec_fsst12_opr::dec_fsst12_opr(PhysicalExpr& physical_expr, const ColumnView& co
     , fsst12_bytes_segment_view(column_view.GetSegment(1))
     , offset_arr(nullptr) {
 
-	visit(FSST12ExprVisitor {*this}, physical_expr.operators.back());
+	visit_dec(FSST12ExprVisitor {*this}, physical_expr.operators.back());
 	FLS_ASSERT_NOT_NULL_POINTER(offset_arr)
 
 	fsst12_header_segment_view.PointTo(0);
@@ -137,7 +138,7 @@ void dec_fsst12_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length
 
 	FLS_ASSERT_NOT_NULL_POINTER(length_pointer)
 
-	for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+	for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 		generated::untranspose::fallback::scalar::untranspose_i(offset_arr, untrasposed_offset);
 
 		len_t encoded_size {0};
@@ -159,7 +160,9 @@ void dec_fsst12_opr::Decode(vector<uint8_t>& byte_arr_vec, vector<ofs_t>& length
 		in_byte_arr += encoded_size;
 		length_pointer[i] = decoded_size;
 		if (byte_arr_vec.capacity() - byte_arr_vec.size() < CFG::String::max_bytes_per_string) {
-			byte_arr_vec.reserve(byte_arr_vec.size() + 1024 * CFG::String::max_bytes_per_string);
+			byte_arr_vec.reserve(
+			    std::max(byte_arr_vec.capacity() * 2,
+			             byte_arr_vec.size() + static_cast<size_t>(CFG::String::max_bytes_per_string)));
 		}
 		byte_arr_vec.insert(byte_arr_vec.end(), tmp_string.begin(), tmp_string.begin() + decoded_size);
 	}

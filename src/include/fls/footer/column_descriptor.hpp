@@ -6,6 +6,7 @@
 #ifndef FLS_FOOTER_COLUMN_DESCRIPTOR_HPP
 #define FLS_FOOTER_COLUMN_DESCRIPTOR_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/common/decimal.hpp"
 #include "fls/expression/data_type.hpp"
@@ -29,7 +30,7 @@ using ColumnDescriptors = vector<up<struct ColumnDescriptorT>>;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * set index
 \*--------------------------------------------------------------------------------------------------------------------*/
-void set_index(vector<up<ColumnDescriptorT>>& column_descriptors);
+FLS_API void set_index(vector<up<ColumnDescriptorT>>& column_descriptors);
 
 } // namespace fastlanes
 #endif // FLS_FOOTER_COLUMN_DESCRIPTOR_HPP

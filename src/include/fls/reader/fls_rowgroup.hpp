@@ -6,6 +6,7 @@
 #ifndef FLS_READER_FLS_ROWGROUP_HPP
 #define FLS_READER_FLS_ROWGROUP_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/std/span.hpp"
 #include "fls/std/vector.hpp"
 
@@ -15,7 +16,7 @@ class RowgroupDescriptor;
 class ColumnView;
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-class RowgroupView {
+class FLS_API RowgroupView {
 public:
 	explicit RowgroupView(span<std::byte> ptr, const RowgroupDescriptor& footer);
 

@@ -12,7 +12,7 @@
 VENV_DIR := $(abspath ../.venv)
 
 PYTHON3  := $(VENV_DIR)/bin/python3
-PYTHON   := $(if $(wildcard $(PYTHON3)),$(PYTHON3),$(VENV_DIR)/bin/python)
+PYTHON   ?= $(if $(wildcard $(PYTHON3)),$(PYTHON3),$(VENV_DIR)/bin/python)
 PIP      := $(PYTHON) -m pip
 
 # ── Script location (relative to project root)

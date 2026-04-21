@@ -4,6 +4,7 @@
 // src/types/integer.cpp
 // ────────────────────────────────────────────────────────
 #include "fls/types/integer.hpp"
+#include "fls/api/api.hpp"
 #include "fls/std/string.hpp"
 #include <cctype> // for std::isdigit
 #include <cstdint>
@@ -77,13 +78,13 @@ INTEGER_T parse_integer(const string& val_str) {
 	}
 }
 
-template uint8_t  parse_integer<uint8_t>(const string&);
-template uint16_t parse_integer<uint16_t>(const string&);
-template uint32_t parse_integer<uint32_t>(const string&);
-template uint64_t parse_integer<uint64_t>(const string&);
-template int8_t   parse_integer<int8_t>(const string&);
-template int16_t  parse_integer<int16_t>(const string&);
-template int32_t  parse_integer<int32_t>(const string&);
-template int64_t  parse_integer<int64_t>(const string&);
+template FLS_API uint8_t  parse_integer<uint8_t>(const string&);
+template FLS_API uint16_t parse_integer<uint16_t>(const string&);
+template FLS_API uint32_t parse_integer<uint32_t>(const string&);
+template FLS_API uint64_t parse_integer<uint64_t>(const string&);
+template FLS_API int8_t   parse_integer<int8_t>(const string&);
+template FLS_API int16_t  parse_integer<int16_t>(const string&);
+template FLS_API int32_t  parse_integer<int32_t>(const string&);
+template FLS_API int64_t  parse_integer<int64_t>(const string&);
 
 } // namespace fastlanes

@@ -6,6 +6,7 @@
 #ifndef SAMPLING_LAYOUT_HPP
 #define SAMPLING_LAYOUT_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/common/alias.hpp" // for n_t
 #include "fls/std/array.hpp"
 #include "fls/std/vector.hpp"
@@ -68,7 +69,7 @@ inline constexpr auto sampling_layout_64 = sampling_layout<64>();
 // -----------------------------------------------------------------------------------------------------------
 // Run-time mapping
 // -----------------------------------------------------------------------------------------------------------
-vector<n_t> sampling_layout_dynamic(n_t rowgroup_size);
+FLS_API vector<n_t> sampling_layout_dynamic(n_t rowgroup_size);
 
 } // namespace fastlanes
 

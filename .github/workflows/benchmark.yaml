@@ -10,9 +10,9 @@ run-name: >-
 
 on:
   push:
-    branches: [ '*' ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ '*' ]
+    branches: [ main, dev ]
 
 concurrency:
   group: Benchmarker CI-${{ github.ref }}
@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest ]
+        platform: [ ubuntu-latest ]
 
     defaults:
       run:

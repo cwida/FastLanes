@@ -10,12 +10,13 @@
 #include "alp/constants.hpp"
 #include "alp/encoder.hpp"
 #include "alp/sampler.hpp"
+#include "fls/compiler.hpp"
 #include <algorithm>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#pragma GCC diagnostic ignored "-Wfloat-conversion"
-#pragma GCC diagnostic ignored "-Wimplicit-int-conversion"
+FLS_DIAG_PUSH
+FLS_DIAG_IGNORE_SIGN_CONV
+FLS_DIAG_IGNORE_FLOAT_CONV
+FLS_DIAG_IGNORE_INT_CONV
 
 namespace alp {
 
@@ -188,6 +189,6 @@ struct rd_encoder {
 
 } // namespace alp
 
-#pragma GCC diagnostic pop
+FLS_DIAG_POP
 
 #endif // ALP_RD_HPP

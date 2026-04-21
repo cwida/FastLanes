@@ -179,7 +179,7 @@ class CudaUnpackGenerator(Generator):
 
     def gen_before_loop_pragmas(self, cu):
         if self.mode is Mode.aav and self.ow > 46:
-            cu("#pragma clang loop vectorize(enable)")
+            cu("FLS_PRAGMA_VECTORIZE")
 
     def get_func_signature(self):
         return '__device__ void unpack_$bw$bw_$ow$ow_$crw$crw_$uf$uf(const uint$ow$_t *__restrict a_in_p, uint$ow$_t ' \

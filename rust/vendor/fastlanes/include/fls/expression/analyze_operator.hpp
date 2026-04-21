@@ -23,9 +23,9 @@ struct InterpreterState;
  * Histogram
 \*--------------------------------------------------------------------------------------------------------------------*/
 template <typename PT>
-class Histogram {
+class AnalyzeHistogram {
 public:
-	Histogram() = default; //
+	AnalyzeHistogram() = default; //
 public:
 	void Cal(PT* data);
 	void Reset();
@@ -56,7 +56,7 @@ public:
 	alp::exp_p_t  exception_pos_arr[CFG::VEC_SZ];
 	PT            exceptions[CFG::VEC_SZ];
 	bw_t          bw;
-	Histogram<PT> histogram;
+	AnalyzeHistogram<PT> histogram;
 	NullMapView   null_map_view;
 	bool          is_rsum;
 };

@@ -86,7 +86,7 @@ void enc_dict_map_opr<VALUE_PT, INDEX_PT>::Map() {
 		throw std::runtime_error("typed_column_view.Data() returned null");
 	}
 
-	for (auto idx = 0; idx < CFG::VEC_SZ; ++idx) {
+	for (n_t idx = 0; idx < CFG::VEC_SZ; ++idx) {
 		const auto value = value_p[idx];
 		// wrap get_key in try/catch if your bimap might throw
 		index_arr[idx] = static_cast<INDEX_PT>(bimap_frequency.get_key(value));
@@ -130,7 +130,7 @@ void enc_dict_map_opr<fls_string_t, INDEX_PT>::Map() {
 	const auto* string_p_arr = column_view.String_p();
 	const auto* lengths_arr  = column_view.Length();
 
-	for (auto idx = 0; idx < CFG::VEC_SZ; ++idx) {
+	for (n_t idx = 0; idx < CFG::VEC_SZ; ++idx) {
 		const fls_string_t fls_string = {string_p_arr[idx], lengths_arr[idx]};
 		index_arr[idx]                = static_cast<INDEX_PT>(dict.get_value(fls_string));
 	}
@@ -190,7 +190,7 @@ void enc_fls_str_uncompressed_op::PointTo(const n_t vec_idx) {
 }
 void enc_fls_str_uncompressed_op::Copy() const {
 	len_t ttl_size {0};
-	for (auto idx = 0; idx < CFG::VEC_SZ; ++idx) {
+	for (n_t idx = 0; idx < CFG::VEC_SZ; ++idx) {
 		ttl_size += fls_string_column_view.Length()[idx];
 	}
 	data_segment->Flush(fls_string_column_view.Data(), ttl_size);
@@ -201,23 +201,13 @@ void enc_fls_str_uncompressed_op::Copy() const {
  * enc struct opr
 \*--------------------------------------------------------------------------------------------------------------------*/
 enc_struct_opr::enc_struct_opr(const col_pt& column, ColumnDescriptorT& column_descriptor) {
-
-	auto visitor = overloaded {[&](std::monostate&) { FLS_UNREACHABLE(); },
-	                           [&](const up<Struct>& struct_col) {
-		                           for (auto& child_column_descriptor : column_descriptor.children) {
-			                           InterpreterState state;
-
-			                           auto child_physical_expr = Interpreter::Encoding::Interpret(
-			                               *child_column_descriptor, struct_col->internal_rowgroup, state);
-			                           internal_exprs.emplace_back(child_physical_expr);
-		                           }
-	                           },
-	                           //
-	                           [&](const auto&) {
-		                           FLS_UNREACHABLE()
-	                           }};
-
-	visit(visitor, column);
+	const auto& struct_col = get<up<Struct>>(column);
+	for (auto& child_column_descriptor : column_descriptor.children) {
+		InterpreterState state;
+		auto             child_physical_expr =
+		    Interpreter::Encoding::Interpret(*child_column_descriptor, struct_col->internal_rowgroup, state);
+		internal_exprs.emplace_back(child_physical_expr);
+	}
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*\
@@ -255,14 +245,14 @@ struct VisitorFunctor {
 	void operator()(const sp<enc_slpatch_opr<PT>>&) {
 		// Safely step backward to [expr.size() - 2], if it exists
 		if (expression->operators.size() >= 2) {
-			visit(*this, expression->operators[expression->operators.size() - 2]);
+			visit_enc(*this, expression->operators[expression->operators.size() - 2]);
 		}
 	}
 
 	void operator()(const sp<enc_slpatch_opr<make_signed_t<PT>>>&) {
 		// Safely step backward to [expr.size() - 2], if it exists
 		if (expression->operators.size() >= 2) {
-			visit(*this, expression->operators[expression->operators.size() - 2]);
+			visit_enc(*this, expression->operators[expression->operators.size() - 2]);
 		}
 	}
 
@@ -286,7 +276,7 @@ enc_ffor_opr<PT>::enc_ffor_opr(const PhysicalExpr& expr,
 	VisitorFunctor<PT> functor {this, &expr};
 
 	if (!expr.operators.empty()) {
-		visit(functor, expr.operators.back());
+		visit_enc(functor, expr.operators.back());
 	}
 
 	auto& [operator_tokens, operand_tokens] = *column_descriptor.encoding_rpn;

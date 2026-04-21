@@ -9,10 +9,11 @@
 #include "alp/common.hpp"
 #include "alp/config.hpp"
 #include "alp/state.hpp"
+#include "fls/compiler.hpp"
 #include <cstdint>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
+FLS_DIAG_PUSH
+FLS_DIAG_IGNORE_INT_FLOAT_CONV
 
 namespace alp {
 
@@ -113,7 +114,8 @@ struct decoder {
 
 	//! Scalar decoding a single value with ALP
 	static inline PT decode_value(const ST encoded_value, const uint8_t factor, const uint8_t exponent) {
-		const PT decoded_value = encoded_value * Constants<PT>::FACT_ARR[factor] * Constants<PT>::FRAC_ARR[exponent];
+		const PT decoded_value =
+		    static_cast<PT>(encoded_value) * Constants<PT>::FACT_ARR[factor] * Constants<PT>::FRAC_ARR[exponent];
 		return decoded_value;
 	}
 
@@ -135,6 +137,6 @@ struct decoder {
 
 } // namespace alp
 
-#pragma GCC diagnostic pop
+FLS_DIAG_POP
 
 #endif // ALP_DECODER_HPP

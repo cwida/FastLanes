@@ -1,6 +1,7 @@
 macro(fls_add_test NAME SRC)
     add_executable(test_${NAME} ${SRC})
-    target_link_libraries(test_${NAME} PUBLIC gtest_main gmock_main FastLanes)
+    target_link_libraries(test_${NAME} PUBLIC gtest_main gmock_main FastLanes msvc_heap_guard)
+    fls_msvc_test_setup(test_${NAME})
     add_test(NAME test_${NAME} COMMAND $<TARGET_FILE:test_${NAME}>)
     fls_enable_sanitizers(test_${NAME})
 endmacro()

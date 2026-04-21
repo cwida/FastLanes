@@ -26,6 +26,8 @@
 
 namespace fastlanes {
 
+RowgroupReader::~RowgroupReader() = default;
+
 RowgroupReader::RowgroupReader(const path&               file_path,
                                const RowgroupDescriptor& rowgroup_descriptor,
                                Connection&               connection)
@@ -86,7 +88,6 @@ up<Rowgroup> RowgroupReader::materialize() {
 		materializer.Materialize(expressions, vec_idx);
 	}
 
-	// materializer.rowgroup.Cast();
 	materializer.rowgroup.Finalize();
 	materializer.rowgroup.GetStatistics();
 

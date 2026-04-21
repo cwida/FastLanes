@@ -14,7 +14,8 @@
 #ifndef ARIA_CSV_H
 #define ARIA_CSV_H
 
-#pragma clang diagnostic ignored "-Wconversion"
+#include "fls/compiler.hpp"
+FLS_DIAG_IGNORE_CONVERSION
 
 #include <fstream>
 #include <memory>

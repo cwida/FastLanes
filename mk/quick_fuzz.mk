@@ -7,8 +7,6 @@
 # ──────────────────────────────────────────────────────────
 #  Bump & verify fuzz seed helper targets
 # ──────────────────────────────────────────────────────────
-PYTHON        := python3
-
 # point ROOT at repo root (parent of this mk/ directory)
 ROOT          := $(shell dirname $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 

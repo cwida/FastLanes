@@ -13,8 +13,9 @@ run-name: >-
 # ──────────────────────────────────────────────────────────────────────────────
 on:
   push:
+    branches: [ main, dev ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ main, dev ]
 
 # Cancel in-flight runs on the same branch/PR so we do not waste minutes
 concurrency:
@@ -42,38 +43,19 @@ jobs:
         run: make format-check
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # 2️⃣  Main build + clang-tidy (Linux + macOS + Windows)
+  # 2️⃣a  Clang-tidy (single fast platform — diagnostics are platform-independent)
   # ──────────────────────────────────────────────────────────────────────────────
-  build:
+  tidy:
     needs: check-format
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-15
-          - macos-14
-          - macos-13
         build_type: [ Debug, Release ]
-        cxx: [ clang++ ]
         shared_lib: [ false, true ]
-
-        # 🛑 Skip the flaky public-preview runner (arm64 Debug + shared)
-        # GitHub’s ubuntu-24.04-arm image is still in public beta (burstable capacity),
-        # which can terminate long jobs with “The runner has received a shutdown signal”
-        # → exit-code 143. See:
-        # https://github.blog/changelog/2024-06-24-github-actions-ubuntu-24-04-image-now-available-for-arm64-runners/
-        # See also Issue #11541: “Intermittent segmentation faults on Ubuntu 24.04 ARM”
-        # — ~15% of runs on ubuntu-24.04-arm see segfaults or pre-emptions mid-build
         exclude:
-          - platform: ubuntu-24.04-arm
-            build_type: Debug
+          - build_type: Debug
             shared_lib: true
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -90,10 +72,7 @@ jobs:
           clang --version
           clang-tidy --version
 
-      # ----------------------------------------------------------------------
-      # Configure (runs clang-tidy via CMake)
-      # ----------------------------------------------------------------------
-      - name: Configure (with clang-tidy checks)
+      - name: Configure (with clang-tidy)
         shell: bash
         run: |
           cmake -S "${{ github.workspace }}" \
@@ -104,10 +83,82 @@ jobs:
                 -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }} \
                 -DFLS_ENABLE_INSTALL=OFF \
                 -DCMAKE_C_COMPILER=clang \
-                -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+                -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build (clang-tidy runs automatically)
         run: cmake --build build_${{ matrix.build_type }}_${{ matrix.shared_lib }} -j $BUILD_THREADS
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # 2️⃣b  Compile-check (remaining platforms, Release only, no tidy)
+  # ──────────────────────────────────────────────────────────────────────────────
+  build:
+    needs: check-format
+    strategy:
+      fail-fast: false
+      matrix:
+        cfg:
+          # Clang Release — platforms not fully covered by test
+          - { platform: ubuntu-22.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-22.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-24.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-24.04,     compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-24.04-arm, compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          - { platform: ubuntu-24.04-arm, compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          - { platform: ubuntu-22.04-arm, compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: true }
+          - { platform: macos-15,         compiler: clang, cxx: clang++, build_type: Release, shared_lib: false }
+          # GCC ARM Debug
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   cxx: g++,     build_type: Debug,   shared_lib: false }
+          # Clang on Windows — configs not covered by test
+          - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
+          - { platform: windows-latest,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          # windows-11-arm + clang disabled: choco installs x64 LLVM, causing target mismatch
+          # - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Debug,   shared_lib: false }
+          # - { platform: windows-11-arm,   compiler: clang, cxx: clang++, build_type: Release, shared_lib: true }
+          # MSVC x64 — configs not covered by test
+          - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Debug,   shared_lib: false }
+          - { platform: windows-latest,   compiler: msvc,  cxx: cl,      build_type: Release, shared_lib: true }
+    runs-on: ${{ matrix.cfg.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect CPU count
+        shell: bash
+        run: make detect-cpu | tee -a "$GITHUB_ENV"
+
+      - name: Install LLVM
+        if: matrix.cfg.compiler == 'clang'
+        uses: ./.github/actions/install-llvm
+
+      - name: Set up MSVC environment
+        if: matrix.cfg.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure
+        shell: bash
+        run: |
+          CMAKE_ARGS=(
+            -S "${{ github.workspace }}"
+            -B build
+            -DFLS_ENABLE_VERBOSE_OUTPUT=ON
+            -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }}
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
+            -DFLS_ENABLE_INSTALL=OFF
+          )
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+          else
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=${{ matrix.cfg.cxx }})
+          fi
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+          fi
+          cmake "${CMAKE_ARGS[@]}"
+
+      - name: Build
+        run: cmake --build build -j $BUILD_THREADS
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 3️⃣  IWYU build (Linux only)
@@ -146,18 +197,8 @@ jobs:
   # 4️⃣  Synthetic-dataset generator (Python, cached pip)
   # ──────────────────────────────────────────────────────────────────────────────
   generate_dataset:
-    needs: build
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-15
-          - macos-14
-          - macos-13
-    runs-on: ${{ matrix.platform }}
+    needs: tidy
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -174,13 +215,26 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   example:
 #    needs: build
+    name: example (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
+      fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
-        build_type: [ Release ]
-        cxx: [ clang++ ]
-        shared_lib: [ false, true ]
-    runs-on: ${{ matrix.platform }}
+        cfg:
+          # GCC — static + shared
+          - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: false }
+          - { platform: ubuntu-latest,  compiler: gcc,   cxx: g++,     shared_lib: true }
+          # Clang — macOS static + shared
+          - { platform: macos-latest,   compiler: clang, cxx: clang++, shared_lib: false }
+          - { platform: macos-latest,   compiler: clang, cxx: clang++, shared_lib: true }
+          # Clang — Windows static + shared
+          - { platform: windows-latest, compiler: clang, cxx: clang++, shared_lib: false }
+          - { platform: windows-latest, compiler: clang, cxx: clang++, shared_lib: true }
+          # MSVC — static + shared on windows-latest only
+          - { platform: windows-latest, compiler: msvc,  cxx: cl,      shared_lib: false }
+          - { platform: windows-latest, compiler: msvc,  cxx: cl,      shared_lib: true }
+          # MSVC ARM — static only
+          - { platform: windows-11-arm, compiler: msvc,  cxx: cl,      shared_lib: false }
+    runs-on: ${{ matrix.cfg.platform }}
 
     defaults:
       run:
@@ -196,37 +250,49 @@ jobs:
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
       - name: Install LLVM
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
+
+      - name: Set up MSVC environment
+        if: matrix.cfg.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure example
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B "build_${{ matrix.build_type }}_${{ matrix.shared_lib }}"
+            -B "build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}"
             -DFLS_BUILD_EXAMPLES=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_BUILD_TYPE=Release
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER="${{ matrix.cxx }}"
           )
-          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+          else
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER="${{ matrix.cfg.cxx }}")
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
           cmake "${CMAKE_ARGS[@]}"
 
       - name: Build example
-        run: cmake --build "build_${{ matrix.build_type }}_${{ matrix.shared_lib }}" --parallel
+        run: |
+          cmake --build "build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}" \
+                --config Release --parallel
 
       - name: Run cpp_example
         shell: bash
         run: |
+          BUILD_DIR="build_${{ matrix.cfg.compiler }}_Release_${{ matrix.cfg.shared_lib }}"
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            ./build_${{ matrix.build_type }}_${{ matrix.shared_lib }}/examples/cpp_example.exe
+            ./${BUILD_DIR}/examples/cpp_example.exe
           else
-            ./build_${{ matrix.build_type }}_${{ matrix.shared_lib }}/examples/cpp_example
+            ./${BUILD_DIR}/examples/cpp_example
           fi
 
   # ──────────────────────────────────────────────────────────────────────────────
@@ -234,24 +300,43 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────────
   test:
 #    needs: build
-    name: test (${{ matrix.platform }}, ${{ matrix.build_type }}, ${{ matrix.shared_lib && 'shared' || 'static' }})
+    name: test (${{ matrix.cfg.platform }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.build_type }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
+      fail-fast: false
       matrix:
-        platform:
-          - ubuntu-24.04
-          - ubuntu-22.04
-          - ubuntu-24.04-arm
-          - ubuntu-22.04-arm
-          - macos-15
-          - macos-14
-          - macos-13
-        build_type: [ Release ]
-        shared_lib: [ false, true ]
-    runs-on: ${{ matrix.platform }}
+        cfg:
+          # GCC on ubuntu (Release only — Debug is too slow / times out)
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: false, build_type: Release }
+          - { platform: ubuntu-24.04,     compiler: gcc,   shared_lib: true,  build_type: Release }
+          - { platform: ubuntu-24.04-arm, compiler: gcc,   shared_lib: true,  build_type: Release }
+          # Clang on ubuntu-24.04 (Debug builds that were GCC)
+          - { platform: ubuntu-24.04,     compiler: clang, shared_lib: true,  build_type: Debug }
+          # ubuntu-24.04-arm clang Debug static removed — times out after 51 min
+          # Clang on ubuntu-22.04
+          - { platform: ubuntu-22.04,     compiler: clang, shared_lib: true,  build_type: Debug }
+          # Clang on ubuntu-22.04-arm
+          - { platform: ubuntu-22.04-arm, compiler: clang, shared_lib: true,  build_type: Release }
+          # Clang on macOS
+          - { platform: macos-26,         compiler: clang, shared_lib: false, build_type: Release }
+          - { platform: macos-26,         compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: macos-15,         compiler: clang, shared_lib: false, build_type: Debug }
+          - { platform: macos-15,         compiler: clang, shared_lib: true,  build_type: Release }
+          # Clang on Windows
+          - { platform: windows-latest,   compiler: clang, shared_lib: true,  build_type: Debug }
+          - { platform: windows-latest,   compiler: clang, shared_lib: false, build_type: Release }
+          # windows-11-arm + clang disabled: choco installs x64 LLVM, causing target mismatch
+          # - { platform: windows-11-arm,   compiler: clang, shared_lib: true,  build_type: Debug }
+          # - { platform: windows-11-arm,   compiler: clang, shared_lib: false, build_type: Release }
+          # MSVC on Windows
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: false, build_type: Release }
+          - { platform: windows-latest,   compiler: msvc,  shared_lib: true,  build_type: Debug }
+          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: false, build_type: Debug }
+          - { platform: windows-11-arm,   compiler: msvc,  shared_lib: true,  build_type: Release }
+    runs-on: ${{ matrix.cfg.platform }}
 
     defaults:
       run:
-        shell: bash  # Use bash on all platforms to avoid PowerShell issues on Windows
+        shell: bash
 
     steps:
       - uses: actions/checkout@v4
@@ -261,7 +346,7 @@ jobs:
       # Map the boolean shared_lib into a human-friendly label
       - name: Determine lib label
         run: |
-          if [[ "${{ matrix.shared_lib }}" == "true" ]]; then
+          if [[ "${{ matrix.cfg.shared_lib }}" == "true" ]]; then
             echo "LIB_LABEL=shared" >> $GITHUB_ENV
           else
             echo "LIB_LABEL=static" >> $GITHUB_ENV
@@ -274,24 +359,32 @@ jobs:
         uses: ./.github/actions/generate-dataset
 
       - name: Install LLVM
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
+
+      - name: Set up MSVC environment
+        if: matrix.cfg.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure tests
         run: |
-          # Build directory uses our human-friendly label
-          BUILD_DIR="test_build_${LIB_LABEL}"
+          BUILD_DIR="test_build_${{ matrix.cfg.compiler }}_${LIB_LABEL}"
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
             -B "${BUILD_DIR}"
             -DFLS_BUILD_TESTING=ON
             -DFLS_ENABLE_VERBOSE_OUTPUT=ON
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }}
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=OFF
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER=clang++
           )
-          # On Windows, use static MSVC runtime to prevent ASAN/UBSAN mismatch
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+          else
+            CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
@@ -299,29 +392,38 @@ jobs:
 
       - name: Build tests
         run: |
-          # Use the same labeled build directory
-          cmake --build "test_build_${LIB_LABEL}" -j $BUILD_THREADS
+          cmake --build "test_build_${{ matrix.cfg.compiler }}_${LIB_LABEL}" \
+                --config ${{ matrix.cfg.build_type }} -j $BUILD_THREADS
 
       - name: Run tests
-        working-directory: "test_build_${{ env.LIB_LABEL }}"
+        working-directory: "test_build_${{ matrix.cfg.compiler }}_${{ env.LIB_LABEL }}"
         run: |
-          # Exclude Quick-Fuzz tests from the normal suite
+          EXCLUDE="QuickFuzz"
           ctest -j $BUILD_THREADS \
+                --build-config ${{ matrix.cfg.build_type }} \
                 --stop-on-failure \
                 --output-on-failure \
                 --timeout 5000 \
-                -E "QuickFuzz"
+                -E "$EXCLUDE"
 
   # ──────────────────────────────────────────────────────────────────────────────
   # 7️⃣  Install job
   # ──────────────────────────────────────────────────────────────────────────────
   install:
     needs: test
+    name: install (${{ matrix.cfg.os }}, ${{ matrix.cfg.compiler }}, ${{ matrix.cfg.shared_lib && 'shared' || 'static' }})
     strategy:
+      fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        shared_lib: [ false, true ]
-    runs-on: ${{ matrix.os }}
+        cfg:
+          - { os: ubuntu-latest,  compiler: gcc,   shared_lib: false }
+          - { os: ubuntu-latest,  compiler: gcc,   shared_lib: true }
+          - { os: macos-latest,   compiler: clang, shared_lib: false }
+          - { os: macos-latest,   compiler: clang, shared_lib: true }
+          - { os: windows-latest, compiler: msvc,  shared_lib: false }
+          - { os: windows-latest, compiler: msvc,  shared_lib: true }
+          - { os: windows-11-arm, compiler: msvc,  shared_lib: false }
+    runs-on: ${{ matrix.cfg.os }}
 
     steps:
       - uses: actions/checkout@v4
@@ -332,30 +434,38 @@ jobs:
         shell: bash
         run: make detect-cpu | tee -a "$GITHUB_ENV"
 
-      # Use the same LLVM toolchain as the other jobs
       - name: Install LLVM toolchain
+        if: matrix.cfg.compiler == 'clang'
         uses: ./.github/actions/install-llvm
+
+      - name: Set up MSVC environment
+        if: matrix.cfg.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure + build + install
         shell: bash
         run: |
           CMAKE_ARGS=(
             -S "${{ github.workspace }}"
-            -B build_${{ matrix.shared_lib }}
-            -G "${CMAKE_GENERATOR}"
-            -DCMAKE_C_COMPILER=clang
-            -DCMAKE_CXX_COMPILER=clang++
+            -B build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.shared_lib }}/install
-            -DFLS_BUILD_SHARED_LIBS=${{ matrix.shared_lib }}
+            -DCMAKE_INSTALL_PREFIX=build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}/install
+            -DFLS_BUILD_SHARED_LIBS=${{ matrix.cfg.shared_lib }}
             -DFLS_ENABLE_INSTALL=ON
           )
-          # Use static MSVC runtime on Windows to avoid ASAN/UBSAN mismatch
+          if [[ "${{ matrix.cfg.compiler }}" == "msvc" ]]; then
+            : # Ninja is used via global CMAKE_GENERATOR; vcvars sets up MSVC
+          elif [[ "${{ matrix.cfg.compiler }}" == "gcc" ]]; then
+            CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+          else
+            CMAKE_ARGS+=(-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
+          fi
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             CMAKE_ARGS+=(-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
           fi
           cmake "${CMAKE_ARGS[@]}"
-          cmake --build build_${{ matrix.shared_lib }} --target install -j $BUILD_THREADS
+          cmake --build build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }} \
+                --config Release --target install -j $BUILD_THREADS
 
       - name: Verify installed header files
         shell: bash
@@ -363,7 +473,7 @@ jobs:
           set -euo pipefail
 
           SOURCE_INCLUDE=src/include
-          INSTALL_INCLUDE=build_${{ matrix.shared_lib }}/install/include
+          INSTALL_INCLUDE=build_${{ matrix.cfg.compiler }}_${{ matrix.cfg.shared_lib }}/install/include
 
           # 1) fail fast if the install tree isn't there
           if [[ ! -d "$INSTALL_INCLUDE" ]]; then
@@ -387,7 +497,7 @@ jobs:
             find . -type f \( -name '*.h' -o -name '*.hpp' \) -print0
           )
 
-          # 4) report & fail if anything’s missing
+          # 4) report & fail if anything's missing
           if (( ${#missing[@]} > 0 )); then
             echo "❌ Missing expected header(s):"
             for hdr in "${missing[@]}"; do
@@ -401,5 +511,5 @@ jobs:
       - name: Upload C++ install tree
         uses: actions/upload-artifact@v4
         with:
-          name: fastlanes-cpp-install-${{ matrix.os }}-shared-${{ matrix.shared_lib }}
-          path: build_${{ matrix.shared_lib }}/install
+          name: fastlanes-cpp-install-${{ matrix.cfg.os }}-shared-${{ matrix.cfg.shared_lib }}
+          path: build_${{ matrix.cfg.shared_lib }}/install

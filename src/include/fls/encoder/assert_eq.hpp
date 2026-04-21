@@ -6,7 +6,8 @@
 #ifndef FLS_ENCODER_ASSERT_EQ_HPP
 #define FLS_ENCODER_ASSERT_EQ_HPP
 
-#pragma clang diagnostic ignored "-Wconversion"
+#include "fls/compiler.hpp"
+FLS_DIAG_IGNORE_CONVERSION
 
 #include "fls/common/string.hpp"
 #include "fls/cor/exp/exp.hpp"
@@ -34,7 +35,7 @@ std::string save_as_future_case(const PT* values, idx_t start_idx) {
 			ss << "\"" << val << "\", ";
 		}
 	} else if constexpr (std::is_same_v<PT, i64_pt>) {
-		for (auto i {0}; i < vec_sz(); ++i) {
+		for (n_t i {0}; i < vec_sz(); ++i) {
 			auto val = values[start_idx + i];
 			ss << val << ", ";
 		}
@@ -72,7 +73,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 			auto bsz_vec_up        = Str::get_bsz_vec(untransposed, vec_sz());
 			auto normal_ofs_vec_up = Str::to_normal_offset(untransposed, vec_sz());
 
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				auto size = (*bsz_vec_up)[i];
 				auto ofs  = (*normal_ofs_vec_up)[i];
 
@@ -100,7 +101,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 		else if constexpr (std::is_same_v<PT, i64_pt>) {
 			uint64_t untransposed[CFG::VEC_SZ] = {0};
 			untranspose_i(reinterpret_cast<const uint64_t*>(vec->buf_arr[0].data()), untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				const bool equal = untransposed[i] == data_p[start_idx + i];
 				if (!equal) {
 					string error_message = "the arrow array offset is: " + std::to_string(start_idx) +
@@ -116,7 +117,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 		else if constexpr (std::is_same_v<PT, dbl_pt>) {
 			dbl_pt untransposed[CFG::VEC_SZ] = {0};
 			untranspose_i(reinterpret_cast<const dbl_pt*>(vec->buf_arr[0].data()), untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				const bool equal = untransposed[i] == data_p[start_idx + i];
 				if (!equal) {
 					string error_message = string("the arrow array offset is: ") + std::to_string(start_idx) +
@@ -140,7 +141,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 			uint64_t untransposed[1024];
 			vec->flatten_to(transposed);
 			untranspose_i(transposed, untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				const bool equal = untransposed[i] == data_p[start_idx + i];
 				if (!equal) {
 					string message = "the arrow array offset is: " + std::to_string(start_idx) + std::to_string(i) +
@@ -156,7 +157,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 			dbl_pt untransposed[1024];
 			vec->flatten_to(transposed);
 			untranspose_i(transposed, untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				const bool equal = untransposed[i] == data_p[start_idx + i];
 				if (!equal) {
 					string error_message = "value at position: " + std::to_string(start_idx) + std::to_string(i) +
@@ -185,7 +186,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 			Buf      decompress_buf;
 			uint8_t* out_p = decompress_buf.mutable_data();
 
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				/* IN: use this symbol table for compression. */
 				/* IN: byte-length of compressed string. */
 				/* IN: compressed string. */
@@ -230,7 +231,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 			Buf      decompress_buf;
 			uint8_t* out_p = decompress_buf.mutable_data();
 
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				/* IN: use this symbol table for compression. */
 				/* IN: byte-length of compressed string. */
 				/* IN: compressed string. */
@@ -299,7 +300,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 
 			idx_t untransposed[1024] = {0};
 			untranspose_i(idx_arr, untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				auto idx = untransposed[i];
 
 				const bool equal = dic_data[idx] == data_p[start_idx + i];
@@ -319,7 +320,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 
 			idx_t untransposed[1024] = {0};
 			untranspose_i(idx_arr, untransposed);
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				auto       idx   = untransposed[i];
 				const bool equal = dic_data[idx] == data_p[start_idx + i];
 				if (!equal) {
@@ -371,7 +372,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 
 			auto* dic_data = reinterpret_cast<int64_t*>(vec->dict_up->data_buf.mutable_data());
 
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				auto       idx   = untransposed[i];
 				const bool equal = dic_data[idx] == data_p[start_idx + i];
 				if (!equal) {
@@ -392,7 +393,7 @@ void assert_eq(Vec* vec, const PT* data_p, idx_t start_idx, ExpT exp) {
 
 			auto* dic_data = reinterpret_cast<dbl_pt*>(vec->dict_up->data_buf.mutable_data());
 
-			for (auto i {0}; i < CFG::VEC_SZ; ++i) {
+			for (n_t i {0}; i < CFG::VEC_SZ; ++i) {
 				auto       idx   = untransposed[i];
 				const bool equal = dic_data[idx] == data_p[start_idx + i];
 				if (!equal) {

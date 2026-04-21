@@ -6,6 +6,7 @@
 #ifndef FLS_TABLE_CHUNK_HPP
 #define FLS_TABLE_CHUNK_HPP
 
+#include "fls/api/api.hpp"
 #include "fls/cfg/cfg.hpp"
 #include "fls/common/alias.hpp"
 #include "fls/expression/data_type.hpp"
@@ -27,14 +28,14 @@ using ofs_span_t      = span<ofs_t>;
 using length_span_t   = span<len_t>;
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-class BaseVector {
+class FLS_API BaseVector {
 public:
 	null_map_span_t null_map_span;
 	bool            should_be_stored {false};
 };
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-class VariableSizeVector : public BaseVector {
+class FLS_API VariableSizeVector : public BaseVector {
 public:
 	ofs_span_t ofs_span;
 };
@@ -128,7 +129,14 @@ using fls_chunk = vector<fls_vec>;
 /*--------------------------------------------------------------------------------------------------------------------*\
  * list vector
 \*--------------------------------------------------------------------------------------------------------------------*/
-class ListVector : public VariableSizeVector {
+class FLS_API ListVector : public VariableSizeVector {
+public:
+	ListVector()                             = default;
+	ListVector(const ListVector&)            = delete;
+	ListVector& operator=(const ListVector&) = delete;
+	ListVector(ListVector&&)                 = default;
+	ListVector& operator=(ListVector&&)      = default;
+
 public:
 	fls_vec child;
 };
@@ -136,7 +144,14 @@ public:
 /*--------------------------------------------------------------------------------------------------------------------*\
  * struct vector
 \*--------------------------------------------------------------------------------------------------------------------*/
-class StructVector : public BaseVector {
+class FLS_API StructVector : public BaseVector {
+public:
+	StructVector()                               = default;
+	StructVector(const StructVector&)            = delete;
+	StructVector& operator=(const StructVector&) = delete;
+	StructVector(StructVector&&)                 = default;
+	StructVector& operator=(StructVector&&)      = default;
+
 public:
 	fls_chunk table;
 };

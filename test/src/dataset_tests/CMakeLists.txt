@@ -12,7 +12,8 @@ add_executable(
         tpch.cpp
         wrong_schema.cpp)
 
-target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes)
+target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes msvc_heap_guard)
+fls_msvc_test_setup(dataset_tests)
 gtest_discover_tests(dataset_tests DISCOVERY_TIMEOUT 60)
 fls_enable_sanitizers(dataset_tests)
 
