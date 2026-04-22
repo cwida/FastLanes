@@ -43,6 +43,11 @@ BenchmarkCase tpch_case {Tpch::dataset,
                          std::string(FLS_CMAKE_SOURCE_DIR) +
                              "/benchmark/result/compression_ratio/tpch/fastlanes_detailed.csv"};
 
+BenchmarkCase time_series_case {
+    TimeSeries::dataset,
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/time_series/fastlanes.csv",
+    std::string(FLS_CMAKE_SOURCE_DIR) + "/benchmark/result/compression_ratio/time_series/fastlanes_detailed.csv"};
+
 void run_compression_ratio_benchmark(const BenchmarkCase& benchmark_case) {
 	const auto& result_file_path          = benchmark_case.result_file_path;
 	const auto  detailed_result_file_path = benchmark_case.detailed_result_file_path;

@@ -1,0 +1,6 @@
+table_name,version,csv_size,fls_size,compression_ratio
+AMPds,0.1.4,2540627,363719,6.99
+Computer_Monitor,0.1.4,917528,57529,15.95
+Linear_Road,0.1.4,1290067,253407,5.09
+Smart_Gird,0.1.4,918847,250929,3.66
+Weather_Forcast,0.1.4,2595630,237159,10.94

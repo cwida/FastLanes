@@ -1,0 +1,6 @@
+table_name,version,compression_time_ms,n_repetition
+AMPds,0.1.4,64.601,1
+Computer_Monitor,0.1.4,21.5683,1
+Linear_Road,0.1.4,1232.85,1
+Smart_Gird,0.1.4,32.1722,1
+Weather_Forcast,0.1.4,41.9882,1
