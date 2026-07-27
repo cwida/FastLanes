@@ -14,7 +14,7 @@ template <typename PT>
 TypedStats<PT>::TypedStats()
     : min {std::numeric_limits<PT>::max()}    //
     , max {std::numeric_limits<PT>::lowest()} //
-    , last_seen_val(0)                        // NOLINT
+    , last_seen_val {}                        // NOLINT
     , n_nulls(0)
     , is_double_castable(false) {
 }
