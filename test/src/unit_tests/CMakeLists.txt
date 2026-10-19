@@ -1,4 +1,5 @@
 add_executable(unit_test
+        buf_resize_test.cpp
         csv_parser_trailing_delimiter_test.cpp
         csv_reader_test.cpp
         double_test.cpp

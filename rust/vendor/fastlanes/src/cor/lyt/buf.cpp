@@ -186,7 +186,9 @@ void Buf::Resize(const sz_t new_sz) {
 	ExternalMemory::Copy(tmp_p, m_owned_p, m_capacity);
 
 	delete[] m_owned_p;
-	m_owned_p = tmp_p;
+	m_owned_p  = tmp_p;
+	m_active_p = tmp_p;
+	m_capacity = new_sz;
 }
 
 sz_t Buf::Size() const {
