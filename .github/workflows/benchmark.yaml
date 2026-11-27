@@ -45,6 +45,8 @@ jobs:
 
       - name: Install LLVM
         uses: ./.github/actions/install-llvm
+        with:
+          version: "20"   # ubuntu-latest is Ubuntu 26.04: preinstalled, and apt.llvm.org has no LLVM 18 for it
 
       - name: Configure
         run: |

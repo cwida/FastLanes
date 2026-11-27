@@ -50,19 +50,51 @@ runs:
 
         elif [[ "${{ runner.os }}" == "Linux" ]]; then
           # ── Ubuntu LTS ────────────────────────────────────────────────────────
-          sudo apt-get update -y
-          sudo apt-get install -y wget gnupg lsb-release software-properties-common
-          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
-            sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+          # GitHub's Ubuntu images preinstall several clang majors (e.g. 20/21/22 on
+          # ubuntu-26.04). Prefer those: no network, no apt.llvm.org dependency.
+          # Fall back to apt.llvm.org only when it has a repo for this codename, and
+          # otherwise use the lowest preinstalled major >= the requested one
+          # (apt.llvm.org ships nothing older than LLVM 21 for ubuntu-26.04).
+          if command -v lsb_release > /dev/null 2>&1; then
+            UBUNTU_CODENAME="$(lsb_release -cs)"
+          else
+            # shellcheck disable=SC1091
+            . /etc/os-release
+            UBUNTU_CODENAME="${VERSION_CODENAME}"
+          fi
 
-          UBUNTU_CODENAME=$(lsb_release -cs)
-          echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
-            http://apt.llvm.org/${UBUNTU_CODENAME}/ \
-            llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR} main" | \
-            sudo tee /etc/apt/sources.list.d/llvm${MAJOR}.list
+          have_major() { [[ -x "/usr/bin/clang-$1" && -x "/usr/bin/clang++-$1" && -x "/usr/bin/clang-tidy-$1" ]]; }
+          APT_RELEASE="https://apt.llvm.org/${UBUNTU_CODENAME}/dists/llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR}/Release"
 
-          sudo apt-get update -y
-          sudo apt-get install -y clang-${MAJOR} clang++-${MAJOR} clang-tidy-${MAJOR} lld-${MAJOR}
+          if have_major "${MAJOR}"; then
+            echo "✅ clang-${MAJOR} is preinstalled on this image; skipping apt.llvm.org"
+
+          elif curl -fsSIL "${APT_RELEASE}" > /dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y wget gnupg lsb-release software-properties-common
+            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
+              sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+
+            echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+              http://apt.llvm.org/${UBUNTU_CODENAME}/ \
+              llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR} main" | \
+              sudo tee /etc/apt/sources.list.d/llvm${MAJOR}.list
+
+            sudo apt-get update -y
+            sudo apt-get install -y clang-${MAJOR} clang++-${MAJOR} clang-tidy-${MAJOR} lld-${MAJOR}
+
+          else
+            FALLBACK=""
+            for cand in $( (ls -d /usr/lib/llvm-* 2>/dev/null || true) | sed 's#.*/llvm-##' | grep -E '^[0-9]+$' | sort -n); do
+              if (( cand >= MAJOR )) && have_major "${cand}"; then FALLBACK="${cand}"; break; fi
+            done
+            if [[ -z "${FALLBACK}" ]]; then
+              echo "::error ::No clang-${MAJOR} at apt.llvm.org for Ubuntu '${UBUNTU_CODENAME}' and no preinstalled clang >= ${MAJOR}"
+              exit 1
+            fi
+            echo "::notice ::apt.llvm.org has no LLVM ${MAJOR} for Ubuntu '${UBUNTU_CODENAME}'; using preinstalled clang-${FALLBACK}"
+            MAJOR="${FALLBACK}"
+          fi
 
           sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-${MAJOR}       200
           sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-${MAJOR}     200
