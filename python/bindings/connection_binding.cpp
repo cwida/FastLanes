@@ -25,7 +25,11 @@ void bind_connection(py::module_& m) {
 	         &fastlanes::Connection::read_fls,
 	         py::arg("dir_path"),
 	         "Read a .fls file and return a FastLanes Reader",
-	         py::return_value_policy::move)
+	         py::return_value_policy::move,
+	         // TableReader holds `Connection&`; without this the connection can be
+	         // collected while the reader is still alive (e.g. the README's
+	         // `connect().read_fls(p).to_csv(q)`), giving a use-after-free.
+	         py::keep_alive<0, 1>())
 	    .def("inline_footer",
 	         &fastlanes::Connection::inline_footer,
 	         "Enable footer inlining",
