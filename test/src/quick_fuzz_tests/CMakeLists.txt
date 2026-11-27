@@ -23,5 +23,6 @@ gtest_discover_tests(
         TEST_PREFIX QuickFuzz_               # final names like "QuickFuzz_QuickFuzz_Case0.Random"
         PROPERTIES
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        DISCOVERY_TIMEOUT 30
+        DISCOVERY_MODE PRE_TEST              # enumerate at ctest time, not as a post-link build step
+        DISCOVERY_TIMEOUT 600
 )

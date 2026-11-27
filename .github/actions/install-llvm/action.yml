@@ -24,6 +24,18 @@ runs:
         echo "🟣 Installing LLVM/Clang ${VERSION} on ${{ runner.os }}"
 
         if [[ "${{ runner.os }}" == "macOS" ]]; then
+          # ── 0. macOS 26.4+ needs compiler-rt >= 22 for AddressSanitizer ──────
+          # Older ASan runtimes deadlock before main() on Darwin 25 (macOS 26.4+):
+          # shadow-memory setup walks the dyld shared cache with a block, whose
+          # _Block_copy mallocs back into the not-yet-initialised ASan allocator
+          # (llvm/llvm-project#200447, fixed by #182943, first in LLVM 22.1.3).
+          DARWIN_MAJOR="$(uname -r | cut -d. -f1)"
+          if [[ "${DARWIN_MAJOR}" -ge 25 && "${MAJOR}" -lt 22 ]]; then
+            echo "::notice ::Requested LLVM ${VERSION} but this is Darwin ${DARWIN_MAJOR} (macOS 26+): its ASan runtime deadlocks at startup; upgrading to LLVM 22"
+            VERSION="22"
+            MAJOR="22"
+          fi
+
           # ── 1. Install LLVM (Homebrew) ────────────────────────────────────────
           if brew info "llvm@${MAJOR}" > /dev/null 2>&1; then
             brew install "llvm@${MAJOR}"
@@ -50,19 +62,51 @@ runs:
 
         elif [[ "${{ runner.os }}" == "Linux" ]]; then
           # ── Ubuntu LTS ────────────────────────────────────────────────────────
-          sudo apt-get update -y
-          sudo apt-get install -y wget gnupg lsb-release software-properties-common
-          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
-            sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+          # GitHub's Ubuntu images preinstall several clang majors (e.g. 20/21/22 on
+          # ubuntu-26.04). Prefer those: no network, no apt.llvm.org dependency.
+          # Fall back to apt.llvm.org only when it has a repo for this codename, and
+          # otherwise use the lowest preinstalled major >= the requested one
+          # (apt.llvm.org ships nothing older than LLVM 21 for ubuntu-26.04).
+          if command -v lsb_release > /dev/null 2>&1; then
+            UBUNTU_CODENAME="$(lsb_release -cs)"
+          else
+            # shellcheck disable=SC1091
+            . /etc/os-release
+            UBUNTU_CODENAME="${VERSION_CODENAME}"
+          fi
 
-          UBUNTU_CODENAME=$(lsb_release -cs)
-          echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
-            http://apt.llvm.org/${UBUNTU_CODENAME}/ \
-            llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR} main" | \
-            sudo tee /etc/apt/sources.list.d/llvm${MAJOR}.list
+          have_major() { [[ -x "/usr/bin/clang-$1" && -x "/usr/bin/clang++-$1" && -x "/usr/bin/clang-tidy-$1" ]]; }
+          APT_RELEASE="https://apt.llvm.org/${UBUNTU_CODENAME}/dists/llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR}/Release"
 
-          sudo apt-get update -y
-          sudo apt-get install -y clang-${MAJOR} clang++-${MAJOR} clang-tidy-${MAJOR} lld-${MAJOR}
+          if have_major "${MAJOR}"; then
+            echo "✅ clang-${MAJOR} is preinstalled on this image; skipping apt.llvm.org"
+
+          elif curl -fsSIL "${APT_RELEASE}" > /dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y wget gnupg lsb-release software-properties-common
+            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | \
+              sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+
+            echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+              http://apt.llvm.org/${UBUNTU_CODENAME}/ \
+              llvm-toolchain-${UBUNTU_CODENAME}-${MAJOR} main" | \
+              sudo tee /etc/apt/sources.list.d/llvm${MAJOR}.list
+
+            sudo apt-get update -y
+            sudo apt-get install -y clang-${MAJOR} clang++-${MAJOR} clang-tidy-${MAJOR} lld-${MAJOR}
+
+          else
+            FALLBACK=""
+            for cand in $( (ls -d /usr/lib/llvm-* 2>/dev/null || true) | sed 's#.*/llvm-##' | grep -E '^[0-9]+$' | sort -n); do
+              if (( cand >= MAJOR )) && have_major "${cand}"; then FALLBACK="${cand}"; break; fi
+            done
+            if [[ -z "${FALLBACK}" ]]; then
+              echo "::error ::No clang-${MAJOR} at apt.llvm.org for Ubuntu '${UBUNTU_CODENAME}' and no preinstalled clang >= ${MAJOR}"
+              exit 1
+            fi
+            echo "::notice ::apt.llvm.org has no LLVM ${MAJOR} for Ubuntu '${UBUNTU_CODENAME}'; using preinstalled clang-${FALLBACK}"
+            MAJOR="${FALLBACK}"
+          fi
 
           sudo update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-${MAJOR}       200
           sudo update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-${MAJOR}     200
@@ -71,19 +115,42 @@ runs:
           echo "/usr/lib/llvm-${MAJOR}/bin" >> "$GITHUB_PATH"
 
         elif [[ "${{ runner.os }}" == "Windows" ]]; then
-          # ── Windows Server 2022 ──────────────────────────────────────────────
-          # MSVC STL (VS 2022 17.11+) needs Clang ≥19. Auto-bump if caller asks for less.
-          if [[ "${MAJOR}" -lt 19 ]]; then
-            echo "::notice ::Requested LLVM ${VERSION} is older than MSVC STL accepts; upgrading to LLVM 20.1.7"
-            VERSION="20.1.7"
-            MAJOR="20"
+          # ── Windows ──────────────────────────────────────────────────────────
+          # The MSVC STL only accepts a clang at least as new as the one Visual
+          # Studio ships (VS 2026 18.12 / MSVC 14.52 requires clang >= 22; VS 2022
+          # 17.11+ required >= 19). Prefer the clang bundled with the installed VS:
+          # it is compatible with that STL by construction and needs no download.
+          # Fall back to Chocolatey, bumped to a version the STL accepts.
+          VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+          VS_LLVM_BIN=""
+          if [[ -f "${VSWHERE}" ]]; then
+            VS_ROOT="$("${VSWHERE}" -latest -products '*' \
+                       -requires Microsoft.VisualStudio.Component.VC.Llvm.Clang \
+                       -property installationPath 2>/dev/null | tr -d '\r')"
+            if [[ -n "${VS_ROOT}" ]]; then
+              CAND="${VS_ROOT}\\VC\\Tools\\Llvm\\x64\\bin"
+              if [[ -f "$(cygpath -u "${CAND}")/clang++.exe" && -f "$(cygpath -u "${CAND}")/lld-link.exe" ]]; then
+                VS_LLVM_BIN="${CAND}"
+              fi
+            fi
           fi
 
-          echo "→ chocolatey upgrade llvm --version=${VERSION}"
-          choco upgrade llvm --version="${VERSION}" -y --no-progress --allow-downgrade
+          if [[ -n "${VS_LLVM_BIN}" ]]; then
+            echo "✅ Using the clang bundled with Visual Studio at ${VS_LLVM_BIN} (requested ${VERSION}; the MSVC STL dictates the version)"
+            echo "${VS_LLVM_BIN}" >> "$GITHUB_PATH"
+            "$(cygpath -u "${VS_LLVM_BIN}")/clang++.exe" --version
+          else
+            if [[ "${MAJOR}" -lt 22 ]]; then
+              echo "::notice ::Requested LLVM ${VERSION} is older than the MSVC STL accepts; upgrading to LLVM 22.1.8"
+              VERSION="22.1.8"
+              MAJOR="22"
+            fi
+            echo "→ chocolatey upgrade llvm --version=${VERSION}"
+            choco upgrade llvm --version="${VERSION}" -y --no-progress --allow-downgrade
 
-          # Add to PATH; quoting keeps the space intact
-          echo 'C:\Program Files\LLVM\bin' >> "$GITHUB_PATH"
+            # Add to PATH; quoting keeps the space intact
+            echo 'C:\Program Files\LLVM\bin' >> "$GITHUB_PATH"
+          fi
 
         else
           echo "::warning ::LLVM install not supported on ${{ runner.os }}"

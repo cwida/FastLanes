@@ -34,7 +34,7 @@ cmake --build build --target unit_test && ctest -R unit_test --output-on-failure
 ### Key CMake options
 | Option | Default | Purpose |
 |--------|---------|---------|
-| `FLS_BUILD_TESTING` | OFF | Build tests (fetches GoogleTest v1.15.2) |
+| `FLS_BUILD_TESTING` | OFF | Build tests (fetches GoogleTest v1.18.0) |
 | `FLS_BUILD_SHARED_LIBS` | OFF | Build as shared library (DLL) instead of static |
 | `FLS_BUILD_BENCHMARKING` | OFF | Build benchmarks |
 | `FLS_BUILD_PYTHON` | OFF | Build Python bindings |

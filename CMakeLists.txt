@@ -205,7 +205,7 @@ if (FLS_BUILD_TESTING OR FLS_BUILD_CUDA OR FLS_ENABLE_FSST_TESTING_AND_BENCHMARK
     # Gtest: -----------------------------------------------------------------------------------------------------------
     FetchContent_Declare(googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG v1.15.2
+            GIT_TAG v1.18.0 # 1.15.2 trips clang >= 21's -Wcharacter-conversion (-Werror) in gtest-printers.h
     )
     # For Windows: Prevent overriding the parent project's compiler/linker settings
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
