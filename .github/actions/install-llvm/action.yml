@@ -103,19 +103,42 @@ runs:
           echo "/usr/lib/llvm-${MAJOR}/bin" >> "$GITHUB_PATH"
 
         elif [[ "${{ runner.os }}" == "Windows" ]]; then
-          # ── Windows Server 2022 ──────────────────────────────────────────────
-          # MSVC STL (VS 2022 17.11+) needs Clang ≥19. Auto-bump if caller asks for less.
-          if [[ "${MAJOR}" -lt 19 ]]; then
-            echo "::notice ::Requested LLVM ${VERSION} is older than MSVC STL accepts; upgrading to LLVM 20.1.7"
-            VERSION="20.1.7"
-            MAJOR="20"
+          # ── Windows ──────────────────────────────────────────────────────────
+          # The MSVC STL only accepts a clang at least as new as the one Visual
+          # Studio ships (VS 2026 18.12 / MSVC 14.52 requires clang >= 22; VS 2022
+          # 17.11+ required >= 19). Prefer the clang bundled with the installed VS:
+          # it is compatible with that STL by construction and needs no download.
+          # Fall back to Chocolatey, bumped to a version the STL accepts.
+          VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+          VS_LLVM_BIN=""
+          if [[ -f "${VSWHERE}" ]]; then
+            VS_ROOT="$("${VSWHERE}" -latest -products '*' \
+                       -requires Microsoft.VisualStudio.Component.VC.Llvm.Clang \
+                       -property installationPath 2>/dev/null | tr -d '\r')"
+            if [[ -n "${VS_ROOT}" ]]; then
+              CAND="${VS_ROOT}\\VC\\Tools\\Llvm\\x64\\bin"
+              if [[ -f "$(cygpath -u "${CAND}")/clang++.exe" && -f "$(cygpath -u "${CAND}")/lld-link.exe" ]]; then
+                VS_LLVM_BIN="${CAND}"
+              fi
+            fi
           fi
 
-          echo "→ chocolatey upgrade llvm --version=${VERSION}"
-          choco upgrade llvm --version="${VERSION}" -y --no-progress --allow-downgrade
+          if [[ -n "${VS_LLVM_BIN}" ]]; then
+            echo "✅ Using the clang bundled with Visual Studio at ${VS_LLVM_BIN} (requested ${VERSION}; the MSVC STL dictates the version)"
+            echo "${VS_LLVM_BIN}" >> "$GITHUB_PATH"
+            "$(cygpath -u "${VS_LLVM_BIN}")/clang++.exe" --version
+          else
+            if [[ "${MAJOR}" -lt 22 ]]; then
+              echo "::notice ::Requested LLVM ${VERSION} is older than the MSVC STL accepts; upgrading to LLVM 22.1.8"
+              VERSION="22.1.8"
+              MAJOR="22"
+            fi
+            echo "→ chocolatey upgrade llvm --version=${VERSION}"
+            choco upgrade llvm --version="${VERSION}" -y --no-progress --allow-downgrade
 
-          # Add to PATH; quoting keeps the space intact
-          echo 'C:\Program Files\LLVM\bin' >> "$GITHUB_PATH"
+            # Add to PATH; quoting keeps the space intact
+            echo 'C:\Program Files\LLVM\bin' >> "$GITHUB_PATH"
+          fi
 
         else
           echo "::warning ::LLVM install not supported on ${{ runner.os }}"
