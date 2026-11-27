@@ -13,6 +13,8 @@ add_executable(
 
 target_link_libraries(dataset_tests PUBLIC gtest_main gmock_main FastLanes msvc_heap_guard)
 fls_msvc_test_setup(dataset_tests)
-gtest_discover_tests(dataset_tests DISCOVERY_TIMEOUT 60)
+# PRE_TEST: enumerate tests when ctest runs rather than as a post-link build step;
+# sanitized Debug binaries can take minutes just to start on CI runners.
+gtest_discover_tests(dataset_tests DISCOVERY_MODE PRE_TEST DISCOVERY_TIMEOUT 600)
 fls_enable_sanitizers(dataset_tests)
 

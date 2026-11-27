@@ -25,6 +25,7 @@ fls_enable_sanitizers(unit_test)
 
 gtest_discover_tests(            # single call with extended timeout
         unit_test
-        DISCOVERY_TIMEOUT 120        # seconds
+        DISCOVERY_MODE PRE_TEST      # enumerate at ctest time, not as a post-link build step
+        DISCOVERY_TIMEOUT 600        # seconds; sanitized Debug binaries start slowly on CI runners
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
