@@ -24,6 +24,18 @@ runs:
         echo "🟣 Installing LLVM/Clang ${VERSION} on ${{ runner.os }}"
 
         if [[ "${{ runner.os }}" == "macOS" ]]; then
+          # ── 0. macOS 26.4+ needs compiler-rt >= 22 for AddressSanitizer ──────
+          # Older ASan runtimes deadlock before main() on Darwin 25 (macOS 26.4+):
+          # shadow-memory setup walks the dyld shared cache with a block, whose
+          # _Block_copy mallocs back into the not-yet-initialised ASan allocator
+          # (llvm/llvm-project#200447, fixed by #182943, first in LLVM 22.1.3).
+          DARWIN_MAJOR="$(uname -r | cut -d. -f1)"
+          if [[ "${DARWIN_MAJOR}" -ge 25 && "${MAJOR}" -lt 22 ]]; then
+            echo "::notice ::Requested LLVM ${VERSION} but this is Darwin ${DARWIN_MAJOR} (macOS 26+): its ASan runtime deadlocks at startup; upgrading to LLVM 22"
+            VERSION="22"
+            MAJOR="22"
+          fi
+
           # ── 1. Install LLVM (Homebrew) ────────────────────────────────────────
           if brew info "llvm@${MAJOR}" > /dev/null 2>&1; then
             brew install "llvm@${MAJOR}"

@@ -27,21 +27,13 @@
 #       – ODR-use of sanitizers can break the CRT linkage.
 #     Disabling on Win32 avoids build errors and linkage issues.
 #
-#   • On macOS 26 (Darwin 25) the ASan runtime of compiler-rt < 22
-#     deadlocks before main(): shadow-memory setup calls into dyld,
-#     which mallocs back into the not-yet-initialised allocator
-#     (llvm/llvm-project#200447; Apple: Xcode <= 26.3 known issue).
-#     Even `--gtest_list_tests` never returns. Keep UBSan there and
-#     drop only -fsanitize=address until the toolchain is clang >= 22.
-#
 # IMPACT ON CI:
-#   OS         | Shared              | Static
-#   ---------------------------------------------------
-#   Ubuntu     | ✅ ASan             | ✅ ASan
-#   macOS-14   | ✅ ASan             | ❌ Abort at startup
-#   macOS-15   | ✅ ASan             | ❌ Abort at startup
-#   macOS-26   | ⚠️ UBSan only (<22) | ❌ Abort at startup
-#   Windows    | 🚫 Sanitizers       | 🚫 Sanitizers
+#   OS         | Shared        | Static
+#   -----------------------------------------
+#   Ubuntu     | ✅ ASan       | ✅ ASan
+#   macOS-14   | ✅ ASan       | ❌ Abort at startup
+#   macOS-15   | ✅ ASan       | ❌ Abort at startup
+#   Windows    | 🚫 Sanitizers | 🚫 Sanitizers
 #
 
 function(fls_enable_sanitizers target)
@@ -61,22 +53,23 @@ function(fls_enable_sanitizers target)
         return()
     endif ()
 
-    # 3) macOS 26+ with a compiler-rt older than 22: ASan hangs at startup
-    set(_asan_flags -fsanitize=address)
-    if (APPLE AND CMAKE_SYSTEM_VERSION VERSION_GREATER_EQUAL 25)
-        if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"
-                OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 22))
-            message(STATUS
-                    "[Sanitizers] Dropping AddressSanitizer for '${target}' "
-                    "(Darwin ${CMAKE_SYSTEM_VERSION} + ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}: "
-                    "ASan runtime deadlocks before main, llvm/llvm-project#200447); keeping UBSan")
-            set(_asan_flags)
-        endif ()
+    # 3) macOS 26.4+ (Darwin >= 25) needs compiler-rt >= 22: older ASan runtimes
+    #    deadlock before main() (llvm/llvm-project#200447). Do not silently drop
+    #    the sanitizer; tell the developer what to install instead.
+    if (APPLE AND CMAKE_SYSTEM_VERSION VERSION_GREATER_EQUAL 25
+            AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+            AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 22)
+        message(WARNING
+                "[Sanitizers] '${target}' is built with AddressSanitizer using Clang "
+                "${CMAKE_CXX_COMPILER_VERSION} on Darwin ${CMAKE_SYSTEM_VERSION} (macOS 26+). "
+                "This ASan runtime deadlocks before main() on macOS >= 26.4 "
+                "(llvm/llvm-project#200447); every test binary will hang at startup. "
+                "Use Clang >= 22 (e.g. `brew install llvm@22`) or Apple Clang from Xcode >= 26.4.")
     endif ()
 
     # 4) Apply on all other platforms
     set(_san_flags
-            ${_asan_flags}
+            -fsanitize=address
             -fsanitize=undefined
             -fsanitize=vptr
             -fsanitize=null
